@@ -30,12 +30,12 @@ import huisstijl from "../huisstijl.css?raw";
     fetch(ENDPOINT + "?status=" + encodeURIComponent(id)).then((r) => r.json()).then((j) => {
       if (!j.ok) throw new Error(j.error);
       if (j.status === "betaald") {
-        zet("Betaald. We gaan aan de slag.", "Binnen twee werkdagen krijg je per mail de planning en de lijst met wat we nog van je nodig hebben. Daarna maken we het dossier op en dienen het in.");
+        zet("Betaald. Wij nemen het over.", "Je krijgt per mail je deadline, en een bevestiging zodra je aanvraag ingediend is.");
       } else if (j.status === "open" && pogingen < 4) {
         // Mollie meldt een betaling soms enkele seconden later.
         pogingen++; zet("Even kijken…", "Je betaling is nog niet bevestigd. We proberen opnieuw."); setTimeout(vraag, 3000);
       } else if (j.status === "open") {
-        zet("Nog niet betaald", "We zien nog geen betaling. Probeer opnieuw, of gebruik de link in onze mail.");
+        zet("Nog niet betaald", "We zien nog geen betaling. Probeer het opnieuw met de knop hieronder.");
         if (typeof j.betaalUrl === "string" && /^https:\/\/[\w.-]*mollie\.com\//.test(j.betaalUrl)) {
           const a = document.createElement("a"); a.className = "btn primary"; a.href = j.betaalUrl;
           a.textContent = "Betaal" + (j.bedrag ? " € " + j.bedrag : "") + " →"; $("acties").replaceChildren(a); $("acties").hidden = false;
