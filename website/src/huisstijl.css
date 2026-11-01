@@ -62,6 +62,14 @@ nav.menu a.go{color:var(--bg);background:var(--text);margin-left:6px;padding:9px
 .fields label{display:grid;gap:6px;font-size:13px;font-weight:600;color:var(--soft)}
 .fields label.full{grid-column:1/-1}
 .fields select,.fields input{font:500 16px/1.2 var(--f-body);padding:12px 14px;border-radius:10px;border:1px solid var(--line-2);background:var(--bg);color:var(--text);width:100%;min-width:0}
+/* Overal dezelfde hoogte (Safari tekent select en datum anders) */
+.fields select,.fields input:not([type=checkbox]):not([type=radio]):not([type=file]){-webkit-appearance:none;appearance:none;height:48px;line-height:1.2}
+.fields select{padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23aab0c4' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.fields input[type=date]{display:flex;align-items:center}
+.fields input[type=date]::-webkit-date-and-time-value{text-align:left;margin:0}
+.fields input[type=date]::-webkit-datetime-edit{padding:0}
+.fields input[type=date]::-webkit-calendar-picker-indicator,.fields input[type=time]::-webkit-calendar-picker-indicator{filter:invert(.75);cursor:pointer}
+
 .fields select option,.fields select optgroup{background:var(--card);color:var(--text)}
 .fields select:focus-visible,.fields input:focus-visible{outline:2px solid var(--text);outline-offset:1px}
 @media (max-width:460px){.fields{grid-template-columns:1fr}}
