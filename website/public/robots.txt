@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /betaald.html
+
+Sitemap: https://evenementaanvragen.be/sitemap-index.xml
