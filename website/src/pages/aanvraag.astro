@@ -397,6 +397,15 @@ const leesB64 = f => new Promise((ok, nok) => { const r = new FileReader(); r.on
 })();
 
 const sd = document.getElementById("startdatum");
+// Einddatum volgt de startdatum: nooit vroeger, en vanzelf ingevuld met de vroegst mogelijke datum.
+const ed = document.getElementById("einddatum");
+function volgEinddatum() {
+  if (!sd.value) return;
+  ed.min = sd.value;
+  if (!ed.value || ed.value < sd.value) ed.value = sd.value;
+}
+sd.addEventListener("change", volgEinddatum);
+sd.addEventListener("input", volgEinddatum);
 const vandaag = today();
 sd.min = vandaag.getFullYear() + "-" + String(vandaag.getMonth() + 1).padStart(2, "0") + "-" + String(vandaag.getDate()).padStart(2, "0");
 
