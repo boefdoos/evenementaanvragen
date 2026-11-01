@@ -75,9 +75,8 @@ section.blk{padding-block:88px 0}
 @media (max-width:900px){.steps{grid-template-columns:1fr 1fr}}
 @media (max-width:520px){.steps{grid-template-columns:1fr}}
 .stp{padding:24px 22px 8px 0;display:grid;gap:8px;align-content:start}
-.stp .n{font:800 15px/1 var(--f-display);color:var(--dim)}
-.stp.me .n{color:var(--accent)}
 .stp .who{font-size:13px;font-weight:600;color:var(--soft)}
+.stp.me .who{color:var(--accent)}
 .stp p{color:var(--soft);font-size:15px}
 
 /* prijzen */

@@ -48,7 +48,6 @@ form{display:flex;flex-direction:column;gap:16px}
 fieldset{border:1px solid var(--line);background:var(--card);border-radius:20px;margin:0;padding:26px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 18px;min-width:0}
 legend{display:contents}
 .sec-head{grid-column:1/-1;display:flex;align-items:baseline;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:2px}
-.sec-num{font:800 15px/1 var(--f-display);color:var(--accent)}
 .sec-title{font:600 19px/1.25 var(--f-display);letter-spacing:-.02em}
 .full{grid-column:1/-1}
 .field{display:flex;flex-direction:column;gap:7px;min-width:0}
@@ -130,13 +129,13 @@ footer.foot a{color:var(--soft)}
 <section class="intro"><div class="wrap narrow">
   <div class="k">Aanvraag</div>
   <h1 style="margin-top:10px">Vertel ons over <span>je evenement.</span></h1>
-  <p class="lead">Je aanvraag gaat <b>meteen</b> in behandeling. We berekenen de deadlines bij jouw gemeente, bereiden het volledige dossier voor en dienen het in. Je krijgt <b>binnen twee werkdagen</b> een planning en een lijst van wat we nog van je nodig hebben. Weet je iets nog niet? Kies <b>weet niet</b>, dan vragen we het later.</p>
+  <p class="lead">Je krijgt <b>binnen twee werkdagen</b> je deadline bij de gemeente, de prijs en wat we nog van je nodig hebben. Na betaling maken we het dossier op en dienen het in. Weet je iets nog niet? Kies <b>weet niet</b>, dan vragen we het later.</p>
 </div></section>
 
 <div class="wrap narrow">
   <form id="intake" novalidate>
     <fieldset>
-      <legend><div class="sec-head"><span class="sec-num">01</span><span class="sec-title">Organisator</span></div></legend>
+      <legend><div class="sec-head"><span class="sec-title">Organisator</span></div></legend>
       <div class="field"><label for="organisator_naam">Naam contactpersoon <span class="req">*</span></label><input id="organisator_naam" name="organisator_naam" autocomplete="name" required></div>
       <div class="field"><label for="aanvrager_type">Je organiseert als <span class="req">*</span></label>
         <select id="aanvrager_type" name="aanvrager_type" required><option value="">Kies…</option><option>vereniging</option><option>particulier</option><option>bedrijf</option><option>school</option></select></div>
@@ -165,7 +164,7 @@ footer.foot a{color:var(--soft)}
     </fieldset>
 
     <fieldset>
-      <legend><div class="sec-head"><span class="sec-num">02</span><span class="sec-title">Het evenement</span></div></legend>
+      <legend><div class="sec-head"><span class="sec-title">Het evenement</span></div></legend>
       <div class="field full"><label for="evenement_naam">Naam van het evenement <span class="req">*</span></label><input id="evenement_naam" name="evenement_naam" required></div>
       <div class="field"><label for="gemeente">Gemeente <span class="req">*</span></label><select id="gemeente" name="gemeente" required><option value="">Kies…</option></select></div>
       <div class="field"><label for="type">Soort evenement <span class="req">*</span></label>
@@ -186,11 +185,11 @@ footer.foot a{color:var(--soft)}
     </fieldset>
 
     <fieldset id="extras">
-      <legend><div class="sec-head"><span class="sec-num">03</span><span class="sec-title">Wat komt erbij kijken?</span></div></legend>
+      <legend><div class="sec-head"><span class="sec-title">Wat komt erbij kijken?</span></div></legend>
     </fieldset>
 
     <fieldset id="inplanting">
-      <legend><div class="sec-head"><span class="sec-num">04</span><span class="sec-title">Inplanting en materiaal</span></div></legend>
+      <legend><div class="sec-head"><span class="sec-title">Inplanting en materiaal</span></div></legend>
       <div class="field">
         <label for="locatie_soort">Waar vindt het plaats? <span class="req">*</span></label>
         <select id="locatie_soort" name="locatie_soort" required><option value="">Kies…</option><option value="zaal">In een zaal of gebouw</option><option value="tent">In een tent</option><option value="buiten">Buiten, zonder tent</option><option value="combinatie">Combinatie (bv. zaal en buitenbar)</option></select>
@@ -237,14 +236,14 @@ footer.foot a{color:var(--soft)}
     </fieldset>
 
     <fieldset>
-      <legend><div class="sec-head"><span class="sec-num">05</span><span class="sec-title">Meer uitleg</span></div></legend>
+      <legend><div class="sec-head"><span class="sec-title">Meer uitleg</span></div></legend>
       <div class="field full"><label for="beschrijving">Beschrijf je evenement <span class="req">*</span></label><textarea id="beschrijving" name="beschrijving" required placeholder="Programma, wie treedt op, tent of zaal, foodtrucks, ticketverkoop…"></textarea></div>
       <div class="field full"><label for="opmerkingen">Nog iets dat we moeten weten?</label><textarea id="opmerkingen" name="opmerkingen"></textarea></div>
       <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
     </fieldset>
 
     <fieldset>
-      <legend><div class="sec-head"><span class="sec-num">06</span><span class="sec-title">Akkoord</span></div></legend>
+      <legend><div class="sec-head"><span class="sec-title">Akkoord</span></div></legend>
       <label class="check" for="toestemming_privacy"><input type="checkbox" id="toestemming_privacy" name="toestemming_privacy" required><span>Ik ga akkoord dat mijn gegevens gebruikt worden om deze aanvraag voor te bereiden en in te dienen bij de gemeente, zoals beschreven in de <a href="privacy.html">privacyverklaring</a>. <span class="req">*</span></span></label>
       <div class="full volm">
         <div class="q">Volmacht</div>
@@ -266,7 +265,7 @@ footer.foot a{color:var(--soft)}
   <section class="done" id="done" hidden>
     <div class="k">Ontvangen</div>
     <h2>Bedankt, we gaan aan de slag.</h2>
-    <p>Je dossiernummer is <code id="dossierid">–</code>. Binnen twee werkdagen krijg je per mail de planning met de deadlines bij je gemeente en de lijst met wat we nog nodig hebben. Na het indienen sturen we je de ontvangstbevestiging door; vanaf dan loopt het contact met de gemeente rechtstreeks via jou.</p>
+    <p>Je dossiernummer is <code id="dossierid">–</code>. Binnen twee werkdagen krijg je per mail je deadline bij de gemeente, de prijs met een betaallink en de lijst met wat we nog nodig hebben. Na betaling maken we het dossier op en dienen het in. Daarna sturen we je de ontvangstbevestiging door en loopt het contact met de gemeente rechtstreeks via jou.</p>
   </section>
 </div>
 </main>
