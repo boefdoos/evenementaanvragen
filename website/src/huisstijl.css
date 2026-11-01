@@ -39,7 +39,7 @@ nav.menu a.go{color:var(--bg);background:var(--text);margin-left:6px;padding:9px
 .lead{font-size:19px;color:var(--soft);margin-top:22px;max-width:38ch}
 .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px;align-items:center}
 .btn{display:inline-flex;align-items:center;gap:10px;font:600 16px/1 var(--f-body);padding:15px 22px;border-radius:999px;text-decoration:none;color:var(--text);border:1px solid var(--line-2)}
-.btn.primary{background:var(--grad);border-color:transparent;color:#1a1d2b}
+.btn.primary{background:var(--grad) border-box;border-color:transparent;color:#1a1d2b}
 .btn:focus-visible{outline:2px solid var(--text);outline-offset:3px}
 .btn .arr{transition:transform .2s}
 .btn:hover .arr{transform:translateX(3px)}
