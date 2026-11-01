@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<title>Aanvraag · evenementaanvragen.be</title>
+<meta name="description" content="Vertel ons over je evenement. Wij berekenen de deadline bij je gemeente, maken het dossier op en dienen het in.">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Zelfde huisstijl als de startpagina: rustig donker, één accentkleur (koraal), verder grijswaarden.
+   Formulier = één smalle kolom; elke sectie is een kaart met een genummerde kop zoals de stappen op de startpagina. */
+:root{
+  --bg:#1a1d2b; --card:#232738; --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.18);
+  --text:#f5f4f2; --soft:#aab0c4; --dim:#7d839a;
+  --accent:#ff5a4e; --sun:#ffc84a;
+  --grad:linear-gradient(95deg,var(--sun),var(--accent));
+  --f-display:"Unbounded", "Arial Black", Arial, sans-serif;
+  --f-body:"Instrument Sans", "Segoe UI", Arial, sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.6 var(--f-body);font-variant-numeric:tabular-nums;overflow-x:hidden}
+a{color:var(--text)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.narrow{max-width:800px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;font-weight:600;letter-spacing:-.02em}
+h1{font-size:clamp(30px,4vw,48px);line-height:1.08;font-weight:800}
+h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(22px,2.6vw,30px);line-height:1.15}
+p{margin:0}
+.k{font:600 14px/1.2 var(--f-body);color:var(--soft)}
+
+/* kop (identiek aan startpagina) */
+header.top{padding-block:22px;border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.mark{color:var(--text);text-decoration:none;font:600 16px/1 var(--f-display);letter-spacing:-.02em}
+.mark b{color:var(--accent);font-weight:600}
+nav.menu{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+nav.menu a{color:var(--soft);text-decoration:none;font-weight:600;font-size:15px;padding:8px 12px;border-radius:999px}
+nav.menu a:hover{color:var(--text)}
+nav.menu a:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+
+/* intro */
+.intro{padding-block:56px 32px}
+.lead{font-size:18px;color:var(--soft);margin-top:18px;max-width:60ch}
+.lead b{color:var(--text);font-weight:600}
+
+/* formulier */
+form{display:flex;flex-direction:column;gap:16px}
+fieldset{border:1px solid var(--line);background:var(--card);border-radius:20px;margin:0;padding:26px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 18px;min-width:0}
+legend{display:contents}
+.sec-head{grid-column:1/-1;display:flex;align-items:baseline;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:2px}
+.sec-num{font:800 15px/1 var(--f-display);color:var(--accent)}
+.sec-title{font:600 19px/1.25 var(--f-display);letter-spacing:-.02em}
+.full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+label,.q{font-weight:600;font-size:15px;color:var(--text)}
+.hint{font-size:14px;color:var(--soft);font-weight:400;line-height:1.5}
+.req{color:var(--accent)}
+input,select,textarea{font:500 16px/1.3 var(--f-body);color:var(--text);background:var(--bg);border:1px solid var(--line-2);border-radius:10px;padding:12px 14px;width:100%;min-width:0}
+input::placeholder,textarea::placeholder{color:var(--dim)}
+select option,select optgroup{background:var(--card);color:var(--text)}
+textarea{min-height:110px;resize:vertical;line-height:1.5}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offset:1px}
+
+/* ja / nee / weet niet */
+.yn{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 20px;align-items:center;padding-block:14px;border-top:1px solid var(--line)}
+legend + .yn{border-top:0;padding-top:4px}
+.seg{display:inline-flex;flex-wrap:wrap;gap:6px;justify-self:start}
+.seg label{position:relative;font-weight:600;font-size:14px;cursor:pointer}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg span{display:block;padding:8px 14px;border:1px solid var(--line-2);border-radius:999px;color:var(--soft);transition:background .15s,color .15s,border-color .15s}
+.seg label:hover span{color:var(--text);border-color:var(--soft)}
+.seg input:checked+span{background:var(--text);color:var(--bg);border-color:var(--text)}
+.seg input:focus-visible+span{outline:2px solid var(--text);outline-offset:2px}
+
+.check{grid-column:1/-1;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;font-weight:400;font-size:15px;color:var(--soft);line-height:1.5}
+.check input{width:20px;height:20px;margin-top:2px;padding:0;accent-color:var(--accent)}
+.volm{display:grid;gap:8px}
+.volmtekst{margin:6px 0 0;padding:16px 18px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--soft);font-size:14px;line-height:1.6;white-space:pre-line;overflow-wrap:anywhere}
+
+.mat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 24px}
+.matrow{display:grid;grid-template-columns:minmax(0,1fr) 88px;gap:12px;align-items:center;font-size:15px}
+.matrow label{font-weight:500;color:var(--soft)}
+.matrow input{padding:9px 12px;text-align:right}
+input[type=file]{padding:10px;font-size:15px;color:var(--soft)}
+input[type=file]::file-selector-button{font:600 14px/1 var(--f-body);background:var(--card);color:var(--text);border:1px solid var(--line-2);border-radius:999px;padding:9px 14px;margin-right:12px;cursor:pointer}
+
+.note{grid-column:1/-1;border-radius:12px;padding:14px 16px;font-size:15px;color:var(--text);background:rgba(255,90,78,.12);border:1px solid rgba(255,90,78,.35)}
+.err{color:var(--accent);font-size:15px;font-weight:600}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+.actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:8px}
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 16px/1 var(--f-body);padding:16px 24px;border-radius:999px;border:0;cursor:pointer;background:var(--grad);color:#1a1d2b}
+.btn .arr{transition:transform .2s}
+.btn:hover .arr{transform:translateX(3px)}
+.btn[disabled]{opacity:.6;cursor:progress}
+.btn:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+.status{font-size:15px;color:var(--soft)}
+
+/* bevestiging */
+.done{margin-top:8px;border-radius:20px;padding:32px;border:1px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,var(--grad) border-box;display:grid;gap:14px}
+.done p{color:var(--soft);max-width:62ch}
+.done code{font:600 15px/1 var(--f-body);color:var(--text);background:var(--bg);border:1px solid var(--line-2);padding:4px 10px;border-radius:999px}
+
+footer.foot{padding-block:72px 64px;color:var(--soft);font-size:14px}
+footer.foot .wrap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;border-top:1px solid var(--line);padding-top:28px}
+footer.foot b{color:var(--text);display:block;margin-bottom:6px;font-weight:600}
+footer.foot a{color:var(--soft)}
+
+@media (max-width:760px){footer.foot .wrap{grid-template-columns:1fr}}
+@media (max-width:600px){
+  .intro{padding-top:36px}
+  fieldset{grid-template-columns:minmax(0,1fr);padding:20px 16px;border-radius:16px}
+  .yn{grid-template-columns:minmax(0,1fr)}
+  .mat{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="mark" href="index.html" aria-label="evenementaanvragen.be, naar de startpagina">evenementaanvragen<b>.be</b></a>
+  <nav class="menu" aria-label="Hoofdmenu">
+    <a href="index.html#werkwijze">Werkwijze</a><a href="index.html#prijzen">Prijzen</a><a href="index.html#vragen">Vragen</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="intro"><div class="wrap narrow">
+  <div class="k">Aanvraag</div>
+  <h1 style="margin-top:10px">Vertel ons over <span>je evenement.</span></h1>
+  <p class="lead">We berekenen de deadlines bij jouw gemeente, bereiden het volledige dossier voor en dienen het in. Je krijgt <b>binnen twee werkdagen</b> een planning en een lijst van wat we nog van je nodig hebben. Weet je iets nog niet? Kies <b>weet niet</b>, dan vragen we het later.</p>
+</div></section>
+
+<div class="wrap narrow">
+  <form id="intake" novalidate>
+    <fieldset>
+      <legend><div class="sec-head"><span class="sec-num">01</span><span class="sec-title">Organisator</span></div></legend>
+      <div class="field"><label for="organisator_naam">Naam contactpersoon <span class="req">*</span></label><input id="organisator_naam" name="organisator_naam" autocomplete="name" required></div>
+      <div class="field"><label for="aanvrager_type">Je organiseert als <span class="req">*</span></label>
+        <select id="aanvrager_type" name="aanvrager_type" required><option value="">Kies…</option><option>vereniging</option><option>particulier</option><option>bedrijf</option><option>school</option></select></div>
+      <div class="field"><label for="organisatie">Naam vereniging of bedrijf</label><input id="organisatie" name="organisatie" autocomplete="organization"></div>
+      <div class="field"><label for="ondernemingsnummer">Ondernemingsnummer <span class="hint">(indien vzw of bedrijf)</span></label><input id="ondernemingsnummer" name="ondernemingsnummer" inputmode="numeric" placeholder="0123.456.789"></div>
+      <div class="field"><label for="email">E-mail <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="gsm">Gsm <span class="req">*</span></label><input id="gsm" name="gsm" type="tel" autocomplete="tel" required placeholder="0470 12 34 56"></div>
+      <div class="field full"><label for="adres_organisator">Adres organisator</label><input id="adres_organisator" name="adres_organisator" autocomplete="street-address"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend><div class="sec-head"><span class="sec-num">02</span><span class="sec-title">Het evenement</span></div></legend>
+      <div class="field full"><label for="evenement_naam">Naam van het evenement <span class="req">*</span></label><input id="evenement_naam" name="evenement_naam" required></div>
+      <div class="field"><label for="gemeente">Gemeente <span class="req">*</span></label><select id="gemeente" name="gemeente" required><option value="">Kies…</option></select></div>
+      <div class="field"><label for="type">Soort evenement <span class="req">*</span></label>
+        <select id="type" name="type" required><option value="">Kies…</option>
+          <option value="fuif">Fuif of party</option><option value="concert">Concert of festival</option><option value="buurtfeest">Buurtfeest of straatfeest</option><option value="eetfestijn">Eetfestijn</option><option value="markt">Markt of rommelmarkt</option><option value="braderij">Braderij</option><option value="kermis">Kermis</option><option value="stoet">Stoet of optocht</option><option value="sport">Sportevenement</option><option value="wielerwedstrijd">Wielerwedstrijd</option><option value="schoolfeest">Schoolfeest</option><option value="tentoonstelling">Tentoonstelling</option><option value="andere">Iets anders</option>
+        </select></div>
+      <div class="field full"><label for="locatie">Locatie <span class="req">*</span></label><input id="locatie" name="locatie" required placeholder="Adres, zaal, plein of straat(en)"></div>
+      <div class="field"><label for="startdatum">Startdatum <span class="req">*</span></label><input id="startdatum" name="startdatum" type="date" required></div>
+      <div class="field"><label for="startuur">Startuur</label><input id="startuur" name="startuur" type="time"></div>
+      <div class="field"><label for="einddatum">Einddatum</label><input id="einddatum" name="einddatum" type="date"></div>
+      <div class="field"><label for="einduur">Einduur</label><input id="einduur" name="einduur" type="time"></div>
+      <div class="field"><label for="opbouw">Opbouw vanaf <span class="hint">(datum en uur)</span></label><input id="opbouw" name="opbouw" placeholder="bv. vrijdag 14u"></div>
+      <div class="field"><label for="afbraak">Afbraak tot <span class="hint">(datum en uur)</span></label><input id="afbraak" name="afbraak" placeholder="bv. zondag 12u"></div>
+      <div class="field"><label for="bezoekers">Bezoekers tegelijk op het drukste moment <span class="req">*</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
+      <div class="field"><label for="openbaar_domein">Op straat, plein of park? <span class="req">*</span></label>
+        <select id="openbaar_domein" name="openbaar_domein" required><option value="">Kies…</option><option value="nee">Nee, volledig binnen of op privéterrein</option><option value="deels">Deels</option><option value="ja">Ja</option></select></div>
+      <div class="note full" id="kortdag" hidden>Je evenement is binnen acht weken. Bij veel gemeenten is dat al laat. Dien dit formulier zo snel mogelijk in, dan kijken we meteen wat nog kan.</div>
+    </fieldset>
+
+    <fieldset id="extras">
+      <legend><div class="sec-head"><span class="sec-num">03</span><span class="sec-title">Wat komt erbij kijken?</span></div></legend>
+    </fieldset>
+
+    <fieldset id="inplanting">
+      <legend><div class="sec-head"><span class="sec-num">04</span><span class="sec-title">Inplanting en materiaal</span></div></legend>
+      <div class="field">
+        <label for="locatie_soort">Waar vindt het plaats? <span class="req">*</span></label>
+        <select id="locatie_soort" name="locatie_soort" required><option value="">Kies…</option><option value="zaal">In een zaal of gebouw</option><option value="tent">In een tent</option><option value="buiten">Buiten, zonder tent</option><option value="combinatie">Combinatie (bv. zaal en buitenbar)</option></select>
+      </div>
+      <div class="field" id="tentwrap" hidden>
+        <label for="tent_afmetingen">Afmetingen tent(en) <span class="hint">(lengte × breedte in meter)</span></label>
+        <input id="tent_afmetingen" name="tent_afmetingen" placeholder="bv. 12 × 6, en 3 × 3 voor de bar">
+      </div>
+      <div class="field full" id="zaalwrap" hidden>
+        <div class="q" id="q_zaalplan">Heeft de zaal een eigen grondplan of evacuatieplan?</div>
+        <div class="hint">Vraag het aan de uitbater. Wij tekenen jouw opstelling erop; dat is wat de brandweer meestal vraagt.</div>
+        <div class="seg" role="radiogroup" aria-labelledby="q_zaalplan">
+          <label><input type="radio" id="zp_0" name="zaal_grondplan" value="ja"><span>ja, ik voeg het toe</span></label>
+          <label><input type="radio" id="zp_1" name="zaal_grondplan" value="nee"><span>nee</span></label>
+          <label><input type="radio" id="zp_2" name="zaal_grondplan" value="weet niet" checked><span>weet niet</span></label>
+        </div>
+      </div>
+      <div class="field full">
+        <div class="q" id="q_plan">Inplantingsplan en grondplan</div>
+        <div class="hint">Het inplantingsplan toont hoe alles in de omgeving staat (tent, podium, bar, toiletten, doorgang voor hulpdiensten). Het grondplan toont één tent of zaal in detail (deuren, uitgangen, blustoestellen) en is vaak nodig voor de brandweer. Een duidelijke schets of foto volstaat om te starten.</div>
+        <div class="seg" role="radiogroup" aria-labelledby="q_plan">
+          <label><input type="radio" id="plan_0" name="inplantingsplan" value="bijgevoegd"><span>Ik voeg het toe</span></label>
+          <label><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Help me het te maken</span></label>
+          <label><input type="radio" id="plan_2" name="inplantingsplan" value="later" checked><span>Bezorg ik later</span></label>
+        </div>
+      </div>
+      <div class="field full" id="uploadwrap" hidden>
+        <label for="bestanden">Plannen, grondplan van de zaal, schets of foto's <span class="hint">(pdf, jpg of png, samen max. 10 MB)</span></label>
+        <input type="file" id="bestanden" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" multiple>
+        <span class="hint" id="bestandinfo"></span>
+      </div>
+      <div class="yn">
+        <div><div class="q" id="q_materiaal">Materiaal lenen van de gemeente?</div><div class="hint">We vragen alles in één keer aan bij de gemeente, met wat marge, zodat er achteraf niets bij moet. Wat de gemeente niet uitleent of niet aan jou uitleent, moet je zelf huren. Dat laten we je weten vóór we indienen.</div></div>
+        <div class="seg" role="radiogroup" aria-labelledby="q_materiaal">
+          <label><input type="radio" id="materiaal_0" name="materiaal" value="ja"><span>ja</span></label>
+          <label><input type="radio" id="materiaal_1" name="materiaal" value="nee"><span>nee</span></label>
+          <label><input type="radio" id="materiaal_2" name="materiaal" value="weet niet" checked><span>weet niet</span></label>
+        </div>
+      </div>
+      <div class="full mat" id="matlijst" hidden></div>
+      <div class="field full" id="matextra" hidden><label for="materiaal_andere">Ander materiaal of opmerkingen</label><input id="materiaal_andere" name="materiaal_andere" placeholder="bv. 2 vlaggenmasten, levering vrijdagavond"></div>
+      <div class="field full" id="levwrap" hidden><label for="materiaal_levering">Levering</label>
+        <select id="materiaal_levering" name="materiaal_levering"><option value="">Weet ik nog niet</option><option>Wij halen het zelf op</option><option>Graag laten leveren</option></select></div>
+    </fieldset>
+
+    <fieldset>
+      <legend><div class="sec-head"><span class="sec-num">05</span><span class="sec-title">Meer uitleg</span></div></legend>
+      <div class="field full"><label for="beschrijving">Beschrijf je evenement <span class="req">*</span></label><textarea id="beschrijving" name="beschrijving" required placeholder="Programma, wie treedt op, tent of zaal, foodtrucks, ticketverkoop…"></textarea></div>
+      <div class="field full"><label for="opmerkingen">Nog iets dat we moeten weten?</label><textarea id="opmerkingen" name="opmerkingen"></textarea></div>
+      <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend><div class="sec-head"><span class="sec-num">06</span><span class="sec-title">Akkoord</span></div></legend>
+      <label class="check" for="toestemming_privacy"><input type="checkbox" id="toestemming_privacy" name="toestemming_privacy" required><span>Ik ga akkoord dat mijn gegevens gebruikt worden om deze aanvraag voor te bereiden en in te dienen bij de gemeente, zoals beschreven in de <a href="privacy.html">privacyverklaring</a>. <span class="req">*</span></span></label>
+      <div class="full volm">
+        <div class="q">Volmacht</div>
+        <div class="hint">Zo mogen we de aanvraag in jouw naam indienen. Je hoeft niets af te drukken of op te sturen: je getypte naam en het vinkje gelden als handtekening. Je krijgt een kopie per mail.</div>
+        <blockquote id="volmachttekst" class="volmtekst"></blockquote>
+      </div>
+      <div class="field"><label for="volmacht_naam">Volledige naam van wie tekent <span class="req">*</span></label><input id="volmacht_naam" name="volmacht_naam" autocomplete="name" required></div>
+      <div class="field"><label for="volmacht_functie">Hoedanigheid <span class="req">*</span></label><input id="volmacht_functie" name="volmacht_functie" required placeholder="bv. voorzitter, zaakvoerder, in eigen naam"></div>
+      <label class="check" for="toestemming_mandaat"><input type="checkbox" id="toestemming_mandaat" name="toestemming_mandaat" required><span>Ik ben bevoegd om de organisator te vertegenwoordigen en geef de volmacht hierboven. Mijn getypte naam geldt als handtekening. <span class="req">*</span></span></label>
+      <p class="err full" id="formerr" hidden></p>
+    </fieldset>
+
+    <div class="actions">
+      <button type="submit" class="btn" id="send">Aanvraag doorsturen <span class="arr" aria-hidden="true">→</span></button>
+      <span class="status" id="status"></span>
+    </div>
+  </form>
+
+  <section class="done" id="done" hidden>
+    <div class="k">Ontvangen</div>
+    <h2>Bedankt, we gaan aan de slag.</h2>
+    <p>Je dossiernummer is <code id="dossierid">–</code>. Binnen twee werkdagen krijg je per mail de planning met de deadlines bij je gemeente en de lijst met wat we nog nodig hebben. Na het indienen sturen we je de ontvangstbevestiging door; vanaf dan loopt het contact met de gemeente rechtstreeks via jou.</p>
+  </section>
+</div>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <div><b>evenementaanvragen.be</b>Handelsnaam van Thomas Van Troostenberghe<br>Zwanenlaan 45, 8400 Oostende<br>Ondernemingsnummer 0791.797.538</div>
+  <div><b>Contact</b>thomas@evenementaanvragen.be</div>
+  <div><b>Juridisch</b><a href="voorwaarden.html">Algemene voorwaarden</a><br><a href="privacy.html">Privacyverklaring</a><br>Vrijgesteld van btw (kleine onderneming)</div>
+</div></footer>
+
+<script>
+// Vul hier de URL van de Apps Script-webapp in (eindigt op /exec). Leeg = demomodus.
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbz-EAv8lTkB6Y5_yKjc9SWB5UrtYHjuUV_ffm4yqTiMgYR7XjiB0unzoneptmGkJYDuaQ/exec";
+
+const GEMEENTEN = {"Antwerpen": ["Antwerpen", "Brasschaat", "Geel", "Heist-op-den-Berg", "Herentals", "Kapellen", "Lier", "Mechelen", "Mol", "Mortsel", "Schoten", "Turnhout"], "Limburg": ["Beringen", "Bilzen-Hoeselt", "Genk", "Hasselt", "Heusden-Zolder", "Houthalen-Helchteren", "Lommel", "Maasmechelen", "Sint-Truiden", "Tessenderlo-Ham", "Tongeren-Borgloon"], "Oost-Vlaanderen": ["Aalst", "Beveren-Kruibeke-Zwijndrecht", "Deinze", "Dendermonde", "Eeklo", "Evergem", "Gent", "Geraardsbergen", "Lochristi", "Lokeren", "Merelbeke-Melle", "Ninove", "Oudenaarde", "Ronse", "Sint-Niklaas", "Wetteren", "Zele", "Zottegem"], "Vlaams-Brabant": ["Asse", "Dilbeek", "Grimbergen", "Halle", "Leuven", "Pajottegem", "Tienen", "Vilvoorde", "Zaventem"], "West-Vlaanderen": ["Alveringem", "Anzegem", "Ardooie", "Avelgem", "Beernem", "Blankenberge", "Bredene", "Brugge", "Damme", "De Haan", "De Panne", "Deerlijk", "Dentergem", "Diksmuide", "Gistel", "Harelbeke", "Heuvelland", "Hooglede", "Houthulst", "Ichtegem", "Ieper", "Ingelmunster", "Izegem", "Jabbeke", "Knokke-Heist", "Koekelare", "Koksijde", "Kortemark", "Kortrijk", "Kuurne", "Langemark-Poelkapelle", "Ledegem", "Lendelede", "Lichtervelde", "Lo-Reninge", "Menen", "Mesen", "Middelkerke", "Moorslede", "Nieuwpoort", "Oostende", "Oostkamp", "Oostrozebeke", "Oudenburg", "Pittem", "Poperinge", "Roeselare", "Spiere-Helkijn", "Staden", "Tielt", "Torhout", "Veurne", "Vleteren", "Waregem", "Wervik", "Wevelgem", "Wielsbeke", "Wingene", "Zedelgem", "Zonnebeke", "Zuienkerke", "Zwevegem"]};
+const EXTRAS = [
+  ["eerste_editie","Is dit de eerste editie?",""],
+  ["muziek","Versterkte muziek?","Dj, band of geluidsinstallatie"],
+  ["alcohol","Verkoop of schenken van bier of wijn?",""],
+  ["sterke_drank","Sterke drank (boven 22%)?","Cocktails, shots, jenever"],
+  ["verkeer","Straat afsluiten of parkeerverbod nodig?",""],
+  ["publiciteit","Affiches of borden langs de openbare weg?",""],
+  ["stroomgroep","Grote stroomgroep (boven 150 kVA)?","Bij twijfel: weet niet"],
+  ["subsidie","Wil je een toelage of subsidie aanvragen?",""]
+];
+const MATERIAAL = [
+  ["nadars","Nadarafsluitingen"],["heras","Werfhekken (heras)"],["tafels","Tafels"],["stoelen","Stoelen"],
+  ["banken","Bierbanken (sets)"],["podium","Podiumelementen"],["tent","Tenten of partytenten"],
+  ["borden","Verkeers- of parkeerverbodsborden"],["vuilbakken","Vuilbakken of containers"],
+  ["stroom","Elektriciteitskast of aansluiting"],["water","Wateraansluiting"],["toiletten","Toiletten of urinoirs"]
+];
+const MAX_BYTES = 10 * 1024 * 1024;
+
+const g = document.getElementById("gemeente");
+Object.entries(GEMEENTEN).forEach(([p, lijst]) => { const og = document.createElement("optgroup"); og.label = p; lijst.forEach(n => og.appendChild(new Option(n, n))); g.appendChild(og); });
+const ex = document.getElementById("extras");
+EXTRAS.forEach(([k, q, h]) => {
+  const d = document.createElement("div");
+  d.className = "yn";
+  d.innerHTML = `<div><div class="q" id="q_${k}">${q}</div>${h ? `<div class="hint">${h}</div>` : ""}</div>
+    <div class="seg" role="radiogroup" aria-labelledby="q_${k}">
+      ${["ja","nee","weet niet"].map((v, i) => `<label><input type="radio" id="${k}_${i}" name="${k}" value="${v}" ${v === "weet niet" ? "checked" : ""}><span>${v}</span></label>`).join("")}
+    </div>`;
+  ex.appendChild(d);
+});
+
+const ml = document.getElementById("matlijst");
+MATERIAAL.forEach(([k, n]) => {
+  const d = document.createElement("div");
+  d.className = "matrow";
+  d.innerHTML = `<label for="mat_${k}">${n}</label><input type="number" id="mat_${k}" data-mat="${n}" min="0" step="1" inputmode="numeric" placeholder="0">`;
+  ml.appendChild(d);
+});
+function toonMateriaal() {
+  const ja = document.getElementById("materiaal_0").checked;
+  ["matlijst","matextra","levwrap"].forEach(id => document.getElementById(id).hidden = !ja);
+}
+document.querySelectorAll('input[name="materiaal"]').forEach(r => r.addEventListener("change", toonMateriaal));
+function toonUpload() {
+  document.getElementById("uploadwrap").hidden = !document.getElementById("plan_0").checked && !document.getElementById("plan_1").checked && !document.getElementById("zp_0").checked;
+}
+const ls = document.getElementById("locatie_soort");
+ls.addEventListener("change", () => {
+  document.getElementById("tentwrap").hidden = !["tent", "combinatie"].includes(ls.value);
+  document.getElementById("zaalwrap").hidden = !["zaal", "combinatie"].includes(ls.value);
+});
+document.querySelectorAll('input[name="zaal_grondplan"]').forEach(r => r.addEventListener("change", toonUpload));
+document.querySelectorAll('input[name="inplantingsplan"]').forEach(r => r.addEventListener("change", toonUpload));
+const fi = document.getElementById("bestanden");
+fi.addEventListener("change", () => {
+  const tot = [...fi.files].reduce((s, f) => s + f.size, 0);
+  document.getElementById("bestandinfo").textContent = fi.files.length
+    ? `${fi.files.length} bestand(en), ${(tot / 1048576).toFixed(1)} MB` + (tot > MAX_BYTES ? " – te groot, max. 10 MB samen" : "") : "";
+});
+const leesB64 = f => new Promise((ok, nok) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = () => nok(new Error("bestand niet leesbaar")); r.readAsDataURL(f); });
+
+const sd = document.getElementById("startdatum");
+const today = new Date(); today.setHours(0,0,0,0);
+sd.min = today.toISOString().slice(0,10);
+sd.addEventListener("change", () => {
+  const d = new Date(sd.value);
+  document.getElementById("kortdag").hidden = !(sd.value && (d - today) / 864e5 < 56);
+});
+
+// Voorinvullen vanuit de termijncheck op de startpagina (aanvraag.html?gemeente=…&datum=JJJJ-MM-DD).
+(function () {
+  const q = new URLSearchParams(location.search);
+  const gem = q.get("gemeente"), dat = q.get("datum");
+  if (gem && [...g.options].some(o => o.value === gem)) g.value = gem;
+  if (dat && /^\d{4}-\d{2}-\d{2}$/.test(dat)) { sd.value = dat; sd.dispatchEvent(new Event("change")); }
+})();
+
+// Volmachttekst: zelfde sjabloon als in Code.gs (volmachtTekst). Bij wijzigen: beide aanpassen en VOLMACHT_VERSIE ophogen.
+const VOLMACHTHEBBER = "Thomas Van Troostenberghe, handelend als evenementaanvragen.be (thomas@evenementaanvragen.be)";
+function datumNL(iso) {
+  if (!iso) return "[datum]";
+  return new Date(iso + "T12:00:00").toLocaleDateString("nl-BE", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+}
+function volmachtTekst(d) {
+  const v = x => String(d[x] || "").trim();
+  const org = v("aanvrager_type") === "particulier" || !v("organisatie") ? "in eigen naam" : v("organisatie") + (v("ondernemingsnummer") ? ", ondernemingsnummer " + v("ondernemingsnummer") : "");
+  return `Ondergetekende, ${v("volmacht_naam") || "[naam]"}, ${v("volmacht_functie") || "[hoedanigheid]"}, handelend ${org === "in eigen naam" ? "in eigen naam" : "namens " + org}${v("adres_organisator") ? ", " + v("adres_organisator") : ""},
+
+geeft volmacht aan ${VOLMACHTHEBBER}
+
+om in naam en voor rekening van de organisator de evenementaanvraag en de bijhorende aanvragen (zoals uitleenmateriaal) voor het evenement "${v("evenement_naam") || "[evenement]"}" op ${datumNL(v("startdatum"))} in ${v("gemeente") || "[gemeente]"} voor te bereiden en in te dienen bij de gemeente, via de kanalen die de gemeente daarvoor gebruikt.
+
+De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor de organisatie van het evenement en voor de naleving van de vergunningsvoorwaarden. Na de indiening communiceert de gemeente rechtstreeks met de organisator. Deze volmacht geldt enkel voor dit evenement, eindigt na de indiening en kan altijd ingetrokken worden met een mail aan thomas@evenementaanvragen.be.`;
+}
+const vt = document.getElementById("volmachttekst");
+function toonVolmacht() { vt.textContent = volmachtTekst(Object.fromEntries(new FormData(document.getElementById("intake")).entries())); }
+document.getElementById("intake").addEventListener("input", toonVolmacht);
+document.getElementById("intake").addEventListener("change", toonVolmacht);
+toonVolmacht();
+
+const form = document.getElementById("intake");
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const err = document.getElementById("formerr"), st = document.getElementById("status"), btn = document.getElementById("send");
+  err.hidden = true;
+  const bad = [...form.querySelectorAll("[required]")].filter(el => el.type === "checkbox" ? !el.checked : !el.value.trim() || !el.checkValidity());
+  if (bad.length) {
+    err.textContent = "Nog niet alles is ingevuld: " + bad.map(el => (form.querySelector(`label[for="${el.id}"]`)?.innerText || el.name).replace(/\s*\*\s*$/,"").split("\n")[0]).join(", ") + ".";
+    err.hidden = false; bad[0].focus(); return;
+  }
+  const data = Object.fromEntries(new FormData(form).entries());
+  data.toestemming_privacy = form.toestemming_privacy.checked ? "ja" : "nee";
+  data.toestemming_mandaat = form.toestemming_mandaat.checked ? "ja" : "nee";
+  const mat = [...ml.querySelectorAll("input")].filter(i => +i.value > 0).map(i => `${i.id.slice(4)}=${Math.floor(+i.value)}`);
+  data.materiaal_lijst = data.materiaal === "ja" ? mat.join("; ") : "";
+  if (data.materiaal !== "ja") { data.materiaal_andere = ""; data.materiaal_levering = ""; }
+  const files = [...fi.files];
+  if (files.reduce((s, f) => s + f.size, 0) > MAX_BYTES) {
+    err.textContent = "De bijlagen zijn samen groter dan 10 MB. Kies kleinere bestanden of bezorg ze later.";
+    err.hidden = false; fi.focus(); return;
+  }
+  if (files.some(f => !/^(application\/pdf|image\/jpeg|image\/png)$/.test(f.type))) {
+    err.textContent = "Alleen pdf, jpg of png kan als bijlage.";
+    err.hidden = false; fi.focus(); return;
+  }
+  data.bijlagen = await Promise.all(files.map(async f => ({ naam: f.name, type: f.type, data: await leesB64(f) })));
+  btn.disabled = true; st.textContent = "Bezig met doorsturen…";
+  try {
+    let id;
+    if (!ENDPOINT) { id = "DEMO-" + Date.now().toString(36).toUpperCase(); }
+    else {
+      const r = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(data) });
+      const j = await r.json();
+      if (!j.ok) throw new Error(j.error || "onbekende fout");
+      id = j.id;
+    }
+    document.getElementById("dossierid").textContent = id;
+    form.hidden = true; document.getElementById("done").hidden = false;
+    document.getElementById("done").scrollIntoView({ block: "start" });
+  } catch (x) {
+    btn.disabled = false; st.textContent = "";
+    err.textContent = "Doorsturen lukte niet (" + x.message + "). Probeer opnieuw, of mail ons je gegevens.";
+    err.hidden = false;
+  }
+});
+</script>
+</body>
+</html>

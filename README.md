@@ -8,8 +8,9 @@ Dienst die evenementaanvragen voor organisatoren in Vlaanderen opmaakt en indien
   - `index.html` — startpagina met termijncheck (aftelklok naar de indiendeadline)
   - `rekenlogica.js` — berekening van de indiendeadline per gemeente (zelfde logica als de Indienwijzer)
   - `regels.json` — termijnregels per gemeente (112 gemeenten)
+  - `aanvraag.html` — intakeformulier (stuurt naar de Apps Script-webapp); neemt `?gemeente=` en `?datum=` over van de termijncheck
 
-Nog te maken: `aanvraag.html` (intake), `voorwaarden.html`, `privacy.html`.
+Nog te maken: `voorwaarden.html`, `privacy.html`.
 
 ## Lokaal bekijken
 
