@@ -494,7 +494,7 @@ const regelsKlaar = fetch("/regels.json").then(r => r.json()).then(data => { RUL
 })();
 
 // Volmachttekst: zelfde sjabloon als in Code.gs (volmachtTekst). Bij wijzigen: beide aanpassen en VOLMACHT_VERSIE ophogen.
-const VOLMACHTHEBBER = "Thomas Van Troostenberghe, handelend als evenementaanvragen.be (thomas@evenementaanvragen.be)";
+const VOLMACHTHEBBER = "Troostberg (ondernemingsnummer 0791.797.538), handelend onder de naam evenementaanvragen.be (thomas@evenementaanvragen.be)";
 function datumNL(iso) {
   if (!iso) return "[datum]";
   return new Date(iso + "T12:00:00").toLocaleDateString("nl-BE", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
