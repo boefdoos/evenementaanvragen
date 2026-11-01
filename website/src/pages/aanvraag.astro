@@ -95,6 +95,10 @@ input[type=file]::file-selector-button{font:600 14px/1 var(--f-body);background:
 .termijn.laat .t-kop::before,.termijn.buiten .t-kop::before{background:var(--accent)}
 .termijn.laat p,.termijn.buiten p{color:var(--text)}
 .err{color:var(--accent);font-size:15px;font-weight:600}
+.prijs{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--line)}
+.prijs b{font:800 28px/1 var(--f-display);letter-spacing:-.03em}
+.prijs span{color:var(--soft);font-size:15px}
+.done .btn{justify-self:start;text-decoration:none}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 .actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:8px}
@@ -253,6 +257,8 @@ footer.foot a{color:var(--soft)}
       <div class="field"><label for="volmacht_naam">Volledige naam van wie tekent <span class="req">*</span></label><input id="volmacht_naam" name="volmacht_naam" autocomplete="name" required></div>
       <div class="field"><label for="volmacht_functie">Hoedanigheid <span class="req">*</span></label><input id="volmacht_functie" name="volmacht_functie" required placeholder="bv. voorzitter, zaakvoerder, in eigen naam"></div>
       <label class="check" for="toestemming_mandaat"><input type="checkbox" id="toestemming_mandaat" name="toestemming_mandaat" required><span>Ik ben bevoegd om de organisator te vertegenwoordigen en geef de volmacht hierboven. Mijn getypte naam geldt als handtekening. <span class="req">*</span></span></label>
+      <label class="check" for="herroeping" id="herroepwrap" hidden><input type="checkbox" id="herroeping" name="herroeping" value="ja" disabled><span>Ik vraag om meteen te starten. Ik weet dat ik mijn herroepingsrecht verlies zodra de aanvraag volledig is ingediend. <span class="req">*</span></span></label>
+      <div class="prijs full" id="prijs" hidden></div>
       <p class="err full" id="formerr" hidden></p>
     </fieldset>
 
@@ -264,8 +270,14 @@ footer.foot a{color:var(--soft)}
 
   <section class="done" id="done" hidden>
     <div class="k">Ontvangen</div>
-    <h2>Bedankt, we gaan aan de slag.</h2>
-    <p>Je dossiernummer is <code id="dossierid">–</code>. Binnen twee werkdagen krijg je per mail je deadline bij de gemeente, de prijs met een betaallink en de lijst met wat we nog nodig hebben. Na betaling maken we het dossier op en dienen het in. Daarna sturen we je de ontvangstbevestiging door en loopt het contact met de gemeente rechtstreeks via jou.</p>
+    <h2 id="done-kop">Bedankt.</h2>
+    <p>Je dossiernummer is <code id="dossierid">–</code>.</p>
+    <div id="done-betaal" hidden>
+      <p>Na je betaling maken we het dossier op en dienen het in. Binnen twee werkdagen krijg je per mail de planning en de lijst met wat we nog van je nodig hebben.</p>
+      <a class="btn" id="betaallink" href="#">Betaal <span id="betaalbedrag"></span> <span class="arr" aria-hidden="true">→</span></a>
+      <p class="hint">Bancontact of kaart, via Mollie. Lukt het nu niet? De link blijft 7 dagen geldig en staat ook in onze mail.</p>
+    </div>
+    <p id="done-navraag" hidden>We kijken eerst de termijn van je gemeente na. Binnen twee werkdagen krijg je per mail je deadline, de prijs met een betaallink en wat we nog van je nodig hebben. Na betaling maken we het dossier op en dienen het in.</p>
   </section>
 </div>
 </main>
@@ -454,6 +466,29 @@ document.getElementById("intake").addEventListener("input", toonVolmacht);
 document.getElementById("intake").addEventListener("change", toonVolmacht);
 toonVolmacht();
 
+// Prijs: zelfde regels als prijsVoor() in Betaling.gs. Plus = hulp bij het plan, een tent, of 500 bezoekers of meer.
+function prijsVoor() {
+  const bez = +veld("bezoekers") || 0;
+  const tent = veld("locatie_soort") === "tent" || veld("tent_afmetingen").trim() !== "";
+  const plan = (intakeForm.querySelector('input[name="inplantingsplan"]:checked') || {}).value;
+  const formule = plan === "hulp nodig" || tent || bez >= 500 ? "Plus" : "Basis";
+  return { formule, bedrag: { Basis: 45, Plus: 75 }[formule] * (veld("aanvrager_type") === "bedrijf" ? 2 : 1) };
+}
+function toonPrijs() {
+  const box = document.getElementById("prijs");
+  if (!veld("aanvrager_type") || !veld("bezoekers") || !veld("locatie_soort")) { box.hidden = true; return; }
+  const p = prijsVoor();
+  box.innerHTML = '<span>' + p.formule + (veld("aanvrager_type") === "bedrijf" ? ", tarief bedrijf" : "") + ', geen btw</span><b>€ ' + p.bedrag + '</b>';
+  box.hidden = false;
+}
+function toonHerroeping() {
+  const part = veld("aanvrager_type") === "particulier", w = document.getElementById("herroepwrap"), c = document.getElementById("herroeping");
+  w.hidden = !part; c.disabled = !part; c.required = part;
+}
+intakeForm.addEventListener("input", () => { toonPrijs(); toonHerroeping(); });
+intakeForm.addEventListener("change", () => { toonPrijs(); toonHerroeping(); });
+toonPrijs(); toonHerroeping();
+
 const form = document.getElementById("intake");
 form.addEventListener("submit", async e => {
   e.preventDefault();
@@ -476,6 +511,7 @@ form.addEventListener("submit", async e => {
   const data = Object.fromEntries(new FormData(form).entries());
   data.toestemming_privacy = form.toestemming_privacy.checked ? "ja" : "nee";
   data.toestemming_mandaat = form.toestemming_mandaat.checked ? "ja" : "nee";
+  data.termijn_oordeel = termijn ? termijn.soort : "onbekend";
   const mat = [...ml.querySelectorAll("input")].filter(i => +i.value > 0).map(i => `${i.id.slice(4)}=${Math.floor(+i.value)}`);
   data.materiaal_lijst = data.materiaal === "ja" ? mat.join("; ") : "";
   if (data.materiaal !== "ja") { data.materiaal_andere = ""; data.materiaal_levering = ""; }
@@ -491,15 +527,23 @@ form.addEventListener("submit", async e => {
   data.bijlagen = await Promise.all(files.map(async f => ({ naam: f.name, type: f.type, data: await leesB64(f) })));
   btn.disabled = true; st.textContent = "Bezig met doorsturen…";
   try {
-    let id;
-    if (!ENDPOINT) { id = "DEMO-" + Date.now().toString(36).toUpperCase(); }
+    let j;
+    if (!ENDPOINT) { j = { id: "DEMO-" + Date.now().toString(36).toUpperCase() }; }
     else {
       const r = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(data) });
-      const j = await r.json();
+      j = await r.json();
       if (!j.ok) throw new Error(j.error || "onbekende fout");
-      id = j.id;
     }
-    document.getElementById("dossierid").textContent = id;
+    document.getElementById("dossierid").textContent = j.id;
+    // Enkel een https-link van Mollie tonen.
+    const betaal = typeof j.betaalUrl === "string" && /^https:\/\/[\w.-]*mollie\.com\//.test(j.betaalUrl);
+    document.getElementById("done-betaal").hidden = !betaal;
+    document.getElementById("done-navraag").hidden = betaal;
+    if (betaal) {
+      document.getElementById("done-kop").textContent = "Bedankt. Nog één stap.";
+      document.getElementById("betaallink").href = j.betaalUrl;
+      document.getElementById("betaalbedrag").textContent = j.bedrag ? "€ " + j.bedrag : "";
+    }
     form.hidden = true; document.getElementById("done").hidden = false;
     document.getElementById("done").scrollIntoView({ block: "start" });
   } catch (x) {

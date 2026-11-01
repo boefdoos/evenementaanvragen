@@ -5,5 +5,5 @@ export default defineConfig({
   site: "https://evenementaanvragen.be",
   // index.astro -> /, aanvraag.astro -> /aanvraag.html, [gemeente]/index.astro -> /<slug>/
   build: { format: "preserve" },
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (p) => !p.includes("/betaald") })],
 });

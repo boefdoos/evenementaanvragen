@@ -1,0 +1,53 @@
+---
+// Terugkeerpagina na betalen bij Mollie (redirectUrl van de betaallink: /betaald.html?id=EV-…).
+// De status komt van het Apps Script, dat ze zelf bij Mollie opvraagt; de pagina vertrouwt de url niet.
+import Basis from "../layouts/Basis.astro";
+import huisstijl from "../huisstijl.css?raw";
+---
+<Basis title="Betaling · evenementaanvragen.be" description="Status van je betaling bij evenementaanvragen.be.">
+<style is:inline slot="head" set:html={huisstijl}></style>
+<meta slot="head" name="robots" content="noindex">
+<main>
+<section class="hero"><div class="wrap" style="display:block;max-width:720px">
+  <div class="panel" aria-live="polite">
+    <div class="k">Dossier <span id="dos">–</span></div>
+    <h1 id="kop" style="font-size:clamp(28px,4vw,40px);margin-top:12px">Even kijken…</h1>
+    <p class="lead" id="tekst" style="margin-top:14px">We vragen je betaling op.</p>
+    <div class="cta" id="acties" hidden></div>
+  </div>
+</div></section>
+</main>
+<script is:inline slot="scripts">
+(function () {
+  const ENDPOINT = "https://script.google.com/macros/s/AKfycbz-EAv8lTkB6Y5_yKjc9SWB5UrtYHjuUV_ffm4yqTiMgYR7XjiB0unzoneptmGkJYDuaQ/exec";
+  const id = new URLSearchParams(location.search).get("id") || "";
+  const $ = (x) => document.getElementById(x);
+  const zet = (kop, tekst) => { $("kop").textContent = kop; $("tekst").textContent = tekst; };
+  if (!/^EV-\d{6}-[0-9A-F]{4}$/.test(id)) { zet("Onbekend dossier", "Deze link klopt niet. Mail ons gerust: thomas@evenementaanvragen.be."); return; }
+  $("dos").textContent = id;
+  let pogingen = 0;
+  function vraag() {
+    fetch(ENDPOINT + "?status=" + encodeURIComponent(id)).then((r) => r.json()).then((j) => {
+      if (!j.ok) throw new Error(j.error);
+      if (j.status === "betaald") {
+        zet("Betaald. We gaan aan de slag.", "Binnen twee werkdagen krijg je per mail de planning en de lijst met wat we nog van je nodig hebben. Daarna maken we het dossier op en dienen het in.");
+      } else if (j.status === "open" && pogingen < 4) {
+        // Mollie meldt een betaling soms enkele seconden later.
+        pogingen++; zet("Even kijken…", "Je betaling is nog niet bevestigd. We proberen opnieuw."); setTimeout(vraag, 3000);
+      } else if (j.status === "open") {
+        zet("Nog niet betaald", "We zien nog geen betaling. Probeer opnieuw, of gebruik de link in onze mail.");
+        if (typeof j.betaalUrl === "string" && /^https:\/\/[\w.-]*mollie\.com\//.test(j.betaalUrl)) {
+          const a = document.createElement("a"); a.className = "btn primary"; a.href = j.betaalUrl;
+          a.textContent = "Betaal" + (j.bedrag ? " € " + j.bedrag : "") + " →"; $("acties").replaceChildren(a); $("acties").hidden = false;
+        }
+      } else if (j.status === "verlopen") {
+        zet("Betaallink verlopen", "Mail ons, dan sturen we een nieuwe: thomas@evenementaanvragen.be.");
+      } else {
+        zet("Nog geen betaling nodig", "We kijken eerst de termijn van je gemeente na en sturen je daarna de betaallink.");
+      }
+    }).catch(() => zet("Status niet gevonden", "We konden je betaling nu niet opvragen. Je krijgt hoe dan ook een bevestiging per mail."));
+  }
+  vraag();
+})();
+</script>
+</Basis>
