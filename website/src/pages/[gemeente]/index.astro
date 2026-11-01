@@ -25,6 +25,18 @@ const MAT = { nadars: "nadarafsluitingen", heras: "werfhekken", tafels: "tafels"
   banken: "bierbanken", podium: "podiumelementen", tent: "tenten", borden: "signalisatieborden",
   vuilbakken: "vuilbakken", stroom: "stroomkasten", water: "wateraansluiting", toiletten: "toiletten" };
 const termijn = (n, u) => `${n} ${UNIT[u][n === 1 ? 0 : 1]}`;
+// Woorden die op onderzoeksnotities wijzen: niet publiceren.
+const INTERN = /niet (gelezen|vermeld|gevonden|leesbaar)|onbekend|geblokkeerd|robots|client_error|limiet|aanname|strengste|gemapt|nakijken|navragen|geen (e-mail|telefoon)[^;,)]*vermeld|softwarenaam|geen [^;.]*vermeld|eigen loket \/ anders/i;
+// Haalt onderzoeksnotities uit een veld: zinnen, ;-delen, (haakjes) en " – "-delen die erop wijzen vallen weg.
+const schoon = (t) => {
+  if (!t) return "";
+  return String(t)
+    .split(/;\s*|(?<=\.)\s+/)
+    .map((d) => d.replace(/\s*\([^)]*\)/g, (m) => (INTERN.test(m) ? "" : m)).split(" – ").filter((x) => !INTERN.test(x)).join(" – "))
+    .map((d) => d.trim().replace(/[.;\s]+$/, ""))
+    .filter((d) => d && !INTERN.test(d))
+    .join("; ");
+};
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const { r } = Astro.props;
@@ -34,8 +46,11 @@ const provincie = r.provincie || "West-Vlaanderen";
 const base = r.base || {};
 const alg = base["*"];
 const algTxt = alg ? termijn(alg[0], alg[1]) : null;
-const platform = r.platform && r.platform !== "onbekend" ? r.platform : null;
-const kanaal = r.kanaal || "";
+const platform = r.platform && !INTERN.test(r.platform) ? r.platform : null;
+const kanaal = cap(schoon(r.kanaal));
+const college = schoon(r.college);
+// Enkel het hoofdcontact (eerste deel), zodat geen losse personeelsleden op de site komen.
+const contact = schoon(String(r.contact || "").split(/;\s*/)[0]);
 const u = r.uitleen || {};
 const bron = Array.isArray(r.bron) ? r.bron[0] : r.bron;
 const start = `/aanvraag.html?gemeente=${encodeURIComponent(g)}`;
@@ -71,9 +86,9 @@ if (u.uitleendienst === "ja") {
   const kosten = (u.kosten || "").split(";")[0].trim();
   mat = {
     items: items.length ? `Onder meer ${items.join(", ")}.` : null,
-    termijn: u.termijn ? `Aanvragen ${u.termijn}.` : null,
+    termijn: u.termijn && !INTERN.test(u.termijn) ? `Aanvragen: ${u.termijn.replace(/[.\s]+$/, "")}.` : null,
     part: part || null,
-    kosten: kosten && !/niet vermeld|onbekend/i.test(kosten) ? `${kosten}.` : null,
+    kosten: kosten && !INTERN.test(kosten) ? `${kosten.replace(/[.\s]+$/, "")}.` : null,
     link: u.link || null,
   };
 }
@@ -103,7 +118,7 @@ const ld = [
   <div>
     <h1>Evenement aanvragen in <span>{g}</span></h1>
     {algTxt
-      ? <p class="lead">In {g} vraag je een evenement minstens <b>{algTxt}</b> op voorhand aan{kanaal && `, ${kanaal.charAt(0).toLowerCase()}${kanaal.slice(1)}`}.</p>
+      ? <p class="lead">In {g} vraag je een evenement minstens <b>{algTxt}</b> op voorhand aan{platform && <> via {platform}</>}.</p>
       : <p class="lead">Hier vind je hoe een evenementaanvraag in {g} verloopt.</p>}
     <div class="cta">
       <a class="btn primary" href={start}>Wij regelen het voor je <span class="arr" aria-hidden="true">→</span></a>
@@ -130,7 +145,6 @@ const ld = [
   <dl class="feiten">
     {rijen.map((x) => <div class="feit"><dt>{x.wat}{x.tag && <span class="tag">niet in ons aanbod</span>}</dt><dd>{x.termijn} vooraf</dd></div>)}
   </dl>
-  {r.note && <p class="intro">{r.note}</p>}
 </div></section>
 
 <section class="blk" style="padding-top:72px"><div class="wrap">
@@ -139,8 +153,8 @@ const ld = [
   <div class="twee">
     <div class="vak"><h3>Aanvragen</h3><ul>
       {kanaal && <li>{kanaal}{r.link && <> (<a href={r.link} rel="noopener">naar het loket</a>)</>}</li>}
-      {r.college && <li>{r.college}</li>}
-      {r.contact && <li>Contact: {r.contact}</li>}
+      {college && <li>{college}.</li>}
+      {contact && <li>Contact: {contact}</li>}
     </ul></div>
     {mat
       ? <div class="vak"><h3>Feestmateriaal lenen</h3><p>{g} heeft een uitleendienst. Wij vragen het materiaal mee aan, met wat marge.</p>
