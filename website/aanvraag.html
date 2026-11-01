@@ -91,6 +91,16 @@ input[type=file]{padding:10px;font-size:15px;color:var(--soft)}
 input[type=file]::file-selector-button{font:600 14px/1 var(--f-body);background:var(--card);color:var(--text);border:1px solid var(--line-2);border-radius:999px;padding:9px 14px;margin-right:12px;cursor:pointer}
 
 .note{grid-column:1/-1;border-radius:12px;padding:14px 16px;font-size:15px;color:var(--text);background:rgba(255,90,78,.12);border:1px solid rgba(255,90,78,.35)}
+/* termijncheck: zelfde rekenlogica als de startpagina */
+.termijn{grid-column:1/-1;border-radius:12px;padding:16px 18px;border:1px solid var(--line-2);background:var(--bg);display:grid;gap:4px}
+.termijn .t-kop{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px}
+.termijn .t-kop::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--soft);flex:none}
+.termijn p{font-size:15px;color:var(--soft)}
+.termijn.ok .t-kop::before{background:#5fd39a}
+.termijn.krap .t-kop::before,.termijn.twijfel .t-kop::before{background:var(--sun)}
+.termijn.laat{border-color:rgba(255,90,78,.5);background:rgba(255,90,78,.12)}
+.termijn.laat .t-kop::before{background:var(--accent)}
+.termijn.laat p{color:var(--text)}
 .err{color:var(--accent);font-size:15px;font-weight:600}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
@@ -99,6 +109,7 @@ input[type=file]::file-selector-button{font:600 14px/1 var(--f-body);background:
 .btn .arr{transition:transform .2s}
 .btn:hover .arr{transform:translateX(3px)}
 .btn[disabled]{opacity:.6;cursor:progress}
+.btn.geblokkeerd{background:var(--card);color:var(--dim);border:1px solid var(--line-2);cursor:not-allowed;opacity:1}
 .btn:focus-visible{outline:2px solid var(--text);outline-offset:3px}
 .status{font-size:15px;color:var(--soft)}
 
@@ -170,7 +181,7 @@ footer.foot a{color:var(--soft)}
       <div class="field"><label for="bezoekers">Bezoekers tegelijk op het drukste moment <span class="req">*</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
       <div class="field"><label for="openbaar_domein">Op straat, plein of park? <span class="req">*</span></label>
         <select id="openbaar_domein" name="openbaar_domein" required><option value="">Kies…</option><option value="nee">Nee, volledig binnen of op privéterrein</option><option value="deels">Deels</option><option value="ja">Ja</option></select></div>
-      <div class="note full" id="kortdag" hidden>Je evenement is binnen acht weken. Bij veel gemeenten is dat al laat. Dien dit formulier zo snel mogelijk in, dan kijken we meteen wat nog kan.</div>
+      <div class="termijn" id="termijn" aria-live="polite" hidden><div class="t-kop" id="t-kop"></div><p id="t-tekst"></p></div>
     </fieldset>
 
     <fieldset id="extras">
@@ -265,6 +276,8 @@ footer.foot a{color:var(--soft)}
   <div><b>Juridisch</b><a href="voorwaarden.html">Algemene voorwaarden</a><br><a href="privacy.html">Privacyverklaring</a><br>Vrijgesteld van btw (kleine onderneming)</div>
 </div></footer>
 
+<script>var RULES = [];</script>
+<script src="rekenlogica.js"></script>
 <script>
 // Vul hier de URL van de Apps Script-webapp in (eindigt op /exec). Leeg = demomodus.
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbz-EAv8lTkB6Y5_yKjc9SWB5UrtYHjuUV_ffm4yqTiMgYR7XjiB0unzoneptmGkJYDuaQ/exec";
@@ -332,18 +345,93 @@ fi.addEventListener("change", () => {
 const leesB64 = f => new Promise((ok, nok) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = () => nok(new Error("bestand niet leesbaar")); r.readAsDataURL(f); });
 
 const sd = document.getElementById("startdatum");
-const today = new Date(); today.setHours(0,0,0,0);
-sd.min = today.toISOString().slice(0,10);
-sd.addEventListener("change", () => {
-  const d = new Date(sd.value);
-  document.getElementById("kortdag").hidden = !(sd.value && (d - today) / 864e5 < 56);
-});
+const vandaag = today();
+sd.min = vandaag.getFullYear() + "-" + String(vandaag.getMonth() + 1).padStart(2, "0") + "-" + String(vandaag.getDate()).padStart(2, "0");
 
-// Voorinvullen vanuit de termijncheck op de startpagina (aanvraag.html?gemeente=…&datum=JJJJ-MM-DD).
+// ---- Termijncheck ----
+// Zelfde rekenlogica als de startpagina (rekenlogica.js + regels.json).
+// VERWERKTIJD: werkdagen die wij minstens nodig hebben tussen intake en indienen
+// (de intake belooft een planning binnen twee werkdagen). Valt de deadline van de
+// gemeente vóór vandaag + VERWERKTIJD, dan kan de aanvraag niet doorgestuurd worden.
+const VERWERKTIJD = 2;
+let regelsGeladen = false, termijn = null;
+function plusWerkdagen(d, n) { const x = new Date(d); let c = 0; while (c < n) { x.setDate(x.getDate() + 1); if (isWorkday(x)) c++; } return x; }
+const intakeForm = document.getElementById("intake");
+function veld(n) { const el = intakeForm.elements[n]; return el ? (el.value || "") : ""; }
+
+function berekenTermijn() {
+  if (!regelsGeladen) return null;
+  const gemNaam = veld("gemeente"), type = veld("type"), datum = veld("startdatum");
+  if (!gemNaam || !type || !/^\d{4}-\d{2}-\d{2}$/.test(datum)) return null;
+  const r = RULES.find(x => x.gemeente === gemNaam);
+  if (!r) return { soort: "onbekend", gemeente: gemNaam };
+  const od = veld("openbaar_domein");
+  const ev = { gem: r.gemeente, type, date: new Date(datum + "T00:00:00"), visitors: +veld("bezoekers") || 0, marge: 5,
+    groot: false, nieuw: veld("eerste_editie") === "ja", od: od === "ja" || od === "deels", x: {} };
+  let res = evaluate(r, ev), geschat = false;
+  if (res.unknown) { const f = fallback(r, ev); if (!f) return { soort: "onbekend", gemeente: r.gemeente }; res = f; geschat = true; }
+  const zeker = !geschat && !res.onzeker;
+  const grens = plusWerkdagen(vandaag, VERWERKTIJD);
+  const deadline = res.best.date;
+  let soort;
+  if (deadline < grens) soort = zeker ? "laat" : "twijfel";
+  else if (res.rec < grens) soort = "krap";
+  else soort = zeker ? "ok" : "geschat";
+  return { soort, gemeente: r.gemeente, deadline, termijn: label(res.best.n, res.best.u), voorbij: deadline < vandaag };
+}
+
+function toonTermijn() {
+  termijn = berekenTermijn();
+  const box = document.getElementById("termijn"), kop = document.getElementById("t-kop"), tekst = document.getElementById("t-tekst");
+  if (!termijn) { box.hidden = true; zetBlokkade(false); return; }
+  const t = termijn, d = t.deadline ? fmtLong(t.deadline) : "", n = t.deadline ? daysUntil(t.deadline) : 0;
+  const dagen = n === 1 ? "1 dag" : n + " dagen";
+  let k, p;
+  if (t.soort === "laat") {
+    k = "Te laat voor " + t.gemeente;
+    p = (t.voorbij ? "De deadline was " + d + " (" + t.termijn + " vooraf)." : "De deadline is " + d + " (" + t.termijn + " vooraf). Dat is te kort voor ons om het dossier nog op tijd op te maken.")
+      + " We kunnen deze aanvraag niet meer indienen. Kies een latere datum als dat kan, of neem zelf contact op met de gemeente.";
+  } else if (t.soort === "twijfel") {
+    k = "Waarschijnlijk te laat";
+    p = "De termijn van " + t.gemeente + " is niet zeker gekend. Volgens onze schatting moest de aanvraag uiterlijk " + d + " binnen zijn. Je kan doorsturen; we kijken het na en laten het je weten. Kan het niet meer, dan betaal je niets.";
+  } else if (t.soort === "krap") {
+    k = "Krap, maar het kan nog";
+    p = "Indienen bij " + t.gemeente + " uiterlijk " + d + ", nog " + dagen + ". Stuur je aanvraag vandaag door.";
+  } else if (t.soort === "geschat") {
+    k = "Waarschijnlijk op tijd";
+    p = "Geschatte deadline bij " + t.gemeente + ": " + d + ". De termijn van deze gemeente is niet zeker gekend; we kijken hem na.";
+  } else if (t.soort === "onbekend") {
+    k = "Termijn nog niet gekend";
+    p = "Voor " + t.gemeente + " kennen we de termijn nog niet. Stuur je aanvraag door, dan zoeken wij hem op.";
+  } else {
+    k = "Op tijd";
+    p = "Indienen bij " + t.gemeente + " uiterlijk " + d + ", nog " + dagen + ".";
+  }
+  box.className = "termijn " + t.soort; kop.textContent = k; tekst.textContent = p; box.hidden = false;
+  zetBlokkade(t.soort === "laat");
+}
+
+function zetBlokkade(aan) {
+  const btn = document.getElementById("send"), st = document.getElementById("status");
+  btn.classList.toggle("geblokkeerd", aan);
+  btn.setAttribute("aria-disabled", aan ? "true" : "false");
+  st.textContent = aan ? "Doorsturen kan niet: de deadline van de gemeente is voorbij." : "";
+}
+
+["gemeente", "type", "startdatum", "bezoekers", "openbaar_domein", "eerste_editie"].forEach(n => {
+  const els = intakeForm.querySelectorAll('[name="' + n + '"]');
+  els.forEach(el => { el.addEventListener("change", toonTermijn); el.addEventListener("input", toonTermijn); });
+});
+const regelsKlaar = fetch("regels.json").then(r => r.json()).then(data => { RULES = data; regelsGeladen = true; toonTermijn(); })
+  .catch(() => { /* Lijst niet geladen: niet blokkeren, de termijn wordt dan bij de verwerking nagekeken. */ });
+
+// Voorinvullen vanuit de termijncheck op de startpagina (aanvraag.html?gemeente=…&type=…&datum=JJJJ-MM-DD).
 (function () {
   const q = new URLSearchParams(location.search);
   const gem = q.get("gemeente"), dat = q.get("datum");
   if (gem && [...g.options].some(o => o.value === gem)) g.value = gem;
+  const typ = q.get("type"), ts = document.getElementById("type");
+  if (typ && [...ts.options].some(o => o.value === typ)) ts.value = typ;
   if (dat && /^\d{4}-\d{2}-\d{2}$/.test(dat)) { sd.value = dat; sd.dispatchEvent(new Event("change")); }
 })();
 
@@ -375,6 +463,11 @@ form.addEventListener("submit", async e => {
   e.preventDefault();
   const err = document.getElementById("formerr"), st = document.getElementById("status"), btn = document.getElementById("send");
   err.hidden = true;
+  await regelsKlaar; toonTermijn();
+  if (termijn && termijn.soort === "laat") {
+    err.textContent = "Deze aanvraag kan niet meer op tijd ingediend worden bij " + termijn.gemeente + ". Kies een latere datum als dat kan.";
+    err.hidden = false; document.getElementById("termijn").scrollIntoView({ block: "center", behavior: "smooth" }); return;
+  }
   const bad = [...form.querySelectorAll("[required]")].filter(el => el.type === "checkbox" ? !el.checked : !el.value.trim() || !el.checkValidity());
   if (bad.length) {
     err.textContent = "Nog niet alles is ingevuld: " + bad.map(el => (form.querySelector(`label[for="${el.id}"]`)?.innerText || el.name).replace(/\s*\*\s*$/,"").split("\n")[0]).join(", ") + ".";
