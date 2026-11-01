@@ -279,7 +279,7 @@ footer.foot a{color:var(--soft)}
       x:{muziek:null,sterkeDrank:null,alcohol:null,verkeer:null,materiaal:null,publiciteit:null,od:null,stroomgroep:null,subsidie:null}};
     let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
     if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';return;}
-    // Zelfde oordeel als de intake: haalt de deadline het eerstvolgende vaste indienmoment? (indienmoment.js)
+    // Zelfde oordeel als de intake (indienmoment.js)
     const o=indienOordeel(res), MAP={laat:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"};
     const st=MAP[o.soort];
     const d=daysUntil(res.best.date), voorbij=res.best.date<today();
@@ -287,7 +287,7 @@ footer.foot a{color:var(--soft)}
     const num = voorbij ? "0" : String(d);
     out.innerHTML='<div class="count"><span class="num">'+num+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
       '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status'+(st==="late"?" late":"")+'">'+txt+'</span></div>'+
-      '<p class="rule">'+(st==="late"?(voorbij?"Deadline voorbij.":"Te krap om nog op tijd in te dienen."):esc(label(res.best.n,res.best.u))+" vooraf")+'</p>'+
+      '<p class="rule">'+(st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>'+
       (st==="late"?'':'<a class="go-link" href="aanvraag.html?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+'">Wij dienen het in voor je →</a>');
   }
   fetch("regels.json").then(r=>r.json()).then(data=>{

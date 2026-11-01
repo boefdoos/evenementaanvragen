@@ -350,9 +350,8 @@ const vandaag = today();
 sd.min = vandaag.getFullYear() + "-" + String(vandaag.getMonth() + 1).padStart(2, "0") + "-" + String(vandaag.getDate()).padStart(2, "0");
 
 // ---- Termijncheck ----
-// Zelfde rekenlogica als de startpagina (rekenlogica.js + regels.json), en hetzelfde vaste
-// indienmoment (indienmoment.js). Valt de deadline van de gemeente vóór de eerstvolgende
-// indiensessie die deze aanvraag nog haalt, dan kan ze niet doorgestuurd worden.
+// Zelfde rekenlogica en oordeel als de startpagina (rekenlogica.js, regels.json, indienmoment.js).
+// Is de deadline van de gemeente (gekende termijn) voorbij, dan kan de aanvraag niet doorgestuurd worden.
 let regelsGeladen = false, termijn = null;
 const intakeForm = document.getElementById("intake");
 function veld(n) { const el = intakeForm.elements[n]; return el ? (el.value || "") : ""; }
@@ -377,21 +376,16 @@ function toonTermijn() {
   const box = document.getElementById("termijn"), kop = document.getElementById("t-kop"), tekst = document.getElementById("t-tekst");
   if (!termijn) { box.hidden = true; zetBlokkade(false); return; }
   const t = termijn, d = t.deadline ? fmtLong(t.deadline) : "";
-  const sluit = t.sessie ? new Date(t.sessie.getTime() - INDIEN.sluitUrenVooraf * 3600e3) : null;
-  const sluitTxt = sluit ? fmtSessie(sluit) + " " + String(sluit.getHours()).padStart(2, "0") + ":" + String(sluit.getMinutes()).padStart(2, "0") : "";
   let k, p;
   if (t.soort === "laat") {
     k = "Te laat voor " + t.gemeente;
-    p = (t.voorbij
-        ? "De deadline was " + d + " (" + t.termijn + " vooraf)."
-        : "De deadline is " + d + " (" + t.termijn + " vooraf). Dat is te krap om je aanvraag nog volledig en op tijd in te dienen.")
-      + " We kunnen deze aanvraag niet meer op tijd indienen. Kies een latere datum als dat kan, of neem zelf contact op met de gemeente.";
+    p = "De deadline was " + d + " (" + t.termijn + " vooraf). We kunnen deze aanvraag niet meer op tijd indienen. Kies een latere datum als dat kan, of neem zelf contact op met de gemeente.";
   } else if (t.soort === "twijfel") {
     k = "Waarschijnlijk te laat";
-    p = "De termijn van " + t.gemeente + " is niet zeker gekend. Volgens onze schatting is de deadline " + d + ", en dan is het te krap. Stuur toch door: we kijken het meteen na en laten het je weten. Kan het niet meer, dan betaal je niets.";
+    p = "De termijn van " + t.gemeente + " is niet zeker gekend. Volgens onze schatting is de deadline " + d + ", en die is al voorbij. Stuur toch door: we kijken het meteen na en laten het je weten. Kan het niet meer, dan betaal je niets.";
   } else if (t.soort === "krap") {
     k = "Krap, maar het kan nog";
-    p = "Deadline bij " + t.gemeente + ": " + d + ". Stuur je aanvraag door vóór " + sluitTxt + ", dan gaan we meteen aan de slag en halen we het nog.";
+    p = "Deadline bij " + t.gemeente + ": " + d + ". Stuur je aanvraag vandaag nog door, dan gaan we meteen aan de slag.";
   } else if (t.soort === "geschat") {
     k = "Waarschijnlijk op tijd";
     p = "Geschatte deadline bij " + t.gemeente + ": " + d + ". We kijken de termijn van deze gemeente meteen voor je na.";
