@@ -265,9 +265,8 @@ footer.foot a{color:var(--soft)}
 
 <script>var RULES = [];</script>
 <script src="rekenlogica.js"></script>
+<script src="indienmoment.js"></script>
 <script>
-const VERWERKTIJD=2; // werkdagen; zelfde waarde als in aanvraag.html
-function plusWerkdagen(d,n){const x=new Date(d);let c=0;while(c<n){x.setDate(x.getDate()+1);if(isWorkday(x))c++;}return x;}
 (function(){
   const gem=$("c-gem"), typ=$("c-type"), dat=$("c-datum"), out=$("c-out");
   TYPES.forEach(([k,v])=>typ.appendChild(new Option(v,k)));
@@ -280,15 +279,15 @@ function plusWerkdagen(d,n){const x=new Date(d);let c=0;while(c<n){x.setDate(x.g
       x:{muziek:null,sterkeDrank:null,alcohol:null,verkeer:null,materiaal:null,publiciteit:null,od:null,stroomgroep:null,subsidie:null}};
     let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
     if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';return;}
-    // Zelfde grens als de intake: wij hebben minstens VERWERKTIJD werkdagen nodig om nog in te dienen.
-    const grens=plusWerkdagen(today(),VERWERKTIJD), zeker=!res.aanname&&!res.onzeker;
-    let st=state(res); if(st!=="late"&&zeker&&res.best.date<grens) st="late"; else if(st==="ok"&&res.rec<grens) st="tight";
+    // Zelfde oordeel als de intake: haalt de deadline het eerstvolgende vaste indienmoment? (indienmoment.js)
+    const o=indienOordeel(res), MAP={laat:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"};
+    const st=MAP[o.soort];
     const d=daysUntil(res.best.date), voorbij=res.best.date<today();
-    const txt= st==="late"?"te laat": st==="tight"?"krap": res.aanname?"schatting":"op tijd";
+    const txt={laat:"te laat",twijfel:"onzeker",krap:"krap",ok:"op tijd",geschat:"schatting"}[o.soort];
     const num = voorbij ? "0" : String(d);
     out.innerHTML='<div class="count"><span class="num">'+num+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
       '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status'+(st==="late"?" late":"")+'">'+txt+'</span></div>'+
-      '<p class="rule">'+(st==="late"?(voorbij?"Deadline voorbij.":"Te kort om nog op tijd in te dienen."):esc(label(res.best.n,res.best.u))+" vooraf")+'</p>'+
+      '<p class="rule">'+(st==="late"?(voorbij?"Deadline voorbij.":"Ons eerstvolgende indienmoment ("+esc(fmtSessie(o.sessie))+") valt na de deadline."):esc(label(res.best.n,res.best.u))+" vooraf")+'</p>'+
       (st==="late"?'':'<a class="go-link" href="aanvraag.html?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+'">Wij dienen het in voor je →</a>');
   }
   fetch("regels.json").then(r=>r.json()).then(data=>{

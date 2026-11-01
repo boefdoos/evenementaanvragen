@@ -278,6 +278,7 @@ footer.foot a{color:var(--soft)}
 
 <script>var RULES = [];</script>
 <script src="rekenlogica.js"></script>
+<script src="indienmoment.js"></script>
 <script>
 // Vul hier de URL van de Apps Script-webapp in (eindigt op /exec). Leeg = demomodus.
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbz-EAv8lTkB6Y5_yKjc9SWB5UrtYHjuUV_ffm4yqTiMgYR7XjiB0unzoneptmGkJYDuaQ/exec";
@@ -349,13 +350,10 @@ const vandaag = today();
 sd.min = vandaag.getFullYear() + "-" + String(vandaag.getMonth() + 1).padStart(2, "0") + "-" + String(vandaag.getDate()).padStart(2, "0");
 
 // ---- Termijncheck ----
-// Zelfde rekenlogica als de startpagina (rekenlogica.js + regels.json).
-// VERWERKTIJD: werkdagen die wij minstens nodig hebben tussen intake en indienen
-// (de intake belooft een planning binnen twee werkdagen). Valt de deadline van de
-// gemeente vóór vandaag + VERWERKTIJD, dan kan de aanvraag niet doorgestuurd worden.
-const VERWERKTIJD = 2;
+// Zelfde rekenlogica als de startpagina (rekenlogica.js + regels.json), en hetzelfde vaste
+// indienmoment (indienmoment.js). Valt de deadline van de gemeente vóór de eerstvolgende
+// indiensessie die deze aanvraag nog haalt, dan kan ze niet doorgestuurd worden.
 let regelsGeladen = false, termijn = null;
-function plusWerkdagen(d, n) { const x = new Date(d); let c = 0; while (c < n) { x.setDate(x.getDate() + 1); if (isWorkday(x)) c++; } return x; }
 const intakeForm = document.getElementById("intake");
 function veld(n) { const el = intakeForm.elements[n]; return el ? (el.value || "") : ""; }
 
@@ -368,35 +366,33 @@ function berekenTermijn() {
   const od = veld("openbaar_domein");
   const ev = { gem: r.gemeente, type, date: new Date(datum + "T00:00:00"), visitors: +veld("bezoekers") || 0, marge: 5,
     groot: false, nieuw: veld("eerste_editie") === "ja", od: od === "ja" || od === "deels", x: {} };
-  let res = evaluate(r, ev), geschat = false;
-  if (res.unknown) { const f = fallback(r, ev); if (!f) return { soort: "onbekend", gemeente: r.gemeente }; res = f; geschat = true; }
-  const zeker = !geschat && !res.onzeker;
-  const grens = plusWerkdagen(vandaag, VERWERKTIJD);
-  const deadline = res.best.date;
-  let soort;
-  if (deadline < grens) soort = zeker ? "laat" : "twijfel";
-  else if (res.rec < grens) soort = "krap";
-  else soort = zeker ? "ok" : "geschat";
-  return { soort, gemeente: r.gemeente, deadline, termijn: label(res.best.n, res.best.u), voorbij: deadline < vandaag };
+  let res = evaluate(r, ev);
+  if (res.unknown) { const f = fallback(r, ev); if (!f) return { soort: "onbekend", gemeente: r.gemeente }; res = f; }
+  const o = indienOordeel(res);
+  return { ...o, gemeente: r.gemeente, termijn: label(res.best.n, res.best.u) };
 }
 
 function toonTermijn() {
   termijn = berekenTermijn();
   const box = document.getElementById("termijn"), kop = document.getElementById("t-kop"), tekst = document.getElementById("t-tekst");
   if (!termijn) { box.hidden = true; zetBlokkade(false); return; }
-  const t = termijn, d = t.deadline ? fmtLong(t.deadline) : "", n = t.deadline ? daysUntil(t.deadline) : 0;
-  const dagen = n === 1 ? "1 dag" : n + " dagen";
+  const t = termijn, d = t.deadline ? fmtLong(t.deadline) : "";
+  const sessie = t.sessie ? fmtSessie(t.sessie) : "";
+  const sluit = t.sessie ? new Date(t.sessie.getTime() - INDIEN.sluitUrenVooraf * 3600e3) : null;
+  const sluitTxt = sluit ? fmtSessie(sluit) + " " + String(sluit.getHours()).padStart(2, "0") + ":" + String(sluit.getMinutes()).padStart(2, "0") : "";
   let k, p;
   if (t.soort === "laat") {
     k = "Te laat voor " + t.gemeente;
-    p = (t.voorbij ? "De deadline was " + d + " (" + t.termijn + " vooraf)." : "De deadline is " + d + " (" + t.termijn + " vooraf). Dat is te kort voor ons om het dossier nog op tijd op te maken.")
-      + " We kunnen deze aanvraag niet meer indienen. Kies een latere datum als dat kan, of neem zelf contact op met de gemeente.";
+    p = (t.voorbij
+        ? "De deadline was " + d + " (" + t.termijn + " vooraf)."
+        : "De deadline is " + d + " (" + t.termijn + " vooraf). Ons eerstvolgende indienmoment is " + sessie + ", en dat is na de deadline.")
+      + " We kunnen deze aanvraag niet meer op tijd indienen. Kies een latere datum als dat kan, of neem zelf contact op met de gemeente.";
   } else if (t.soort === "twijfel") {
     k = "Waarschijnlijk te laat";
-    p = "De termijn van " + t.gemeente + " is niet zeker gekend. Volgens onze schatting moest de aanvraag uiterlijk " + d + " binnen zijn. Je kan doorsturen; we kijken het na en laten het je weten. Kan het niet meer, dan betaal je niets.";
+    p = "De termijn van " + t.gemeente + " is niet zeker gekend. Volgens onze schatting is de deadline " + d + ", vóór ons eerstvolgende indienmoment (" + sessie + "). Je kan doorsturen; we kijken het na en laten het je weten. Kan het niet meer, dan betaal je niets.";
   } else if (t.soort === "krap") {
     k = "Krap, maar het kan nog";
-    p = "Indienen bij " + t.gemeente + " uiterlijk " + d + ", nog " + dagen + ". Stuur je aanvraag vandaag door.";
+    p = "Deadline bij " + t.gemeente + ": " + d + ". Wij dienen in op " + sessie + ", als je aanvraag binnen is vóór " + sluitTxt + ". Daarna is het te laat.";
   } else if (t.soort === "geschat") {
     k = "Waarschijnlijk op tijd";
     p = "Geschatte deadline bij " + t.gemeente + ": " + d + ". De termijn van deze gemeente is niet zeker gekend; we kijken hem na.";
@@ -405,7 +401,7 @@ function toonTermijn() {
     p = "Voor " + t.gemeente + " kennen we de termijn nog niet. Stuur je aanvraag door, dan zoeken wij hem op.";
   } else {
     k = "Op tijd";
-    p = "Indienen bij " + t.gemeente + " uiterlijk " + d + ", nog " + dagen + ".";
+    p = "Deadline bij " + t.gemeente + ": " + d + ". Ruim op tijd.";
   }
   box.className = "termijn " + t.soort; kop.textContent = k; tekst.textContent = p; box.hidden = false;
   zetBlokkade(t.soort === "laat");
