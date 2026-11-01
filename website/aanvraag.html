@@ -156,6 +156,23 @@ footer.foot a{color:var(--soft)}
       <div class="field"><label for="organisator_naam">Naam contactpersoon <span class="req">*</span></label><input id="organisator_naam" name="organisator_naam" autocomplete="name" required></div>
       <div class="field"><label for="aanvrager_type">Je organiseert als <span class="req">*</span></label>
         <select id="aanvrager_type" name="aanvrager_type" required><option value="">Kies…</option><option>vereniging</option><option>particulier</option><option>bedrijf</option><option>school</option></select></div>
+      <div class="full" id="verenigingwrap" hidden>
+        <div class="yn">
+          <div><div class="q" id="q_jeugd">Jeugdvereniging?</div><div class="hint">Sommige gemeenten hebben extra materiaal voor jeugdverenigingen.</div></div>
+          <div class="seg" role="radiogroup" aria-labelledby="q_jeugd">
+            <label><input type="radio" id="jeugd_0" name="jeugdvereniging" value="ja"><span>ja</span></label>
+            <label><input type="radio" id="jeugd_1" name="jeugdvereniging" value="nee" checked><span>nee</span></label>
+          </div>
+        </div>
+        <div class="yn">
+          <div><div class="q" id="q_erkend">Erkend door de gemeente van het evenement?</div><div class="hint">Erkende verenigingen lenen vaak goedkoper of krijgen voorrang.</div></div>
+          <div class="seg" role="radiogroup" aria-labelledby="q_erkend">
+            <label><input type="radio" id="erkend_0" name="erkend" value="ja"><span>ja</span></label>
+            <label><input type="radio" id="erkend_1" name="erkend" value="nee"><span>nee</span></label>
+            <label><input type="radio" id="erkend_2" name="erkend" value="weet niet" checked><span>weet niet</span></label>
+          </div>
+        </div>
+      </div>
       <div class="field"><label for="organisatie">Naam vereniging of bedrijf</label><input id="organisatie" name="organisatie" autocomplete="organization"></div>
       <div class="field"><label for="ondernemingsnummer">Ondernemingsnummer <span class="hint">(indien vzw of bedrijf)</span></label><input id="ondernemingsnummer" name="ondernemingsnummer" inputmode="numeric" placeholder="0123.456.789"></div>
       <div class="field"><label for="email">E-mail <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
@@ -322,6 +339,14 @@ MATERIAAL.forEach(([k, n]) => {
   d.innerHTML = `<label for="mat_${k}">${n}</label><input type="number" id="mat_${k}" data-mat="${n}" min="0" step="1" inputmode="numeric" placeholder="0">`;
   ml.appendChild(d);
 });
+function toonVereniging() {
+  const ver = document.getElementById("aanvrager_type").value === "vereniging";
+  const w = document.getElementById("verenigingwrap");
+  w.hidden = !ver;
+  w.querySelectorAll("input").forEach(i => i.disabled = !ver);
+}
+document.getElementById("aanvrager_type").addEventListener("change", toonVereniging);
+toonVereniging();
 function toonMateriaal() {
   const ja = document.getElementById("materiaal_0").checked;
   ["matlijst","matextra","levwrap"].forEach(id => document.getElementById(id).hidden = !ja);
