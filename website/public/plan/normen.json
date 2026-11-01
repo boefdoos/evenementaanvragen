@@ -1,293 +1,832 @@
 {
-"versie": "2026-11-01",
-"toelichting": "Zone per gemeente: KB 2 februari 2009 (geconsolideerd 07/2024). Normen per zone met bron; ontbreekt een norm, dan geldt de strengste gekende eis.",
-"gemeenten": {
-"Alveringem": "Brandweer Westhoek",
-"Anzegem": "Brandweer Fluvia",
-"Ardooie": "Zone Midwest",
-"Avelgem": "Brandweer Fluvia",
-"Beernem": "Hulpverleningszone 1",
-"Blankenberge": "Hulpverleningszone 1",
-"Bredene": "Hulpverleningszone 1",
-"Brugge": "Hulpverleningszone 1",
-"Damme": "Hulpverleningszone 1",
-"De Haan": "Hulpverleningszone 1",
-"De Panne": "Brandweer Westhoek",
-"Deerlijk": "Brandweer Fluvia",
-"Dentergem": "Zone Midwest",
-"Diksmuide": "Brandweer Westhoek",
-"Gistel": "Hulpverleningszone 1",
-"Harelbeke": "Brandweer Fluvia",
-"Heuvelland": "Brandweer Westhoek",
-"Hooglede": "Zone Midwest",
-"Houthulst": "Brandweer Westhoek",
-"Ichtegem": "Hulpverleningszone 1",
-"Ieper": "Brandweer Westhoek",
-"Ingelmunster": "Zone Midwest",
-"Izegem": "Zone Midwest",
-"Jabbeke": "Hulpverleningszone 1",
-"Knokke-Heist": "Hulpverleningszone 1",
-"Koekelare": "Brandweer Westhoek",
-"Koksijde": "Brandweer Westhoek",
-"Kortemark": "Brandweer Westhoek",
-"Kortrijk": "Brandweer Fluvia",
-"Kuurne": "Brandweer Fluvia",
-"Langemark-Poelkapelle": "Brandweer Westhoek",
-"Ledegem": "Brandweer Fluvia",
-"Lendelede": "Brandweer Fluvia",
-"Lichtervelde": "Zone Midwest",
-"Lo-Reninge": "Brandweer Westhoek",
-"Menen": "Brandweer Fluvia",
-"Mesen": "Brandweer Westhoek",
-"Middelkerke": "Hulpverleningszone 1",
-"Moorslede": "Zone Midwest",
-"Nieuwpoort": "Brandweer Westhoek",
-"Oostende": "Hulpverleningszone 1",
-"Oostkamp": "Hulpverleningszone 1",
-"Oostrozebeke": "Zone Midwest",
-"Oudenburg": "Hulpverleningszone 1",
-"Pittem": "Zone Midwest",
-"Poperinge": "Brandweer Westhoek",
-"Roeselare": "Zone Midwest",
-"Spiere-Helkijn": "Brandweer Fluvia",
-"Staden": "Zone Midwest",
-"Tielt": "Zone Midwest",
-"Torhout": "Hulpverleningszone 1",
-"Veurne": "Brandweer Westhoek",
-"Vleteren": "Brandweer Westhoek",
-"Waregem": "Brandweer Fluvia",
-"Wervik": "Brandweer Westhoek",
-"Wevelgem": "Brandweer Fluvia",
-"Wielsbeke": "Brandweer Fluvia",
-"Wingene": "Zone Midwest",
-"Zedelgem": "Hulpverleningszone 1",
-"Zonnebeke": "Brandweer Westhoek",
-"Zuienkerke": "Hulpverleningszone 1",
-"Zwevegem": "Brandweer Fluvia",
-"Aartselaar": "Brandweerzone Rivierenland",
-"Antwerpen": "Brandweer Zone Antwerpen",
-"Arendonk": "Hulpverleningszone Taxandria",
-"Baarle-Hertog": "Hulpverleningszone Taxandria",
-"Balen": "Brandweer Zone Kempen",
-"Beerse": "Hulpverleningszone Taxandria",
-"Berlaar": "Brandweerzone Rivierenland",
-"Boechout": "Brandweer Zone Rand",
-"Bonheiden": "Brandweerzone Rivierenland",
-"Boom": "Brandweerzone Rivierenland",
-"Bornem": "Brandweerzone Rivierenland",
-"Brasschaat": "Brandweer Zone Rand",
-"Brecht": "Brandweer Zone Rand",
-"Dessel": "Brandweer Zone Kempen",
-"Duffel": "Brandweerzone Rivierenland",
-"Edegem": "Brandweer Zone Rand",
-"Essen": "Brandweer Zone Rand",
-"Geel": "Brandweer Zone Kempen",
-"Grobbendonk": "Brandweer Zone Kempen",
-"Heist-op-den-Berg": "Brandweerzone Rivierenland",
-"Hemiksem": "Brandweerzone Rivierenland",
-"Herentals": "Brandweer Zone Kempen",
-"Herenthout": "Brandweer Zone Kempen",
-"Herselt": "Brandweer Zone Kempen",
-"Hoogstraten": "Hulpverleningszone Taxandria",
-"Hove": "Brandweer Zone Rand",
-"Hulshout": "Brandweer Zone Kempen",
-"Kalmthout": "Brandweer Zone Rand",
-"Kapellen": "Brandweer Zone Rand",
-"Kasterlee": "Hulpverleningszone Taxandria",
-"Kontich": "Brandweer Zone Rand",
-"Laakdal": "Brandweer Zone Kempen",
-"Lier": "Brandweerzone Rivierenland",
-"Lille": "Hulpverleningszone Taxandria",
-"Lint": "Brandweer Zone Rand",
-"Malle": "Brandweer Zone Rand",
-"Mechelen": "Brandweerzone Rivierenland",
-"Meerhout": "Brandweer Zone Kempen",
-"Merksplas": "Hulpverleningszone Taxandria",
-"Mol": "Brandweer Zone Kempen",
-"Mortsel": "Brandweer Zone Rand",
-"Niel": "Brandweerzone Rivierenland",
-"Nijlen": "Brandweerzone Rivierenland",
-"Olen": "Brandweer Zone Kempen",
-"Oud-Turnhout": "Hulpverleningszone Taxandria",
-"Putte": "Brandweerzone Rivierenland",
-"Puurs-Sint-Amands": "Brandweerzone Rivierenland",
-"Ranst": "Brandweer Zone Rand",
-"Ravels": "Hulpverleningszone Taxandria",
-"Retie": "Brandweer Zone Kempen",
-"Rijkevorsel": "Hulpverleningszone Taxandria",
-"Rumst": "Brandweerzone Rivierenland",
-"Schelle": "Brandweerzone Rivierenland",
-"Schilde": "Brandweer Zone Rand",
-"Schoten": "Brandweer Zone Rand",
-"Sint-Katelijne-Waver": "Brandweerzone Rivierenland",
-"Stabroek": "Brandweer Zone Rand",
-"Turnhout": "Hulpverleningszone Taxandria",
-"Vorselaar": "Brandweer Zone Kempen",
-"Vosselaar": "Hulpverleningszone Taxandria",
-"Westerlo": "Brandweer Zone Kempen",
-"Wijnegem": "Brandweer Zone Antwerpen",
-"Willebroek": "Brandweerzone Rivierenland",
-"Wommelgem": "Brandweer Zone Rand",
-"Wuustwezel": "Brandweer Zone Rand",
-"Zandhoven": "Brandweer Zone Rand",
-"Zoersel": "Brandweer Zone Rand",
-"Alken": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"As": "Brandweerzone Oost-Limburg",
-"Beringen": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Bilzen-Hoeselt": "Brandweerzone Oost-Limburg",
-"Bocholt": "Hulpverleningszone Noord-Limburg",
-"Bree": "Hulpverleningszone Noord-Limburg",
-"Diepenbeek": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Dilsen-Stokkem": "Brandweerzone Oost-Limburg",
-"Genk": "Brandweerzone Oost-Limburg",
-"Gingelom": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Halen": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Hamont-Achel": "Hulpverleningszone Noord-Limburg",
-"Hasselt": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Hechtel-Eksel": "Hulpverleningszone Noord-Limburg",
-"Heers": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Herk-de-Stad": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Herstappe": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Heusden-Zolder": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Houthalen-Helchteren": "Brandweerzone Oost-Limburg",
-"Kinrooi": "Brandweerzone Oost-Limburg",
-"Lanaken": "Brandweerzone Oost-Limburg",
-"Leopoldsburg": "Hulpverleningszone Noord-Limburg",
-"Lommel": "Hulpverleningszone Noord-Limburg",
-"Lummen": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Maaseik": "Brandweerzone Oost-Limburg",
-"Maasmechelen": "Brandweerzone Oost-Limburg",
-"Nieuwerkerken": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Oudsbergen": "Brandweerzone Oost-Limburg",
-"Peer": "Hulpverleningszone Noord-Limburg",
-"Pelt": "Hulpverleningszone Noord-Limburg",
-"Riemst": "Brandweerzone Oost-Limburg",
-"Sint-Truiden": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Tessenderlo-Ham": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Tongeren-Borgloon": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Voeren": "Brandweerzone Oost-Limburg",
-"Wellen": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Zonhoven": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
-"Zutendaal": "Brandweerzone Oost-Limburg",
-"Aalst": "Hulpverleningszone Zuid-Oost",
-"Aalter": "Hulpverleningszone Meetjesland",
-"Assenede": "Brandweerzone Centrum",
-"Berlare": "Brandweerzone Oost",
-"Beveren-Kruibeke-Zwijndrecht": "Hulpverleningszone Waasland",
-"Brakel": "Brandweerzone Vlaamse Ardennen",
-"Buggenhout": "Brandweerzone Oost",
-"Deinze": "Brandweerzone Centrum",
-"Denderleeuw": "Hulpverleningszone Zuid-Oost",
-"Dendermonde": "Brandweerzone Oost",
-"Destelbergen": "Brandweerzone Centrum",
-"Eeklo": "Hulpverleningszone Meetjesland",
-"Erpe-Mere": "Hulpverleningszone Zuid-Oost",
-"Evergem": "Brandweerzone Centrum",
-"Gavere": "Brandweerzone Centrum",
-"Gent": "Brandweerzone Centrum",
-"Geraardsbergen": "Hulpverleningszone Zuid-Oost",
-"Haaltert": "Hulpverleningszone Zuid-Oost",
-"Hamme": "Brandweerzone Oost",
-"Herzele": "Brandweerzone Vlaamse Ardennen",
-"Horebeke": "Brandweerzone Vlaamse Ardennen",
-"Kaprijke": "Hulpverleningszone Meetjesland",
-"Kluisbergen": "Brandweerzone Vlaamse Ardennen",
-"Kruisem": "Brandweerzone Vlaamse Ardennen",
-"Laarne": "Brandweerzone Centrum",
-"Lebbeke": "Brandweerzone Oost",
-"Lede": "Hulpverleningszone Zuid-Oost",
-"Lierde": "Brandweerzone Vlaamse Ardennen",
-"Lievegem": "Brandweerzone Centrum",
-"Lochristi": "Brandweerzone Centrum",
-"Lokeren": "Brandweerzone Oost",
-"Maarkedal": "Brandweerzone Vlaamse Ardennen",
-"Maldegem": "Hulpverleningszone Meetjesland",
-"Merelbeke-Melle": "Brandweerzone Centrum",
-"Nazareth-De Pinte": "Brandweerzone Centrum",
-"Ninove": "Hulpverleningszone Zuid-Oost",
-"Oosterzele": "Brandweerzone Centrum",
-"Oudenaarde": "Brandweerzone Vlaamse Ardennen",
-"Ronse": "Brandweerzone Vlaamse Ardennen",
-"Sint-Gillis-Waas": "Hulpverleningszone Waasland",
-"Sint-Laureins": "Hulpverleningszone Meetjesland",
-"Sint-Lievens-Houtem": "Brandweerzone Vlaamse Ardennen",
-"Sint-Martens-Latem": "Brandweerzone Centrum",
-"Sint-Niklaas": "Hulpverleningszone Waasland",
-"Stekene": "Hulpverleningszone Waasland",
-"Temse": "Hulpverleningszone Waasland",
-"Waasmunster": "Hulpverleningszone Waasland",
-"Wetteren": "Brandweerzone Centrum",
-"Wichelen": "Brandweerzone Oost",
-"Wortegem-Petegem": "Brandweerzone Vlaamse Ardennen",
-"Zele": "Brandweerzone Oost",
-"Zelzate": "Brandweerzone Centrum",
-"Zottegem": "Brandweerzone Vlaamse Ardennen",
-"Zulte": "Brandweerzone Centrum",
-"Zwalm": "Brandweerzone Vlaamse Ardennen",
-"Aarschot": "Hulpverleningszone Oost Vlaams-Brabant",
-"Affligem": "Brandweerzone Vlaams-Brabant West",
-"Asse": "Brandweerzone Vlaams-Brabant West",
-"Beersel": "Brandweerzone Vlaams-Brabant West",
-"Begijnendijk": "Hulpverleningszone Oost Vlaams-Brabant",
-"Bekkevoort": "Hulpverleningszone Oost Vlaams-Brabant",
-"Bertem": "Hulpverleningszone Oost Vlaams-Brabant",
-"Bever": "Brandweerzone Vlaams-Brabant West",
-"Bierbeek": "Hulpverleningszone Oost Vlaams-Brabant",
-"Boortmeerbeek": "Hulpverleningszone Oost Vlaams-Brabant",
-"Boutersem": "Hulpverleningszone Oost Vlaams-Brabant",
-"Diest": "Hulpverleningszone Oost Vlaams-Brabant",
-"Dilbeek": "Brandweerzone Vlaams-Brabant West",
-"Drogenbos": "Brandweerzone Vlaams-Brabant West",
-"Geetbets": "Hulpverleningszone Oost Vlaams-Brabant",
-"Glabbeek": "Hulpverleningszone Oost Vlaams-Brabant",
-"Grimbergen": "Brandweerzone Vlaams-Brabant West",
-"Haacht": "Hulpverleningszone Oost Vlaams-Brabant",
-"Halle": "Brandweerzone Vlaams-Brabant West",
-"Herent": "Hulpverleningszone Oost Vlaams-Brabant",
-"Hoegaarden": "Hulpverleningszone Oost Vlaams-Brabant",
-"Hoeilaart": "Hulpverleningszone Oost Vlaams-Brabant",
-"Holsbeek": "Hulpverleningszone Oost Vlaams-Brabant",
-"Huldenberg": "Hulpverleningszone Oost Vlaams-Brabant",
-"Kampenhout": "Hulpverleningszone Oost Vlaams-Brabant",
-"Kapelle-op-den-Bos": "Brandweerzone Vlaams-Brabant West",
-"Keerbergen": "Hulpverleningszone Oost Vlaams-Brabant",
-"Kortenaken": "Hulpverleningszone Oost Vlaams-Brabant",
-"Kortenberg": "Brandweerzone Vlaams-Brabant West",
-"Kraainem": "Brandweerzone Vlaams-Brabant West",
-"Landen": "Hulpverleningszone Oost Vlaams-Brabant",
-"Lennik": "Brandweerzone Vlaams-Brabant West",
-"Leuven": "Hulpverleningszone Oost Vlaams-Brabant",
-"Liedekerke": "Brandweerzone Vlaams-Brabant West",
-"Linkebeek": "Brandweerzone Vlaams-Brabant West",
-"Linter": "Hulpverleningszone Oost Vlaams-Brabant",
-"Londerzeel": "Brandweerzone Vlaams-Brabant West",
-"Lubbeek": "Hulpverleningszone Oost Vlaams-Brabant",
-"Machelen": "Brandweerzone Vlaams-Brabant West",
-"Meise": "Brandweerzone Vlaams-Brabant West",
-"Merchtem": "Brandweerzone Vlaams-Brabant West",
-"Opwijk": "Brandweerzone Vlaams-Brabant West",
-"Oud-Heverlee": "Hulpverleningszone Oost Vlaams-Brabant",
-"Overijse": "Hulpverleningszone Oost Vlaams-Brabant",
-"Pajottegem": "Brandweerzone Vlaams-Brabant West",
-"Pepingen": "Brandweerzone Vlaams-Brabant West",
-"Roosdaal": "Brandweerzone Vlaams-Brabant West",
-"Rotselaar": "Hulpverleningszone Oost Vlaams-Brabant",
-"Scherpenheuvel-Zichem": "Hulpverleningszone Oost Vlaams-Brabant",
-"Sint-Genesius-Rode": "Brandweerzone Vlaams-Brabant West",
-"Sint-Pieters-Leeuw": "Brandweerzone Vlaams-Brabant West",
-"Steenokkerzeel": "Brandweerzone Vlaams-Brabant West",
-"Ternat": "Brandweerzone Vlaams-Brabant West",
-"Tervuren": "Hulpverleningszone Oost Vlaams-Brabant",
-"Tielt-Winge": "Hulpverleningszone Oost Vlaams-Brabant",
-"Tienen": "Hulpverleningszone Oost Vlaams-Brabant",
-"Tremelo": "Hulpverleningszone Oost Vlaams-Brabant",
-"Vilvoorde": "Brandweerzone Vlaams-Brabant West",
-"Wemmel": "Brandweerzone Vlaams-Brabant West",
-"Wezembeek-Oppem": "Brandweerzone Vlaams-Brabant West",
-"Zaventem": "Brandweerzone Vlaams-Brabant West",
-"Zemst": "Brandweerzone Vlaams-Brabant West",
-"Zoutleeuw": "Hulpverleningszone Oost Vlaams-Brabant"
-},
-"zones": {},
-"strengste": {}
+ "versie": "2026-11-01",
+ "toelichting": "Zone per gemeente: KB 2 februari 2009 (geconsolideerd 07/2024). Normen per zone met bron; ontbreekt een norm, dan geldt de strengste gekende eis uit de zonedocumenten.",
+ "gemeenten": {
+  "Alveringem": "Brandweer Westhoek",
+  "Anzegem": "Brandweer Fluvia",
+  "Ardooie": "Zone Midwest",
+  "Avelgem": "Brandweer Fluvia",
+  "Beernem": "Hulpverleningszone 1",
+  "Blankenberge": "Hulpverleningszone 1",
+  "Bredene": "Hulpverleningszone 1",
+  "Brugge": "Hulpverleningszone 1",
+  "Damme": "Hulpverleningszone 1",
+  "De Haan": "Hulpverleningszone 1",
+  "De Panne": "Brandweer Westhoek",
+  "Deerlijk": "Brandweer Fluvia",
+  "Dentergem": "Zone Midwest",
+  "Diksmuide": "Brandweer Westhoek",
+  "Gistel": "Hulpverleningszone 1",
+  "Harelbeke": "Brandweer Fluvia",
+  "Heuvelland": "Brandweer Westhoek",
+  "Hooglede": "Zone Midwest",
+  "Houthulst": "Brandweer Westhoek",
+  "Ichtegem": "Hulpverleningszone 1",
+  "Ieper": "Brandweer Westhoek",
+  "Ingelmunster": "Zone Midwest",
+  "Izegem": "Zone Midwest",
+  "Jabbeke": "Hulpverleningszone 1",
+  "Knokke-Heist": "Hulpverleningszone 1",
+  "Koekelare": "Brandweer Westhoek",
+  "Koksijde": "Brandweer Westhoek",
+  "Kortemark": "Brandweer Westhoek",
+  "Kortrijk": "Brandweer Fluvia",
+  "Kuurne": "Brandweer Fluvia",
+  "Langemark-Poelkapelle": "Brandweer Westhoek",
+  "Ledegem": "Brandweer Fluvia",
+  "Lendelede": "Brandweer Fluvia",
+  "Lichtervelde": "Zone Midwest",
+  "Lo-Reninge": "Brandweer Westhoek",
+  "Menen": "Brandweer Fluvia",
+  "Mesen": "Brandweer Westhoek",
+  "Middelkerke": "Hulpverleningszone 1",
+  "Moorslede": "Zone Midwest",
+  "Nieuwpoort": "Brandweer Westhoek",
+  "Oostende": "Hulpverleningszone 1",
+  "Oostkamp": "Hulpverleningszone 1",
+  "Oostrozebeke": "Zone Midwest",
+  "Oudenburg": "Hulpverleningszone 1",
+  "Pittem": "Zone Midwest",
+  "Poperinge": "Brandweer Westhoek",
+  "Roeselare": "Zone Midwest",
+  "Spiere-Helkijn": "Brandweer Fluvia",
+  "Staden": "Zone Midwest",
+  "Tielt": "Zone Midwest",
+  "Torhout": "Hulpverleningszone 1",
+  "Veurne": "Brandweer Westhoek",
+  "Vleteren": "Brandweer Westhoek",
+  "Waregem": "Brandweer Fluvia",
+  "Wervik": "Brandweer Westhoek",
+  "Wevelgem": "Brandweer Fluvia",
+  "Wielsbeke": "Brandweer Fluvia",
+  "Wingene": "Zone Midwest",
+  "Zedelgem": "Hulpverleningszone 1",
+  "Zonnebeke": "Brandweer Westhoek",
+  "Zuienkerke": "Hulpverleningszone 1",
+  "Zwevegem": "Brandweer Fluvia",
+  "Aartselaar": "Brandweerzone Rivierenland",
+  "Antwerpen": "Brandweer Zone Antwerpen",
+  "Arendonk": "Hulpverleningszone Taxandria",
+  "Baarle-Hertog": "Hulpverleningszone Taxandria",
+  "Balen": "Brandweer Zone Kempen",
+  "Beerse": "Hulpverleningszone Taxandria",
+  "Berlaar": "Brandweerzone Rivierenland",
+  "Boechout": "Brandweer Zone Rand",
+  "Bonheiden": "Brandweerzone Rivierenland",
+  "Boom": "Brandweerzone Rivierenland",
+  "Bornem": "Brandweerzone Rivierenland",
+  "Brasschaat": "Brandweer Zone Rand",
+  "Brecht": "Brandweer Zone Rand",
+  "Dessel": "Brandweer Zone Kempen",
+  "Duffel": "Brandweerzone Rivierenland",
+  "Edegem": "Brandweer Zone Rand",
+  "Essen": "Brandweer Zone Rand",
+  "Geel": "Brandweer Zone Kempen",
+  "Grobbendonk": "Brandweer Zone Kempen",
+  "Heist-op-den-Berg": "Brandweerzone Rivierenland",
+  "Hemiksem": "Brandweerzone Rivierenland",
+  "Herentals": "Brandweer Zone Kempen",
+  "Herenthout": "Brandweer Zone Kempen",
+  "Herselt": "Brandweer Zone Kempen",
+  "Hoogstraten": "Hulpverleningszone Taxandria",
+  "Hove": "Brandweer Zone Rand",
+  "Hulshout": "Brandweer Zone Kempen",
+  "Kalmthout": "Brandweer Zone Rand",
+  "Kapellen": "Brandweer Zone Rand",
+  "Kasterlee": "Hulpverleningszone Taxandria",
+  "Kontich": "Brandweer Zone Rand",
+  "Laakdal": "Brandweer Zone Kempen",
+  "Lier": "Brandweerzone Rivierenland",
+  "Lille": "Hulpverleningszone Taxandria",
+  "Lint": "Brandweer Zone Rand",
+  "Malle": "Brandweer Zone Rand",
+  "Mechelen": "Brandweerzone Rivierenland",
+  "Meerhout": "Brandweer Zone Kempen",
+  "Merksplas": "Hulpverleningszone Taxandria",
+  "Mol": "Brandweer Zone Kempen",
+  "Mortsel": "Brandweer Zone Rand",
+  "Niel": "Brandweerzone Rivierenland",
+  "Nijlen": "Brandweerzone Rivierenland",
+  "Olen": "Brandweer Zone Kempen",
+  "Oud-Turnhout": "Hulpverleningszone Taxandria",
+  "Putte": "Brandweerzone Rivierenland",
+  "Puurs-Sint-Amands": "Brandweerzone Rivierenland",
+  "Ranst": "Brandweer Zone Rand",
+  "Ravels": "Hulpverleningszone Taxandria",
+  "Retie": "Brandweer Zone Kempen",
+  "Rijkevorsel": "Hulpverleningszone Taxandria",
+  "Rumst": "Brandweerzone Rivierenland",
+  "Schelle": "Brandweerzone Rivierenland",
+  "Schilde": "Brandweer Zone Rand",
+  "Schoten": "Brandweer Zone Rand",
+  "Sint-Katelijne-Waver": "Brandweerzone Rivierenland",
+  "Stabroek": "Brandweer Zone Rand",
+  "Turnhout": "Hulpverleningszone Taxandria",
+  "Vorselaar": "Brandweer Zone Kempen",
+  "Vosselaar": "Hulpverleningszone Taxandria",
+  "Westerlo": "Brandweer Zone Kempen",
+  "Wijnegem": "Brandweer Zone Antwerpen",
+  "Willebroek": "Brandweerzone Rivierenland",
+  "Wommelgem": "Brandweer Zone Rand",
+  "Wuustwezel": "Brandweer Zone Rand",
+  "Zandhoven": "Brandweer Zone Rand",
+  "Zoersel": "Brandweer Zone Rand",
+  "Alken": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "As": "Brandweerzone Oost-Limburg",
+  "Beringen": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Bilzen-Hoeselt": "Brandweerzone Oost-Limburg",
+  "Bocholt": "Hulpverleningszone Noord-Limburg",
+  "Bree": "Hulpverleningszone Noord-Limburg",
+  "Diepenbeek": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Dilsen-Stokkem": "Brandweerzone Oost-Limburg",
+  "Genk": "Brandweerzone Oost-Limburg",
+  "Gingelom": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Halen": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Hamont-Achel": "Hulpverleningszone Noord-Limburg",
+  "Hasselt": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Hechtel-Eksel": "Hulpverleningszone Noord-Limburg",
+  "Heers": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Herk-de-Stad": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Herstappe": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Heusden-Zolder": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Houthalen-Helchteren": "Brandweerzone Oost-Limburg",
+  "Kinrooi": "Brandweerzone Oost-Limburg",
+  "Lanaken": "Brandweerzone Oost-Limburg",
+  "Leopoldsburg": "Hulpverleningszone Noord-Limburg",
+  "Lommel": "Hulpverleningszone Noord-Limburg",
+  "Lummen": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Maaseik": "Brandweerzone Oost-Limburg",
+  "Maasmechelen": "Brandweerzone Oost-Limburg",
+  "Nieuwerkerken": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Oudsbergen": "Brandweerzone Oost-Limburg",
+  "Peer": "Hulpverleningszone Noord-Limburg",
+  "Pelt": "Hulpverleningszone Noord-Limburg",
+  "Riemst": "Brandweerzone Oost-Limburg",
+  "Sint-Truiden": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Tessenderlo-Ham": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Tongeren-Borgloon": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Voeren": "Brandweerzone Oost-Limburg",
+  "Wellen": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Zonhoven": "Hulpverleningszone Zuidwest (Zuid-West Limburg)",
+  "Zutendaal": "Brandweerzone Oost-Limburg",
+  "Aalst": "Hulpverleningszone Zuid-Oost",
+  "Aalter": "Hulpverleningszone Meetjesland",
+  "Assenede": "Brandweerzone Centrum",
+  "Berlare": "Brandweerzone Oost",
+  "Beveren-Kruibeke-Zwijndrecht": "Hulpverleningszone Waasland",
+  "Brakel": "Brandweerzone Vlaamse Ardennen",
+  "Buggenhout": "Brandweerzone Oost",
+  "Deinze": "Brandweerzone Centrum",
+  "Denderleeuw": "Hulpverleningszone Zuid-Oost",
+  "Dendermonde": "Brandweerzone Oost",
+  "Destelbergen": "Brandweerzone Centrum",
+  "Eeklo": "Hulpverleningszone Meetjesland",
+  "Erpe-Mere": "Hulpverleningszone Zuid-Oost",
+  "Evergem": "Brandweerzone Centrum",
+  "Gavere": "Brandweerzone Centrum",
+  "Gent": "Brandweerzone Centrum",
+  "Geraardsbergen": "Hulpverleningszone Zuid-Oost",
+  "Haaltert": "Hulpverleningszone Zuid-Oost",
+  "Hamme": "Brandweerzone Oost",
+  "Herzele": "Brandweerzone Vlaamse Ardennen",
+  "Horebeke": "Brandweerzone Vlaamse Ardennen",
+  "Kaprijke": "Hulpverleningszone Meetjesland",
+  "Kluisbergen": "Brandweerzone Vlaamse Ardennen",
+  "Kruisem": "Brandweerzone Vlaamse Ardennen",
+  "Laarne": "Brandweerzone Centrum",
+  "Lebbeke": "Brandweerzone Oost",
+  "Lede": "Hulpverleningszone Zuid-Oost",
+  "Lierde": "Brandweerzone Vlaamse Ardennen",
+  "Lievegem": "Brandweerzone Centrum",
+  "Lochristi": "Brandweerzone Centrum",
+  "Lokeren": "Brandweerzone Oost",
+  "Maarkedal": "Brandweerzone Vlaamse Ardennen",
+  "Maldegem": "Hulpverleningszone Meetjesland",
+  "Merelbeke-Melle": "Brandweerzone Centrum",
+  "Nazareth-De Pinte": "Brandweerzone Centrum",
+  "Ninove": "Hulpverleningszone Zuid-Oost",
+  "Oosterzele": "Brandweerzone Centrum",
+  "Oudenaarde": "Brandweerzone Vlaamse Ardennen",
+  "Ronse": "Brandweerzone Vlaamse Ardennen",
+  "Sint-Gillis-Waas": "Hulpverleningszone Waasland",
+  "Sint-Laureins": "Hulpverleningszone Meetjesland",
+  "Sint-Lievens-Houtem": "Brandweerzone Vlaamse Ardennen",
+  "Sint-Martens-Latem": "Brandweerzone Centrum",
+  "Sint-Niklaas": "Hulpverleningszone Waasland",
+  "Stekene": "Hulpverleningszone Waasland",
+  "Temse": "Hulpverleningszone Waasland",
+  "Waasmunster": "Hulpverleningszone Waasland",
+  "Wetteren": "Brandweerzone Centrum",
+  "Wichelen": "Brandweerzone Oost",
+  "Wortegem-Petegem": "Brandweerzone Vlaamse Ardennen",
+  "Zele": "Brandweerzone Oost",
+  "Zelzate": "Brandweerzone Centrum",
+  "Zottegem": "Brandweerzone Vlaamse Ardennen",
+  "Zulte": "Brandweerzone Centrum",
+  "Zwalm": "Brandweerzone Vlaamse Ardennen",
+  "Aarschot": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Affligem": "Brandweerzone Vlaams-Brabant West",
+  "Asse": "Brandweerzone Vlaams-Brabant West",
+  "Beersel": "Brandweerzone Vlaams-Brabant West",
+  "Begijnendijk": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Bekkevoort": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Bertem": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Bever": "Brandweerzone Vlaams-Brabant West",
+  "Bierbeek": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Boortmeerbeek": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Boutersem": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Diest": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Dilbeek": "Brandweerzone Vlaams-Brabant West",
+  "Drogenbos": "Brandweerzone Vlaams-Brabant West",
+  "Geetbets": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Glabbeek": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Grimbergen": "Brandweerzone Vlaams-Brabant West",
+  "Haacht": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Halle": "Brandweerzone Vlaams-Brabant West",
+  "Herent": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Hoegaarden": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Hoeilaart": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Holsbeek": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Huldenberg": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Kampenhout": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Kapelle-op-den-Bos": "Brandweerzone Vlaams-Brabant West",
+  "Keerbergen": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Kortenaken": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Kortenberg": "Brandweerzone Vlaams-Brabant West",
+  "Kraainem": "Brandweerzone Vlaams-Brabant West",
+  "Landen": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Lennik": "Brandweerzone Vlaams-Brabant West",
+  "Leuven": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Liedekerke": "Brandweerzone Vlaams-Brabant West",
+  "Linkebeek": "Brandweerzone Vlaams-Brabant West",
+  "Linter": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Londerzeel": "Brandweerzone Vlaams-Brabant West",
+  "Lubbeek": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Machelen": "Brandweerzone Vlaams-Brabant West",
+  "Meise": "Brandweerzone Vlaams-Brabant West",
+  "Merchtem": "Brandweerzone Vlaams-Brabant West",
+  "Opwijk": "Brandweerzone Vlaams-Brabant West",
+  "Oud-Heverlee": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Overijse": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Pajottegem": "Brandweerzone Vlaams-Brabant West",
+  "Pepingen": "Brandweerzone Vlaams-Brabant West",
+  "Roosdaal": "Brandweerzone Vlaams-Brabant West",
+  "Rotselaar": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Scherpenheuvel-Zichem": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Sint-Genesius-Rode": "Brandweerzone Vlaams-Brabant West",
+  "Sint-Pieters-Leeuw": "Brandweerzone Vlaams-Brabant West",
+  "Steenokkerzeel": "Brandweerzone Vlaams-Brabant West",
+  "Ternat": "Brandweerzone Vlaams-Brabant West",
+  "Tervuren": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Tielt-Winge": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Tienen": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Tremelo": "Hulpverleningszone Oost Vlaams-Brabant",
+  "Vilvoorde": "Brandweerzone Vlaams-Brabant West",
+  "Wemmel": "Brandweerzone Vlaams-Brabant West",
+  "Wezembeek-Oppem": "Brandweerzone Vlaams-Brabant West",
+  "Zaventem": "Brandweerzone Vlaams-Brabant West",
+  "Zemst": "Brandweerzone Vlaams-Brabant West",
+  "Zoutleeuw": "Hulpverleningszone Oost Vlaams-Brabant"
+ },
+ "zones": {
+  "Brandweerzone Vlaams-Brabant West": {
+   "_status": "Zonaal reglement evenementen, versie 26/05/2020, van toepassing vanaf 01/02/2021 (kopie met externe toelichtingen op bever-bievene.be; zelfde reglement als https://www.politie.be/5393/sites/5393/files",
+   "uitgangen": {
+    "trappen": [
+     {
+      "vanaf": 1,
+      "aantal": 1
+     },
+     {
+      "vanaf": 100,
+      "aantal": 2
+     },
+     {
+      "vanaf": 500,
+      "aantal": 3
+     }
+    ],
+    "bron": "https://www.bever-bievene.be/sites/default/files/dbimages/docs/20200825grpunt7-6_20200526_zore_evenementen_metexternetoelichtingen.pdf",
+    "plaats": "C.1.1.2 + C.2.4, p.15/19",
+    "citaat": "heeft minimum 2 uitgangen indien de bezetting 100 of meer dan 100 personen kan bedragen"
+   },
+   "breedte_min_m": {
+    "waarde": 0.8,
+    "bron": "https://www.bever-bievene.be/sites/default/files/dbimages/docs/20200825grpunt7-6_20200526_zore_evenementen_metexternetoelichtingen.pdf",
+    "plaats": "C.2.1, p.18",
+    "citaat": "Minimumafmetingen van een uitgang / gang / doorgang zijn 80 cm breed en 200 cm hoog."
+   },
+   "evacuatieafstand_max_m": {
+    "waarde": 45.0,
+    "bron": "https://www.bever-bievene.be/sites/default/files/dbimages/docs/20200825grpunt7-6_20200526_zore_evenementen_metexternetoelichtingen.pdf",
+    "plaats": "C.2.2, p.18",
+    "citaat": "45 meter tot een eerste uitgang / 80 meter tot een tweede uitgang"
+   },
+   "blustoestellen": {
+    "per_m2": 150,
+    "min": 1,
+    "bron": "https://www.bever-bievene.be/sites/default/files/dbimages/docs/20200825grpunt7-6_20200526_zore_evenementen_metexternetoelichtingen.pdf",
+    "plaats": "E.2.1 + toelichting, p.27",
+    "citaat": "per begonnen schijf van 150 m² grondoppervlakte van de constructie(s) ... In elk kraam, foodtruck, eetstand, ... moet minstens 1 toestel (ABC-poederblusser of water/schuimtoestel) voorzien worden."
+   },
+   "doorgang_hulpdiensten": {
+    "breedte_m": 4,
+    "hoogte_m": 4,
+    "bron": "https://www.bever-bievene.be/sites/default/files/dbimages/docs/20200825grpunt7-6_20200526_zore_evenementen_metexternetoelichtingen.pdf",
+    "plaats": "D.1.1-D.1.3, p.25",
+    "citaat": "Minimale vrije breedte: 4m / Minimale vrije hoogte: 4m / Minimale draaistraal: 11m aan de binnenkant / 15m aan de buitenkant"
+   },
+   "stroomgroep_afstand_m": {
+    "waarde": 1.2,
+    "bron": "https://www.bever-bievene.be/sites/default/files/dbimages/docs/20200825grpunt7-6_20200526_zore_evenementen_metexternetoelichtingen.pdf",
+    "plaats": "F.9.2, p.37",
+    "citaat": "De toestellen moeten geplaatst worden op minstens 120 cm van brandbare materialen en constructies of er zodanig van worden afgescheiden dat brandgevaar wordt voorkomen."
+   }
+  },
+  "Hulpverleningszone Oost Vlaams-Brabant": {
+   "_status": "Zonaal horeca- en evenementenreglement, goedgekeurd zoneraad 24/11/2021, ingang 01/06/2022 (Diest GR-besluit 21/02/2022, bijlage evenementenreglement versie 25_10_2021). Rotselaar-kopie (https://www.r",
+   "uitgangen": {
+    "trappen": [
+     {
+      "vanaf": 1,
+      "aantal": 1
+     },
+     {
+      "vanaf": 100,
+      "aantal": 2
+     },
+     {
+      "vanaf": 500,
+      "aantal": 3
+     }
+    ],
+    "bron": "https://diest.be/sites/default/files/2022-06/Zonaal%20evenementenreglement.pdf",
+    "plaats": "Art. 4.1, p.15/45",
+    "citaat": "2 uitgangen (diagonaal) hebben bij een bezetting van 100 tot 499 personen"
+   },
+   "breedte_min_m": {
+    "waarde": 0.8,
+    "bron": "https://diest.be/sites/default/files/2022-06/Zonaal%20evenementenreglement.pdf",
+    "plaats": "Art. 4.3, p.15/45",
+    "citaat": "Uitgangen zijn minimum 80 cm breed. De vrije hoogte is minimum 200 cm over de gehele breedte (let op met tentflappen)."
+   },
+   "breedte_per_persoon_cm": {
+    "waarde": 1.0,
+    "bron": "https://diest.be/sites/default/files/2022-06/Zonaal%20evenementenreglement.pdf",
+    "plaats": "Art. 4.2, p.15/45",
+    "citaat": "een totale nuttige breedte hebben die tenminste gelijk is, in centimeters, aan het aantal personen die ze moeten gebruiken"
+   },
+   "evacuatieafstand_max_m": {
+    "waarde": 30.0,
+    "bron": "https://diest.be/sites/default/files/2022-06/Zonaal%20evenementenreglement.pdf",
+    "plaats": "Art. 4.6, p.16/45",
+    "citaat": "De af te leggen afstand vanuit elk punt van de inrichting tot aan de dichtstbijzijnde uitgang bedraagt maximaal 30 m."
+   },
+   "blustoestellen": {
+    "per_m2": 150,
+    "min": 1,
+    "bron": "https://diest.be/sites/default/files/2022-06/Zonaal%20evenementenreglement.pdf",
+    "plaats": "Art. 5.1, p.17/45",
+    "citaat": "feesttent of gebouw: 1 snelblusser per 150 m² ... eetkramen/foodtrucks: 1 snelblusser"
+   },
+   "doorgang_hulpdiensten": {
+    "breedte_m": 4,
+    "hoogte_m": 4,
+    "bron": "https://diest.be/sites/default/files/2022-06/Zonaal%20evenementenreglement.pdf",
+    "plaats": "Art. 3.1-3.6, p.14/45",
+    "citaat": "minimale vrije doorgang van 4 m breedte en 4 m hoogte ... 11 m draaicirkel aan de binnenkant en 15 m aan de buitenkant ... maximaal 60 m verwijderd zijn van een verharde opstelplaats"
+   }
+  },
+  "Zone Midwest": {
+   "_status": "GEEN zonaal brandweerdocument: 'Reglementen en Richtlijnen voor organisatoren van evenementen', versie 27/03/2014, Veiligheidscel Roeselare-Izegem-Hooglede (politiezone RIHO), verwijst naar het politi",
+   "uitgangen": {
+    "trappen": [
+     {
+      "vanaf": 1,
+      "aantal": 1
+     },
+     {
+      "vanaf": 100,
+      "aantal": 2
+     },
+     {
+      "vanaf": 500,
+      "aantal": 3
+     }
+    ],
+    "bron": "https://izegem.be/sites/izegem/files/2020-08/reglementen_en_richtlijnen_voor_organisatoren_van_evenementen.pdf",
+    "plaats": "7.b, p.5",
+    "citaat": "waar gewoonlijk ten minste 100 personen vertoeven, beschikken over ten minste twee gescheiden uitgangen"
+   },
+   "breedte_min_m": {
+    "waarde": 0.8,
+    "bron": "https://izegem.be/sites/izegem/files/2020-08/reglementen_en_richtlijnen_voor_organisatoren_van_evenementen.pdf",
+    "plaats": "7.b, p.5",
+    "citaat": "De nuttige breedte van deze uitgangen en van de evacuatiewegen is gelijk aan ten minste 0,80 m per uitgang of evacuatieweg en is vrij van elke hindernis tot op een hoogte van ten minste 2m."
+   },
+   "breedte_per_persoon_cm": {
+    "waarde": 1.0,
+    "bron": "https://izegem.be/sites/izegem/files/2020-08/reglementen_en_richtlijnen_voor_organisatoren_van_evenementen.pdf",
+    "plaats": "7.b, p.5",
+    "citaat": "De uitgangen en –deuren hebben in totaal een vrije breedte die ten minste gelijk is, in centimeter, aan het aantal in de instelling toegelaten personen."
+   },
+   "evacuatieafstand_max_m": {
+    "waarde": 30.0,
+    "bron": "https://izegem.be/sites/izegem/files/2020-08/reglementen_en_richtlijnen_voor_organisatoren_van_evenementen.pdf",
+    "plaats": "7.b, p.5",
+    "citaat": "mag geen enkel punt van deze instelling verder dan 30m van deze uitgang gelegen zijn"
+   },
+   "blustoestellen": {
+    "per_m2": 150,
+    "min": 1,
+    "bron": "https://izegem.be/sites/izegem/files/2020-08/reglementen_en_richtlijnen_voor_organisatoren_van_evenementen.pdf",
+    "plaats": "13.b-d, p.10",
+    "citaat": "Per 150m² is 1 bluseenheid ter beschikking ... (1 bluseenheid = 6 kg poederblusser of 9 l schuimblusser)"
+   },
+   "stroomgroep_afstand_m": {
+    "waarde": 4,
+    "bron": "https://izegem.be/sites/izegem/files/2020-08/reglementen_en_richtlijnen_voor_organisatoren_van_evenementen.pdf",
+    "plaats": "11.d, p.8",
+    "citaat": "De installatie en de stroomgroep staan op minstens 4 meter van de inrichting en zijn in die mate afgeschermd dat ze geen hinder vormen en onbereikbaar zijn voor de aanwezigen."
+   }
+  },
+  "Brandweer Zone Antwerpen": {
+   "_status": "Standaardvoorwaarden Brandweer Zone Antwerpen 2023 (evenementen op openbare weg). Paginanummers = gedrukte paginanummers. Grote tijdelijke inrichting = >60 m² of >100 personen (rubriek 4d, p.14).",
+   "uitgangen": {
+    "trappen": [
+     {
+      "vanaf": 1,
+      "aantal": 1
+     },
+     {
+      "vanaf": 51,
+      "aantal": 2
+     },
+     {
+      "vanaf": 251,
+      "aantal": 3
+     },
+     {
+      "vanaf": 501,
+      "aantal": 4
+     }
+    ],
+    "bron": "https://assets.antwerpen.be/srv/assets/api/download/a615af80-0f29-4839-b6ea-ac72cd105cde/Standaardvoorwaarden%20Brandweer%20Zone%20Antwerpen%202023.pdf",
+    "plaats": "4d, p.17",
+    "citaat": "van 51 tot 250 personen (meer dan 30 m² en tot 150 m²) : 2 uitgangen"
+   },
+   "breedte_min_m": {
+    "waarde": 0.8,
+    "bron": "https://assets.antwerpen.be/srv/assets/api/download/a615af80-0f29-4839-b6ea-ac72cd105cde/Standaardvoorwaarden%20Brandweer%20Zone%20Antwerpen%202023.pdf",
+    "plaats": "4d, p.17",
+    "citaat": "zijn minimum 80 cm breed (a rato1,25 cm per persoon die er gebruik van maakt) / vrije hoogte = minimum 200 cm"
+   },
+   "breedte_per_persoon_cm": {
+    "waarde": 1.25,
+    "bron": "https://assets.antwerpen.be/srv/assets/api/download/a615af80-0f29-4839-b6ea-ac72cd105cde/Standaardvoorwaarden%20Brandweer%20Zone%20Antwerpen%202023.pdf",
+    "plaats": "4d, p.17",
+    "citaat": "zijn minimum 80 cm breed (a rato1,25 cm per persoon die er gebruik van maakt) / vrije hoogte = minimum 200 cm"
+   },
+   "blustoestellen": {
+    "per_m2": 100,
+    "min": 2,
+    "bron": "https://assets.antwerpen.be/srv/assets/api/download/a615af80-0f29-4839-b6ea-ac72cd105cde/Standaardvoorwaarden%20Brandweer%20Zone%20Antwerpen%202023.pdf",
+    "plaats": "4d p.19; 4c p.12; 4e p.23",
+    "citaat": "1 bluseenheid per begonnen schijf van 100 m² / met een minimum van 2 snelblussers per inrichting / minstens 1 snelblusser per niveau."
+   },
+   "doorgang_hulpdiensten": {
+    "breedte_m": 4,
+    "hoogte_m": 4,
+    "bron": "https://assets.antwerpen.be/srv/assets/api/download/a615af80-0f29-4839-b6ea-ac72cd105cde/Standaardvoorwaarden%20Brandweer%20Zone%20Antwerpen%202023.pdf",
+    "plaats": "p.3-4; 4d p.15",
+    "citaat": "Tijdelijke inrichting > 150 m²: moet bereikbaar zijn voor de voertuigen van de hulpdiensten , vrije doorgang van 4 m breed en 4 m hoog ... heeft draaistralen van minimaal 11 m aan de binnenkant en 15 m aan de buitenkant"
+   },
+   "stroomgroep_afstand_m": {
+    "waarde": 1.2,
+    "bron": "https://assets.antwerpen.be/srv/assets/api/download/a615af80-0f29-4839-b6ea-ac72cd105cde/Standaardvoorwaarden%20Brandweer%20Zone%20Antwerpen%202023.pdf",
+    "plaats": "4e p.22; p.15",
+    "citaat": "moet op voldoende afstand – ten minste 120 cm - van brandbare materialen en gebouwen worden geplaatst ... moet zich op minder dan 60 m bevinden van de plaats waar de brandweervoertuigen zich kunnen opstellen."
+   }
+  },
+  "Brandweer Zone Rand": {
+   "_status": "Evenementenfiche 'Grote tijdelijke inrichting (> 150 m² of > 100 pers)', versie 1, geldig tot 31/12/2026 (Google Docs-export, footer www.brandweerzonerand.be). Kooktoestel-fiche: https://docs.google.c",
+   "uitgangen": {
+    "trappen": [
+     {
+      "vanaf": 1,
+      "aantal": 1
+     },
+     {
+      "vanaf": 100,
+      "aantal": 2
+     },
+     {
+      "vanaf": 500,
+      "aantal": 3
+     }
+    ],
+    "bron": "https://docs.google.com/document/d/1SI2VLEECuOFmUinCIm1JOz-On69AVa3R-UaO37SMszY/export?format=pdf",
+    "plaats": "p.2/5",
+    "citaat": "100 - 500 pers: 2 uitgangen"
+   },
+   "breedte_min_m": {
+    "waarde": 0.8,
+    "bron": "https://docs.google.com/document/d/1SI2VLEECuOFmUinCIm1JOz-On69AVa3R-UaO37SMszY/export?format=pdf",
+    "plaats": "p.2/5",
+    "citaat": "vrije breedte minimaal 80 cm / vrije hoogte minimaal 2 m"
+   },
+   "breedte_per_persoon_cm": {
+    "waarde": 1.0,
+    "bron": "https://docs.google.com/document/d/1SI2VLEECuOFmUinCIm1JOz-On69AVa3R-UaO37SMszY/export?format=pdf",
+    "plaats": "p.2/5",
+    "citaat": "1 cm/bezoeker"
+   },
+   "evacuatieafstand_max_m": {
+    "waarde": 30.0,
+    "bron": "https://docs.google.com/document/d/1SI2VLEECuOFmUinCIm1JOz-On69AVa3R-UaO37SMszY/export?format=pdf",
+    "plaats": "p.3/5",
+    "citaat": "De uitgangen zijn gespreid over de tent zodat er nooit meer dan 30 m moet worden afgelegd om een (nood)uitgang te bereiken"
+   },
+   "blustoestellen": {
+    "per_m2": 150,
+    "min": 1,
+    "bron": "https://docs.google.com/document/d/1SI2VLEECuOFmUinCIm1JOz-On69AVa3R-UaO37SMszY/export?format=pdf",
+    "plaats": "p.3-4/5; kooktoestel-fiche p.2",
+    "citaat": "minimaal 1 toestel / 150 m² ... [kooktoestel:] Er moet minsten 1 toestel binnen de 10 m van elk kooktoestel aanwezig zijn."
+   }
+  },
+  "Hulpverleningszone Noord-Limburg": {
+   "_status": "'Zonale richtlijnen ... tijdelijke inrichtingen en evenementen', versie 24-10-2013 (op bree.be). Oud document; actualiteit niet geverifieerd. Paginanummers = gedrukte nummers.",
+   "uitgangen": {
+    "trappen": [
+     {
+      "vanaf": 1,
+      "aantal": 1
+     },
+     {
+      "vanaf": 100,
+      "aantal": 2
+     },
+     {
+      "vanaf": 500,
+      "aantal": 3
+     }
+    ],
+    "bron": "https://www.bree.be/sites/default/files/public/Zonale%20richtlijnen%20Publiek%20toegankelijke%20inrichtingen%20-%2024.10.2013.pdf",
+    "plaats": "Art. II.3, p.6",
+    "citaat": "twee uitgangen (diagonaal) hebben bij een bezetting van 100 tot 499 personen"
+   },
+   "breedte_min_m": {
+    "waarde": 0.8,
+    "bron": "https://www.bree.be/sites/default/files/public/Zonale%20richtlijnen%20Publiek%20toegankelijke%20inrichtingen%20-%2024.10.2013.pdf",
+    "plaats": "Art. V.5, p.8",
+    "citaat": "De werkelijke nuttige breedte van elke uitgang moet tenminste 80 cm bedragen ... De vrije hoogte moet minstens 2 meter zijn"
+   },
+   "evacuatieafstand_max_m": {
+    "waarde": 30.0,
+    "bron": "https://www.bree.be/sites/default/files/public/Zonale%20richtlijnen%20Publiek%20toegankelijke%20inrichtingen%20-%2024.10.2013.pdf",
+    "plaats": "Art. V.2, p.7",
+    "citaat": "Geen enkel punt in de tent mag zich verder bevinden dan 30 m van de dichtstbijzijnde uitgang."
+   },
+   "blustoestellen": {
+    "per_m2": 200,
+    "min": 1,
+    "bron": "https://www.bree.be/sites/default/files/public/Zonale%20richtlijnen%20Publiek%20toegankelijke%20inrichtingen%20-%2024.10.2013.pdf",
+    "plaats": "Art. VIII.7.1, p.10; 6.1.g p.4",
+    "citaat": "dienen minstens voorzien te worden a rato van 1 toestel per 200 m² vloeroppervlak"
+   }
+  },
+  "Brandweer Fluvia": {
+   "_status": "Infopresentatie 'Brandpreventie bij evenementen' HVZ Fluvia (PDF 2020 op wevelgem.be), verwijst naar de 'Vurige Evenementengids' (niet gevonden). Geen reglementtekst: slides. Plaats = slidenummer.",
+   "uitgangen": {
+    "trappen": [
+     {
+      "vanaf": 1,
+      "aantal": 1
+     },
+     {
+      "vanaf": 50,
+      "aantal": 2
+     },
+     {
+      "vanaf": 500,
+      "aantal": 3
+     }
+    ],
+    "bron": "https://www.wevelgem.be/media/14977/download",
+    "plaats": "slide 17",
+    "citaat": "50 – 499 pers. = 2 uitgangen"
+   },
+   "breedte_min_m": {
+    "waarde": 0.8,
+    "bron": "https://www.wevelgem.be/media/14977/download",
+    "plaats": "slide 17",
+    "citaat": "Min. breedte 80cm"
+   },
+   "breedte_per_persoon_cm": {
+    "waarde": 1.0,
+    "bron": "https://www.wevelgem.be/media/14977/download",
+    "plaats": "slide 17",
+    "citaat": "Uitgangen = 1pers./cm"
+   },
+   "evacuatieafstand_max_m": {
+    "waarde": 45.0,
+    "bron": "https://www.wevelgem.be/media/14977/download",
+    "plaats": "slide 18",
+    "citaat": "Max. loopafstand bij gesloten constructies (tent) = 45m"
+   },
+   "blustoestellen": {
+    "per_m2": 150,
+    "min": 1,
+    "bron": "https://www.wevelgem.be/media/14977/download",
+    "plaats": "slide 21",
+    "citaat": "1 bluseenheid per 150 m² / 1 bluseenheid per verhoogd brandrisico"
+   },
+   "doorgang_hulpdiensten": {
+    "breedte_m": 4,
+    "hoogte_m": 4,
+    "bron": "https://www.wevelgem.be/media/14977/download",
+    "plaats": "slide 12",
+    "citaat": "Toegangswegen naar het event zijn 4m breed en 4m hoog ... Gelijkvloerse inrichtingen liggen maximaal op 60m van de dichtste opstelling brandweer"
+   }
+  }
+ },
+ "gemeente_regels": {
+  "Oudenaarde": {
+   "_status": "GEEN zonaal document: gemeentelijk reglement Oudenaarde 'Richtlijnen ter bescherming tegen brand- en paniekrisico's in instellingen van tijdelijke aard' (PDF 2015). De zonale 'checklist tijdelijke inr",
+   "uitgangen": {
+    "trappen": [
+     {
+      "vanaf": 1,
+      "aantal": 2
+     }
+    ],
+    "bron": "https://www.oudenaarde.be/sites/default/files/public/stad/Bestuur_en_beleid/ReglementenVerordeningen/Reglementen/RichtlijnenBrandweerTijdInst.pdf",
+    "plaats": "Art. 6, p.3",
+    "citaat": "Een evenementenruimte in een tent of in een gebouw moet minstens twee uitgangen hebben"
+   },
+   "breedte_min_m": {
+    "waarde": 0.8,
+    "bron": "https://www.oudenaarde.be/sites/default/files/public/stad/Bestuur_en_beleid/ReglementenVerordeningen/Reglementen/RichtlijnenBrandweerTijdInst.pdf",
+    "plaats": "Art. 6, p.3",
+    "citaat": "die elk minstens 80cm vrije breedte en minstens 200 cm vrije hoogte moeten hebben. Schuifdeuren zijn verboden. Vanaf 500 personen moet minstens één van de vereiste evacuatiewegen 240 cm breed zijn."
+   },
+   "breedte_per_persoon_cm": {
+    "waarde": 1.0,
+    "bron": "https://www.oudenaarde.be/sites/default/files/public/stad/Bestuur_en_beleid/ReglementenVerordeningen/Reglementen/RichtlijnenBrandweerTijdInst.pdf",
+    "plaats": "Art. 6, p.3",
+    "citaat": "een totale breedte hebben die tenminste gelijk is, in centimeters, aan het aantal personen die ze moet gebruiken"
+   },
+   "evacuatieafstand_max_m": {
+    "waarde": 30.0,
+    "bron": "https://www.oudenaarde.be/sites/default/files/public/stad/Bestuur_en_beleid/ReglementenVerordeningen/Reglementen/RichtlijnenBrandweerTijdInst.pdf",
+    "plaats": "Art. 6, p.3",
+    "citaat": "30 m tot de dichtstbijzijnde trap of uitgang / 60 m tot de tweede trap of uitgang"
+   },
+   "blustoestellen": {
+    "per_m2": 150,
+    "min": 1,
+    "bron": "https://www.oudenaarde.be/sites/default/files/public/stad/Bestuur_en_beleid/ReglementenVerordeningen/Reglementen/RichtlijnenBrandweerTijdInst.pdf",
+    "plaats": "Art. 13, p.5",
+    "citaat": "met een minimum dekking van 1 bluseenheid per 150 m² vloeroppervlakte"
+   },
+   "doorgang_hulpdiensten": {
+    "breedte_m": 4,
+    "hoogte_m": 4,
+    "bron": "https://www.oudenaarde.be/sites/default/files/public/stad/Bestuur_en_beleid/ReglementenVerordeningen/Reglementen/RichtlijnenBrandweerTijdInst.pdf",
+    "plaats": "Art. 5, p.3",
+    "citaat": "minimale vrije breedte: 4 m / minimale draaistraal: 11 m aan de binnenkant en 15 m aan de buitenkant / minimale vrije hoogte: 4 m"
+   }
+  },
+  "Assenede": {
+   "_status": "GEEN zonaal document: politieverordening Assenede 'ter bescherming tegen brand- en paniekrisico's bij publieke organisaties/evenementen van tijdelijke aard', versie 22 maart 2011 (zelfde model als Oud",
+   "uitgangen": {
+    "trappen": [
+     {
+      "vanaf": 1,
+      "aantal": 1
+     },
+     {
+      "vanaf": 100,
+      "aantal": 2
+     },
+     {
+      "vanaf": 500,
+      "aantal": 3
+     }
+    ],
+    "bron": "https://www.assenede.be/data/content/file/Evenementen/richtlijnen-evenementen-versie-22-maart-2011.pdf",
+    "plaats": "Art. 6 §2, p.5",
+    "citaat": "twee uitgangen of trappen indien de bezetting 100 of meer dan 100 en minder dan 500 personen bedraagt"
+   },
+   "breedte_min_m": {
+    "waarde": 0.8,
+    "bron": "https://www.assenede.be/data/content/file/Evenementen/richtlijnen-evenementen-versie-22-maart-2011.pdf",
+    "plaats": "Art. 6 §3, p.6",
+    "citaat": "Een uitgang, een evacuatieweg en een deur moeten minstens 80cm breed zijn en 200cm hoog zijn."
+   },
+   "breedte_per_persoon_cm": {
+    "waarde": 1.0,
+    "bron": "https://www.assenede.be/data/content/file/Evenementen/richtlijnen-evenementen-versie-22-maart-2011.pdf",
+    "plaats": "Art. 6 §3, p.6",
+    "citaat": "een totale breedte hebben die tenminste gelijk is, in centimeters, aan het aantal personen, dat ze moet gebruiken"
+   },
+   "evacuatieafstand_max_m": {
+    "waarde": 30.0,
+    "bron": "https://www.assenede.be/data/content/file/Evenementen/richtlijnen-evenementen-versie-22-maart-2011.pdf",
+    "plaats": "Art. 6 §6, p.6",
+    "citaat": "30 m tot de dichtstbijzijnde trap of uitgang; 60 m tot de tweede trap of uitgang."
+   },
+   "doorgang_hulpdiensten": {
+    "breedte_m": 4,
+    "hoogte_m": 4,
+    "bron": "https://www.assenede.be/data/content/file/Evenementen/richtlijnen-evenementen-versie-22-maart-2011.pdf",
+    "plaats": "Art. 5, p.4-5",
+    "citaat": "minimale vrije breedte: 4 m / minimale draaistraal: 11 m aan de binnenkant en 15 m aan de buitenkant / minimale vrije hoogte: 4 m"
+   },
+   "stroomgroep_afstand_m": {
+    "waarde": 4,
+    "bron": "https://www.assenede.be/data/content/file/Evenementen/richtlijnen-evenementen-versie-22-maart-2011.pdf",
+    "plaats": "Art. 12, p.9",
+    "citaat": "Installaties (met een verbranding van fossiele brandstoffen) en hun brandstofvoorraden moeten tenminste op 4 meter afstand zijn verwijderd van een tent, beglaasde gevel of brandbare materialen. ... verboden ... stroomgen"
+   }
+  }
+ },
+ "strengste": {
+  "breedte_min_m": {
+   "waarde": 0.8,
+   "bron": "https://www.bever-bievene.be/sites/default/files/dbimages/docs/20200825grpunt7-6_20200526_zore_evenementen_metexternetoelichtingen.pdf",
+   "plaats": "C.2.1, p.18",
+   "citaat": "Minimumafmetingen van een uitgang / gang / doorgang zijn 80 cm breed en 200 cm hoog.",
+   "zone": "Brandweerzone Vlaams-Brabant West"
+  },
+  "breedte_per_persoon_cm": {
+   "waarde": 1.25,
+   "bron": "https://assets.antwerpen.be/srv/assets/api/download/a615af80-0f29-4839-b6ea-ac72cd105cde/Standaardvoorwaarden%20Brandweer%20Zone%20Antwerpen%202023.pdf",
+   "plaats": "4d, p.17",
+   "citaat": "zijn minimum 80 cm breed (a rato1,25 cm per persoon die er gebruik van maakt) / vrije hoogte = minimum 200 cm",
+   "zone": "Brandweer Zone Antwerpen"
+  },
+  "evacuatieafstand_max_m": {
+   "waarde": 30.0,
+   "bron": "https://diest.be/sites/default/files/2022-06/Zonaal%20evenementenreglement.pdf",
+   "plaats": "Art. 4.6, p.16/45",
+   "citaat": "De af te leggen afstand vanuit elk punt van de inrichting tot aan de dichtstbijzijnde uitgang bedraagt maximaal 30 m.",
+   "zone": "Hulpverleningszone Oost Vlaams-Brabant"
+  },
+  "stroomgroep_afstand_m": {
+   "waarde": 4,
+   "bron": "https://izegem.be/sites/izegem/files/2020-08/reglementen_en_richtlijnen_voor_organisatoren_van_evenementen.pdf",
+   "plaats": "11.d, p.8",
+   "citaat": "De installatie en de stroomgroep staan op minstens 4 meter van de inrichting en zijn in die mate afgeschermd dat ze geen hinder vormen en onbereikbaar zijn voor de aanwezigen.",
+   "zone": "Zone Midwest"
+  },
+  "doorgang_hulpdiensten": {
+   "breedte_m": 4,
+   "hoogte_m": 4,
+   "bron": "https://www.bever-bievene.be/sites/default/files/dbimages/docs/20200825grpunt7-6_20200526_zore_evenementen_metexternetoelichtingen.pdf",
+   "plaats": "D.1.1-D.1.3, p.25",
+   "citaat": "Minimale vrije breedte: 4m / Minimale vrije hoogte: 4m / Minimale draaistraal: 11m aan de binnenkant / 15m aan de buitenkant",
+   "zone": "Brandweerzone Vlaams-Brabant West"
+  },
+  "blustoestellen": {
+   "per_m2": 100,
+   "min": 2,
+   "bron": "https://assets.antwerpen.be/srv/assets/api/download/a615af80-0f29-4839-b6ea-ac72cd105cde/Standaardvoorwaarden%20Brandweer%20Zone%20Antwerpen%202023.pdf",
+   "plaats": "4d p.19; 4c p.12; 4e p.23",
+   "citaat": "1 bluseenheid per begonnen schijf van 100 m² / met een minimum van 2 snelblussers per inrichting / minstens 1 snelblusser per niveau.",
+   "zone": "Brandweer Zone Antwerpen"
+  },
+  "uitgangen": {
+   "trappen": [
+    {
+     "vanaf": 1,
+     "aantal": 1
+    },
+    {
+     "vanaf": 50,
+     "aantal": 2
+    },
+    {
+     "vanaf": 251,
+     "aantal": 3
+    },
+    {
+     "vanaf": 501,
+     "aantal": 4
+    }
+   ],
+   "bron": "https://assets.antwerpen.be/srv/assets/api/download/a615af80-0f29-4839-b6ea-ac72cd105cde/Standaardvoorwaarden%20Brandweer%20Zone%20Antwerpen%202023.pdf",
+   "plaats": "4d, p.17",
+   "citaat": "van 51 tot 250 personen (meer dan 30 m² en tot 150 m²) : 2 uitgangen",
+   "zone": "Brandweer Zone Antwerpen"
+  }
+ },
+ "niet_gevonden": [
+  "Zone Midwest - eigen evenementengids (42 p., hooglede.be/organiseren): niet via zoekresultaten gevonden",
+  "HVZ Vlaamse Ardennen - zonale checklist tijdelijke inrichtingen: URL gaf 404",
+  "Zone Rivierenland - mechelen.be 'algemene voorschriften met betrekking tot tenten': 404",
+  "Brandweer Zone Kempen - laakdal.be politiereglement: 404",
+  "Taxandria, Zone Centrum (Gent: raadpleegomgeving-documenten niet downloadbaar), Waasland, Westhoek, Zone 1, Hulpverleningszone Oost, Meetjesland (zonaal), Oost-Limburg, Zuid-West Limburg: niets bruikbaars gevonden"
+ ]
 }

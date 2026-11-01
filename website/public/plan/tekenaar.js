@@ -84,6 +84,8 @@ function laad(d) {
 // normen.json: { gemeenten: {gemeente: zone}, zones: {zone: {...}}, strengste: {...} }; per parameter {waarde, bron, zone}.
 function norm(param) {
   if (!NORMEN) return null;
+  const gr = NORMEN.gemeente_regels && NORMEN.gemeente_regels[S.d.gemeente];
+  if (gr && gr[param] != null) return Object.assign({ gemeente: S.d.gemeente }, gr[param]);
   const zone = NORMEN.gemeenten && NORMEN.gemeenten[S.d.gemeente];
   const z = zone && NORMEN.zones && NORMEN.zones[zone];
   if (z && z[param] != null) return Object.assign({ zone }, z[param]);
@@ -99,7 +101,8 @@ function aantalUitgangen(personen) {
 }
 function bronTekst(n) {
   if (!n) return "";
-  return (n.strengste ? "Strengste gekende eis" + (n.zone ? " (" + n.zone + ")" : "") : n.zone ? "Brandweerzone " + n.zone : "") + (n.bron ? " · bron: " + n.bron : "");
+  const wie = n.gemeente ? "Reglement van " + n.gemeente : n.strengste ? "Geen eigen regel van je zone gevonden: strengste gekende eis (" + n.zone + ")" : n.zone || "";
+  return wie + (n.plaats ? ", " + n.plaats : "");
 }
 
 // ---------- Kaart (inplantingsplan) ----------

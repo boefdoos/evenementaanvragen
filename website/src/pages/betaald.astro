@@ -7,9 +7,27 @@ import huisstijl from "../huisstijl.css?raw";
 <Basis title="Betaling · evenementaanvragen.be" description="Status van je betaling bij evenementaanvragen.be.">
 <style is:inline slot="head" set:html={huisstijl}></style>
 <meta slot="head" name="robots" content="noindex">
+<style is:inline slot="head">
+.koffie{display:none;margin-bottom:6px}
+.panel.klaar{border:1px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,var(--grad) border-box}
+.panel.klaar .koffie{display:block}
+.panel.klaar h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.koffie .damp{animation:damp 2.4s ease-in-out infinite;opacity:0}
+.koffie .damp:nth-child(2){animation-delay:.6s}.koffie .damp:nth-child(3){animation-delay:1.2s}
+@keyframes damp{0%{opacity:0;transform:translateY(6px)}40%{opacity:.9}100%{opacity:0;transform:translateY(-10px)}}
+@media (prefers-reduced-motion:reduce){.koffie .damp{animation:none;opacity:.8}}
+</style>
 <main>
 <section class="hero"><div class="wrap" style="display:block;max-width:720px">
   <div class="panel" aria-live="polite">
+    <svg class="koffie" width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
+      <defs><linearGradient id="kg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc84a"/><stop offset="1" stop-color="#ff5a4e"/></linearGradient></defs>
+      <path class="damp" d="M26 22c-3-4 3-6 0-10" fill="none" stroke="#aab0c4" stroke-width="2.5" stroke-linecap="round"/>
+      <path class="damp" d="M35 22c-3-4 3-6 0-10" fill="none" stroke="#aab0c4" stroke-width="2.5" stroke-linecap="round"/>
+      <path class="damp" d="M44 22c-3-4 3-6 0-10" fill="none" stroke="#aab0c4" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M14 28h42v14c0 11-9 20-21 20s-21-9-21-20z" fill="url(#kg)"/>
+      <path d="M56 32h3a7 7 0 0 1 0 14h-4" fill="none" stroke="url(#kg)" stroke-width="5"/>
+    </svg>
     <div class="k">Dossier <span id="dos">–</span></div>
     <h1 id="kop" style="font-size:clamp(28px,4vw,40px);margin-top:12px">Even kijken…</h1>
     <p class="lead" id="tekst" style="margin-top:14px">We vragen je betaling op.</p>
@@ -30,7 +48,9 @@ import huisstijl from "../huisstijl.css?raw";
     fetch(ENDPOINT + "?status=" + encodeURIComponent(id)).then((r) => r.json()).then((j) => {
       if (!j.ok) throw new Error(j.error);
       if (j.status === "betaald") {
-        zet("Betaald. Wij nemen het over.", "Je krijgt per mail je deadline, en een bevestiging zodra je aanvraag ingediend is.");
+        zet("", "Wij maken je dossier op, vragen het materiaal aan en dienen alles op tijd in. Je krijgt een mail zodra je aanvraag bij de gemeente ligt.");
+        $("kop").innerHTML = "Betaald. <span>Tijd voor koffie.</span>";
+        document.querySelector(".panel").classList.add("klaar");
       } else if (j.status === "open" && pogingen < 4) {
         // Mollie meldt een betaling soms enkele seconden later.
         pogingen++; zet("Even kijken…", "Je betaling is nog niet bevestigd. We proberen opnieuw."); setTimeout(vraag, 3000);
