@@ -361,7 +361,9 @@ function toonMateriaal() {
 }
 document.querySelectorAll('input[name="materiaal"]').forEach(r => r.addEventListener("change", toonMateriaal));
 function toonUpload() {
-  document.getElementById("uploadwrap").hidden = !document.getElementById("plan_0").checked && !document.getElementById("plan_1").checked && !document.getElementById("zp_0").checked;
+  const wrap = document.getElementById("uploadwrap");
+  wrap.hidden = !document.getElementById("plan_0").checked && !document.getElementById("zp_0").checked;
+  if (wrap.hidden) { const f = document.getElementById("bestanden"); f.value = ""; document.getElementById("bestandinfo").textContent = ""; }
 }
 const ls = document.getElementById("locatie_soort");
 ls.addEventListener("change", () => {
