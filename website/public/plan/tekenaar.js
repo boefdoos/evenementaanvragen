@@ -59,9 +59,25 @@ const STAPPEN = {
 
 // ---------- Toestand ----------
 let S = null, sel = null, uid = 1, DEMO = false, AUTH = null, NORMEN = null, BEHEER = false;
+// Welke plannen dit dossier nodig heeft, met de reden. Zelfde regels als de agent (skill, stap 4 punt 7):
+// inplantingsplan bij buiten, tent, openbaar domein, vanaf 500 bezoekers of als de gemeente het vraagt;
+// grondplan bij een tent of zaal (bij een zaal vraagt de brandweer het meestal), of als de gemeente het vraagt.
+let PLANNEN_GEMEENTE = {};
+function nodigePlannen(d) {
+  const sit = d.situatie || "tent", g = PLANNEN_GEMEENTE[d.gemeente] || {}, r = { inplanting: [], grondplan: [] };
+  if (sit === "tent") { r.inplanting.push("tent"); r.grondplan.push("tent"); }
+  if (sit === "buiten") r.inplanting.push("buiten");
+  if (sit === "zaal") r.grondplan.push("zaal");
+  if (/^(ja|deels)$/i.test(String(d.openbaar || ""))) r.inplanting.push("openbaar domein");
+  if ((+d.bezoekers || 0) >= 500) r.inplanting.push("500 bezoekers of meer");
+  if (g.inplanting) r.inplanting.push(d.gemeente + " vraagt het");
+  if (g.grondplan && sit !== "buiten") r.grondplan.push(d.gemeente + " vraagt het");
+  const plannen = ["inplanting", "grondplan"].filter((p) => r[p].length);
+  return { plannen: plannen.length ? plannen : ["inplanting", "grondplan"], redenen: r, citaat: g };
+}
 function nieuweStaat(d) {
   const sit = d.situatie || "tent";
-  const plannen = sit === "zaal" ? ["grondplan"] : sit === "buiten" ? ["inplanting"] : ["inplanting", "grondplan"];
+  const plannen = nodigePlannen(d).plannen;
   const tent = String(d.tent || "").match(/(\d+(?:[.,]\d+)?)\s*[x×]\s*(\d+(?:[.,]\d+)?)/i);
   const tl = tent ? parseFloat(tent[1].replace(",", ".")) : 12, tb = tent ? parseFloat(tent[2].replace(",", ".")) : 6;
   return {
@@ -714,9 +730,14 @@ async function opslaan(cv) {
 }
 
 // ---------- Start ----------
-function start(d) {
+async function start(d) {
+  try { PLANNEN_GEMEENTE = await (await fetch("/plan/plannen.json")).json(); } catch (e) { PLANNEN_GEMEENTE = {}; }
   $("login").hidden = true; $("app").hidden = false;
   laad(d);
+  const np = nodigePlannen(d);
+  S.plannen = np.plannen; if (!S.plannen.includes(S.actief)) S.actief = S.plannen[0];
+  $("nodig").innerHTML = "Nodig voor dit evenement: " + S.plannen.map((p) => "<b>" + NAAM_PLAN[p].toLowerCase() + "</b> (" + esc(np.redenen[p].join(", ")) + ")").join(" en ") + ".";
+  $("nodig").title = S.plannen.filter((p) => np.citaat[p]).map((p) => d.gemeente + ": " + np.citaat[p]).join("\n");
   $("dossierinfo").innerHTML = (DEMO ? '<span class="pill demo">Demo</span>' : (BEHEER ? '<span class="pill demo">Beheer</span>' : "") + '<span class="pill">' + esc(AUTH.id) + "</span>") + "<span>" + esc(d.evenement || "") + (d.gemeente ? " · " + esc(d.gemeente) : "") + "</span>";
   $("tabs").innerHTML = S.plannen.map((p) => '<button role="tab" type="button" data-plan="' + p + '">' + NAAM_PLAN[p] + "</button>").join("");
   $("tabs").hidden = S.plannen.length < 2;
@@ -727,7 +748,7 @@ function start(d) {
   wisselPlan(S.actief);
   if (S.actief === "inplanting" && !S.I.gezocht && S.d.adres) setTimeout(zoekAdres, 300);
 }
-const DEMO_DOSSIER = { evenement: "Lentefuif (demo)", gemeente: "Oostende", adres: "Wellingtonstraat 10, 8400 Oostende", datum: "zaterdag 17 april 2027", bezoekers: 300, situatie: "tent", tent: "20 x 10", organisator: "Jeugdhuis Voorbeeld" };
+const DEMO_DOSSIER = { openbaar: "nee", evenement: "Lentefuif (demo)", gemeente: "Oostende", adres: "Wellingtonstraat 10, 8400 Oostende", datum: "zaterdag 17 april 2027", bezoekers: 300, situatie: "tent", tent: "20 x 10", organisator: "Jeugdhuis Voorbeeld" };
 async function login(id, email) {
   $("l-err").hidden = true; $("l-go").disabled = true;
   try {
