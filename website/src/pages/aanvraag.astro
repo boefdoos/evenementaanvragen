@@ -484,9 +484,11 @@ const regelsKlaar = fetch("/regels.json").then(r => r.json()).then(data => { RUL
 // Voorinvullen vanuit de termijncheck op de startpagina (aanvraag.html?gemeente=…&type=…&datum=JJJJ-MM-DD).
 (function () {
   const q = new URLSearchParams(location.search);
-  const gem = q.get("gemeente"), dat = q.get("datum");
+  let mee = {}; try { mee = JSON.parse(sessionStorage.getItem("termijncheck") || "{}") || {}; } catch (e) {}
+  // URL eerst; anders wat de bezoeker in deze sessie in de termijncheck koos.
+  const gem = q.get("gemeente") || mee.gemeente, dat = q.get("datum") || mee.datum;
   if (gem && [...g.options].some(o => o.value === gem)) g.value = gem;
-  const typ = q.get("type"), ts = document.getElementById("type");
+  const typ = q.get("type") || mee.type, ts = document.getElementById("type");
   if (typ && [...ts.options].some(o => o.value === typ)) ts.value = typ;
   if (dat && /^\d{4}-\d{2}-\d{2}$/.test(dat)) { sd.value = dat; sd.dispatchEvent(new Event("change")); }
 })();
