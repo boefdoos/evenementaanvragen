@@ -98,7 +98,15 @@ input[type=file]::file-selector-button{font:600 14px/1 var(--f-body);background:
 .prijs{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--line)}
 .prijs b{font:800 28px/1 var(--f-display);letter-spacing:-.03em}
 .prijs span{color:var(--soft);font-size:15px}
-.done .btn{justify-self:start;text-decoration:none}
+.done .btn{text-decoration:none}
+.done-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+#done-betaal{display:grid;gap:14px;margin-top:6px}
+#done-betaal[hidden]{display:none}
+.betaalrij{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:18px 20px;border-radius:14px;background:var(--bg);border:1px solid var(--line)}
+.bedrag{display:grid;gap:4px}
+.bedrag b{font:800 34px/1 var(--f-display);letter-spacing:-.03em}
+.bedrag span{font-size:14px;color:var(--soft)}
+.done .fijn{font-size:13px;color:var(--dim)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 .actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:8px}
@@ -269,15 +277,17 @@ footer.foot a{color:var(--soft)}
   </form>
 
   <section class="done" id="done" hidden>
-    <div class="k">Ontvangen</div>
-    <h2 id="done-kop">Bedankt.</h2>
-    <p>Je dossiernummer is <code id="dossierid">–</code>.</p>
+    <div class="done-top"><span class="k">Aanvraag ontvangen</span><code id="dossierid">–</code></div>
+    <h2 id="done-kop">Bedankt, we hebben alles.</h2>
     <div id="done-betaal" hidden>
-      <p>Na je betaling nemen wij het over. Je krijgt per mail je deadline, en een bevestiging zodra je aanvraag ingediend is.</p>
-      <a class="btn" id="betaallink" href="#">Betaal <span id="betaalbedrag"></span> <span class="arr" aria-hidden="true">→</span></a>
-      <p class="hint">Bancontact of kaart, via Mollie. Je krijgt de link ook per mail.</p>
+      <div class="betaalrij">
+        <div class="bedrag"><b id="betaalbedrag">€ 45</b><span id="betaalformule">geen btw</span></div>
+        <a class="btn" id="betaallink" href="#">Betalen <span class="arr" aria-hidden="true">→</span></a>
+      </div>
+      <p>Na je betaling nemen wij het over. Je bevestiging en de betaallink staan ook in je mailbox.</p>
+      <p class="fijn">Bancontact of kaart, veilig via Mollie.</p>
     </div>
-    <p id="done-navraag" hidden>We kijken eerst de termijn van je gemeente na. Binnen twee werkdagen krijg je per mail je deadline en een betaallink. Daarna nemen wij het over. Een bevestiging zit al in je mailbox.</p>
+    <p id="done-navraag" hidden>We kijken eerst de termijn van je gemeente na. Binnen twee werkdagen krijg je je deadline en een betaallink. Een bevestiging staat al in je mailbox.</p>
   </section>
 </div>
 </main>
@@ -543,9 +553,11 @@ form.addEventListener("submit", async e => {
     document.getElementById("done-betaal").hidden = !betaal;
     document.getElementById("done-navraag").hidden = betaal;
     if (betaal) {
-      document.getElementById("done-kop").textContent = "Bedankt. Nog één stap.";
+      document.getElementById("done-kop").textContent = "Nog één stap: betalen.";
+      document.getElementById("betaalformule").textContent = (j.formule ? j.formule + " · " : "") + "geen btw";
       document.getElementById("betaallink").href = j.betaalUrl;
       document.getElementById("betaalbedrag").textContent = j.bedrag ? "€ " + j.bedrag : "";
+      if (!j.bedrag) document.getElementById("betaalbedrag").parentElement.hidden = true;
     }
     form.hidden = true; document.getElementById("done").hidden = false;
     document.getElementById("done").scrollIntoView({ block: "start" });
