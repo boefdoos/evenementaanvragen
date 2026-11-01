@@ -16,3 +16,13 @@ function indienOordeel(res) {
   else soort = zeker ? "ok" : "geschat";
   return { soort, deadline, voorbij: deadline < t };
 }
+
+/* Buiten het aanbod in fase 1 (zie todo-en-beslissingen.md): stoeten, wielerwedstrijden,
+   1.000 of meer bezoekers. Gedeeld door startpagina en intake. */
+const BUITEN_AANBOD_TYPES = ["stoet", "wielerwedstrijd"];
+const MAX_BEZOEKERS = 999;
+function buitenAanbod(type, bezoekers) {
+  if (BUITEN_AANBOD_TYPES.includes(type)) return "Stoeten, optochten en wielerwedstrijden vallen (nog) niet in ons aanbod.";
+  if (bezoekers > MAX_BEZOEKERS) return "Evenementen met 1.000 of meer bezoekers vallen (nog) niet in ons aanbod.";
+  return null;
+}

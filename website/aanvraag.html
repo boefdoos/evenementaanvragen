@@ -98,9 +98,9 @@ input[type=file]::file-selector-button{font:600 14px/1 var(--f-body);background:
 .termijn p{font-size:15px;color:var(--soft)}
 .termijn.ok .t-kop::before{background:#5fd39a}
 .termijn.krap .t-kop::before,.termijn.twijfel .t-kop::before{background:var(--sun)}
-.termijn.laat{border-color:rgba(255,90,78,.5);background:rgba(255,90,78,.12)}
-.termijn.laat .t-kop::before{background:var(--accent)}
-.termijn.laat p{color:var(--text)}
+.termijn.laat,.termijn.buiten{border-color:rgba(255,90,78,.5);background:rgba(255,90,78,.12)}
+.termijn.laat .t-kop::before,.termijn.buiten .t-kop::before{background:var(--accent)}
+.termijn.laat p,.termijn.buiten p{color:var(--text)}
 .err{color:var(--accent);font-size:15px;font-weight:600}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
@@ -360,6 +360,8 @@ function berekenTermijn() {
   if (!regelsGeladen) return null;
   const gemNaam = veld("gemeente"), type = veld("type"), datum = veld("startdatum");
   if (!gemNaam || !type || !/^\d{4}-\d{2}-\d{2}$/.test(datum)) return null;
+  const buiten = buitenAanbod(type, +veld("bezoekers") || 0);
+  if (buiten) return { soort: "buiten", gemeente: gemNaam, reden: buiten };
   const r = RULES.find(x => x.gemeente === gemNaam);
   if (!r) return { soort: "onbekend", gemeente: gemNaam };
   const od = veld("openbaar_domein");
@@ -377,7 +379,10 @@ function toonTermijn() {
   if (!termijn) { box.hidden = true; zetBlokkade(false); return; }
   const t = termijn, d = t.deadline ? fmtLong(t.deadline) : "";
   let k, p;
-  if (t.soort === "laat") {
+  if (t.soort === "buiten") {
+    k = "Niet in ons aanbod";
+    p = t.reden + " Daarvoor kunnen we deze aanvraag niet opnemen.";
+  } else if (t.soort === "laat") {
     k = "Te laat voor " + t.gemeente;
     p = "De deadline was " + d + " (" + t.termijn + " vooraf). We kunnen deze aanvraag niet meer op tijd indienen. Kies een latere datum als dat kan, of neem zelf contact op met de gemeente.";
   } else if (t.soort === "twijfel") {
@@ -397,14 +402,14 @@ function toonTermijn() {
     p = "Deadline bij " + t.gemeente + ": " + d + ". Ruim op tijd. Stuur je aanvraag door, dan gaan we meteen voor je aan de slag.";
   }
   box.className = "termijn " + t.soort; kop.textContent = k; tekst.textContent = p; box.hidden = false;
-  zetBlokkade(t.soort === "laat");
+  zetBlokkade(t.soort === "laat" || t.soort === "buiten");
 }
 
 function zetBlokkade(aan) {
   const btn = document.getElementById("send"), st = document.getElementById("status");
   btn.classList.toggle("geblokkeerd", aan);
   btn.setAttribute("aria-disabled", aan ? "true" : "false");
-  st.textContent = aan ? "Doorsturen kan niet: dit lukt niet meer voor de deadline van de gemeente." : "";
+  st.textContent = aan ? (termijn && termijn.soort === "buiten" ? "Doorsturen kan niet: dit valt niet in ons aanbod." : "Doorsturen kan niet: dit lukt niet meer voor de deadline van de gemeente.") : "";
 }
 
 ["gemeente", "type", "startdatum", "bezoekers", "openbaar_domein", "eerste_editie"].forEach(n => {
@@ -453,6 +458,10 @@ form.addEventListener("submit", async e => {
   const err = document.getElementById("formerr"), st = document.getElementById("status"), btn = document.getElementById("send");
   err.hidden = true;
   await regelsKlaar; toonTermijn();
+  if (termijn && termijn.soort === "buiten") {
+    err.textContent = termijn.reden; err.hidden = false;
+    document.getElementById("termijn").scrollIntoView({ block: "center", behavior: "smooth" }); return;
+  }
   if (termijn && termijn.soort === "laat") {
     err.textContent = "Deze aanvraag kan niet meer op tijd ingediend worden bij " + termijn.gemeente + ". Kies een latere datum als dat kan.";
     err.hidden = false; document.getElementById("termijn").scrollIntoView({ block: "center", behavior: "smooth" }); return;
