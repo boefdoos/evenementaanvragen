@@ -1,0 +1,20 @@
+---
+// Eigen foutpagina (Vercel toont 404.html bij een onbekend adres).
+import Basis from "../layouts/Basis.astro";
+import huisstijl from "../huisstijl.css?raw";
+---
+<Basis title="Pagina niet gevonden – evenementaanvragen.be" description="Deze pagina bestaat niet (meer).">
+<style is:inline slot="head" set:html={huisstijl}></style>
+<meta slot="head" name="robots" content="noindex">
+<main>
+<section class="hero"><div class="wrap" style="display:block;max-width:720px">
+  <div class="k">404</div>
+  <h1 style="margin-top:12px">Deze pagina <span>bestaat niet.</span></h1>
+  <p class="lead">Zoek je de termijn van je gemeente? Die vind je in het overzicht.</p>
+  <div class="cta">
+    <a class="btn primary" href="/gemeenten/">Alle gemeenten <span class="arr" aria-hidden="true">→</span></a>
+    <a class="btn" href="/">Naar de startpagina</a>
+  </div>
+</div></section>
+</main>
+</Basis>

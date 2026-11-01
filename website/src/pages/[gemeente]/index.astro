@@ -73,6 +73,12 @@ const voorwaarden = (r.bijzonder || [])
 const u = r.uitleen || {};
 const bron = Array.isArray(r.bron) ? r.bron[0] : r.bron;
 const start = `/aanvraag.html?gemeente=${encodeURIComponent(g)}`;
+// Andere gemeenten uit dezelfde provincie (alfabetisch rond deze gemeente), voor interne links.
+const zelfde = regels.filter((x) => x.status !== "onbekend" && (x.provincie || "West-Vlaanderen") === provincie)
+  .map((x) => x.gemeente).sort((a, b) => a.localeCompare(b, "nl"));
+const pos = zelfde.indexOf(g);
+const vanaf = Math.max(0, Math.min(pos - 4, zelfde.length - 9));
+const andere = zelfde.slice(vanaf, vanaf + 9).filter((x) => x !== g).slice(0, 8);
 
 const title = `Evenement aanvragen in ${g}: termijn en werkwijze`;
 const desc = algTxt
@@ -180,6 +186,11 @@ const ld = [
       : <div class="vak"><h3>Wat wij doen</h3><p>Wij berekenen je deadline, maken het volledige dossier op met formulieren, bijlagen en bewonersbrief, en dienen het in. Jij blijft het aanspreekpunt van de gemeente.</p></div>}
   </div>
   {bron && <p class="bron">Bron: <a href={bron} rel="nofollow noopener">website van {g}</a>. Nagekeken door evenementaanvragen.be.{r.status === "onzeker" && <> {g} publiceert geen eenduidige termijn: we rekenen met de strengste lezing.</>} De gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert.</p>}
+
+  {andere.length > 0 && <nav class="andere" aria-label={`Andere gemeenten in ${provincie}`}>
+    <div class="k">Andere gemeenten in {provincie}</div>
+    <ul>{andere.map((x) => <li><a href={`/${slug(x)}/`}>{x}</a></li>)}<li><a href="/gemeenten/">Alle gemeenten →</a></li></ul>
+  </nav>}
 
   <div class="final">
     <div><h2>Geen zin in formulieren?</h2><p>Jij vult 10 minuten in, wij maken het dossier op en dienen het in bij {g}.</p></div>

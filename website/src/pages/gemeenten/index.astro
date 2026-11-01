@@ -1,0 +1,80 @@
+---
+// Overzicht van alle Vlaamse gemeenten per provincie, met een link naar elke gemeentepagina.
+// Gemeenten zonder eigen pagina (status 'onbekend') staan erbij zonder link.
+import Basis from "../../layouts/Basis.astro";
+import huisstijl from "../../huisstijl.css?raw";
+import regels from "../../../public/regels.json";
+import { slug } from "../../slug.js";
+
+const VOLGORDE = ["Antwerpen", "Limburg", "Oost-Vlaanderen", "Vlaams-Brabant", "West-Vlaanderen"];
+const per = {};
+for (const r of regels) {
+  const p = r.provincie || "West-Vlaanderen";
+  (per[p] ||= []).push({ naam: r.gemeente, pagina: r.status !== "onbekend" ? `/${slug(r.gemeente)}/` : null });
+}
+for (const p in per) per[p].sort((a, b) => a.naam.localeCompare(b.naam, "nl"));
+const provincies = VOLGORDE.filter((p) => per[p]);
+const ld = {
+  "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+    { "@type": "ListItem", position: 1, name: "evenementaanvragen.be", item: "https://evenementaanvragen.be/" },
+    { "@type": "ListItem", position: 2, name: "Gemeenten", item: "https://evenementaanvragen.be/gemeenten/" }],
+};
+---
+<Basis title="Evenement aanvragen per gemeente in Vlaanderen" description="Termijnen en werkwijze voor een evenementaanvraag in alle 285 Vlaamse gemeenten, per provincie. Kies je gemeente en bereken je deadline." canonical="/gemeenten/">
+<style is:inline slot="head" set:html={huisstijl}></style>
+<style is:inline slot="head">
+.crumbs{font-size:14px;color:var(--dim);padding-top:22px}
+.crumbs a{color:var(--soft);text-decoration:none}
+.zoek{margin-top:28px;max-width:420px}
+.zoek input{font:500 16px/1.2 var(--f-body);height:48px;padding:0 14px;border-radius:10px;border:1px solid var(--line-2);background:var(--card);color:var(--text);width:100%}
+.zoek input:focus-visible{outline:2px solid var(--text);outline-offset:1px}
+.prov{margin-top:56px}
+.prov h2{font-size:clamp(20px,2.4vw,26px)}
+.lijst{list-style:none;margin:20px 0 0;padding:0;columns:4 180px;column-gap:24px}
+.lijst li{padding:5px 0;break-inside:avoid;font-size:16px}
+.lijst a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--line-2)}
+.lijst a:hover{border-color:var(--accent)}
+.lijst span{color:var(--dim)}
+.leeg{color:var(--soft);margin-top:24px}
+</style>
+<script type="application/ld+json" slot="head" set:html={JSON.stringify(ld)}></script>
+<main>
+<div class="wrap"><p class="crumbs"><a href="/">Start</a> · Gemeenten</p></div>
+<section class="hero" style="padding-top:28px;padding-bottom:0"><div class="wrap" style="display:block">
+  <h1>Evenement aanvragen <span>per gemeente</span></h1>
+  <p class="lead" style="max-width:56ch">Kies je gemeente voor de termijnen, wat erbij komt kijken en je persoonlijke deadline.</p>
+  <div class="zoek"><label class="k" for="zoek">Zoek je gemeente</label><input id="zoek" type="search" placeholder="bv. Oostende" autocomplete="off" style="margin-top:8px"></div>
+  <p class="leeg" id="leeg" hidden>Geen gemeente gevonden. <a href="/aanvraag.html">Start gewoon je aanvraag</a>, wij zoeken het uit.</p>
+</div></section>
+
+<section class="blk" style="padding-top:8px"><div class="wrap">
+  {provincies.map((p) => (
+    <div class="prov" data-prov>
+      <h2>{p}</h2>
+      <ul class="lijst">
+        {per[p].map((g) => <li data-naam={g.naam.toLowerCase()}>{g.pagina ? <a href={g.pagina}>{g.naam}</a> : <span>{g.naam}</span>}</li>)}
+      </ul>
+    </div>
+  ))}
+  <div class="final">
+    <div><h2>Je gemeente gevonden?</h2><p>Jij vult 10 minuten in, wij maken het dossier op en dienen het in.</p></div>
+    <a class="btn primary" href="/aanvraag.html">Start je aanvraag <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</div></section>
+</main>
+<script is:inline slot="scripts">
+(function () {
+  const z = document.getElementById("zoek"), leeg = document.getElementById("leeg");
+  z.addEventListener("input", function () {
+    const q = z.value.trim().toLowerCase();
+    let n = 0;
+    document.querySelectorAll("[data-prov]").forEach(function (blok) {
+      let zicht = 0;
+      blok.querySelectorAll("li").forEach(function (li) { const ok = !q || li.dataset.naam.indexOf(q) >= 0; li.hidden = !ok; if (ok) zicht++; });
+      blok.hidden = zicht === 0; n += zicht;
+    });
+    leeg.hidden = n > 0;
+  });
+})();
+</script>
+</Basis>
