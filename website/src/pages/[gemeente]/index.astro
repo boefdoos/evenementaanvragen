@@ -26,7 +26,7 @@ const MAT = { nadars: "nadarafsluitingen", heras: "werfhekken", tafels: "tafels"
   vuilbakken: "vuilbakken", stroom: "stroomkasten", water: "wateraansluiting", toiletten: "toiletten" };
 const termijn = (n, u) => `${n} ${UNIT[u][n === 1 ? 0 : 1]}`;
 // Woorden die op onderzoeksnotities wijzen: niet publiceren.
-const INTERN = /niet (gelezen|vermeld|gevonden|leesbaar)|onbekend|geblokkeerd|robots|client_error|limiet|aanname|strengste|gemapt|nakijken|navragen|geen (e-mail|telefoon)[^;,)]*vermeld|softwarenaam|geen [^;.]*vermeld|eigen loket \/ anders/i;
+const INTERN = /niet expliciet|niet (gelezen|vermeld|gevonden|leesbaar)|onbekend|geblokkeerd|robots|client_error|limiet|aanname|strengste|gemapt|nakijken|navragen|geen (e-mail|telefoon)[^;,)]*vermeld|softwarenaam|geen [^;.]*vermeld|eigen loket \/ anders/i;
 // Haalt onderzoeksnotities uit een veld: zinnen, ;-delen, (haakjes) en " – "-delen die erop wijzen vallen weg.
 const schoon = (t) => {
   if (!t) return "";
@@ -38,6 +38,13 @@ const schoon = (t) => {
     .join("; ");
 };
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+// Haalt mailadressen en webadressen uit een tekst (met het "naar …"/"via …" ervoor en haakjes errond).
+const ADRES = String.raw`[\w.+-]+@[\w.-]+\.\w+|https?:\/\/\S+|www\.\S+|\b[\w-]+(\.[\w-]+)*\.(be|com|eu|org)\b(\/\S*)?`;
+const zonderAdres = (t) => String(t || "")
+  .replace(new RegExp(String.raw`\s*\([^)]*(${ADRES})[^)]*\)`, "gi"), "")
+  .replace(new RegExp(String.raw`\s*(,\s*)?\b(naar|aan|via|bij|op)\s+(${ADRES})(\s*(en|,)\s*(${ADRES}))*`, "gi"), "")
+  .replace(new RegExp(ADRES, "gi"), "")
+  .replace(/\s{2,}/g, " ").replace(/\s+([,.;])/g, "$1").trim();
 
 const { r } = Astro.props;
 const g = r.gemeente;
@@ -46,11 +53,23 @@ const provincie = r.provincie || "West-Vlaanderen";
 const base = r.base || {};
 const alg = base["*"];
 const algTxt = alg ? termijn(alg[0], alg[1]) : null;
-const platform = r.platform && !INTERN.test(r.platform) ? r.platform : null;
-const kanaal = cap(schoon(r.kanaal));
-const college = schoon(r.college);
-// Enkel het hoofdcontact (eerste deel), zodat geen losse personeelsleden op de site komen.
-const contact = schoon(String(r.contact || "").split(/;\s*/)[0]);
+// Platformnaam zonder url of uitleg tussen haakjes; enkel echte productnamen tonen we in de lead.
+const PRODUCT = { eaglebe: "Eaglebe", flowlab: "Flowlab", riho: "RIHO", egovflow: "eGovflow", smartloket: "Smartloket", "power apps": "het e-loket van de stad", "geo-it evenementenloket": "Geo-IT", zoem: "ZOEM", spotbooking: "Spotbooking" };
+const pkaal = String(r.platform || "").replace(/\s*\(.*$/, "").trim();
+const platform = PRODUCT[pkaal.toLowerCase()] || null;
+// Hoe er ingediend wordt, als vaststelling (geen handleiding en geen link naar het loket: dat doen wij).
+const kanaal = platform
+  ? `Online dossier via ${platform}, met bijlagen zoals plannen en affiche.`
+  : /mail/i.test(pkaal) ? "Aanvraagformulier met bijlagen, in te dienen per mail."
+  : pkaal && !INTERN.test(pkaal) ? "Online dossier via het e-loket van de gemeente, met bijlagen." : null;
+const college = zonderAdres(schoon(r.college));
+// Voorwaarden van de gemeente: tonen wat erbij komt kijken, zonder stappenplan.
+const voorwaarden = (r.bijzonder || [])
+  .filter((b) => b.soort === "voorwaarde" && b.wat && !INTERN.test(b.wat))
+  .map((b) => zonderAdres(b.wat).replace(/[.;:,\s]+$/, ""))
+  .filter((v) => v.length > 8)
+  .map((v) => cap(v) + ".")
+  .slice(0, 6);
 const u = r.uitleen || {};
 const bron = Array.isArray(r.bron) ? r.bron[0] : r.bron;
 const start = `/aanvraag.html?gemeente=${encodeURIComponent(g)}`;
@@ -75,7 +94,7 @@ for (const x of r.extra || []) {
   rijen.push({ wat: cap(v.join(", ")) || "Bijzonder geval", tag: false, termijn: termijn(x.n, x.unit) });
 }
 for (const b of r.bijzonder || []) {
-  if ((b.soort === "deadline" || b.soort === "vroegst") && b.n) rijen.push({ wat: b.wat, tag: false, termijn: termijn(b.n, b.unit) });
+  if ((b.soort === "deadline" || b.soort === "vroegst") && b.n && !INTERN.test(b.wat)) rijen.push({ wat: zonderAdres(b.wat), tag: false, termijn: termijn(b.n, b.unit) });
 }
 
 // Feestmateriaal (enkel het publieke deel; onderzoeksnotities horen niet op de site)
@@ -83,13 +102,12 @@ let mat = null;
 if (u.uitleendienst === "ja") {
   const items = Object.entries(u.catalogus || {}).filter(([k, v]) => v === "ja" && MAT[k]).map(([k]) => MAT[k]);
   const part = { ja: "Ook particulieren mogen lenen.", nee: "Particulieren kunnen er niet lenen." }[u.particulieren_toegelaten] || "";
-  const kosten = (u.kosten || "").split(";")[0].trim();
+  const kosten = zonderAdres((u.kosten || "").split(";")[0]);
   mat = {
     items: items.length ? `Onder meer ${items.join(", ")}.` : null,
-    termijn: u.termijn && !INTERN.test(u.termijn) ? `Aanvragen: ${u.termijn.replace(/[.\s]+$/, "")}.` : null,
+    termijn: u.termijn && !INTERN.test(u.termijn) ? `Aanvragen: ${zonderAdres(u.termijn).replace(/[.\s]+$/, "")}.` : null,
     part: part || null,
     kosten: kosten && !INTERN.test(kosten) ? `${kosten.replace(/[.\s]+$/, "")}.` : null,
-    link: u.link || null,
   };
 }
 
@@ -149,20 +167,19 @@ const ld = [
 
 <section class="blk" style="padding-top:72px"><div class="wrap">
   <div class="k">Werkwijze bij de gemeente</div>
-  <h2 style="margin-top:10px">Zo verloopt een aanvraag in {g}</h2>
+  <h2 style="margin-top:10px">Een aanvraag in {g}</h2>
   <div class="twee">
-    <div class="vak"><h3>Aanvragen</h3><ul>
-      {kanaal && <li>{kanaal}{r.link && <> (<a href={r.link} rel="noopener">naar het loket</a>)</>}</li>}
+    <div class="vak"><h3>Wat erbij komt kijken</h3><ul>
+      {kanaal && <li>{kanaal}</li>}
       {college && <li>{college}.</li>}
-      {contact && <li>Contact: {contact}</li>}
+      {voorwaarden.map((v) => <li>{v}</li>)}
     </ul></div>
     {mat
-      ? <div class="vak"><h3>Feestmateriaal lenen</h3><p>{g} heeft een uitleendienst. Wij vragen het materiaal mee aan, met wat marge.</p>
-          <ul>{mat.items && <li>{mat.items}</li>}{mat.termijn && <li>{mat.termijn}</li>}{mat.part && <li>{mat.part}</li>}{mat.kosten && <li>{mat.kosten}</li>}</ul>
-          {mat.link && <p><a href={mat.link} rel="noopener">Uitleendienst van {g}</a></p>}</div>
+      ? <div class="vak"><h3>Feestmateriaal lenen</h3><p>Materiaal van de uitleendienst vraag je in {g} apart aan. Wij nemen het mee in je dossier, met wat marge.</p>
+          {(mat.items || mat.termijn || mat.part || mat.kosten) && <ul>{mat.items && <li>{mat.items}</li>}{mat.termijn && <li>{mat.termijn}</li>}{mat.part && <li>{mat.part}</li>}{mat.kosten && <li>{mat.kosten}</li>}</ul>}</div>
       : <div class="vak"><h3>Wat wij doen</h3><p>Wij berekenen je deadline, maken het volledige dossier op met formulieren, bijlagen en bewonersbrief, en dienen het in. Jij blijft het aanspreekpunt van de gemeente.</p></div>}
   </div>
-  {bron && <p class="bron">Bron: <a href={bron} rel="noopener">website van {g}</a>. Nagekeken door evenementaanvragen.be. De gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert.</p>}
+  {bron && <p class="bron">Bron: <a href={bron} rel="nofollow noopener">website van {g}</a>. Nagekeken door evenementaanvragen.be. De gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert.</p>}
 
   <div class="final">
     <div><h2>Geen zin in formulieren?</h2><p>Jij vult 10 minuten in, wij maken het dossier op en dienen het in bij {g}.</p></div>
