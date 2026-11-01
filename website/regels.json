@@ -14787,7 +14787,7 @@
  {
   "gemeente": "Gingelom",
   "provincie": "Limburg",
-  "status": "onzeker",
+  "status": "ok",
   "base": {
    "*": [
     2,
@@ -14795,15 +14795,16 @@
    ]
   },
   "extra": [],
-  "termijnTekst": "Evenementenpagina: 'Houd rekening met de vastgelegde termijnen'; te laat ingediende aanvragen kunnen nog behandeld worden mits spoedprocedurekost. Signalisatiepagina: 'Indien signalisatie nodig is naar aanleiding van de organisatie van een evenement dien je minstens 2 maanden en maximum 1 jaar voor de datum van de activiteit' goedkeuring aan te vragen via het aanvraagformulier 'organisatie evenement en logistieke steun'. Signalisatie bij inname openbaar domein: 10 dagen op voorhand bij de lokale politie.",
-  "note": "De algemene termijn staat niet op de evenementenpagina zelf; 2 maanden (en maximaal 1 jaar vooraf) komt van de signalisatiepagina en geldt daar voor evenementen met signalisatie via hetzelfde aanvraagformulier 'organisatie evenement en logistieke steun' – als strengste algemene termijn overgenomen, daarom onzeker. De termijnen staan vermoedelijk in het pdf-aanvraagformulier, maar dat is geblokkeerd voor automatische lezing (robots). Laattijdige aanvragen: spoedprocedurekost (bedrag onbekend). Pagina 'vraag-tijdig-je-event-aan' gaf een fout. Geen info gevonden over geluid, sterke drank, borden of Sabam.",
+  "termijnTekst": "Aanvraagformulier evenementen: minstens 2 maanden en maximaal 1 jaar vóór het evenement. Omwonenden een tiental dagen vooraf per brief informeren over gewijzigde verkeerssituatie.",
+  "note": "De algemene termijn staat niet op de evenementenpagina zelf; 2 maanden (en maximaal 1 jaar vooraf) komt van de signalisatiepagina en geldt daar voor evenementen met signalisatie via hetzelfde aanvraagformulier 'organisatie evenement en logistieke steun' – als strengste algemene termijn overgenomen, daarom onzeker. De termijnen staan vermoedelijk in het pdf-aanvraagformulier, maar dat is geblokkeerd voor automatische lezing (robots). Laattijdige aanvragen: spoedprocedurekost (bedrag onbekend). Pagina 'vraag-tijdig-je-event-aan' gaf een fout. Geen info gevonden over geluid, sterke drank, borden of Sabam. Termijn bevestigd in het aanvraagformulier (pdf), gelezen in de browser op 1/11/2026.",
   "platform": "mail/pdf (Aanvraagformulier Evenementen / 'organisatie evenement en logistieke steun')",
   "kanaal": "Pdf-aanvraagformulier (vergunningen, gemeentelijke materialen en straatfeestpremie in één formulier) indienen bij het evenementenloket / Dienst beleven.",
   "link": "https://www.gingelom.be/file/download/604bd8e4-2289-4704-bef7-ecb2745e5be5/y50dt1cN51ykNNdTZqNiFzMVcumIn55zuhvzA8KHhA3d.pdf",
   "contact": "Dienst beleven – beleven@gingelom.be – 011 88 04 93",
   "bron": [
    "https://www.gingelom.be/organiseer-een-evenement",
-   "https://www.gingelom.be/aanvraag-signalisatie"
+   "https://www.gingelom.be/aanvraag-signalisatie",
+   "https://www.gingelom.be/file/download/604bd8e4-2289-4704-bef7-ecb2745e5be5/y50dt1cN51ykNNdTZqNiFzMVcumIn55zuhvzA8KHhA3d.pdf"
   ],
   "bijzonder": [
    {
@@ -14831,6 +14832,16 @@
      "verkeer": true
     },
     "toelichting": "Signalisatie ophalen bij technische dienst, Ambachtsweg 22; waarborg (tarief in aanvraagformulier). infrastructuur@gingelom.be – 011 88 04 79."
+   },
+   {
+    "soort": "deadline",
+    "wat": "Omwonenden per brief informeren over gewijzigde verkeerssituatie",
+    "n": 10,
+    "unit": "d",
+    "als": {
+     "verkeer": true
+    },
+    "toelichting": "een tiental dagen op voorhand"
    }
   ],
   "college": null,
@@ -17030,7 +17041,7 @@
   "base": null,
   "extra": [],
   "termijnTekst": "Geen indieningstermijn op de webpagina's van het evenementenloket; de termijn staat vermoedelijk in het 'Reglement projecten en evenementen NIEUW 2026-2031' (pdf), dat niet gelezen kon worden.",
-  "note": "Reglement projecten en evenementen 2026-2031 (pdf op peer.be) geblokkeerd (robots_disallowed) – termijnen nakijken in de browser. Het online evenementenloket (onlinesmartcities) dekt alle activiteiten: sportactiviteiten, buurtfeesten, wandelingen, jubilea, open vuren, speelstraten, festivals, tornooien, fuiven en grote evenementen; het systeem geeft aan welke bijkomende aanvragen nodig zijn (materiaal, parkeerverbod, veiligheidsplan). Vereniging moet eerst geregistreerd zijn in het Vlaams Verenigingsloket. Aanvraag kan ook zonder aanmelden. Speelstraat enkel in juli en augustus. Geen spoedprocedure gevonden.",
+  "note": "Reglement projecten en evenementen 2026-2031 (pdf op peer.be) geblokkeerd (robots_disallowed) – termijnen nakijken in de browser. Het online evenementenloket (onlinesmartcities) dekt alle activiteiten: sportactiviteiten, buurtfeesten, wandelingen, jubilea, open vuren, speelstraten, festivals, tornooien, fuiven en grote evenementen; het systeem geeft aan welke bijkomende aanvragen nodig zijn (materiaal, parkeerverbod, veiligheidsplan). Vereniging moet eerst geregistreerd zijn in het Vlaams Verenigingsloket. Aanvraag kan ook zonder aanmelden. Speelstraat enkel in juli en augustus. Geen spoedprocedure gevonden. Het reglement projecten en evenementen (jan. 2026) is een toelagereglement: toelage ten laatste 4 weken vooraf via het evenementenloket, pas na goedkeuring van het evenement door het college. Geen termijn voor de evenementaanvraag zelf; navragen. Gelezen in de browser op 1/11/2026.",
   "platform": "eigen e-loket (Online Smart Cities / LCP)",
   "kanaal": "Online evenementenloket van Stad Peer (peer.onlinesmartcities.be); dossier opvolgen via het PIP-loket.",
   "link": "https://peer.onlinesmartcities.be/eloket/vergunning-evenement",
@@ -17040,7 +17051,8 @@
    "https://www.peer.be/loket-evenementen",
    "https://peer.onlinesmartcities.be/eloket/vergunning-evenement",
    "https://www.peer.be/thema/detail/114/zelf-organiseren",
-   "https://www.peer.be/materiaal-uitlenen"
+   "https://www.peer.be/materiaal-uitlenen",
+   "https://www.peer.be/file/download/abab0070-11ac-4296-a239-0ff00aefd3b5/uLDByfdQDYNCg7UtHmBndTDAthaEaPTxPFqmlEv4s3d.pdf"
   ],
   "bijzonder": [
    {
@@ -17072,6 +17084,16 @@
     "soort": "voorwaarde",
     "wat": "Speelstraat enkel in juli en augustus",
     "als": null
+   },
+   {
+    "soort": "deadline",
+    "wat": "Toelage project/evenement/fuif aanvragen (na goedkeuring evenement)",
+    "n": 4,
+    "unit": "w",
+    "als": {
+     "subsidie": true
+    },
+    "toelichting": ""
    }
   ],
   "college": "Onbekend (reglement niet leesbaar); uitleen aan andere gemeentebesturen mits goedkeuring college van burgemeester en schepenen.",
@@ -19846,7 +19868,7 @@
   },
   "extra": [],
   "termijnTekst": "Evenementenformulier minimaal 60 dagen voor het evenement indienen; hoe later, hoe langer het kan duren. Wielerwedstrijd: uiterlijk drie maanden voor de wedstrijddag (pagina Eeklo).",
-  "note": "Wielerwedstrijd: Eeklo-pagina zegt 'uiterlijk drie maanden', KB 28/6/2019 elders geciteerd als 14 weken; strengste (14 w) aangehouden. Wielerwedstrijd: evenementenformulier + aanvraag wielerwedstrijd. Veiligheidsplan verplicht bij groot (500-2000) en heel groot (>2000) evenement. Gecoördineerd reglement evenementen (pdf, 2020) niet leesbaar (robots geblokkeerd): termijnen voor geluid, drank, parkeerverbod niet gecontroleerd. Eeklo.be/evenementenformulier verwijst naar app.eaglebe.com zonder client-parameter.",
+  "note": "Wielerwedstrijd: Eeklo-pagina zegt 'uiterlijk drie maanden', KB 28/6/2019 elders geciteerd als 14 weken; strengste (14 w) aangehouden. Wielerwedstrijd: evenementenformulier + aanvraag wielerwedstrijd. Veiligheidsplan verplicht bij groot (500-2000) en heel groot (>2000) evenement. Gecoördineerd reglement evenementen (pdf, 2020) niet leesbaar (robots geblokkeerd): termijnen voor geluid, drank, parkeerverbod niet gecontroleerd. Eeklo.be/evenementenformulier verwijst naar app.eaglebe.com zonder client-parameter. Gecoördineerd politiereglement publieke evenementen PZ Meetjesland Centrum (Eeklo, Kaprijke, Sint-Laureins), in werking 1/11/2026, art. 4: online aanvraag ten minste 60 dagen voor aanvang; wedstrijden op de openbare weg volgens hogere regelgeving; te late aanvragen kunnen geweigerd worden. Veiligheidsplan bij verhoogd risico (evenementencel beslist). Gelezen in de browser op 1/11/2026.",
   "platform": "Eaglebe",
   "kanaal": "Online evenementenformulier via Eaglebe; achteraf pdf van ingevulde velden.",
   "link": "https://www.eeklo.be/evenementenformulier",
@@ -19856,7 +19878,8 @@
    "https://www.eeklo.be/wielerwedstrijd-organiseren",
    "https://www.eeklo.be/gecoordineerd-reglement-evenementen",
    "https://www.eeklo.be/uitleendienst",
-   "https://webshopeeklo.recreatex.be/"
+   "https://webshopeeklo.recreatex.be/",
+   "https://www.sint-laureins.be/file/download/0c27bbad-4c03-47e4-a027-a338b39d60ce/xwSIbNvsC2rpoO3pHSlJP2Ap2CQ1toFkSC4MFgATYlE3d.pdf"
   ],
   "bijzonder": [
    {
@@ -19891,6 +19914,14 @@
     "soort": "voorwaarde",
     "wat": "Situatieplan inname openbare weg, signalisatieplan, lijst signaalgevers, afvalplan, brandpreventieverslag indien van toepassing",
     "als": null
+   },
+   {
+    "soort": "deadline",
+    "wat": "Bewonersbrief bedelen en bezorgen aan het evenementenloket (politiereglement PZ Meetjesland Centrum)",
+    "n": 5,
+    "unit": "wd",
+    "als": null,
+    "toelichting": ""
    }
   ],
   "college": "Burgemeester of college van burgemeester en schepenen beslist, eventueel na advies van de evenementencel (soms coördinatievergadering).",
@@ -21103,7 +21134,7 @@
   },
   "extra": [],
   "termijnTekst": "De aanvraag moet ons 60 dagen voor het evenement bereiken. Voor wielerwedstrijden en aanverwante activiteiten moet de aanvraag ons 14 weken voor aanvang bereiken. Evenementen die te laat aangevraagd worden, kunnen worden geweigerd.",
-  "note": "'60 dagen' zonder vermelding werkdagen: als kalenderdagen opgenomen. Veldtoertochten worden via de tool van Sport Vlaanderen aangevraagd, niet via het gemeentelijke formulier (geen link). Evenement mag pas plaatsvinden na toelating van het gemeentebestuur; niet-publieke activiteiten vallen onder het GAS-reglement. Bij groot evenement kunnen gemeente, politie, brandweer of veiligheidscel een veiligheidsplan vragen (sjabloon https://www.kaprijke.be/file/download/21760/60C42F65F917813F0BF82272DA8B5404; hulp via noodplanning@kaprijke.be). Warmteplan 15 mei-30 september sterk aangeraden. Het gecoördineerd reglement evenementen 2019 (https://www.kaprijke.be/file/LPDCDocument/2445/C4CF1D7B2AA4EF5A6CE387432EEFD16F) kon niet gelezen worden (robots geblokkeerd). Eaglebe: account nodig (verenigingen met algemeen mailadres); geen client-specifieke evenementlink gevonden. Afgelast evenement zo snel mogelijk melden.",
+  "note": "'60 dagen' zonder vermelding werkdagen: als kalenderdagen opgenomen. Veldtoertochten worden via de tool van Sport Vlaanderen aangevraagd, niet via het gemeentelijke formulier (geen link). Evenement mag pas plaatsvinden na toelating van het gemeentebestuur; niet-publieke activiteiten vallen onder het GAS-reglement. Bij groot evenement kunnen gemeente, politie, brandweer of veiligheidscel een veiligheidsplan vragen (sjabloon https://www.kaprijke.be/file/download/21760/60C42F65F917813F0BF82272DA8B5404; hulp via noodplanning@kaprijke.be). Warmteplan 15 mei-30 september sterk aangeraden. Het gecoördineerd reglement evenementen 2019 (https://www.kaprijke.be/file/LPDCDocument/2445/C4CF1D7B2AA4EF5A6CE387432EEFD16F) kon niet gelezen worden (robots geblokkeerd). Eaglebe: account nodig (verenigingen met algemeen mailadres); geen client-specifieke evenementlink gevonden. Afgelast evenement zo snel mogelijk melden. Gecoördineerd politiereglement publieke evenementen PZ Meetjesland Centrum (Eeklo, Kaprijke, Sint-Laureins), in werking 1/11/2026, art. 4: online aanvraag ten minste 60 dagen voor aanvang; wedstrijden op de openbare weg volgens hogere regelgeving; te late aanvragen kunnen geweigerd worden. Veiligheidsplan bij verhoogd risico (evenementencel beslist). Gelezen in de browser op 1/11/2026.",
   "platform": "Eaglebe",
   "kanaal": "Online via Eaglebe na het aanmaken van een account; ook opvolging van het dossier gebeurt daar.",
   "link": "https://app.eaglebe.com/auth/start",
@@ -21113,7 +21144,8 @@
    "https://www.kaprijke.be/evenementen",
    "https://www.kaprijke.be/uitleen",
    "https://www.kaprijke.be/producten/detail/279/fuifkoffer",
-   "https://www.kaprijke.be/producten/detail/102/geluidsnormen-afwijking-bij-evenementen"
+   "https://www.kaprijke.be/producten/detail/102/geluidsnormen-afwijking-bij-evenementen",
+   "https://www.sint-laureins.be/file/download/0c27bbad-4c03-47e4-a027-a338b39d60ce/xwSIbNvsC2rpoO3pHSlJP2Ap2CQ1toFkSC4MFgATYlE3d.pdf"
   ],
   "bijzonder": [
    {
@@ -21165,6 +21197,14 @@
     "als": {
      "muziek": true
     }
+   },
+   {
+    "soort": "deadline",
+    "wat": "Bewonersbrief bedelen en bezorgen aan het evenementenloket (politiereglement PZ Meetjesland Centrum)",
+    "n": 5,
+    "unit": "wd",
+    "als": null,
+    "toelichting": ""
    }
   ],
   "college": "Toelating door het gemeentebestuur; het college van burgemeester en schepenen beslist over de afwijking van de geluidsnormen, samen met de toelating voor het evenement.",
@@ -21885,20 +21925,43 @@
  {
   "gemeente": "Lierde",
   "provincie": "Oost-Vlaanderen",
-  "status": "onbekend",
-  "base": null,
+  "status": "ok",
+  "base": {
+   "*": [
+    60,
+    "d"
+   ],
+   "stoet": [
+    90,
+    "d"
+   ],
+   "wielerwedstrijd": [
+    90,
+    "d"
+   ]
+  },
   "extra": [],
-  "termijnTekst": "Geen termijn gevonden.",
-  "note": "De gemeentesite http://www.lierde.be kon niet geopend worden (toestemmingsvraag niet tijdig beantwoord; niet opnieuw geprobeerd). Zoekopdrachten gaven enkel nieuwsbrieven (pdf) zonder info over evenementaanvragen. Platform, termijn, contact en uitleendienst in de browser nakijken.",
-  "platform": "onbekend",
-  "kanaal": "onbekend",
-  "link": "",
-  "contact": "Gemeente Lierde – communicatie@lierde.be (uit nieuwsbrief 46ste editie)",
+  "termijnTekst": "Minstens 60 dagen (2 maanden) voor het evenement; met politiebegeleiding 90 dagen (3 maanden). Te laat aangevraagde evenementen worden niet behandeld.",
+  "note": "De gemeentesite http://www.lierde.be kon niet geopend worden (toestemmingsvraag niet tijdig beantwoord; niet opnieuw geprobeerd). Zoekopdrachten gaven enkel nieuwsbrieven (pdf) zonder info over evenementaanvragen. Platform, termijn, contact en uitleendienst in de browser nakijken. Toelating nodig op openbaar domein (ook fietspad, voetpad, parkeerplaatsen) en voor publiek toegankelijke fuif of muziekoptreden op privaat domein. Stoet en wielerwedstrijd op 90 dagen gezet (politiebegeleiding). Gelezen in de browser op 1/11/2026; uitleendienst niet nagekeken.",
+  "platform": "Eaglebe",
+  "kanaal": "Online aanvraagformulier via Eaglebe (met of zonder account).",
+  "link": "https://app.eaglebe.com/nl-be/new/event?client=60684c1cde129db7247378bc2f271ce6",
+  "contact": "Evenementen – evenementen@lierde.be – 055 43 10 25",
   "bron": [
-   "https://Lierde.be/sites/default/files/2024-04/nieuwsbrief%2046ste%20editie.pdf",
-   "https://en.wikipedia.org/wiki/Lierde"
+   "https://www.lierde.be/vrije-tijd/evenementen-organiseren/hoe-aanvragen"
   ],
-  "bijzonder": [],
+  "bijzonder": [
+   {
+    "soort": "deadline",
+    "wat": "Aanvraag met politiebegeleiding",
+    "n": 90,
+    "unit": "d",
+    "als": {
+     "verkeer": true
+    },
+    "toelichting": "Als het evenement politiebegeleiding nodig heeft."
+   }
+  ],
   "college": null,
   "uitleen": {
    "uitleendienst": "onbekend",
@@ -22921,28 +22984,34 @@
  {
   "gemeente": "Oosterzele",
   "provincie": "Oost-Vlaanderen",
-  "status": "onbekend",
-  "base": null,
+  "status": "ok",
+  "base": {
+   "*": [
+    6,
+    "w"
+   ]
+  },
   "extra": [],
-  "termijnTekst": "Niet gelezen: de gemeentesite is een JavaScript-webapp (Nomatron) waarvan de inhoud zonder browser niet zichtbaar is.",
-  "note": "oosterzele.be geeft zonder browser enkel een lege app-schil terug (geen tekst). Uit de sitemap blijkt dat er pagina's bestaan voor: evenement organiseren, wielerwedstrijd organiseren, buurtinitiatieven, kermissen, veiligheid en security, publiek toegankelijke inrichtingen, afvaleilandjes, aanvraag publiciteit en tijdelijke bewegwijzering, Unisono en billijke vergoeding, zaal huren, materiaal uitlenen, gebruik cateringmateriaal, vergunning gegiste en sterke drank, vergunning voor muziekactiviteiten, tijdelijk parkeerverbod aanvragen. Geen termijn, platform of contact gevonden via zoekmachine. In de browser nakijken.",
-  "platform": "onbekend",
-  "kanaal": "onbekend",
-  "link": "https://oosterzele.be/vrije-tijd/evenementen/evenement-organiseren",
-  "contact": "onbekend",
+  "termijnTekst": "Doe je aanvraag tijdig, minstens 6 weken vooraf.",
+  "note": "oosterzele.be geeft zonder browser enkel een lege app-schil terug (geen tekst). Uit de sitemap blijkt dat er pagina's bestaan voor: evenement organiseren, wielerwedstrijd organiseren, buurtinitiatieven, kermissen, veiligheid en security, publiek toegankelijke inrichtingen, afvaleilandjes, aanvraag publiciteit en tijdelijke bewegwijzering, Unisono en billijke vergoeding, zaal huren, materiaal uitlenen, gebruik cateringmateriaal, vergunning gegiste en sterke drank, vergunning voor muziekactiviteiten, tijdelijk parkeerverbod aanvragen. Geen termijn, platform of contact gevonden via zoekmachine. In de browser nakijken. Privéfeesten op uitnodiging (tuin-, communie-, familiefeest) zijn geen evenement. Toelating omvat geluidsafwijking, inname openbaar domein, parkeer- en rijverbod. Gelezen in de browser op 1/11/2026.",
+  "platform": "Eaglebe",
+  "kanaal": "Evenementenformulier via EagleBe (registreren); of op afspraak samen met de dienst Evenementen invullen.",
+  "link": "https://app.eaglebe.com/auth/start",
+  "contact": "Dienst Evenementen – evenementen@oosterzele.be – 09 363 99 38",
   "bron": [
-   "https://www.oosterzele.be/sitemap.xml"
+   "https://www.oosterzele.be/sitemap.xml",
+   "https://oosterzele.be/vrije-tijd/evenementen/evenement-organiseren"
   ],
   "bijzonder": [],
   "college": null,
   "uitleen": {
-   "uitleendienst": "onbekend",
+   "uitleendienst": "ja",
    "link": "https://oosterzele.be/vrije-tijd/evenementen/materiaal-uitlenen",
    "wie_mag_lenen": "onbekend",
    "particulieren_toegelaten": "onbekend",
    "externe_organisatoren_toegelaten": "onbekend",
-   "aanvraag": "onbekend",
-   "route": "E",
+   "aanvraag": "Digitale aanvraag via de gemeentesite; gebruiksreglement online.",
+   "route": "B",
    "termijn": "onbekend",
    "termijn_n": null,
    "termijn_unit": null,
@@ -22960,7 +23029,12 @@
     "water": "onbekend",
     "toiletten": "onbekend"
    },
-   "overig": [],
+   "overig": [
+    "podiumblokken",
+    "hekwerk",
+    "vlaggen",
+    "audiovisueel materiaal"
+   ],
    "kosten": "onbekend",
    "levering": "onbekend",
    "levering_toelichting": "",
@@ -22968,9 +23042,32 @@
    "bron": [
     "https://www.oosterzele.be/sitemap.xml"
    ],
-   "zekerheid": "laag",
+   "zekerheid": "middel",
    "categorie_aanvrager": "",
-   "extra_aanbod": []
+   "extra_aanbod": [
+    {
+     "wat": "Fuifwijzer van de jeugddienst",
+     "voor_wie": "Jeugdverenigingen",
+     "route": "E",
+     "aanvraag": "Via de jeugddienst",
+     "termijn": "",
+     "termijn_n": null,
+     "termijn_unit": null,
+     "kosten": "",
+     "link": "https://oosterzele.be/vrije-tijd/evenementen/materiaal-uitlenen"
+    },
+    {
+     "wat": "Uitleendienst Erfgoed Viersprong (beamer, scanner, fotomateriaal)",
+     "voor_wie": "Erfgoedactiviteiten",
+     "route": "E",
+     "aanvraag": "Via Erfgoed Viersprong",
+     "termijn": "",
+     "termijn_n": null,
+     "termijn_unit": null,
+     "kosten": "Gratis",
+     "link": "https://oosterzele.be/vrije-tijd/evenementen/materiaal-uitlenen"
+    }
+   ]
   }
  },
  {
@@ -23395,11 +23492,15 @@
  {
   "gemeente": "Sint-Laureins",
   "provincie": "Oost-Vlaanderen",
-  "status": "onzeker",
+  "status": "ok",
   "base": {
    "*": [
     60,
     "d"
+   ],
+   "wielerwedstrijd": [
+    14,
+    "w"
    ]
   },
   "extra": [
@@ -23409,8 +23510,8 @@
     "unit": "d"
    }
   ],
-  "termijnTekst": "60 dagen vooraf schriftelijke toelating van het college voor kleine en middelgrote evenementen op openbare weg/openbaar terrein of op privaat domein in open lucht of tent. 90 dagen vooraf voor grote (500 tot 2.000 personen) en zeer grote (meer dan 2.000 personen) evenementen: toelating college (openbaar domein, of privaat in open lucht/tent) of schriftelijke kennisgeving (privaat, niet in open lucht/tent, met elektronisch versterkte muziek). Bij te laat indienen kan het evenement ambtshalve geweigerd worden.",
-  "note": "Onzeker omdat de termijnen op de webpagina uit het politiereglement evenementen 2020 lijken te komen, terwijl een nieuw 'Gecoördineerd reglement publieke evenementen Politiezone Meetjesland Centrum' (gemeenteraad 15/10/2026) geldt vanaf 1 november 2026; die pdf kon niet gelezen worden (robots_disallowed). Termijnen in het nieuwe reglement nakijken. Meldingsplicht voor alle publiek toegankelijke evenementen (fuiven, kermissen, sportmanifestaties, wielerdoortochten, oldtimerritten); privéfeesten niet verplicht, melden aangeraden bij muziek. Jeugdverenigingen melden fuiven steeds via het meldingsformulier. Niet vermeld: aparte regels voor verkeer, parkeerverbod en publiciteit (pagina's signalisatievergunning en tijdelijke publiciteitsborden niet gelezen door limiet op het aantal opvragingen).",
+  "termijnTekst": "Politiereglement PZ Meetjesland Centrum (vanaf 1/11/2026): ten minste 60 dagen voor aanvang via het online formulier. De gemeentesite vermeldt nog 90 dagen voor grote evenementen (vanaf 500 personen); die strengere termijn blijft voorlopig staan. Wielerwedstrijden: 14 weken (hogere regelgeving, zoals Eeklo en Kaprijke).",
+  "note": "Onzeker omdat de termijnen op de webpagina uit het politiereglement evenementen 2020 lijken te komen, terwijl een nieuw 'Gecoördineerd reglement publieke evenementen Politiezone Meetjesland Centrum' (gemeenteraad 15/10/2026) geldt vanaf 1 november 2026; die pdf kon niet gelezen worden (robots_disallowed). Termijnen in het nieuwe reglement nakijken. Meldingsplicht voor alle publiek toegankelijke evenementen (fuiven, kermissen, sportmanifestaties, wielerdoortochten, oldtimerritten); privéfeesten niet verplicht, melden aangeraden bij muziek. Jeugdverenigingen melden fuiven steeds via het meldingsformulier. Niet vermeld: aparte regels voor verkeer, parkeerverbod en publiciteit (pagina's signalisatievergunning en tijdelijke publiciteitsborden niet gelezen door limiet op het aantal opvragingen). Gecoördineerd politiereglement publieke evenementen PZ Meetjesland Centrum (Eeklo, Kaprijke, Sint-Laureins), in werking 1/11/2026, art. 4: online aanvraag ten minste 60 dagen voor aanvang; wedstrijden op de openbare weg volgens hogere regelgeving; te late aanvragen kunnen geweigerd worden. Veiligheidsplan bij verhoogd risico (evenementencel beslist). Gelezen in de browser op 1/11/2026.",
   "platform": "Eaglebe",
   "kanaal": "Online melden/aanvragen via Eaglebe (account); ook gemeentelijk materiaal via het evenementenformulier.",
   "link": "https://app.eaglebe.com/auth/start?niscode=43014",
@@ -23421,7 +23522,8 @@
    "https://www.sint-laureins.be/fuiven",
    "https://www.sint-laureins.be/sitemap",
    "https://www.sint-laureins.be/uitleendienst",
-   "https://www.sint-laureins.be/uitleenmateriaal"
+   "https://www.sint-laureins.be/uitleenmateriaal",
+   "https://www.sint-laureins.be/file/download/0c27bbad-4c03-47e4-a027-a338b39d60ce/xwSIbNvsC2rpoO3pHSlJP2Ap2CQ1toFkSC4MFgATYlE3d.pdf"
   ],
   "bijzonder": [
    {
@@ -23468,6 +23570,14 @@
     "als": {
      "verkeer": true
     }
+   },
+   {
+    "soort": "deadline",
+    "wat": "Bewonersbrief bedelen en bezorgen aan het evenementenloket (politiereglement PZ Meetjesland Centrum)",
+    "n": 5,
+    "unit": "wd",
+    "als": null,
+    "toelichting": ""
    }
   ],
   "college": "Het college van burgemeester en schepenen verleent de schriftelijke toelating (of ontvangt de kennisgeving).",
@@ -24075,7 +24185,7 @@
   "base": null,
   "extra": [],
   "termijnTekst": "Geen algemene termijn voor een evenementaanvraag gevonden. Afwijking geluidsnormen: 'ten minste 4 weken voor de datum waarop het evenement plaatsvindt'. Inname openbaar domein: standaard minstens 4 werkdagen, met wegafsluiting minstens 1 maand vooraf.",
-  "note": "De pagina 'Evenement organiseren' (temse.be/evenement-organiseren) geeft enkel thema's (materiaal, geluid, promo, zalen, MIWA) en geen algemene aanvraagprocedure of termijn; vragen via dienst Evenementen. Gecoördineerd politiereglement (lblod.celocloud.be, APR 31-08-2026) en de pagina's temse.be/materiaal-uitlenen en het geluidsformulier waren geblokkeerd (robots_disallowed), dus mogelijke termijnen in het politiereglement niet gelezen. Termijn navragen bij evenementen@temse.be.",
+  "note": "De pagina 'Evenement organiseren' (temse.be/evenement-organiseren) geeft enkel thema's (materiaal, geluid, promo, zalen, MIWA) en geen algemene aanvraagprocedure of termijn; vragen via dienst Evenementen. Gecoördineerd politiereglement (lblod.celocloud.be, APR 31-08-2026) en de pagina's temse.be/materiaal-uitlenen en het geluidsformulier waren geblokkeerd (robots_disallowed), dus mogelijke termijnen in het politiereglement niet gelezen. Termijn navragen bij evenementen@temse.be. Algemeen politiereglement (gecoördineerd GR 31/08/2026), afd. 3: toelating college nodig op openbaar domein, in gemeentelijk gebouw, bij openluchtfuif of bij verkeersimpact; aanvraag enkel \"tijdig\", geen termijn. Vuur maken op openbare weg (vuurkorven, kampvuur): minstens 4 weken vooraf. Gelezen in de browser op 1/11/2026; algemene termijn navragen.",
   "platform": "onbekend (inname openbaar domein via Eaglebe; geluidsafwijking via online formulier op temse.be)",
   "kanaal": "Geen algemeen evenementenloket gevonden; contact met dienst Evenementen. Geluidsafwijking via online formulier, inname openbaar domein/parkeerverbod via Eaglebe.",
   "link": "https://www.temse.be/evenement-organiseren",
@@ -24088,7 +24198,8 @@
    "https://www.temse.be/uitleen",
    "https://www.temse.be/promo-maken-voor-je-evenement",
    "https://www.temse.be/politiereglement",
-   "https://www.temse.be/eloket/az"
+   "https://www.temse.be/eloket/az",
+   "https://lblod.celocloud.be/LBLODWeb/Home/Overzicht/62ad6c67f3c78adf663f6ea1a8aa3b1b88f8fa7521454ff814dfa5b8380c26d4/GetPublication?filename=APR-Geco%C3%B6rdineerde_versie_GR310826_31-08-2026_89669.pdf"
   ],
   "bijzonder": [
    {
@@ -24170,6 +24281,14 @@
      }
     ],
     "toelichting": "Optioneel, enkel voor opname in het infoblad."
+   },
+   {
+    "soort": "deadline",
+    "wat": "Toelating vuur op openbare weg (vuurkorven, kampvuur)",
+    "n": 4,
+    "unit": "w",
+    "als": null,
+    "toelichting": "Enkel als er vuur gemaakt wordt."
    }
   ],
   "college": "Het college beslist over inname openbaar domein; voor de evenementaanvraag zelf niet gevonden.",
@@ -28605,11 +28724,20 @@
  {
   "gemeente": "Kapelle-op-den-Bos",
   "provincie": "Vlaams-Brabant",
-  "status": "onbekend",
-  "base": null,
+  "status": "onzeker",
+  "base": {
+   "*": [
+    12,
+    "w"
+   ],
+   "wielerwedstrijd": [
+    14,
+    "w"
+   ]
+  },
   "extra": [],
-  "termijnTekst": "Geen algemene indientermijn gevonden op de gelezen pagina's. Wel: sterke drank (occasionele drankgelegenheid) 14 dagen vooraf; subsidie buurtfeest ten laatste 8 weken voor de activiteit.",
-  "note": "Gebundeld reglement voor evenementen, feesten en subsidies (gemeenteraad 29 augustus 2022) en een 'gids' bestaan, maar de termijnen staan niet op de gelezen pagina's. Beslisboom: niet-publiek thuis zonder afwijking geluidsnormen = geen meldingsplicht; niet-publiek elders zonder openbaar domein, muziek >85 dB(A), einde na 01.00u of sterke drank = melden via evenementen@kapelle-op-den-bos.be; publiek evenement = evenementenformulier e-loket. De pagina van het evenementenformulier en de gids konden niet geopend worden (toestemming niet verkregen). Fuifcharter bestaat (niet gelezen). Termijn navragen bij dienst Evenementen.",
+  "termijnTekst": "Geen termijn op de gemeentesite. Kapelle-op-den-Bos behoort tot de politiezone K-L-M (met Londerzeel en Meise); Meise verwijst voor de aanvraagtermijn naar het algemeen politiereglement van die zone: openbaar domein, meer dan 250 deelnemers of vergunning geluid/sterke drank minimum 12 weken; kleine privé-evenementen buiten 6 weken, binnen melding 48 uur.",
+  "note": "Gebundeld reglement voor evenementen, feesten en subsidies (gemeenteraad 29 augustus 2022) en een 'gids' bestaan, maar de termijnen staan niet op de gelezen pagina's. Beslisboom: niet-publiek thuis zonder afwijking geluidsnormen = geen meldingsplicht; niet-publiek elders zonder openbaar domein, muziek >85 dB(A), einde na 01.00u of sterke drank = melden via evenementen@kapelle-op-den-bos.be; publiek evenement = evenementenformulier e-loket. De pagina van het evenementenformulier en de gids konden niet geopend worden (toestemming niet verkregen). Fuifcharter bestaat (niet gelezen). Termijn navragen bij dienst Evenementen. Termijn overgenomen uit het zonaal politiereglement K-L-M via de schema-afbeelding van Meise (1/11/2026); bevestigen bij de gemeente.",
   "platform": "eigen e-loket (evenementenformulier op gemeentesite)",
   "kanaal": "Evenementenformulier via het digitaal loket van de gemeente; niet-publieke evenementen zonder bijzondere kenmerken melden per mail.",
   "link": "https://www.kapelle-op-den-bos.be/eloket/detail/334/evenementenformulier",
@@ -28619,7 +28747,8 @@
    "https://www.kapelle-op-den-bos.be/producten/detail/1721/evenementen-en-activiteiten",
    "https://www.kapelle-op-den-bos.be/producten/detail/2058/verkoop-van-sterke-drank-in-een-occasionele-drankgelegenheid",
    "https://www.kapelle-op-den-bos.be/buurtfeesten",
-   "https://www.kapelle-op-den-bos.be/uitleendienst"
+   "https://www.kapelle-op-den-bos.be/uitleendienst",
+   "https://www.meise.be/file_uploads/42012.jpg"
   ],
   "bijzonder": [
    {
@@ -30453,28 +30582,24 @@
  {
   "gemeente": "Meise",
   "provincie": "Vlaams-Brabant",
-  "status": "onzeker",
+  "status": "ok",
   "base": {
-   "fuif": [
+   "*": [
     12,
     "w"
    ],
-   "concert": [
+   "fuif": [
     12,
     "w"
    ],
    "wielerwedstrijd": [
     14,
     "w"
-   ],
-   "*": [
-    14,
-    "w"
    ]
   },
   "extra": [],
-  "termijnTekst": "Algemene aanvraagtermijnen staan in het algemeen politiereglement van de K-L-M-zone en op de site enkel in een schema als afbeelding. Fuif of festival: 'minstens 12 weken vooraf' via het evenementenloket. Officiële wielerwedstrijden: 14 weken vooraf.",
-  "note": "Geen algemene termijn ('*') kunnen lezen: het termijnschema (afbeelding en pdf's op meise.be/download.ashx en file_uploads) is geblokkeerd door robots.txt. 'Festival' gemapt op concert. Bij fuif: tussentijdse terugkoppeling binnen 4 weken na aanvraag; toestemming pas na advies veiligheidsdiensten en goedkeuring gemeentebestuur. Veldtoertochten: apart formulier Sport Vlaanderen. Aparte pagina voor horeca niet gelezen.",
+  "termijnTekst": "Aanvraagtermijn volgens algemeen politiereglement K-L-M-zone (schema gemeente): openbaar domein minimum 12 weken; privaat domein met meer dan 250 deelnemers 12 weken; privaat onder 250 met vergunning (geluid of sterke drank) 12 weken; zonder vergunning buiten 6 weken, binnen loutere melding 48 uur vooraf. Officiële wielerwedstrijden 14 weken.",
+  "note": "Geen algemene termijn ('*') kunnen lezen: het termijnschema (afbeelding en pdf's op meise.be/download.ashx en file_uploads) is geblokkeerd door robots.txt. 'Festival' gemapt op concert. Bij fuif: tussentijdse terugkoppeling binnen 4 weken na aanvraag; toestemming pas na advies veiligheidsdiensten en goedkeuring gemeentebestuur. Veldtoertochten: apart formulier Sport Vlaanderen. Aparte pagina voor horeca niet gelezen. Standaard 12 weken (strengste tak van het schema); 6 weken of 48 uur enkel voor kleine privé-evenementen zonder vergunning. Schema gelezen in de browser op 1/11/2026.",
   "platform": "Eaglebe",
   "kanaal": "Online via het evenementenloket Eaglebe (account aanmaken, bij voorkeur Chrome); plannen en affiches uploaden; bevestiging per mail.",
   "link": "https://app.eaglebe.com/auth/start",
@@ -30485,7 +30610,8 @@
    "https://www.meise.be/nieuwsdetail/3199/organiseer-je-deze-zomer-een-event",
    "https://www.meise.be/product/978/inname-openbaar-domein-tijdelijk-parkeerverbod",
    "https://www.meise.be/thema/2995/materiaal-uitlenen",
-   "https://www.meise.be/bekendmakingdetail/286/reglement-uitleendienst-gemeente-meise"
+   "https://www.meise.be/bekendmakingdetail/286/reglement-uitleendienst-gemeente-meise",
+   "https://www.meise.be/file_uploads/42012.jpg"
   ],
   "bijzonder": [
    {
@@ -31561,19 +31687,25 @@
  {
   "gemeente": "Rotselaar",
   "provincie": "Vlaams-Brabant",
-  "status": "onbekend",
-  "base": null,
+  "status": "onzeker",
+  "base": {
+   "*": [
+    6,
+    "w"
+   ]
+  },
   "extra": [],
-  "termijnTekst": "Geen algemene evenemententermijn gevonden. Ondernemersbrochure: 'Doe je aanvraag minstens tien werkdagen vooraf aan de dienst Mobiliteit' (iets op het openbaar domein).",
-  "note": "De html-pagina's van rotselaar.be (o.a. dienst Toerisme en Evenementen, Fuif organiseren, Activiteit met muziek organiseren, Inname openbaar domein, Uitleendienst) zijn geblokkeerd door robots.txt en konden niet gelezen worden; enkel pdf's gelezen. Brandveiligheid: zonaal evenementenreglement Hulpverleningszone Oost-Vlaams-Brabant. Drankvergunning (tijdelijk) via lokale.economie@rotselaar.be. Muziek: Unisono betalen; pop-ups max. 80 dB LAeq 15 min. Rock Werchter heeft eigen samenwerkingsovereenkomst. Platform onbekend (niet gelezen).",
+  "termijnTekst": "Zonaal evenementenreglement Hulpverleningszone Vlaams-Brabant Oost (GR Rotselaar 22/02/2022): alle aanvragen uiterlijk 6 weken voor de aanvang indienen bij het evenementenloket van de gemeente.",
+  "note": "De html-pagina's van rotselaar.be (o.a. dienst Toerisme en Evenementen, Fuif organiseren, Activiteit met muziek organiseren, Inname openbaar domein, Uitleendienst) zijn geblokkeerd door robots.txt en konden niet gelezen worden; enkel pdf's gelezen. Brandveiligheid: zonaal evenementenreglement Hulpverleningszone Oost-Vlaams-Brabant. Drankvergunning (tijdelijk) via lokale.economie@rotselaar.be. Muziek: Unisono betalen; pop-ups max. 80 dB LAeq 15 min. Rock Werchter heeft eigen samenwerkingsovereenkomst. Platform onbekend (niet gelezen). Enkel de termijn uit het zonaal brandweerreglement gevonden; een eigen gemeentelijke termijn kan strenger zijn (navragen bij toerisme@rotselaar.be). Vuurwerk: bewoners in de veiligheidszone uiterlijk 2 dagen vooraf schriftelijk verwittigen. Gelezen in de browser op 1/11/2026.",
   "platform": "onbekend",
   "kanaal": "Onbekend; contact via evenementen@rotselaar.be (dienst Toerisme).",
   "link": "https://www.rotselaar.be/dienst/toerisme-en-evenementen",
-  "contact": "Dienst Toerisme (evenementen) – evenementen@rotselaar.be – 016 61 63 11 (algemeen/afspraken)",
+  "contact": "Toerisme en Evenementen – toerisme@rotselaar.be – 016 61 63 11",
   "bron": [
    "https://www.rotselaar.be/sites/default/files/20240612_Rotselaar_ondernemersbrochure_website.pdf",
    "https://www.rotselaar.be/sites/default/files/bekendmaking/20210629_besl_gr_uitleenreglement_uitleendienst_gemeente_rotselaar_goedkeuring.pdf",
-   "https://www.rotselaar.be/sites/default/files/uitleendienst_technische_fiche.pdf"
+   "https://www.rotselaar.be/sites/default/files/uitleendienst_technische_fiche.pdf",
+   "https://www.rotselaar.be/sites/default/files/bekendmaking/20220222_rgl_zonaal_evenementenreglement.pdf"
   ],
   "bijzonder": [
    {
@@ -31658,7 +31790,7 @@
   "base": null,
   "extra": [],
   "termijnTekst": "Geen termijn gevonden op de evenementenloketpagina.",
-  "note": "De pagina 'Evenementenloket: aanvraag toelatingen' bevat enkel verouderde (covid-)info: aanvraag via evenementenformulier dat de evenementencel verwittigt, met draaiboek als bijlage (rubriek G van het online formulier) en voor bepaalde activiteiten een CERM-attest. Het online aanvraagformulier, de algemene politieverordening (pdf), de buurtfeestpagina op visit.scherpenheuvel-zichem.be en de pagina herbruikbare bekers gaven een client_error en konden niet gelezen worden. Termijn, contact en uitleendienst onbekend.",
+  "note": "De pagina 'Evenementenloket: aanvraag toelatingen' bevat enkel verouderde (covid-)info: aanvraag via evenementenformulier dat de evenementencel verwittigt, met draaiboek als bijlage (rubriek G van het online formulier) en voor bepaalde activiteiten een CERM-attest. Het online aanvraagformulier, de algemene politieverordening (pdf), de buurtfeestpagina op visit.scherpenheuvel-zichem.be en de pagina herbruikbare bekers gaven een client_error en konden niet gelezen worden. Termijn, contact en uitleendienst onbekend. Ligt vermoedelijk in Hulpverleningszone Vlaams-Brabant Oost, waarvan het zonaal evenementenreglement minstens 6 weken voorschrijft; niet bevestigd voor deze gemeente, dus de schatting blijft staan.",
   "platform": "eigen e-loket (webformulier op de stadssite)",
   "kanaal": "Online evenementenformulier op de stadswebsite, met draaiboek als bijlage.",
   "link": "https://www.scherpenheuvel-zichem.be/form/aanvraagformulier-evenementen",
