@@ -42,8 +42,8 @@ const NAAM_PLAN = { inplanting: "Inplantingsplan", grondplan: "Grondplan" };
 
 const STAPPEN = {
   inplanting: [
-    { t: "Terrein", u: "Zoek het adres en duid het terrein van je evenement aan. Versleep de vlakken naar de juiste plaats.", el: ["zone"], veld: "terrein" },
-    { t: "Opstelling", u: "Zet alles wat er komt op zijn plaats, met de echte maten. Klik een element aan om de maten of de draaiing aan te passen.", el: ["tent", "podium", "bar", "toilet", "food", "stroom"] },
+    { t: "Terrein", u: "Zoek het adres en duid het terrein van je evenement aan. Sleep het vlak naar de juiste plaats. Met het witte hoekpunt maak je het groter of kleiner, met het ronde punt erboven draai je het.", el: ["zone"], veld: "terrein" },
+    { t: "Opstelling", u: "Zet alles wat er komt op zijn plaats, met de echte maten. Sleep een vlak om het te verplaatsen. Klik het aan: met het hoekpunt verander je de maten, met het ronde punt draai je het. Je kan de maten ook links intypen.", el: ["tent", "podium", "bar", "toilet", "food", "stroom"] },
     { t: "Hulpdiensten en uitgangen", u: "Duid de vrije doorgang voor brandweer en ziekenwagen aan, de ingang en de nooduitgangen. Meet met een maatlijn de afstand tot de gebouwen errond.", el: ["doorgang", "ingang", "uitgang"], maat: true },
     { t: "Veiligheid", u: "Duid de blustoestellen en de EHBO-post aan.", el: ["blus", "ehbo"] },
     { t: "Controle", u: "Alles in het groen? Dan kan je je plan afwerken. Het gaat zo bij je aanvraag.", controle: true },
@@ -165,14 +165,16 @@ function tekenKaart() {
         color: k.c, weight: sel === it.id ? 3 : 2,
         fillOpacity: it.k === "zone" ? 0.05 : it.k === "doorgang" ? 0.15 : 0.35,
         dashArray: it.k === "doorgang" || it.k === "zone" ? "6 4" : null,
-      }).on("click", (e) => { L.DomEvent.stop(e); kies(it.id); }).addTo(laag);
+      }).on("click", (e) => { L.DomEvent.stop(e); if (!versleept) kies(it.id); }).addTo(laag);
       polys[it.id] = p;
+      vlakSleepbaar(p, it);
       const m = L.marker([it.lat, it.lng], { draggable: true, icon: L.divIcon({ className: "lbl", html: "<span>" + esc(it.naam || k.n) + " · " + fmt(it.w) + "×" + fmt(it.l) + " m</span>", iconSize: [0, 0] }) });
       m.on("dragstart", () => kies(it.id, true));
       m.on("drag", (e) => { const q = e.target.getLatLng(); it.lat = q.lat; it.lng = q.lng; polys[it.id].setLatLngs(hoeken(it)); });
       m.on("dragend", () => { allesTekenen(); bewaar(); });
       m.on("click", () => kies(it.id));
       m.addTo(laag);
+      if (sel === it.id) grepen(it);
     } else {
       const m = L.marker([it.lat, it.lng], { draggable: true, icon: L.divIcon({ className: "sym", html: '<span style="background:' + k.c + '">' + esc(k.s) + "</span>", iconSize: [0, 0] }) });
       m.on("dragend", (e) => { const q = e.target.getLatLng(); it.lat = q.lat; it.lng = q.lng; allesTekenen(); bewaar(); });
@@ -184,6 +186,71 @@ function tekenKaart() {
     L.polyline([mt.a, mt.b], { color: "#111", weight: 2, dashArray: "3 4" }).addTo(laag);
     L.marker([(mt.a[0] + mt.b[0]) / 2, (mt.a[1] + mt.b[1]) / 2], { interactive: false, icon: L.divIcon({ className: "lbl", html: "<span>" + fmt(map.distance(mt.a, mt.b)) + " m</span>", iconSize: [0, 0] }) }).addTo(laag);
   }
+}
+// Een vlak verslepen door het zelf vast te pakken (muis en aanraking). Buiten de vlakken versleep je de kaart.
+let versleept = false;
+function metersVan(it, ll) { return [(ll.lng - it.lng) / mLng(it.lat), (ll.lat - it.lat) / mLat()]; }
+function naarLatLng(it, x, y) { return [it.lat + y * mLat(), it.lng + x * mLng(it.lat)]; }
+function vlakSleepbaar(poly, it) {
+  const el = poly.getElement(); if (!el) return;
+  el.style.cursor = "move";
+  el.addEventListener("pointerdown", (ev) => {
+    if (maatModus || ev.button > 0) return;
+    ev.stopPropagation();
+    map.dragging.disable();
+    const start = map.mouseEventToLatLng(ev), van = [it.lat, it.lng];
+    versleept = false;
+    if (sel !== it.id) { sel = it.id; tekenLijst(); tekenStap(); }
+    const beweeg = (e) => {
+      const q = map.mouseEventToLatLng(e);
+      if (!versleept && map.latLngToContainerPoint(q).distanceTo(map.latLngToContainerPoint(start)) < 3) return;
+      versleept = true;
+      it.lat = van[0] + (q.lat - start.lat); it.lng = van[1] + (q.lng - start.lng);
+      poly.setLatLngs(hoeken(it));
+    };
+    const los = () => {
+      document.removeEventListener("pointermove", beweeg); document.removeEventListener("pointerup", los); document.removeEventListener("pointercancel", los);
+      map.dragging.enable();
+      allesTekenen(); bewaar();
+      setTimeout(() => { versleept = false; }, 0);
+    };
+    document.addEventListener("pointermove", beweeg); document.addEventListener("pointerup", los); document.addEventListener("pointercancel", los);
+  });
+}
+// Greep in de hoek (grootte, tegenoverliggende hoek blijft staan) en draaigreep boven het gekozen vlak.
+function greepIcoon(kl, titel) { return L.divIcon({ className: "greep " + kl, html: '<span title="' + titel + '"></span>', iconSize: [0, 0] }); }
+function grepen(it) {
+  const a = () => (it.rot * Math.PI) / 180;
+  const rot = (x, y) => [x * Math.cos(a()) - y * Math.sin(a()), x * Math.sin(a()) + y * Math.cos(a())];
+  const hoekPos = () => { const [x, y] = rot(it.w / 2, it.l / 2); return naarLatLng(it, x, y); };
+  const draaiAf = () => it.l / 2 + Math.max(2, it.l * 0.2);
+  const draaiPos = () => { const [x, y] = rot(0, draaiAf()); return naarLatLng(it, x, y); };
+  const hoek = L.marker(hoekPos(), { draggable: true, icon: greepIcoon("maat", "Sleep om de maten te veranderen"), zIndexOffset: 1000 }).addTo(laag);
+  const draai = L.marker(draaiPos(), { draggable: true, icon: greepIcoon("draai", "Sleep om te draaien"), zIndexOffset: 1000 }).addTo(laag);
+  const lijn = L.polyline([[it.lat, it.lng], draaiPos()], { color: "#1a1d2b", weight: 1, dashArray: "2 3", interactive: false }).addTo(laag);
+  let vast = null;
+  hoek.on("dragstart", () => { const [x, y] = rot(-it.w / 2, -it.l / 2); vast = naarLatLng(it, x, y); vast = { lat: vast[0], lng: vast[1] }; });
+  hoek.on("drag", (e) => {
+    const q = e.target.getLatLng();
+    const dx = (q.lng - vast.lng) / mLng(vast.lat), dy = (q.lat - vast.lat) / mLat();
+    // terug naar het assenstelsel van het vlak
+    const lx = dx * Math.cos(a()) + dy * Math.sin(a()), ly = -dx * Math.sin(a()) + dy * Math.cos(a());
+    it.w = Math.max(0.5, Math.round(lx * 10) / 10); it.l = Math.max(0.5, Math.round(ly * 10) / 10);
+    const [cx, cy] = rot(it.w / 2, it.l / 2);
+    it.lat = vast.lat + cy * mLat(); it.lng = vast.lng + cx * mLng(vast.lat);
+    polys[it.id].setLatLngs(hoeken(it)); draai.setLatLng(draaiPos()); lijn.setLatLngs([[it.lat, it.lng], draaiPos()]);
+  });
+  draai.on("drag", (e) => {
+    const [vx, vy] = metersVan(it, e.target.getLatLng());
+    let g = Math.round((Math.atan2(-vx, vy) * 180) / Math.PI);
+    g = ((g % 360) + 360) % 360;
+    // stevig vastklikken op 0/90/180/270°, zacht op elke 15°
+    const r90 = Math.round(g / 90) * 90, r15 = Math.round(g / 15) * 15;
+    if (Math.abs(r90 - g) <= 7) g = r90 % 360; else if (Math.abs(r15 - g) <= 2) g = r15 % 360;
+    it.rot = g;
+    polys[it.id].setLatLngs(hoeken(it)); hoek.setLatLng(hoekPos()); lijn.setLatLngs([[it.lat, it.lng], draaiPos()]);
+  });
+  for (const m of [hoek, draai]) m.on("dragend", () => { allesTekenen(); bewaar(); });
 }
 let maatStart = null, maatModus = false;
 function kaartKlik(e) {
@@ -289,7 +356,7 @@ function tekenLijst() {
   if (k.f === "rect") h += '<div class="r3"><label for="e-w">Lengte (m)<input id="e-w" type="number" step="0.5" min="0.5" value="' + it.w + '"></label><label for="e-l">Breedte (m)<input id="e-l" type="number" step="0.5" min="0.5" value="' + it.l + '"></label><label for="e-r">Draaiing (°)<input id="e-r" type="number" step="5" value="' + it.rot + '"></label></div>';
   if (k.f === "deur") h += '<div class="r2"><label for="e-w">Breedte (m)<input id="e-w" type="number" step="0.1" min="0.6" value="' + it.w + '"></label><label for="e-o">Draait<select id="e-o"><option value="buiten"' + (it.open === "buiten" ? " selected" : "") + '>naar buiten</option><option value="binnen"' + (it.open === "binnen" ? " selected" : "") + ">naar binnen</option></select></label></div>";
   if (it.k === "uitgang") h += '<label for="e-b">Vrije breedte (m)<input id="e-b" type="number" step="0.1" min="0.5" value="' + it.breedte + '"></label>';
-  h += '<button class="btn" id="e-del" type="button">Verwijderen</button></div>';
+  h += '<div class="r2">' + (k.f === "rect" ? '<button class="btn" id="e-90" type="button" title="Sneltoets: R">Draai 90°</button>' : "") + '<button class="btn" id="e-del" type="button">Verwijderen</button></div></div>';
   ed.innerHTML = h;
   const upd = () => {
     it.naam = $("e-naam").value;
@@ -303,11 +370,22 @@ function tekenLijst() {
   };
   ed.querySelectorAll("input,select").forEach((i) => i.addEventListener("change", upd));
   ed.querySelectorAll("input").forEach((i) => i.addEventListener("input", upd));
+  if ($("e-90")) $("e-90").addEventListener("click", () => draai90(it));
   $("e-del").addEventListener("click", () => {
     if (S.actief === "inplanting") S.I.items = S.I.items.filter((i) => i !== it); else S.G.items = S.G.items.filter((i) => i !== it);
     sel = null; allesTekenen(); bewaar();
   });
 }
+
+function draai90(it) {
+  it.rot = (Math.floor((+it.rot || 0) / 90) * 90 + 90) % 360; // naar de volgende rechte hoek
+  allesTekenen(); bewaar();
+}
+document.addEventListener("keydown", (e) => {
+  if (!S || e.key.toLowerCase() !== "r" || e.metaKey || e.ctrlKey || e.altKey || /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
+  const it = lijst().find((i) => i.id === sel);
+  if (it && KAT[S.actief][it.k].f === "rect") { e.preventDefault(); draai90(it); }
+});
 
 // ---------- Meetkunde ----------
 function lokaal(lat, lng) { const c = S.I.center; return [(lng - c[1]) / mLng(c[0]), (lat - c[0]) / mLat()]; }
