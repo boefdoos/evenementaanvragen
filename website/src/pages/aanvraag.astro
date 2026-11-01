@@ -553,7 +553,7 @@ form.addEventListener("submit", async e => {
     document.getElementById("done-betaal").hidden = !betaal;
     document.getElementById("done-navraag").hidden = betaal;
     if (betaal) {
-      document.getElementById("done-kop").textContent = "Nog één stap: betalen.";
+      document.getElementById("done-kop").textContent = "Je bent er bijna.";
       document.getElementById("betaalformule").textContent = j.formule || "";
       document.getElementById("betaallink").href = j.betaalUrl;
       document.getElementById("betaalbedrag").textContent = j.bedrag ? "€ " + j.bedrag : "";
