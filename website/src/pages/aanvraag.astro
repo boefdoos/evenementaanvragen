@@ -522,12 +522,11 @@ document.getElementById("intake").addEventListener("input", toonVolmacht);
 document.getElementById("intake").addEventListener("change", toonVolmacht);
 toonVolmacht();
 
-// Prijs: zelfde regels als prijsVoor() in Betaling.gs. Plus = hulp bij het plan, een tent, of 500 bezoekers of meer.
+// Prijs: zelfde regels als prijsVoor() in Betaling.gs. Plus = hulp bij het plan (plantekenaar) of 500 bezoekers of meer.
 function prijsVoor() {
   const bez = +veld("bezoekers") || 0;
-  const tent = veld("locatie_soort") === "tent" || veld("tent_afmetingen").trim() !== "";
   const plan = (intakeForm.querySelector('input[name="inplantingsplan"]:checked') || {}).value;
-  const formule = plan === "hulp nodig" || tent || bez >= 500 ? "Plus" : "Basis";
+  const formule = plan === "hulp nodig" || bez >= 500 ? "Plus" : "Basis";
   return { formule, bedrag: { Basis: 45, Plus: 75 }[formule] * (veld("aanvrager_type") === "bedrijf" ? 2 : 1) };
 }
 function toonPrijs() {
