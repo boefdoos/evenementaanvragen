@@ -35,7 +35,7 @@ import huisstijl from "../huisstijl.css?raw";
         // Mollie meldt een betaling soms enkele seconden later.
         pogingen++; zet("Even kijken…", "Je betaling is nog niet bevestigd. We proberen opnieuw."); setTimeout(vraag, 3000);
       } else if (j.status === "open") {
-        zet("Nog niet betaald", "We zien nog geen betaling. Probeer het opnieuw met de knop hieronder.");
+        zet("Nog niet betaald", "We zien nog geen betaling. Probeer het opnieuw met de knop hieronder of de link in je mail.");
         if (typeof j.betaalUrl === "string" && /^https:\/\/[\w.-]*mollie\.com\//.test(j.betaalUrl)) {
           const a = document.createElement("a"); a.className = "btn primary"; a.href = j.betaalUrl;
           a.textContent = "Betaal" + (j.bedrag ? " € " + j.bedrag : "") + " →"; $("acties").replaceChildren(a); $("acties").hidden = false;

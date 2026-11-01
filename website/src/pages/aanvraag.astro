@@ -275,9 +275,9 @@ footer.foot a{color:var(--soft)}
     <div id="done-betaal" hidden>
       <p>Na je betaling nemen wij het over. Je krijgt per mail je deadline, en een bevestiging zodra je aanvraag ingediend is.</p>
       <a class="btn" id="betaallink" href="#">Betaal <span id="betaalbedrag"></span> <span class="arr" aria-hidden="true">→</span></a>
-      <p class="hint">Bancontact of kaart, via Mollie.</p>
+      <p class="hint">Bancontact of kaart, via Mollie. Je krijgt de link ook per mail.</p>
     </div>
-    <p id="done-navraag" hidden>We kijken eerst de termijn van je gemeente na. Binnen twee werkdagen krijg je per mail je deadline en een betaallink. Daarna nemen wij het over.</p>
+    <p id="done-navraag" hidden>We kijken eerst de termijn van je gemeente na. Binnen twee werkdagen krijg je per mail je deadline en een betaallink. Daarna nemen wij het over. Een bevestiging zit al in je mailbox.</p>
   </section>
 </div>
 </main>
@@ -512,6 +512,9 @@ form.addEventListener("submit", async e => {
   data.toestemming_privacy = form.toestemming_privacy.checked ? "ja" : "nee";
   data.toestemming_mandaat = form.toestemming_mandaat.checked ? "ja" : "nee";
   data.termijn_oordeel = termijn ? termijn.soort : "onbekend";
+  const isoD = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  data.termijn_deadline = termijn && termijn.deadline ? isoD(termijn.deadline) : "";
+  data.termijn_regel = (termijn && termijn.termijn) || "";
   const mat = [...ml.querySelectorAll("input")].filter(i => +i.value > 0).map(i => `${i.id.slice(4)}=${Math.floor(+i.value)}`);
   data.materiaal_lijst = data.materiaal === "ja" ? mat.join("; ") : "";
   if (data.materiaal !== "ja") { data.materiaal_andere = ""; data.materiaal_levering = ""; }
