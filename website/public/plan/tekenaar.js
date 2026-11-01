@@ -147,8 +147,9 @@ function hoeken(it) {
 function initKaart() {
   map = L.map("map", { zoomControl: true, maxZoom: 22 }).setView(S.I.center, S.I.zoom);
   map.zoomControl.setPosition("bottomright");
-  const grb = L.tileLayer.wms("https://geo.api.vlaanderen.be/GRB-basiskaart/wms", {
-    layers: "GRB_BSK", format: "image/png", transparent: false, version: "1.3.0", maxZoom: 22, maxNativeZoom: 21,
+  // GRB-basiskaart als WMTS (voorgerenderde tegels: sneller en betrouwbaarder dan de WMS).
+  const grb = L.tileLayer(GRB_WMTS, {
+    maxZoom: 22, maxNativeZoom: 21,
     attribution: "Bron: Grootschalig Referentie Bestand Vlaanderen, Digitaal Vlaanderen",
   });
   let fouten = 0;
@@ -547,6 +548,37 @@ async function zoekAdres() {
   } catch (e) { $("msg").textContent = "Adres niet gevonden. Verschuif de kaart zelf naar de juiste plaats."; }
 }
 
+// ---------- Basiskaart ----------
+const GRB_WMTS = "https://geo.api.vlaanderen.be/GRB/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=grb_bsk&STYLE=&FORMAT=image/png&TILEMATRIXSET=GoogleMapsVL&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}";
+const WEB_R = 20037508.342789;
+async function tegel(z, x, y) {
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 15000);
+  try {
+    const r = await fetch(GRB_WMTS.replace("{z}", z).replace("{x}", x).replace("{y}", y), { signal: ctl.signal });
+    if (!r.ok || !/image/.test(r.headers.get("content-type") || "")) throw new Error("tegel");
+    return await createImageBitmap(await r.blob());
+  } finally { clearTimeout(t); }
+}
+// Kaartbeeld voor een gebied in EPSG:3857 (minX, minY, maxX, maxY), samengesteld uit WMTS-tegels.
+async function grbBeeld(bbox, wpx, hpx) {
+  const [x0, y0, x1, y1] = bbox, doel = (x1 - x0) / wpx;
+  let z = 0; while (z < 21 && (2 * WEB_R) / 256 / 2 ** z > doel) z++;
+  const res = (2 * WEB_R) / 256 / 2 ** z, n = 2 ** z;
+  const c0 = Math.floor((x0 + WEB_R) / res / 256), c1 = Math.floor((x1 + WEB_R) / res / 256);
+  const r0 = Math.floor((WEB_R - y1) / res / 256), r1 = Math.floor((WEB_R - y0) / res / 256);
+  if ((c1 - c0 + 1) * (r1 - r0 + 1) > 200) throw new Error("te veel tegels");
+  const cv = document.createElement("canvas"); cv.width = wpx; cv.height = hpx;
+  const g = cv.getContext("2d"), sx = wpx / (x1 - x0), sy = hpx / (y1 - y0);
+  const taken = [];
+  for (let c = c0; c <= c1; c++) for (let r = r0; r <= r1; r++) if (c >= 0 && r >= 0 && c < n && r < n) taken.push(tegel(z, c, r).then((bm) => {
+    const tx = c * 256 * res - WEB_R, ty = WEB_R - r * 256 * res;
+    g.drawImage(bm, (tx - x0) * sx, (y1 - ty) * sy, 256 * res * sx + 0.5, 256 * res * sy + 0.5);
+  }));
+  const uit = await Promise.allSettled(taken);
+  if (!uit.some((u) => u.status === "fulfilled")) throw new Error("geen tegels");
+  return cv;
+}
+
 // ---------- Plan op A3 (canvas → pdf) ----------
 const DPI = 150, MM = DPI / 25.4, A3 = [420, 297], VAK = { x: 10, y: 10, w: 300, h: 262 };
 async function maakBlad(plan) {
@@ -572,9 +604,7 @@ async function maakBlad(plan) {
     const X = (R * lngC * Math.PI) / 180, Y = R * Math.log(Math.tan(Math.PI / 4 + (latC * Math.PI) / 360));
     const k = 1 / Math.cos(lat0), hw = (Wm / 2) * k, hh = (Hm / 2) * k;
     const wpx = Math.round(P(VAK.w)), hpx = Math.round(P(VAK.h));
-    const url = "https://geo.api.vlaanderen.be/GRB-basiskaart/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=GRB_BSK&STYLES=&CRS=EPSG:3857&BBOX=" +
-      [X - hw, Y - hh, X + hw, Y + hh].map((v) => v.toFixed(2)).join(",") + "&WIDTH=" + wpx + "&HEIGHT=" + hpx + "&FORMAT=image/png";
-    try { const bm = await createImageBitmap(await (await fetch(url)).blob()); g.globalAlpha = 0.75; g.drawImage(bm, P(VAK.x), P(VAK.y), wpx, hpx); g.globalAlpha = 1; }
+    try { const bm = await grbBeeld([X - hw, Y - hh, X + hw, Y + hh], wpx, hpx); g.globalAlpha = 0.75; g.drawImage(bm, P(VAK.x), P(VAK.y), wpx, hpx); g.globalAlpha = 1; }
     catch (e) { g.fillStyle = "#f2f3f6"; g.fillRect(P(VAK.x), P(VAK.y), P(VAK.w), P(VAK.h)); }
     g.save(); g.beginPath(); g.rect(P(VAK.x), P(VAK.y), P(VAK.w), P(VAK.h)); g.clip();
     const volg = (it) => (it.k === "zone" ? 0 : it.k === "doorgang" ? 1 : 2);
