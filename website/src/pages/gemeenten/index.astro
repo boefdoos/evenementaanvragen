@@ -1,6 +1,5 @@
 ---
 // Overzicht van alle Vlaamse gemeenten per provincie, met een link naar elke gemeentepagina.
-// Gemeenten zonder eigen pagina (status 'onbekend') staan erbij zonder link.
 import Basis from "../../layouts/Basis.astro";
 import huisstijl from "../../huisstijl.css?raw";
 import regels from "../../../public/regels.json";
@@ -10,7 +9,7 @@ const VOLGORDE = ["Antwerpen", "Limburg", "Oost-Vlaanderen", "Vlaams-Brabant", "
 const per = {};
 for (const r of regels) {
   const p = r.provincie || "West-Vlaanderen";
-  (per[p] ||= []).push({ naam: r.gemeente, pagina: r.status !== "onbekend" ? `/${slug(r.gemeente)}/` : null });
+  (per[p] ||= []).push({ naam: r.gemeente, pagina: `/${slug(r.gemeente)}/` });
 }
 for (const p in per) per[p].sort((a, b) => a.naam.localeCompare(b.naam, "nl"));
 const provincies = VOLGORDE.filter((p) => per[p]);
