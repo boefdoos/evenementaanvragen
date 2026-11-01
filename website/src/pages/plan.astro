@@ -1,6 +1,12 @@
 ---
 // Begeleide plantekenaar (Plus). Met dossiernummer en e-mail: gegevens uit de intake en opslaan in het dossier.
-// Zonder login: demo, opslaan staat uit. De logica staat in /plan/tekenaar.js, de normen in /plan/normen.json.
+// Zonder login: demo, opslaan staat uit. Leaflet, jsPDF en lettertypes komen van de eigen server. De logica staat in /plan/tekenaar.js, de normen in /plan/normen.json.
+import "@fontsource/unbounded/600.css";
+import "@fontsource/unbounded/800.css";
+import "@fontsource/instrument-sans/400.css";
+import "@fontsource/instrument-sans/500.css";
+import "@fontsource/instrument-sans/600.css";
+import "@fontsource/instrument-sans/700.css";
 ---
 <!doctype html>
 <html lang="nl-BE">
@@ -11,10 +17,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="/vendor/leaflet-1.9.4/leaflet.css">
 <style is:inline>
 :root{
   --bg:#1a1d2b; --card:#232738; --card-2:#2a2f43; --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.18);
@@ -140,8 +143,8 @@ input,select{background:var(--bg);border:1px solid var(--line-2);border-radius:1
   </div>
 </div>
 
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script is:inline src="/vendor/leaflet-1.9.4/leaflet.js"></script>
+<script is:inline src="/vendor/jspdf-2.5.1.umd.min.js"></script>
 <script is:inline src="/plan/tekenaar.js"></script>
 </body>
 </html>

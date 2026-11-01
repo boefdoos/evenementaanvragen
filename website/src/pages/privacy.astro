@@ -1,0 +1,144 @@
+---
+// Privacyverklaring met cookieverklaring. Bij een inhoudelijke wijziging: VERSIE en DATUM aanpassen (vorige versie blijft in git).
+import Basis from "../layouts/Basis.astro";
+import huisstijl from "../huisstijl.css?raw";
+import juridisch from "../juridisch.css?raw";
+const VERSIE = "1";
+const DATUM = "2 november 2026";
+const hoofdstukken = [
+  ["wie", "Wie is verantwoordelijk"],
+  ["welke", "Welke gegevens we verwerken"],
+  ["waarom", "Waarom, en op welke grond"],
+  ["wie-ziet", "Wie je gegevens krijgt"],
+  ["ai", "Hulp van AI"],
+  ["buiten-eu", "Gegevens buiten de Europese Unie"],
+  ["bewaren", "Hoe lang we bewaren"],
+  ["rechten", "Jouw rechten"],
+  ["beveiliging", "Beveiliging"],
+  ["cookies", "Cookies en opslag in je browser"],
+  ["wijzigingen", "Wijzigingen"],
+];
+---
+<Basis title="Privacyverklaring – evenementaanvragen.be" description="Welke gegevens evenementaanvragen.be verwerkt, waarom, met wie we ze delen, hoe lang we ze bewaren, je rechten en welke cookies we gebruiken." canonical="/privacy.html">
+<style is:inline slot="head" set:html={huisstijl + juridisch}></style>
+<main class="jur">
+<div class="wrap">
+  <div class="k">Juridisch</div>
+  <h1 style="margin-top:10px">Privacyverklaring</h1>
+  <p class="versie">Versie {VERSIE}, geldig vanaf {DATUM}</p>
+
+  <div class="kort">
+    <b>In het kort</b>
+    <ul>
+      <li>We gebruiken je gegevens om je evenementaanvraag voor te bereiden en in te dienen. De gemeente krijgt wat ze nodig heeft om te beslissen.</li>
+      <li>We verkopen niets door en sturen geen reclame.</li>
+      <li>Een AI-assistent helpt ons het dossier op te maken. Een mens kijkt alles na en dient zelf in.</li>
+      <li>Geen trackingcookies, geen advertentienetwerken, geen bezoekersstatistieken.</li>
+      <li>We bewaren je dossier tot een jaar na je evenement.</li>
+    </ul>
+  </div>
+
+  <nav class="inhoud" aria-label="Inhoud"><b>Inhoud</b>
+    <ol>{hoofdstukken.map(([id, t]) => <li><a href={"#" + id}>{t}</a></li>)}</ol>
+  </nav>
+
+  <h2 id="wie">1. Wie is verantwoordelijk</h2>
+  <p>De verwerkingsverantwoordelijke is <b>Troostberg</b>, handelend onder de naam evenementaanvragen.be, Zwanenlaan 45, 8400 Oostende, ondernemingsnummer 0791.797.538. Voor alle vragen over je gegevens: <a href="mailto:thomas@evenementaanvragen.be">thomas@evenementaanvragen.be</a>.</p>
+  <p>Zodra je aanvraag bij de gemeente ligt, is de gemeente zelf verantwoordelijk voor wat zij met je gegevens doet. Dat staat in haar eigen privacyverklaring.</p>
+
+  <h2 id="welke">2. Welke gegevens we verwerken</h2>
+  <ul>
+    <li><b>Contactgegevens:</b> naam, e-mailadres, gsm-nummer en adres van de contactpersoon.</li>
+    <li><b>Organisator:</b> naam van de vereniging, school of onderneming, ondernemingsnummer, type organisator, en of het om een (erkende) jeugdvereniging gaat.</li>
+    <li><b>Evenement:</b> naam, datum en uren, plaats, aantal bezoekers, beschrijving en je antwoorden in het formulier (muziek, drank, verkeer, materiaal en dergelijke).</li>
+    <li><b>Plannen en bijlagen:</b> wat je oplaadt of tekent in de plantekenaar.</li>
+    <li><b>Volmacht:</b> de naam en hoedanigheid waarmee je tekende, en het tijdstip.</li>
+    <li><b>Betaling:</b> bedrag, formule, betaalstatus en het kenmerk van de betaling. Je kaart- of rekeninggegevens komen niet bij ons terecht, die verwerkt Mollie.</li>
+    <li><b>Briefwisseling:</b> de mails die we uitwisselen.</li>
+    <li><b>Technische gegevens:</b> je IP-adres, dat de servers van onze website en van de diensten hieronder te zien krijgen wanneer je browser een pagina of kaart opvraagt.</li>
+  </ul>
+  <p>We vragen geen gevoelige gegevens. Zet die ook niet in de vrije tekstvelden.</p>
+
+  <h2 id="waarom">3. Waarom, en op welke grond</h2>
+  <div class="tabel"><table>
+    <thead><tr><th>Waarvoor</th><th>Rechtsgrond</th></tr></thead>
+    <tbody>
+      <tr><td>Je aanvraag voorbereiden en indienen bij de gemeente, materiaal aanvragen, je plan nakijken en met je mailen over je aanvraag.</td><td>Uitvoering van de overeenkomst met jou.</td></tr>
+      <tr><td>Betalingen verwerken en terugbetalen.</td><td>Uitvoering van de overeenkomst.</td></tr>
+      <tr><td>Facturen en betaalgegevens bewaren.</td><td>Wettelijke verplichting (boekhouding).</td></tr>
+      <tr><td>Kunnen aantonen dat je een volmacht gaf.</td><td>Gerechtvaardigd belang: bewijs tegenover de gemeente en bij een geschil.</td></tr>
+      <tr><td>Spam en misbruik van het formulier tegenhouden.</td><td>Gerechtvaardigd belang: een betrouwbare dienst.</td></tr>
+      <tr><td>Onze regels per gemeente verbeteren, bijvoorbeeld als een gemeente een andere termijn blijkt te hanteren.</td><td>Gerechtvaardigd belang. We gebruiken daarvoor de regels, niet je persoonsgegevens.</td></tr>
+    </tbody>
+  </table></div>
+  <p>We gebruiken je gegevens niet voor reclame of nieuwsbrieven, en we verkopen of verhuren ze aan niemand.</p>
+
+  <h2 id="wie-ziet">4. Wie je gegevens krijgt</h2>
+  <h3>Voor je aanvraag</h3>
+  <ul>
+    <li><b>De gemeente</b> van je evenement en, waar nodig, haar diensten (zoals de uitleendienst), via het kanaal dat de gemeente gebruikt. Dat kan een aanvraagplatform zijn dat de gemeente zelf kiest. De gemeente deelt je aanvraag voor advies vaak met politie en brandweer.</li>
+  </ul>
+  <h3>Diensten die we inschakelen (verwerkers)</h3>
+  <p>Deze bedrijven verwerken gegevens in onze opdracht en mogen ze nergens anders voor gebruiken.</p>
+  <div class="tabel"><table>
+    <thead><tr><th>Dienst</th><th>Waarvoor</th></tr></thead>
+    <tbody>
+      <tr><td>Google (Google Workspace)</td><td>E-mail, opslag van dossiers en het verwerken van het formulier.</td></tr>
+      <tr><td>Vercel</td><td>Hosting van deze website.</td></tr>
+      <tr><td>Onze boekhouder en boekhoudsoftware</td><td>Facturen en boekhouding.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Diensten met een eigen verantwoordelijkheid</h3>
+  <ul>
+    <li><b>Anthropic</b> levert de AI-assistent Claude die helpt bij het opmaken van je dossier (zie <a href="#ai">punt 5</a>). Anthropic verwerkt de gegevens die de assistent te zien krijgt volgens zijn eigen voorwaarden en privacybeleid.</li>
+    <li><b>Mollie</b> verwerkt je betaling. Mollie is als betaalinstelling zelf verantwoordelijk voor de gegevens die het daarvoor nodig heeft, volgens de privacyverklaring van Mollie.</li>
+    <li><b>Digitaal Vlaanderen</b> levert de adressuggesties in het formulier en de basiskaart in de plantekenaar. Je browser stuurt daarvoor de letters die je typt, of het kaartgebied dat je bekijkt, rechtstreeks naar geo.api.vlaanderen.be.</li>
+  </ul>
+
+  <h2 id="ai">5. Hulp van AI</h2>
+  <p>We gebruiken een AI-assistent (Claude, van Anthropic) om je aanvraag te verwerken: de termijn uitrekenen, het dossier en de invulgids opmaken, conceptmails voorbereiden en je plan nakijken. Daarvoor krijgt de assistent de gegevens uit je aanvraag.</p>
+  <p>De assistent beslist niets. Thomas kijkt elk dossier na, verstuurt zelf de mails die niet automatisch vertrekken en dient zelf in. Er is dus geen geautomatiseerde besluitvorming in de zin van de AVG.</p>
+  <p>Automatisch, zonder menselijke tussenkomst, vertrekken enkel de vaste bevestigingsmails: de ontvangst van je aanvraag met de betaallink, en de bevestiging van je betaling.</p>
+
+  <h2 id="buiten-eu">6. Gegevens buiten de Europese Unie</h2>
+  <p>Google, Anthropic en Vercel zijn Amerikaanse bedrijven. Je gegevens kunnen daardoor in de Verenigde Staten verwerkt worden. Google en Vercel doen dat met de waarborgen die de AVG vraagt, zoals het EU-VS-gegevensprivacykader of de standaardcontractbepalingen van de Europese Commissie. Voor Anthropic gelden de voorwaarden en het privacybeleid van Anthropic.</p>
+
+  <h2 id="bewaren">7. Hoe lang we bewaren</h2>
+  <div class="tabel"><table>
+    <thead><tr><th>Wat</th><th>Hoe lang</th></tr></thead>
+    <tbody>
+      <tr><td>Je dossier: aanvraag, plannen, bijlagen, volmacht en mails</td><td>Tot 1 jaar na de datum van je evenement. Zo kan je volgend jaar vlot opnieuw aanvragen.</td></tr>
+      <tr><td>Aanvragen die niet betaald werden</td><td>3 maanden na de aanvraag.</td></tr>
+      <tr><td>Facturen en betaalgegevens</td><td>10 jaar, zoals de boekhoudwetgeving vraagt.</td></tr>
+      <tr><td>Wat de plantekenaar in je browser bewaart</td><td>Tot je het zelf wist (zie <a href="#cookies">punt 10</a>).</td></tr>
+    </tbody>
+  </table></div>
+  <p>Wat de gemeente bewaart, valt onder haar eigen regels.</p>
+
+  <h2 id="rechten">8. Jouw rechten</h2>
+  <p>Je hebt het recht om je gegevens in te kijken, te laten verbeteren of te laten wissen, de verwerking te laten beperken, bezwaar te maken tegen een verwerking op grond van gerechtvaardigd belang, en je gegevens te krijgen in een gangbaar formaat.</p>
+  <p>Mail daarvoor naar <a href="mailto:thomas@evenementaanvragen.be">thomas@evenementaanvragen.be</a>. We antwoorden binnen een maand. Soms vragen we eerst te bevestigen dat jij het bent. Wissen kan niet voor gegevens die we wettelijk moeten bijhouden, en wat al bij de gemeente ligt, wis je bij de gemeente.</p>
+  <p>Ben je niet tevreden over hoe we met je gegevens omgaan, dan kan je klacht indienen bij de <a href="https://www.gegevensbeschermingsautoriteit.be" rel="noopener">Gegevensbeschermingsautoriteit</a>, Drukpersstraat 35, 1000 Brussel, contact@apd-gba.be.</p>
+
+  <h2 id="beveiliging">9. Beveiliging</h2>
+  <p>De website werkt enkel via een beveiligde verbinding (https). Dossiers staan in een afgeschermde opslag waar enkel wij bij kunnen. De plantekenaar opent enkel met je dossiernummer en je e-mailadres samen.</p>
+
+  <h2 id="cookies">10. Cookies en opslag in je browser</h2>
+  <p>We gebruiken geen trackingcookies, geen advertentiecookies en geen bezoekersstatistieken. Lettertypes en kaartbibliotheken komen van onze eigen server. Daarom vragen we je ook geen toestemming met een cookiebanner.</p>
+  <p>Je browser bewaart wel enkele gegevens die nodig zijn voor wat je zelf vraagt. Die blijven op je eigen toestel en komen niet bij ons, tenzij je je aanvraag of plan doorstuurt.</p>
+  <div class="tabel"><table>
+    <thead><tr><th>Naam</th><th>Soort</th><th>Waarvoor</th><th>Hoe lang</th></tr></thead>
+    <tbody>
+      <tr><td>termijncheck</td><td>sessionStorage</td><td>Neemt gemeente, type en datum uit de termijncheck mee naar het aanvraagformulier, zodat je ze niet opnieuw moet invullen.</td><td>Tot je het tabblad sluit.</td></tr>
+      <tr><td>plantekenaar:&lt;dossier&gt;</td><td>localStorage</td><td>Bewaart je tekening, zodat je later verder kan.</td><td>Tot je het wist in je browser.</td></tr>
+      <tr><td>plantekenaar-login</td><td>sessionStorage</td><td>Houdt je aangemeld in de plantekenaar.</td><td>Tot je het tabblad sluit.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Op de betaalpagina van Mollie gelden de cookies van Mollie. Die pagina valt onder de privacy- en cookieverklaring van Mollie.</p>
+  <p>Je kan deze gegevens altijd wissen in de instellingen van je browser. Dan moet je in de plantekenaar opnieuw beginnen, tenzij je je plan al afwerkte: het laatst afgewerkte plan laadt dan uit je dossier.</p>
+
+  <h2 id="wijzigingen">11. Wijzigingen</h2>
+  <p>Passen we deze verklaring aan, dan zie je dat aan het versienummer en de datum bovenaan. Bij belangrijke wijzigingen die een lopende aanvraag raken, laten we het je weten.</p>
+</div>
+</main>
+</Basis>

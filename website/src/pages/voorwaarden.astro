@@ -1,0 +1,159 @@
+---
+// Algemene voorwaarden. Bij een inhoudelijke wijziging: VERSIE en DATUM aanpassen en de vorige versie bewaren (git).
+import Basis from "../layouts/Basis.astro";
+import huisstijl from "../huisstijl.css?raw";
+import juridisch from "../juridisch.css?raw";
+const VERSIE = "1";
+const DATUM = "2 november 2026";
+const hoofdstukken = [
+  ["wie", "Wie we zijn"],
+  ["toepassing", "Wanneer deze voorwaarden gelden"],
+  ["dienst", "Wat we voor je doen"],
+  ["niet", "Wat niet in de dienst zit"],
+  ["overeenkomst", "Aanvraag, bevestiging en betaling"],
+  ["prijs", "Prijs en tarief"],
+  ["jij", "Wat we van jou verwachten"],
+  ["volmacht", "De volmacht"],
+  ["plan", "De plantekenaar (Plus)"],
+  ["termijnen", "Termijnen"],
+  ["na", "Na de indiening"],
+  ["annuleren", "Annuleren en terugbetalen"],
+  ["herroeping", "Herroepingsrecht voor consumenten"],
+  ["aansprakelijkheid", "Aansprakelijkheid"],
+  ["klachten", "Klachten"],
+  ["slot", "Privacy, wijzigingen en toepasselijk recht"],
+];
+---
+<Basis title="Algemene voorwaarden – evenementaanvragen.be" description="De afspraken tussen jou en evenementaanvragen.be: wat we doen, prijs en betaling, volmacht, annuleren, herroepingsrecht en aansprakelijkheid." canonical="/voorwaarden.html">
+<style is:inline slot="head" set:html={huisstijl + juridisch}></style>
+<main class="jur">
+<div class="wrap">
+  <div class="k">Juridisch</div>
+  <h1 style="margin-top:10px">Algemene voorwaarden</h1>
+  <p class="versie">Versie {VERSIE}, geldig vanaf {DATUM}</p>
+
+  <div class="kort">
+    <b>In het kort</b>
+    <ul>
+      <li>Wij bereiden je evenementaanvraag voor en dienen ze in jouw naam in bij de gemeente. De gemeente beslist.</li>
+      <li>Je betaalt vooraf. Annuleer je vóór de indiening, dan krijg je alles terug.</li>
+      <li>Jij blijft de organisator: jij geeft juiste gegevens en bent verantwoordelijk voor je evenement.</li>
+      <li>Maakten wij een fout in wat we indienden, dan verbeteren we die kosteloos.</li>
+    </ul>
+  </div>
+
+  <nav class="inhoud" aria-label="Inhoud"><b>Inhoud</b>
+    <ol>{hoofdstukken.map(([id, t]) => <li><a href={"#" + id}>{t}</a></li>)}</ol>
+  </nav>
+
+  <h2 id="wie">1. Wie we zijn</h2>
+  <p>evenementaanvragen.be is een handelsnaam van <b>Troostberg</b>, Zwanenlaan 45, 8400 Oostende, ondernemingsnummer 0791.797.538. Je bereikt ons op <a href="mailto:thomas@evenementaanvragen.be">thomas@evenementaanvragen.be</a>.</p>
+  <p>We vallen onder de vrijstellingsregeling voor kleine ondernemingen: we rekenen geen btw aan.</p>
+  <p>In deze voorwaarden zijn "wij" en "ons" Troostberg. "Jij" is de organisator van het evenement, of de persoon die namens de organisator de aanvraag doet.</p>
+
+  <h2 id="toepassing">2. Wanneer deze voorwaarden gelden</h2>
+  <p>Deze voorwaarden gelden voor elke aanvraag die je via evenementaanvragen.be doorstuurt. Je aanvaardt ze wanneer je de aanvraag doorstuurt. Voor jouw aanvraag geldt de versie die op dat moment op deze pagina stond.</p>
+
+  <h2 id="dienst">3. Wat we voor je doen</h2>
+  <p>Op basis van wat je in het aanvraagformulier invult:</p>
+  <ul>
+    <li>berekenen we de uiterste indiendatum bij je gemeente, en nemen we bij twijfel de strengste termijn;</li>
+    <li>maken we het dossier op dat de gemeente vraagt;</li>
+    <li>vragen we het feestmateriaal van de gemeente mee aan, als je daarom vraagt en de gemeente dat via de evenementaanvraag toelaat;</li>
+    <li>dienen we de aanvraag in jouw naam in, via het kanaal dat de gemeente gebruikt;</li>
+    <li>sturen we je na de indiening een bevestiging, met wat er nog op jou wacht.</li>
+  </ul>
+  <p><b>Basis</b> geldt voor één evenement op één locatie, op één dag, in één gemeente, tot 499 bezoekers tegelijk, waarbij je zelf een plan bezorgt als de gemeente er een vraagt. <b>Plus</b> geldt voor hetzelfde tot 999 bezoekers, en je tekent je plan in onze begeleide plantekenaar (zie <a href="#plan">punt 9</a>).</p>
+  <p>We werken met de regels die gemeenten publiceren. Publiceert een gemeente geen termijn, dan rekenen we met de strengste vergelijkbare termijn en vragen we het na.</p>
+
+  <h2 id="niet">4. Wat niet in de dienst zit</h2>
+  <ul>
+    <li><b>De beslissing.</b> De gemeente beslist over je aanvraag. We kunnen niet garanderen dat ze wordt goedgekeurd, of onder welke voorwaarden.</li>
+    <li><b>Evenementen buiten ons aanbod:</b> 1000 of meer bezoekers, meerdere dagen of locaties, meerdere gemeenten, een stoet of wielerwedstrijd, of een evenement waarvoor een veiligheidsplan nodig is. Het formulier meldt dat vóór je iets betaalt.</li>
+    <li><b>Wat de gemeente na de indiening nog vraagt,</b> behalve het herstel van onze eigen fouten (zie <a href="#na">punt 11</a>). Na de indiening praat de gemeente rechtstreeks met jou.</li>
+    <li><b>Persoonlijke stappen.</b> Vraagt een gemeente of uitleendienst dat de organisator zelf inlogt (bijvoorbeeld met itsme), een account maakt of iets ondertekent, dan doe je dat zelf. We zeggen je precies wat en wanneer.</li>
+    <li><b>Materiaal dat de gemeente niet uitleent,</b> of niet aan jou. Dan laten we het je weten, zodat je het tijdig zelf kan huren.</li>
+    <li><b>Andere vergunningen en meldingen</b> die niet bij de evenementaanvraag van de gemeente horen, zoals Unisono (muziek), verzekeringen of een aanvraag bij het Agentschap Wegen en Verkeer. Waar we ze tegenkomen, zetten we ze op je lijst.</li>
+  </ul>
+
+  <h2 id="overeenkomst">5. Aanvraag, bevestiging en betaling</h2>
+  <p>Je stuurt het aanvraagformulier door met de volmacht. Je krijgt dan een bevestiging per mail, met de prijs en een betaallink. De overeenkomst begint wanneer je betaalt. Pas dan starten we.</p>
+  <p>Je betaalt via Mollie (Bancontact of kaart). De betaallink blijft 48 uur geldig, en korter als de deadline van je gemeente dichtbij is. Vervalt de link zonder betaling, dan doen we niets met je aanvraag.</p>
+  <p>Kunnen we de termijn van je gemeente niet met zekerheid bepalen, dan vragen we ze eerst na. Je krijgt de betaallink pas als vaststaat dat het nog op tijd kan.</p>
+  <p>We kunnen een aanvraag weigeren, bijvoorbeeld als ze buiten ons aanbod valt of de termijn niet meer haalbaar is. Heb je dan al betaald, dan betalen we alles terug.</p>
+
+  <h2 id="prijs">6. Prijs en tarief</h2>
+  <p>De prijs staat op de site en in het formulier, vóór je de aanvraag doorstuurt. Het is de volledige prijs: er komt niets bij.</p>
+  <p>Het tarief hangt af van wie het evenement organiseert. Verenigingen, scholen en particulieren betalen het gewone tarief. Bedrijven en zelfstandigen betalen het dubbele tarief. Wat telt, is de rechtsvorm van de organisator, niet het soort evenement.</p>
+  <p>Je verklaart dat het type organisator dat je opgeeft juist is. Blijkt vóór de indiening dat het niet klopt, dan vragen we het verschil. We dienen pas in nadat het verschil betaald is.</p>
+  <p>Heb je een factuur nodig, vraag ze dan per mail.</p>
+
+  <h2 id="jij">7. Wat we van jou verwachten</h2>
+  <ul>
+    <li>Je geeft juiste en volledige gegevens over het evenement en de organisator.</li>
+    <li>Vragen we nog iets (een plan, een attest, een antwoord), dan bezorg je het tegen de datum die we vragen. Komt het te laat, dan kunnen we niet garanderen dat de aanvraag nog op tijd ingediend wordt.</li>
+    <li>Je laat het ons weten als er iets verandert aan je evenement.</li>
+    <li>Je bent en blijft de organisator. Je bent verantwoordelijk voor de veiligheid van je evenement, voor de voorwaarden van de vergunning, voor je verzekeringen en voor de juistheid van je plan.</li>
+  </ul>
+
+  <h2 id="volmacht">8. De volmacht</h2>
+  <p>Met de volmacht in het formulier geef je ons de toestemming om de aanvraag in naam van de organisator in te dienen. Je typt je naam, je hoedanigheid en vinkt de verklaring aan. Dat geldt als handtekening. Je krijgt een kopie per mail.</p>
+  <p>De volmacht geldt enkel voor het evenement in de aanvraag. Ze loopt tot 30 dagen na de indiening, zodat we een vraag van de gemeente over het ingediende dossier kunnen beantwoorden. Je kan ze altijd intrekken met een mail aan <a href="mailto:thomas@evenementaanvragen.be">thomas@evenementaanvragen.be</a>. Trek je ze in vóór de indiening, dan geldt dat als annulering (zie <a href="#annuleren">punt 12</a>).</p>
+  <p>Je verklaart dat je bevoegd bent om de organisator te vertegenwoordigen. Vraagt een gemeente uitdrukkelijk een andere handtekening, bijvoorbeeld met itsme of je identiteitskaart, dan vragen we je die.</p>
+
+  <h2 id="plan">9. De plantekenaar (Plus)</h2>
+  <p>Met Plus teken je je inplantingsplan en grondplan zelf, stap voor stap, in onze plantekenaar. Je opent hem na je betaling met je dossiernummer en je e-mailadres. Jij kent je terrein het best, en het plan is jouw verklaring aan de gemeente over hoe je evenement eruit zal zien.</p>
+  <p>De plantekenaar controleert je plan aan de eisen van de brandweer die we gevonden hebben, met de bron erbij. Vonden we voor jouw zone geen eigen regels, dan gebruikt hij de strengste eis die we kennen. Die controle is een hulp, geen advies van de brandweer. De brandweer of de gemeente kan andere of strengere eisen stellen.</p>
+  <p>We kijken je plan na voor we indienen. Moet er iets aan, dan laten we het je weten. Kleine correcties zitten in de prijs.</p>
+
+  <h2 id="termijnen">10. Termijnen</h2>
+  <p>We berekenen de uiterste indiendatum met de regels van je gemeente. Bij twijfel nemen we de strengste datum, en we dienen ruim op tijd in.</p>
+  <p>Gemeenten passen hun regels soms aan zonder het te melden. Blijkt een termijn strenger dan gepubliceerd, dan laten we het je meteen weten. Kan het daardoor niet meer, dan betalen we alles terug.</p>
+  <p>Laat een gemeente aanvragen pas vanaf een bepaalde datum toe, dan dienen we vanaf die datum in. Je mag je aanvraag al eerder bij ons doen.</p>
+
+  <h2 id="na">11. Na de indiening</h2>
+  <p>Na de indiening sturen we je een bevestiging met de datum van indiening, wie beslist en wat er nog op jou wacht. Vanaf dan praat de gemeente rechtstreeks met jou. Daarmee is onze dienst afgerond, op één uitzondering na:</p>
+  <p><b>Herstel van onze eigen fouten.</b> Vraagt de gemeente binnen 30 dagen na de indiening om een fout of onvolledigheid in wat wij indienden te verbeteren, dan doen we dat één keer kosteloos. Stuur ons daarvoor de vraag van de gemeente door.</p>
+  <p>Niet inbegrepen: wijzigingen omdat jij iets anders wil of nieuwe gegevens geeft, bijkomende eisen van de gemeente buiten de gewone aanvraag, de opvolging van de beslissing en contact met de gemeente in jouw naam.</p>
+
+  <h2 id="annuleren">12. Annuleren en terugbetalen</h2>
+  <ul>
+    <li><b>Vóór de indiening:</b> je kan altijd annuleren met een mail aan <a href="mailto:thomas@evenementaanvragen.be">thomas@evenementaanvragen.be</a>. Je krijgt het volledige bedrag terug.</li>
+    <li><b>Na de indiening:</b> geen terugbetaling, ook niet als je evenement niet doorgaat of de gemeente het weigert.</li>
+    <li><b>Annuleren wij,</b> bijvoorbeeld omdat de termijn niet haalbaar blijkt, dan betalen we alles terug.</li>
+  </ul>
+  <p>We betalen terug via Mollie, op de rekening of kaart waarmee je betaalde, binnen 14 dagen na je annulering.</p>
+
+  <h2 id="herroeping">13. Herroepingsrecht voor consumenten</h2>
+  <p>Organiseer je als particulier, dan ben je consument en heb je een herroepingsrecht van 14 dagen na je betaling. In het formulier vraag je ons uitdrukkelijk om meteen te starten. Je verliest je herroepingsrecht zodra wij de aanvraag volledig ingediend hebben.</p>
+  <p>Vóór de indiening krijg je bij annulering altijd het volledige bedrag terug, ook als we al aan je dossier begonnen. Dat is gunstiger dan wat de wet vraagt.</p>
+  <p>Herroepen doe je met een duidelijke mail aan <a href="mailto:thomas@evenementaanvragen.be">thomas@evenementaanvragen.be</a>. Je mag daarvoor dit modelformulier gebruiken, maar dat hoeft niet:</p>
+  <blockquote>Aan Troostberg (evenementaanvragen.be), Zwanenlaan 45, 8400 Oostende, thomas@evenementaanvragen.be:
+Ik deel u hierbij mee dat ik onze overeenkomst betreffende de volgende dienst herroep: [dossiernummer en evenement].
+Besteld en betaald op: [datum]
+Naam: [naam]
+Adres: [adres]
+Datum: [datum]</blockquote>
+
+  <h2 id="aansprakelijkheid">14. Aansprakelijkheid</h2>
+  <p>We doen ons best om je aanvraag correct, volledig en op tijd in te dienen. Dat is een inspanningsverbintenis: het resultaat hangt ook af van jou en van de gemeente.</p>
+  <p>We zijn niet aansprakelijk voor:</p>
+  <ul>
+    <li>de beslissing van de gemeente en de voorwaarden die ze oplegt;</li>
+    <li>vertraging of storingen bij de gemeente, haar aanvraagplatform of andere diensten waar we niets aan kunnen doen;</li>
+    <li>gevolgen van onjuiste, onvolledige of laattijdige gegevens die jij gaf;</li>
+    <li>de organisatie en de veiligheid van je evenement.</li>
+  </ul>
+  <p>Zijn we toch aansprakelijk, dan is dat beperkt tot het bedrag dat je voor de aanvraag betaalde. Die beperking geldt niet bij opzet of zware fout van onze kant, en ook niet waar de wet dat verbiedt.</p>
+
+  <h2 id="klachten">15. Klachten</h2>
+  <p>Ben je niet tevreden, mail dan naar <a href="mailto:thomas@evenementaanvragen.be">thomas@evenementaanvragen.be</a>. We antwoorden binnen 10 werkdagen.</p>
+  <p>Raken we er samen niet uit en ben je consument, dan kan je terecht bij de <a href="https://www.consumentenombudsdienst.be" rel="noopener">Consumentenombudsdienst</a>, North Gate II, Koning Albert II-laan 8, 1000 Brussel.</p>
+
+  <h2 id="slot">16. Privacy, wijzigingen en toepasselijk recht</h2>
+  <p>Hoe we met je gegevens omgaan, staat in onze <a href="/privacy.html">privacyverklaring</a>.</p>
+  <p>We kunnen deze voorwaarden aanpassen. Voor een aanvraag geldt altijd de versie die gold toen je ze doorstuurde.</p>
+  <p>Op deze voorwaarden is het Belgisch recht van toepassing. Bij een geschil zijn de rechtbanken van West-Vlaanderen bevoegd. Ben je consument, dan mag je ook naar de rechtbank van je eigen woonplaats.</p>
+</div>
+</main>
+</Basis>

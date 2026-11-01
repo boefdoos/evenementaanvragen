@@ -11,6 +11,13 @@ interface Props {
 const { title, description, canonical, home = false, toonStart = true, startHref = "/aanvraag.html" } = Astro.props;
 const DOMEIN = "https://evenementaanvragen.be";
 const p = home ? "" : "/";
+// Lettertypes van de eigen server (geen verzoek naar Google Fonts).
+import "@fontsource/unbounded/600.css";
+import "@fontsource/unbounded/800.css";
+import "@fontsource/instrument-sans/400.css";
+import "@fontsource/instrument-sans/500.css";
+import "@fontsource/instrument-sans/600.css";
+import "@fontsource/instrument-sans/700.css";
 ---
 <!doctype html>
 <html lang="nl-BE">
@@ -36,9 +43,6 @@ const p = home ? "" : "/";
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Jij maakt het feest. Wij regelen de aanvraag.">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <slot name="head" />
 </head>
 <body>
