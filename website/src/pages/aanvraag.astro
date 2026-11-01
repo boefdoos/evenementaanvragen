@@ -432,7 +432,12 @@ function berekenTermijn() {
   let res = evaluate(r, ev);
   if (res.unknown) { const f = fallback(r, ev); if (!f) return { soort: "onbekend", gemeente: r.gemeente }; res = f; }
   const o = indienOordeel(res);
-  return { ...o, gemeente: r.gemeente, termijn: label(res.best.n, res.best.u) };
+  // "Ten vroegste": aanvaardt de gemeente de evenementaanvraag pas vanaf een bepaalde datum?
+  const NIET_AANVRAAG = /materiaal|uitleen|bord|affich|publici|wegwijz|bewegwijz|promo|lichtkrant|reserv|overspanning|toewijzing/i;
+  const vr = (r.bijzonder || []).filter(b => b.soort === "vroegst" && b.n && /aanvraag|indien|toelating/i.test(b.wat) && !NIET_AANVRAAG.test(b.wat))
+    .map(b => minus(ev.date, b.n, b.unit)).sort((a, b) => b - a)[0];
+  const opent = vr && vr > today() ? vr : null;
+  return { ...o, gemeente: r.gemeente, termijn: label(res.best.n, res.best.u), opent };
 }
 
 function toonTermijn() {
@@ -463,6 +468,7 @@ function toonTermijn() {
     k = "Op tijd";
     p = "Deadline bij " + t.gemeente + ": " + d + ". Ruim op tijd. Stuur je aanvraag door, dan gaan we meteen voor je aan de slag.";
   }
+  if (t.opent && t.soort !== "laat" && t.soort !== "buiten") { k = "Je bent er vroeg bij"; p = t.gemeente + " aanvaardt aanvragen pas vanaf " + fmtLong(t.opent) + " (deadline " + d + "). Stuur gerust nu door: wij dienen in zodra het kan, jij hoeft niets meer te doen."; }
   box.className = "termijn " + t.soort; kop.textContent = k; tekst.textContent = p; box.hidden = false;
   zetBlokkade(t.soort === "laat" || t.soort === "buiten");
 }
