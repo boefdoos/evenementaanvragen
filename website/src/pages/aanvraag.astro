@@ -158,7 +158,7 @@ footer.foot a{color:var(--soft)}
       <legend><div class="sec-head"><span class="sec-title">Organisator</span></div></legend>
       <div class="field"><label for="organisator_naam">Naam contactpersoon <span class="req">*</span></label><input id="organisator_naam" name="organisator_naam" autocomplete="name" required></div>
       <div class="field"><label for="aanvrager_type">Je organiseert als <span class="req">*</span></label>
-        <select id="aanvrager_type" name="aanvrager_type" required><option value="">Kies…</option><option>vereniging</option><option>particulier</option><option>bedrijf</option><option>school</option></select></div>
+        <select id="aanvrager_type" name="aanvrager_type" required><option value="">Kies…</option><option>vereniging</option><option>particulier</option><option value="bedrijf">bedrijf of zelfstandige</option><option>school</option></select></div>
       <div class="full" id="verenigingwrap" hidden>
         <div class="yn">
           <div><div class="q" id="q_jeugd">Jeugdvereniging?</div><div class="hint">Sommige gemeenten hebben extra materiaal voor jeugdverenigingen.</div></div>
@@ -176,8 +176,8 @@ footer.foot a{color:var(--soft)}
           </div>
         </div>
       </div>
-      <div class="field"><label for="organisatie">Naam vereniging of bedrijf</label><input id="organisatie" name="organisatie" autocomplete="organization"></div>
-      <div class="field"><label for="ondernemingsnummer">Ondernemingsnummer <span class="hint">(indien vzw of bedrijf)</span></label><input id="ondernemingsnummer" name="ondernemingsnummer" inputmode="numeric" placeholder="0123.456.789"></div>
+      <div class="field"><label for="organisatie">Naam vereniging, bedrijf of school</label><input id="organisatie" name="organisatie" autocomplete="organization"></div>
+      <div class="field"><label for="ondernemingsnummer">Ondernemingsnummer <span class="hint">(vzw, bedrijf of zelfstandige)</span></label><input id="ondernemingsnummer" name="ondernemingsnummer" inputmode="numeric" placeholder="0123.456.789"></div>
       <div class="field"><label for="email">E-mail <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
       <div class="field"><label for="gsm">Gsm <span class="req">*</span></label><input id="gsm" name="gsm" type="tel" autocomplete="tel" required placeholder="0470 12 34 56"></div>
       <div class="field full"><label for="adres_organisator">Adres organisator</label><input id="adres_organisator" name="adres_organisator" autocomplete="street-address"></div>
@@ -534,7 +534,7 @@ function toonPrijs() {
   const box = document.getElementById("prijs");
   if (!veld("aanvrager_type") || !veld("bezoekers") || !veld("locatie_soort")) { box.hidden = true; return; }
   const p = prijsVoor();
-  box.innerHTML = '<span>' + p.formule + (veld("aanvrager_type") === "bedrijf" ? ", tarief bedrijf" : "") + '</span><b>€ ' + p.bedrag + '</b>';
+  box.innerHTML = '<span>' + p.formule + (veld("aanvrager_type") === "bedrijf" ? ", tarief bedrijf of zelfstandige" : "") + '</span><b>€ ' + p.bedrag + '</b>';
   box.hidden = false;
 }
 function toonHerroeping() {
