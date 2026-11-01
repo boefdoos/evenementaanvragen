@@ -191,7 +191,8 @@ footer.foot a{color:var(--soft)}
         <select id="type" name="type" required><option value="">Kies…</option>
           <option value="fuif">Fuif of party</option><option value="concert">Concert of festival</option><option value="buurtfeest">Buurtfeest of straatfeest</option><option value="eetfestijn">Eetfestijn</option><option value="markt">Markt of rommelmarkt</option><option value="braderij">Braderij</option><option value="kermis">Kermis</option><option value="stoet">Stoet of optocht</option><option value="sport">Sportevenement</option><option value="wielerwedstrijd">Wielerwedstrijd</option><option value="schoolfeest">Schoolfeest</option><option value="tentoonstelling">Tentoonstelling</option><option value="andere">Iets anders</option>
         </select></div>
-      <div class="field full"><label for="locatie">Locatie <span class="req">*</span></label><input id="locatie" name="locatie" required placeholder="Adres, zaal, plein of straat(en)"></div>
+      <div class="field full"><label for="locatie_naam">Naam van de zaal of plek <span class="hint">(als die er is)</span></label><input id="locatie_naam" name="locatie_naam" placeholder="bv. Parochiezaal Sint-Jan, Marktplein"></div>
+      <div class="field full"><label for="locatie">Adres <span class="req">*</span></label><input id="locatie" name="locatie" required list="adreslijst" autocomplete="off" placeholder="Straat en huisnummer"><datalist id="adreslijst"></datalist><span class="hint">Geen huisnummer, zoals bij een plein of park? Dan volstaat de straat.</span></div>
       <div class="field"><label for="startdatum">Startdatum <span class="req">*</span></label><input id="startdatum" name="startdatum" type="date" required></div>
       <div class="field"><label for="startuur">Startuur</label><input id="startuur" name="startuur" type="time"></div>
       <div class="field"><label for="einddatum">Einddatum</label><input id="einddatum" name="einddatum" type="date"></div>
@@ -376,6 +377,24 @@ fi.addEventListener("change", () => {
     ? `${fi.files.length} bestand(en), ${(tot / 1048576).toFixed(1)} MB` + (tot > MAX_BYTES ? " – te groot, max. 10 MB samen" : "") : "";
 });
 const leesB64 = f => new Promise((ok, nok) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = () => nok(new Error("bestand niet leesbaar")); r.readAsDataURL(f); });
+
+// Adressuggesties uit het Centraal Referentieadressenbestand (Digitaal Vlaanderen), binnen de gekozen gemeente.
+(function () {
+  const inp = document.getElementById("locatie"), dl = document.getElementById("adreslijst");
+  let t = null, laatste = "";
+  inp.addEventListener("input", () => {
+    clearTimeout(t);
+    t = setTimeout(async () => {
+      const v = inp.value.trim(), gem = document.getElementById("gemeente").value;
+      if (v.length < 3 || v === laatste) return; laatste = v;
+      const q = gem && v.toLowerCase().indexOf(gem.toLowerCase()) < 0 ? v + " " + gem : v;
+      try {
+        const j = await (await fetch("https://geo.api.vlaanderen.be/geolocation/v4/Suggestion?c=6&q=" + encodeURIComponent(q))).json();
+        dl.replaceChildren(...(j.SuggestionResult || []).map((x) => new Option(x)));
+      } catch (e) { /* zonder suggesties gewoon verder typen */ }
+    }, 250);
+  });
+})();
 
 const sd = document.getElementById("startdatum");
 const vandaag = today();
