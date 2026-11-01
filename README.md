@@ -4,30 +4,23 @@ Dienst die evenementaanvragen voor organisatoren in Vlaanderen opmaakt en indien
 
 ## Structuur
 
-- `website/` — publieke website
-  - `index.html` — startpagina met termijncheck (aftelklok naar de indiendeadline)
-  - `rekenlogica.js` — berekening van de indiendeadline per gemeente (zelfde logica als de Indienwijzer)
-  - `regels.json` — termijnregels per gemeente (alle 285 Vlaamse gemeenten)
-  - `indienmoment.js` — gedeeld oordeel op tijd / krap / te laat
-  - `aanvraag.html` — intakeformulier (stuurt naar de Apps Script-webapp); neemt `?gemeente=` en `?datum=` over van de termijncheck
+`website/` is een Astro-project (statisch, gebouwd door Vercel bij elke push).
 
-## Termijncheck
+- `src/layouts/Basis.astro` — gemeenschappelijke kop, menu en voet
+- `src/pages/index.astro` — startpagina met termijncheck
+- `src/pages/aanvraag.astro` — intakeformulier (`/aanvraag.html`), neemt `?gemeente=`, `?type=` en `?datum=` over
+- `src/pages/[gemeente]/index.astro` — één pagina per gemeente met eigen termijn (status ok of onzeker), uit `public/regels.json`
+- `src/huisstijl.css`, `src/gemeentepagina.css` — stijl
+- `public/regels.json` — termijnregels voor alle 285 Vlaamse gemeenten
+- `public/rekenlogica.js`, `public/indienmoment.js` — berekening en oordeel (zelfde logica als de Indienwijzer)
+- sitemap: automatisch (`@astrojs/sitemap`)
 
-Startpagina en intake rekenen met dezelfde logica (`rekenlogica.js`, `regels.json`,
-`indienmoment.js`). Is de deadline van een gemeente met gekende termijn voorbij, dan toont
-de startpagina "te laat" en kan de intake niet doorgestuurd worden. Bij een onzekere of
-geschatte termijn blijft doorsturen mogelijk, met een waarschuwing. De wekelijkse
-platformsessie is geen grens: bij een vroegere indiendatum komt er een aparte sessie.
-
-Nog te maken: `voorwaarden.html`, `privacy.html`.
+Nog te maken: `voorwaarden`, `privacy`.
 
 ## Lokaal bekijken
 
-`regels.json` wordt met `fetch` geladen, dus de pagina moet via een webserver draaien:
-
 ```
 cd website
-python3 -m http.server 8000
+npm install
+npm run dev      # of: npm run build && npm run preview
 ```
-
-Open daarna http://localhost:8000.

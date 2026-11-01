@@ -1,0 +1,17 @@
+/* Gemeentepagina: aanvulling op de huisstijl van de startpagina */
+.crumbs{font-size:14px;color:var(--dim);padding-top:22px}
+.crumbs a{color:var(--soft);text-decoration:none}.crumbs a:hover{color:var(--text)}
+.feit{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 24px;padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.feit dt{color:var(--soft)}.feit dd{margin:0;font-weight:600;text-align:right}
+.feit dd small{display:block;font-weight:400;color:var(--dim);font-size:13px}
+dl.feiten{margin:28px 0 0;max-width:760px;border-top:1px solid var(--line)}
+.twee{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:36px}
+@media (max-width:800px){.twee{grid-template-columns:1fr}}
+.vak{border-radius:20px;padding:26px;background:var(--card);border:1px solid var(--line);display:grid;gap:12px;align-content:start}
+.vak p,.vak li{color:var(--soft);font-size:16px}
+.vak ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.vak a{color:var(--text)}
+.bron{margin-top:28px;font-size:14px;color:var(--dim);max-width:760px}
+.bron a{color:var(--soft)}
+.tag{font-size:12px;font-weight:600;color:var(--dim);border:1px solid var(--line-2);border-radius:999px;padding:2px 8px;margin-left:8px;white-space:nowrap}
+.panel .vast{font:600 18px/1.3 var(--f-body);color:var(--text)}

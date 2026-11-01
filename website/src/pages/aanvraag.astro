@@ -1,14 +1,8 @@
-<!doctype html>
-<html lang="nl-BE">
-<head>
-<meta charset="utf-8">
-<title>Aanvraag · evenementaanvragen.be</title>
-<meta name="description" content="Vertel ons over je evenement. Wij berekenen de deadline bij je gemeente, maken het dossier op en dienen het in.">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+---
+import Basis from "../layouts/Basis.astro";
+---
+<Basis title="Aanvraag · evenementaanvragen.be" description="Vertel ons over je evenement. Wij berekenen de deadline bij je gemeente, maken het dossier op en dienen het in." home={false} toonStart={false} canonical="/aanvraag.html">
+<style is:inline slot="head">
 /* Zelfde huisstijl als de startpagina: rustig donker, één accentkleur (koraal), verder grijswaarden.
    Formulier = één smalle kolom; elke sectie is een kaart met een genummerde kop zoals de stappen op de startpagina. */
 :root{
@@ -132,16 +126,6 @@ footer.foot a{color:var(--soft)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
-</head>
-<body>
-
-<header class="top"><div class="wrap">
-  <a class="mark" href="index.html" aria-label="evenementaanvragen.be, naar de startpagina">evenementaanvragen<b>.be</b></a>
-  <nav class="menu" aria-label="Hoofdmenu">
-    <a href="index.html#werkwijze">Werkwijze</a><a href="index.html#prijzen">Prijzen</a><a href="index.html#vragen">Vragen</a>
-  </nav>
-</div></header>
-
 <main>
 <section class="intro"><div class="wrap narrow">
   <div class="k">Aanvraag</div>
@@ -286,17 +270,11 @@ footer.foot a{color:var(--soft)}
   </section>
 </div>
 </main>
-
-<footer class="foot"><div class="wrap">
-  <div><b>evenementaanvragen.be</b>Troostberg<br>Zwanenlaan 45, 8400 Oostende<br>Ondernemingsnummer 0791.797.538</div>
-  <div><b>Contact</b>thomas@evenementaanvragen.be</div>
-  <div><b>Juridisch</b><a href="voorwaarden.html">Algemene voorwaarden</a><br><a href="privacy.html">Privacyverklaring</a><br>Vrijgesteld van btw (kleine onderneming)</div>
-</div></footer>
-
-<script>var RULES = [];</script>
-<script src="rekenlogica.js"></script>
-<script src="indienmoment.js"></script>
-<script>
+<Fragment slot="scripts">
+<script is:inline>var RULES = [];</script>
+<script is:inline src="/rekenlogica.js"></script>
+<script is:inline src="/indienmoment.js"></script>
+<script is:inline>
 // Vul hier de URL van de Apps Script-webapp in (eindigt op /exec). Leeg = demomodus.
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbz-EAv8lTkB6Y5_yKjc9SWB5UrtYHjuUV_ffm4yqTiMgYR7XjiB0unzoneptmGkJYDuaQ/exec";
 
@@ -441,7 +419,7 @@ function zetBlokkade(aan) {
   const els = intakeForm.querySelectorAll('[name="' + n + '"]');
   els.forEach(el => { el.addEventListener("change", toonTermijn); el.addEventListener("input", toonTermijn); });
 });
-const regelsKlaar = fetch("regels.json").then(r => r.json()).then(data => { RULES = data; regelsGeladen = true; toonTermijn(); })
+const regelsKlaar = fetch("/regels.json").then(r => r.json()).then(data => { RULES = data; regelsGeladen = true; toonTermijn(); })
   .catch(() => { /* Lijst niet geladen: niet blokkeren, de termijn wordt dan bij de verwerking nagekeken. */ });
 
 // Voorinvullen vanuit de termijncheck op de startpagina (aanvraag.html?gemeente=…&type=…&datum=JJJJ-MM-DD).
@@ -532,5 +510,5 @@ form.addEventListener("submit", async e => {
   }
 });
 </script>
-</body>
-</html>
+</Fragment>
+</Basis>

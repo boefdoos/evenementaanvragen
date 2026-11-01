@@ -1,0 +1,47 @@
+---
+// Gemeenschappelijke kop, menu en voet voor alle pagina's.
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;   // pad, bv. "/oostende/"
+  home?: boolean;       // startpagina: ankers zonder "/" ervoor
+  toonStart?: boolean;  // knop "Start" in het menu
+  startHref?: string;
+}
+const { title, description, canonical, home = false, toonStart = true, startHref = "/aanvraag.html" } = Astro.props;
+const DOMEIN = "https://evenementaanvragen.be";
+const p = home ? "" : "/";
+---
+<!doctype html>
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<title>{title}</title>
+<meta name="description" content={description}>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+{canonical && <link rel="canonical" href={DOMEIN + canonical}>}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<slot name="head" />
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="mark" href={home ? "#top" : "/"} aria-label={home ? "evenementaanvragen.be, naar boven" : "evenementaanvragen.be, naar de startpagina"}>evenementaanvragen<b>.be</b></a>
+  <nav class="menu" aria-label="Hoofdmenu">
+    <a href={p + "#werkwijze"}>Werkwijze</a><a href={p + "#prijzen"}>Prijzen</a><a href={p + "#vragen"}>Vragen</a>{toonStart && <a class="go" href={startHref}>Start</a>}
+  </nav>
+</div></header>
+
+<slot />
+
+<footer class="foot"><div class="wrap">
+  <div><b>evenementaanvragen.be</b>Troostberg<br>Zwanenlaan 45, 8400 Oostende<br>Ondernemingsnummer 0791.797.538</div>
+  <div><b>Contact</b>thomas@evenementaanvragen.be</div>
+  <div><b>Juridisch</b><a href="/voorwaarden.html">Algemene voorwaarden</a><br><a href="/privacy.html">Privacyverklaring</a><br>Vrijgesteld van btw (kleine onderneming)</div>
+</div></footer>
+
+<slot name="scripts" />
+</body>
+</html>

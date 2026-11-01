@@ -1,0 +1,192 @@
+---
+// Eén pagina per gemeente met eigen gegevens (status ok of onzeker), uit public/regels.json.
+// Gemeenten met status 'onbekend' krijgen geen pagina: zonder eigen gegevens zou het een lege kopie zijn.
+import Basis from "../../layouts/Basis.astro";
+import huisstijl from "../../huisstijl.css?raw";
+import extraCss from "../../gemeentepagina.css?raw";
+import regels from "../../../public/regels.json";
+import { slug } from "../../slug.js";
+
+export function getStaticPaths() {
+  return regels
+    .filter((r) => r.status !== "onbekend")
+    .map((r) => ({ params: { gemeente: slug(r.gemeente) }, props: { r } }));
+}
+
+
+const DOMEIN = "https://evenementaanvragen.be";
+const TYPES = { "*": "Evenementen in het algemeen", concert: "Concert of festival", fuif: "Fuif of bal",
+  buurtfeest: "Buurt- of straatfeest", eetfestijn: "Eetfestijn", markt: "Markt of rommelmarkt",
+  braderij: "Braderij", kermis: "Kermis", stoet: "Stoet of optocht", sport: "Sportactiviteit",
+  wielerwedstrijd: "Wielerwedstrijd", schoolfeest: "Schoolfeest", tentoonstelling: "Tentoonstelling", andere: "Andere" };
+const BUITEN_AANBOD = new Set(["stoet", "wielerwedstrijd"]);
+const UNIT = { d: ["dag", "dagen"], w: ["week", "weken"], m: ["maand", "maanden"], wd: ["werkdag", "werkdagen"] };
+const MAT = { nadars: "nadarafsluitingen", heras: "werfhekken", tafels: "tafels", stoelen: "stoelen",
+  banken: "bierbanken", podium: "podiumelementen", tent: "tenten", borden: "signalisatieborden",
+  vuilbakken: "vuilbakken", stroom: "stroomkasten", water: "wateraansluiting", toiletten: "toiletten" };
+const termijn = (n, u) => `${n} ${UNIT[u][n === 1 ? 0 : 1]}`;
+const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+const { r } = Astro.props;
+const g = r.gemeente;
+const s = slug(g);
+const provincie = r.provincie || "West-Vlaanderen";
+const base = r.base || {};
+const alg = base["*"];
+const algTxt = alg ? termijn(alg[0], alg[1]) : null;
+const platform = r.platform && r.platform !== "onbekend" ? r.platform : null;
+const kanaal = r.kanaal || "";
+const u = r.uitleen || {};
+const bron = Array.isArray(r.bron) ? r.bron[0] : r.bron;
+const start = `/aanvraag.html?gemeente=${encodeURIComponent(g)}`;
+
+const title = `Evenement aanvragen in ${g}: termijn en werkwijze`;
+const desc = algTxt
+  ? `Een evenement in ${g}? Vraag het minstens ${algTxt} op voorhand aan${platform ? ` via ${platform}` : ""}. Bereken je deadline en laat ons het dossier opmaken en indienen.`
+  : `Een evenement in ${g}? Bereken je deadline en laat ons het dossier opmaken en indienen.`;
+
+// Termijnen
+const rijen = [];
+for (const [k, [n, unit]] of Object.entries(base).sort((a, b) => (a[0] !== "*") - (b[0] !== "*") || a[0].localeCompare(b[0]))) {
+  rijen.push({ wat: TYPES[k] || k, tag: BUITEN_AANBOD.has(k), termijn: termijn(n, unit) });
+}
+for (const x of r.extra || []) {
+  const v = [];
+  if (x.minVisitors) v.push(`vanaf ${x.minVisitors} bezoekers`);
+  if (x.groot) v.push("groot evenement");
+  if (x.nieuw) v.push("eerste editie");
+  if (x.openbaarDomein) v.push("op openbaar domein");
+  if (x.types) v.push(x.types.map((t) => (TYPES[t] || t).toLowerCase()).join(", "));
+  rijen.push({ wat: cap(v.join(", ")) || "Bijzonder geval", tag: false, termijn: termijn(x.n, x.unit) });
+}
+for (const b of r.bijzonder || []) {
+  if ((b.soort === "deadline" || b.soort === "vroegst") && b.n) rijen.push({ wat: b.wat, tag: false, termijn: termijn(b.n, b.unit) });
+}
+
+// Feestmateriaal (enkel het publieke deel; onderzoeksnotities horen niet op de site)
+let mat = null;
+if (u.uitleendienst === "ja") {
+  const items = Object.entries(u.catalogus || {}).filter(([k, v]) => v === "ja" && MAT[k]).map(([k]) => MAT[k]);
+  const part = { ja: "Ook particulieren mogen lenen.", nee: "Particulieren kunnen er niet lenen." }[u.particulieren_toegelaten] || "";
+  const kosten = (u.kosten || "").split(";")[0].trim();
+  mat = {
+    items: items.length ? `Onder meer ${items.join(", ")}.` : null,
+    termijn: u.termijn ? `Aanvragen ${u.termijn}.` : null,
+    part: part || null,
+    kosten: kosten && !/niet vermeld|onbekend/i.test(kosten) ? `${kosten}.` : null,
+    link: u.link || null,
+  };
+}
+
+const ld = [
+  { "@context": "https://schema.org", "@type": "Service", name: `Evenementaanvraag in ${g}`,
+    serviceType: "Opmaken en indienen van evenementaanvragen", areaServed: { "@type": "City", name: g },
+    provider: { "@type": "Organization", name: "evenementaanvragen.be", url: DOMEIN + "/" },
+    url: `${DOMEIN}/${s}/`, offers: { "@type": "Offer", price: "45", priceCurrency: "EUR" } },
+  { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+    { "@type": "ListItem", position: 1, name: "evenementaanvragen.be", item: DOMEIN + "/" },
+    { "@type": "ListItem", position: 2, name: provincie },
+    { "@type": "ListItem", position: 3, name: g, item: `${DOMEIN}/${s}/` }] },
+];
+---
+<Basis title={title} description={desc} canonical={`/${s}/`} startHref={start}>
+<Fragment slot="head">
+<style is:inline set:html={huisstijl}></style>
+<style is:inline set:html={extraCss}></style>
+<script type="application/ld+json" set:html={JSON.stringify(ld)}></script>
+</Fragment>
+
+<main>
+<div class="wrap"><p class="crumbs"><a href="/">Start</a> · {provincie} · {g}</p></div>
+
+<section class="hero" style="padding-top:28px"><div class="wrap">
+  <div>
+    <h1>Evenement aanvragen in <span>{g}</span></h1>
+    {algTxt
+      ? <p class="lead">In {g} vraag je een evenement minstens <b>{algTxt}</b> op voorhand aan{kanaal && `, ${kanaal.charAt(0).toLowerCase()}${kanaal.slice(1)}`}.</p>
+      : <p class="lead">Hier vind je hoe een evenementaanvraag in {g} verloopt.</p>}
+    <div class="cta">
+      <a class="btn primary" href={start}>Wij regelen het voor je <span class="arr" aria-hidden="true">→</span></a>
+      <a class="btn" href="/#prijzen">Vanaf € 45</a>
+    </div>
+  </div>
+
+  <aside class="panel" aria-labelledby="calc-t">
+    <div class="k" id="calc-t">Hoeveel tijd heb je nog in {g}?</div>
+    <div id="c-out" aria-live="polite">
+      <div class="count"><span class="num">–</span><span class="unit">dagen</span></div>
+      <div class="deadline">Kies soort en datum</div>
+    </div>
+    <form class="fields" onsubmit="return false" aria-label="Termijncheck">
+      <label for="c-type">Soort<select id="c-type"></select></label>
+      <label for="c-datum">Datum<input id="c-datum" type="date"></label>
+    </form>
+  </aside>
+</div></section>
+
+<section class="blk" style="padding-top:56px"><div class="wrap">
+  <div class="k">Termijnen in {g}</div>
+  <h2 style="margin-top:10px">Hoe lang op voorhand?</h2>
+  <dl class="feiten">
+    {rijen.map((x) => <div class="feit"><dt>{x.wat}{x.tag && <span class="tag">niet in ons aanbod</span>}</dt><dd>{x.termijn} vooraf</dd></div>)}
+  </dl>
+  {r.note && <p class="intro">{r.note}</p>}
+</div></section>
+
+<section class="blk" style="padding-top:72px"><div class="wrap">
+  <div class="k">Werkwijze bij de gemeente</div>
+  <h2 style="margin-top:10px">Zo verloopt een aanvraag in {g}</h2>
+  <div class="twee">
+    <div class="vak"><h3>Aanvragen</h3><ul>
+      {kanaal && <li>{kanaal}{r.link && <> (<a href={r.link} rel="noopener">naar het loket</a>)</>}</li>}
+      {r.college && <li>{r.college}</li>}
+      {r.contact && <li>Contact: {r.contact}</li>}
+    </ul></div>
+    {mat
+      ? <div class="vak"><h3>Feestmateriaal lenen</h3><p>{g} heeft een uitleendienst. Wij vragen het materiaal mee aan, met wat marge.</p>
+          <ul>{mat.items && <li>{mat.items}</li>}{mat.termijn && <li>{mat.termijn}</li>}{mat.part && <li>{mat.part}</li>}{mat.kosten && <li>{mat.kosten}</li>}</ul>
+          {mat.link && <p><a href={mat.link} rel="noopener">Uitleendienst van {g}</a></p>}</div>
+      : <div class="vak"><h3>Wat wij doen</h3><p>Wij berekenen je deadline, maken het volledige dossier op met formulieren, bijlagen en bewonersbrief, en dienen het in. Jij blijft het aanspreekpunt van de gemeente.</p></div>}
+  </div>
+  {bron && <p class="bron">Bron: <a href={bron} rel="noopener">website van {g}</a>. Nagekeken door evenementaanvragen.be. De gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert.</p>}
+
+  <div class="final">
+    <div><h2>Geen zin in formulieren?</h2><p>Jij vult 10 minuten in, wij maken het dossier op en dienen het in bij {g}.</p></div>
+    <a class="btn primary" href={start}>Start je aanvraag <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</div></section>
+</main>
+
+<Fragment slot="scripts">
+<script is:inline>var RULES = [];</script>
+<script is:inline src="/rekenlogica.js"></script>
+<script is:inline src="/indienmoment.js"></script>
+<script is:inline define:vars={{ GEM: g }}>
+(function(){
+  const typ=$("c-type"), dat=$("c-datum"), out=$("c-out");
+  TYPES.forEach(([k,v])=>typ.appendChild(new Option(v,k)));
+  typ.value="fuif";
+  const t0=new Date(); t0.setDate(t0.getDate()+120); dat.value=t0.toISOString().slice(0,10);
+  const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  function show(){
+    const r=RULES.find(x=>x.gemeente===GEM); if(!r||!dat.value) return;
+    const buiten=buitenAanbod(typ.value,0);
+    if(buiten){out.innerHTML='<div class="count"><span class="num">–</span><span class="unit">dagen</span></div><div class="deadline">Niet in ons aanbod</div><p class="rule">'+esc(buiten)+'</p>';return;}
+    const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,od:false,x:{}};
+    let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
+    if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';return;}
+    const o=indienOordeel(res), st={laat:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"}[o.soort];
+    const d=daysUntil(res.best.date), voorbij=res.best.date<today();
+    const txt={laat:"te laat",twijfel:"onzeker",krap:"krap",ok:"op tijd",geschat:"schatting"}[o.soort];
+    out.innerHTML='<div class="count"><span class="num">'+(voorbij?"0":String(d))+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
+      '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status'+(st==="late"?" late":"")+'">'+txt+'</span></div>'+
+      '<p class="rule">'+(st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>'+
+      (st==="late"?'':'<a class="go-link" href="/aanvraag.html?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+'">Wij dienen het in voor je →</a>');
+  }
+  fetch("/regels.json").then(r=>r.json()).then(data=>{RULES=data;show();})
+    .catch(()=>{out.innerHTML='<div class="deadline">De termijnen konden niet laden.</div><p class="rule">Start gerust je aanvraag: wij rekenen het voor je uit.</p>';});
+  [typ,dat].forEach(el=>{el.addEventListener("change",show);el.addEventListener("input",show)});
+})();
+</script>
+</Fragment>
+</Basis>

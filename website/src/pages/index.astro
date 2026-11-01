@@ -1,0 +1,153 @@
+---
+import Basis from "../layouts/Basis.astro";
+import huisstijl from "../huisstijl.css?raw";
+---
+<Basis title="evenementaanvragen.be" description="Wij berekenen de termijn van je gemeente, maken het dossier voor je evenementaanvraag op en dienen het in. Voor verenigingen, particulieren en bedrijven in Vlaanderen." home={true} toonStart={true} canonical="/">
+<style is:inline slot="head" set:html={huisstijl}></style>
+<main id="top">
+<section class="hero"><div class="wrap">
+  <div>
+    <h1>Jij maakt het feest. <span>Wij regelen de vergunning.</span></h1>
+    <p class="lead">Deadline berekend, dossier opgemaakt, ingediend bij je gemeente.</p>
+    <div class="cta">
+      <a class="btn primary" href="/aanvraag.html">Start je aanvraag <span class="arr" aria-hidden="true">→</span></a>
+      <a class="btn" href="#prijzen">Vanaf € 45</a>
+    </div>
+    <p class="facts"><b>285</b> Vlaamse gemeenten · <b>10 minuten</b> invullen</p>
+  </div>
+
+  <aside class="panel" aria-labelledby="calc-t">
+    <div class="k" id="calc-t">Hoeveel tijd heb je nog?</div>
+    <div id="c-out" aria-live="polite">
+      <div class="count"><span class="num">–</span><span class="unit">dagen</span></div>
+      <div class="deadline">Kies je gemeente en datum</div>
+    </div>
+    <form class="fields" onsubmit="return false" aria-label="Termijncheck">
+      <label class="full" for="c-gem">Gemeente<select id="c-gem"><option>Laden…</option></select></label>
+      <label for="c-type">Soort<select id="c-type"></select></label>
+      <label for="c-datum">Datum<input id="c-datum" type="date"></label>
+    </form>
+  </aside>
+</div></section>
+
+<section class="blk" id="werkwijze"><div class="wrap">
+  <div class="k">Werkwijze</div>
+  <h2 style="margin-top:10px">Vier stappen. Jij doet er één echt.</h2>
+  <div class="steps">
+    <div class="stp me"><span class="n">01</span><span class="who">Jij · 10 minuten</span><h3>Gegevens invullen</h3><p>Online, met volmacht.</p></div>
+    <div class="stp me"><span class="n">02</span><span class="who">Jij</span><h3>Betalen</h3><p>Bancontact of kaart.</p></div>
+    <div class="stp"><span class="n">03</span><span class="who">Wij</span><h3>Dossier opmaken</h3><p>Formulieren, bijlagen, bewonersbrief, materiaal.</p></div>
+    <div class="stp"><span class="n">04</span><span class="who">Wij</span><h3>Indienen</h3><p>Bij je gemeente. Daarna ben jij het aanspreekpunt.</p></div>
+  </div>
+</div></section>
+
+<section class="blk" id="prijzen"><div class="wrap">
+  <div class="k">Prijzen</div>
+  <h2 style="margin-top:10px">Twee formules. Vaste prijs.</h2>
+  <div class="cards">
+    <article class="card">
+      <div class="tier"><span>Basis</span><small>Zonder plannen</small></div>
+      <div class="amt"><b>€ 45</b><span>per evenement</span></div>
+      <div class="biz">Bedrijf: € 90</div>
+      <p class="when">1 locatie · 1 dag · tot 499 bezoekers</p>
+      <ul>
+        <li>Deadline van je gemeente</li>
+        <li>Volledig dossier</li>
+        <li>Bewonersbrief en materiaal</li>
+        <li>Indiening</li>
+      </ul>
+    </article>
+    <article class="card plus">
+      <div class="tier"><span>Plus</span><small>Met plannen</small></div>
+      <div class="amt"><b>€ 75</b><span>per evenement</span></div>
+      <div class="biz">Bedrijf: € 150</div>
+      <p class="when">Basis + plannen · met tent · tot 999 bezoekers</p>
+      <ul>
+        <li>Plantekenaar op schaal</li>
+        <li>Brandweernormen ingebouwd</li>
+        <li>Wij werken je plan af</li>
+      </ul>
+    </article>
+  </div>
+  <div class="notes">
+    <div class="note"><b>Niet in ons aanbod</b>1.000+ bezoekers, meerdaags, stoeten, wielerwedstrijden</div>
+    <div class="note"><b>Geen btw</b></div>
+  </div>
+</div></section>
+
+<section class="blk"><div class="wrap">
+  <div class="k">Duidelijke afspraken</div>
+  <h2 style="margin-top:10px">Wat we wel en niet doen</h2>
+  <div class="deal">
+    <div><h3>Wel</h3><ul>
+      <li>Op tijd en volledig indienen</li>
+      <li>Materiaal ruim aanvragen</li>
+      <li>Onze fout binnen 30 dagen gratis herstellen</li>
+    </ul></div>
+    <div><h3>Niet</h3><ul>
+      <li>Goedkeuring garanderen</li>
+      <li>Opvolging na de indiening</li>
+      <li>Wijzigingen na de indiening</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<section class="blk" id="vragen"><div class="wrap">
+  <div class="k">Vragen</div>
+  <h2 style="margin-top:10px">Wat mensen ons vragen</h2>
+  <div class="faq">
+    <details><summary>Is mijn gemeente erbij?</summary><p>Ja, als ze in Vlaanderen ligt: we werken met de regels van alle 285 Vlaamse gemeenten. Publiceert je gemeente geen vaste termijn, dan rekenen we met de strengste vergelijkbare en vragen we het na.</p></details>
+    <details><summary>Waarom een volmacht?</summary><p>Sommige platformen laten alleen de aanvrager zelf indienen. Met de volmacht mogen wij dat in jouw naam doen. Je tekent ze online: naam typen en aanvinken. Ze geldt enkel voor dit evenement.</p></details>
+    <details><summary>Wie is het aanspreekpunt van de gemeente?</summary><p>Jij. Je staat als contactpersoon in de aanvraag, dus vragen en de beslissing komen rechtstreeks bij jou.</p></details>
+    <details><summary>Wat als ik te laat ben?</summary><p>Dat zie je meteen: is de deadline van je gemeente voorbij, dan kan je de aanvraag niet doorsturen. Kies dan een latere datum als dat kan.</p></details>
+    <details><summary>Wat met feestmateriaal van de gemeente?</summary><p>We vragen het mee aan, met wat marge. Leent de gemeente iets niet uit, of niet aan jou, dan laten we dat weten zodat je het tijdig zelf kan huren.</p></details>
+  </div>
+
+  <div class="final">
+    <div><h2>Klaar voor je evenement?</h2></div>
+    <a class="btn primary" href="/aanvraag.html">Start je aanvraag <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</div></section>
+</main>
+<Fragment slot="scripts">
+<script is:inline>var RULES = [];</script>
+<script is:inline src="/rekenlogica.js"></script>
+<script is:inline src="/indienmoment.js"></script>
+<script is:inline>
+(function(){
+  const gem=$("c-gem"), typ=$("c-type"), dat=$("c-datum"), out=$("c-out");
+  TYPES.forEach(([k,v])=>typ.appendChild(new Option(v,k)));
+  typ.value="fuif";
+  const t0=new Date(); t0.setDate(t0.getDate()+120); dat.value=t0.toISOString().slice(0,10);
+  const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  function show(){
+    const r=RULES.find(x=>x.gemeente===gem.value); if(!r||!dat.value) return;
+    const buiten=buitenAanbod(typ.value,0);
+    if(buiten){out.innerHTML='<div class="count"><span class="num">–</span><span class="unit">dagen</span></div><div class="deadline">Niet in ons aanbod</div><p class="rule">'+esc(buiten)+'</p>';return;}
+    const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,od:false,
+      x:{muziek:null,sterkeDrank:null,alcohol:null,verkeer:null,materiaal:null,publiciteit:null,od:null,stroomgroep:null,subsidie:null}};
+    let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
+    if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';return;}
+    // Zelfde oordeel als de intake (indienmoment.js)
+    const o=indienOordeel(res), MAP={laat:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"};
+    const st=MAP[o.soort];
+    const d=daysUntil(res.best.date), voorbij=res.best.date<today();
+    const txt={laat:"te laat",twijfel:"onzeker",krap:"krap",ok:"op tijd",geschat:"schatting"}[o.soort];
+    const num = voorbij ? "0" : String(d);
+    out.innerHTML='<div class="count"><span class="num">'+num+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
+      '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status'+(st==="late"?" late":"")+'">'+txt+'</span></div>'+
+      '<p class="rule">'+(st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>'+
+      (st==="late"?'':'<a class="go-link" href="/aanvraag.html?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+'">Wij dienen het in voor je →</a>');
+  }
+  fetch("/regels.json").then(r=>r.json()).then(data=>{
+    RULES=data;
+    const provs=[...new Set(RULES.map(r=>r.provincie||"West-Vlaanderen"))].sort();
+    gem.innerHTML=provs.map(p=>'<optgroup label="'+esc(p)+'">'+RULES.filter(r=>(r.provincie||"West-Vlaanderen")===p).sort((a,b)=>a.gemeente.localeCompare(b.gemeente)).map(r=>'<option>'+esc(r.gemeente)+'</option>').join("")+'</optgroup>').join("");
+    gem.value="Oostende";
+    show();
+  }).catch(()=>{out.innerHTML='<div class="deadline">De gemeentelijst kon niet laden.</div><p class="rule">Start gerust je aanvraag: wij rekenen het voor je uit.</p>';});
+  [gem,typ,dat].forEach(el=>{el.addEventListener("change",show);el.addEventListener("input",show)});
+})();
+</script>
+</Fragment>
+</Basis>
