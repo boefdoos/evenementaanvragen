@@ -978,6 +978,8 @@ const concept = herstel();
   if (gem && !g.value && [...g.options].some(o => o.value === gem)) g.value = gem;
   if (typ && !ts.value && [...ts.options].some(o => o.value === typ)) ts.value = typ;
   if (dat && !sd.value && /^\d{4}-\d{2}-\d{2}$/.test(dat)) sd.value = dat;
+  // Vanaf de prijskaart "Start met Plus": hulp bij het plan voorkiezen, tenzij de klant al zelf koos.
+  if (q.get("formule") === "plus" && (!concept || !concept.v.inplantingsplan || concept.v.inplantingsplan === "later")) document.getElementById("plan_1").checked = true;
 })();
 zoeker.sync(); volgEinddatum(); pasAan(); toonTermijn();
 if (concept && concept.verst) verst = Math.min(5, concept.verst);
