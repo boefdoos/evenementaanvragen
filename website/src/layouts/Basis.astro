@@ -1,5 +1,6 @@
 ---
 // Gemeenschappelijke kop, menu en voet voor alle pagina's.
+import { inject } from '@vercel/analytics';
 interface Props {
   title: string;
   description: string;
@@ -18,6 +19,8 @@ import "@fontsource/instrument-sans/400.css";
 import "@fontsource/instrument-sans/500.css";
 import "@fontsource/instrument-sans/600.css";
 import "@fontsource/instrument-sans/700.css";
+
+inject();
 ---
 <!doctype html>
 <html lang="nl-BE">
