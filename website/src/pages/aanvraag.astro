@@ -145,188 +145,254 @@ footer.foot a{color:var(--soft)}
   .mat{grid-template-columns:minmax(0,1fr)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* stappen */
+.stappen{list-style:none;margin:0 0 6px;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.stappen button{width:100%;text-align:left;background:none;border:0;border-top:3px solid var(--line-2);padding:10px 0 0;color:var(--dim);font:600 13px/1.3 var(--f-body);cursor:pointer}
+.stappen button:disabled{cursor:default}
+.stappen .nr{display:block;font-size:12px;font-weight:500}
+.stappen li.klaar button{border-color:var(--soft);color:var(--soft)}
+.stappen li[aria-current="step"] button{border-color:var(--accent);color:var(--text)}
+.stappen button:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+.stap{display:flex;flex-direction:column;gap:16px}
+.stap-h{font:600 15px/1.3 var(--f-body);color:var(--soft);letter-spacing:0;margin:10px 0 0}
+.stap-h:focus{outline:none}
+.stapnav{display:flex;justify-content:space-between;align-items:center;gap:12px 16px;flex-wrap:wrap;margin-top:8px}
+.stapnav .rechts{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-left:auto}
+.terug{background:none;border:1px solid var(--line-2);color:var(--text);border-radius:999px;padding:15px 20px;font:600 15px/1 var(--f-body);cursor:pointer}
+.terug:hover{border-color:var(--soft)}
+.terug:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+.gembox{grid-column:1/-1;border-radius:12px;padding:16px 18px;border:1px solid var(--line-2);background:var(--bg)}
+.gembox .t-kop{font-weight:600;font-size:16px}
+.gembox ul{margin:8px 0 0;padding-left:20px;color:var(--soft);font-size:15px}
+.gembox li{margin:3px 0}
+.info{grid-column:1/-1;border-radius:12px;padding:14px 16px;font-size:15px;color:var(--soft);background:var(--bg);border:1px solid var(--line)}
+.info b{color:var(--text);font-weight:600}
+.overzicht{grid-column:1/-1;margin:0;display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr) auto;gap:10px 16px;font-size:15px}
+.overzicht dt{color:var(--soft)}
+.overzicht dd{margin:0;color:var(--text);overflow-wrap:anywhere}
+.overzicht button{background:none;border:0;color:var(--soft);text-decoration:underline;font:500 14px/1.4 var(--f-body);cursor:pointer;padding:0}
+@media (max-width:600px){
+  .stappen .lbl{display:none}
+  .overzicht{grid-template-columns:minmax(0,1fr) auto}
+  .overzicht dt{grid-column:1/-1;margin-top:6px}
+}
 </style>
 <main>
 <section class="intro"><div class="wrap narrow">
   <div class="k">Aanvraag</div>
   <h1 style="margin-top:10px">Vertel ons over <span>je evenement.</span></h1>
-  <p class="lead">Tien minuten invullen, daarna nemen wij het over: dossier opmaken, materiaal aanvragen en indienen bij je gemeente. Weet je iets nog niet? Kies <b>weet niet</b>, dan zoeken wij het uit.</p>
+  <p class="lead">Vijf korte stappen, samen een tiental minuten. Daarna nemen wij het over: dossier opmaken, materiaal aanvragen en indienen bij je gemeente. Weet je iets nog niet? Kies <b>weet niet</b>, dan zoeken wij het uit.</p>
 </div></section>
 
 <div class="wrap narrow">
+  <ol class="stappen" id="stappen" aria-label="Stappen van de aanvraag"></ol>
+
   <form id="intake" novalidate>
-    <fieldset>
-      <legend><div class="sec-head"><span class="sec-title">Organisator</span></div></legend>
-      <div class="field"><label for="organisator_naam">Naam contactpersoon <span class="req">*</span></label><input id="organisator_naam" name="organisator_naam" autocomplete="name" required></div>
-      <div class="field"><label for="aanvrager_type">Je organiseert als <span class="req">*</span></label>
-        <select id="aanvrager_type" name="aanvrager_type" required><option value="">Kies…</option><option>vereniging</option><option>particulier</option><option value="bedrijf">bedrijf of zelfstandige</option><option>school</option></select></div>
-      <div class="full" id="verenigingwrap" hidden>
-        <div class="yn">
-          <div><div class="q" id="q_jeugd">Jeugdvereniging?</div><div class="hint">Sommige gemeenten hebben extra materiaal voor jeugdverenigingen.</div></div>
-          <div class="seg" role="radiogroup" aria-labelledby="q_jeugd">
-            <label><input type="radio" id="jeugd_0" name="jeugdvereniging" value="ja"><span>ja</span></label>
-            <label><input type="radio" id="jeugd_1" name="jeugdvereniging" value="nee" checked><span>nee</span></label>
+    <!-- Stap 1: wat de termijn, de prijs en de vragen voor deze gemeente bepaalt -->
+    <section class="stap" data-stap="1">
+      <h2 class="stap-h" tabindex="-1">Stap 1 van 5 · Je evenement</h2>
+      <fieldset id="stap1">
+        <legend><div class="sec-head"><span class="sec-title">Je evenement</span></div></legend>
+        <div class="field"><label for="gemeente">Gemeente <span class="req">*</span></label><select id="gemeente" name="gemeente" required><option value="">Kies…</option></select></div>
+        <div class="field"><label for="type">Soort evenement <span class="req">*</span></label>
+          <select id="type" name="type" required><option value="">Kies…</option>
+            <option value="fuif">Fuif of party</option><option value="concert">Concert of festival</option><option value="buurtfeest">Buurtfeest of straatfeest</option><option value="eetfestijn">Eetfestijn</option><option value="markt">Markt of rommelmarkt</option><option value="braderij">Braderij</option><option value="kermis">Kermis</option><option value="stoet">Stoet of optocht</option><option value="sport">Sportevenement</option><option value="wielerwedstrijd">Wielerwedstrijd</option><option value="schoolfeest">Schoolfeest</option><option value="tentoonstelling">Tentoonstelling</option><option value="andere">Iets anders</option>
+          </select></div>
+        <div class="field"><label for="startdatum">Datum <span class="req">*</span></label><input id="startdatum" name="startdatum" type="date" required></div>
+        <div class="field"><label for="bezoekers">Aanwezigen tegelijk op het drukste moment <span class="req">*</span> <span class="hint">(publiek, medewerkers en artiesten samen)</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
+        <div class="field"><label for="locatie_soort">Waar vindt het plaats? <span class="req">*</span></label>
+          <select id="locatie_soort" name="locatie_soort" required><option value="">Kies…</option><option value="zaal">In een zaal of gebouw</option><option value="tent">In een tent</option><option value="buiten">Buiten, zonder tent</option><option value="combinatie">Combinatie (bv. zaal en buitenbar)</option></select></div>
+        <div class="field"><label for="aanvrager_type">Je organiseert als <span class="req">*</span></label>
+          <select id="aanvrager_type" name="aanvrager_type" required><option value="">Kies…</option><option>vereniging</option><option>particulier</option><option value="bedrijf">bedrijf of zelfstandige</option><option>school</option></select></div>
+        <div class="field full"><label for="openbaar_domein">Komt er iets op straat, stoep, plein, parking of in een park? <span class="req">*</span></label>
+          <select id="openbaar_domein" name="openbaar_domein" required><option value="">Kies…</option><option value="nee">Nee, alles binnen of op privéterrein</option><option value="deels">Een deel, bv. een terras, bar of foodtruck op de stoep of parking</option><option value="ja">Ja, het evenement vindt plaats op straat, plein of in een park</option></select></div>
+        <div class="full" id="stap1yn"></div>
+        <div class="termijn" id="termijn" aria-live="polite" hidden><div class="t-kop" id="t-kop"></div><p id="t-tekst"></p></div>
+        <div class="gembox" id="gembox" hidden><div class="t-kop" id="gb-kop"></div><ul id="gb-lijst"></ul></div>
+      </fieldset>
+      <p class="err" data-err hidden></p>
+      <div class="stapnav"><div class="rechts"><span class="status" id="status1"></span><button type="button" class="btn verder">Volgende <span class="arr" aria-hidden="true">→</span></button></div></div>
+    </section>
+
+    <!-- Stap 2 -->
+    <section class="stap" data-stap="2" hidden>
+      <h2 class="stap-h" tabindex="-1">Stap 2 van 5 · Waar en wanneer</h2>
+      <fieldset>
+        <legend><div class="sec-head"><span class="sec-title">Waar en wanneer</span></div></legend>
+        <div class="field full"><label for="evenement_naam">Naam van het evenement <span class="req">*</span></label><input id="evenement_naam" name="evenement_naam" required></div>
+        <div class="field full"><label for="locatie_naam">Naam van de zaal of plek <span class="hint">(als die er is)</span></label><input id="locatie_naam" name="locatie_naam" placeholder="bv. Parochiezaal Sint-Jan, Marktplein"></div>
+        <div class="field full"><label for="locatie">Adres <span class="req">*</span></label><input id="locatie" name="locatie" required list="adreslijst" autocomplete="off" placeholder="Straat en huisnummer"><datalist id="adreslijst"></datalist><span class="hint">Geen huisnummer, zoals bij een plein of park? Dan volstaat de straat.</span></div>
+        <div class="field full" id="odwrap" hidden>
+          <label for="od_zone">Wat komt er op straat, stoep of plein, en waar precies? <span class="hint">(zo goed als je kan)</span></label>
+          <input id="od_zone" name="od_zone" placeholder="bv. bar en 10 tafels op de stoep voor nr. 12, of de straat dicht tussen nr. 2 en 20">
+          <div class="hint">Je hoeft geen grenzen of oppervlaktes te kennen. Wij duiden het stuk aan op de kaart van de gemeente.</div>
+        </div>
+        <div class="field"><label for="startuur">Startuur</label><input id="startuur" name="startuur" type="time"></div>
+        <div class="field"><label for="einddatum">Einddatum</label><input id="einddatum" name="einddatum" type="date"></div>
+        <div class="field"><label for="einduur">Einduur</label><input id="einduur" name="einduur" type="time"></div>
+        <div class="field"><label for="opbouw">Opbouw vanaf <span class="hint">(dag en uur)</span></label><input id="opbouw" name="opbouw" placeholder="bv. vrijdag 14u"></div>
+        <div class="field"><label for="afbraak">Afbraak tot <span class="hint">(dag en uur)</span></label><input id="afbraak" name="afbraak" placeholder="bv. zondag 12u"></div>
+        <div class="field" id="tentwrap" hidden>
+          <label for="tent_afmetingen">Afmetingen tent(en) <span class="hint">(lengte × breedte in meter)</span></label>
+          <input id="tent_afmetingen" name="tent_afmetingen" placeholder="bv. 12 × 6, en 3 × 3 voor de bar">
+        </div>
+        <div class="field" id="tentverhuurwrap" hidden>
+          <label for="tent_verhuurder">Wie levert de tent? <span class="hint">(als je het al weet)</span></label>
+          <input id="tent_verhuurder" name="tent_verhuurder" placeholder="bv. naam van de verhuurder, of eigen tent">
+        </div>
+        <div class="field"><label for="bezoekers_totaal">Bezoekers in totaal <span class="hint">(over het hele evenement, als je het weet)</span></label><input id="bezoekers_totaal" name="bezoekers_totaal" type="number" min="1" step="1" inputmode="numeric"></div>
+        <div class="field"><label for="doelgroep">Voor wie is het? <span class="hint">(leeftijd, soort publiek)</span></label><input id="doelgroep" name="doelgroep" placeholder="bv. jongeren 16 tot 25, gezinnen"></div>
+        <div class="field full"><label for="beschrijving">Beschrijf je evenement <span class="req">*</span></label><textarea id="beschrijving" name="beschrijving" required placeholder="Programma, wie treedt op, foodtrucks, ticketverkoop…"></textarea></div>
+        <div class="full" id="uitblok" hidden>
+          <div class="yn">
+            <div><div class="q" id="q_uit">Ook in de UiT-agenda zetten?</div><div class="hint">Bij deze gemeente zit dat in dezelfde aanvraag. Dan komt je evenement gratis op uitinvlaanderen.be en de website van de gemeente.</div></div>
+            <div class="seg" role="radiogroup" aria-labelledby="q_uit">
+              <label><input type="radio" id="uit_0" name="uit_publiceren" value="ja"><span>ja</span></label>
+              <label><input type="radio" id="uit_1" name="uit_publiceren" value="nee" checked><span>nee</span></label>
+            </div>
+          </div>
+          <div class="field" id="uitwrap" hidden>
+            <label for="uit_tekst">Korte tekst voor de agenda <span class="hint">(wat bezoekers lezen, 2 tot 4 zinnen)</span></label>
+            <textarea id="uit_tekst" name="uit_tekst" maxlength="800" placeholder="bv. De jaarlijkse fuif van onze jeugdbeweging met dj's uit de buurt. Vanaf 16 jaar."></textarea>
+            <label for="uit_prijs" style="margin-top:12px">Toegangsprijs</label>
+            <input id="uit_prijs" name="uit_prijs" placeholder="bv. gratis, of 8 euro voorverkoop en 10 euro aan de deur">
+            <span class="hint">Een affiche of foto mag je later mailen.</span>
           </div>
         </div>
-        <div class="yn">
-          <div><div class="q" id="q_erkend">Erkend door de gemeente van het evenement?</div><div class="hint">Erkende verenigingen lenen vaak goedkoper of krijgen voorrang.</div></div>
-          <div class="seg" role="radiogroup" aria-labelledby="q_erkend">
-            <label><input type="radio" id="erkend_0" name="erkend" value="ja"><span>ja</span></label>
-            <label><input type="radio" id="erkend_1" name="erkend" value="nee"><span>nee</span></label>
-            <label><input type="radio" id="erkend_2" name="erkend" value="weet niet" checked><span>weet niet</span></label>
+      </fieldset>
+      <p class="err" data-err hidden></p>
+      <div class="stapnav"><button type="button" class="terug">← Vorige</button><div class="rechts"><button type="button" class="btn verder">Volgende <span class="arr" aria-hidden="true">→</span></button></div></div>
+    </section>
+
+    <!-- Stap 3 -->
+    <section class="stap" data-stap="3" hidden>
+      <h2 class="stap-h" tabindex="-1">Stap 3 van 5 · Wat komt erbij kijken</h2>
+      <fieldset id="extras">
+        <legend><div class="sec-head"><span class="sec-title">Wat komt erbij kijken?</span></div></legend>
+      </fieldset>
+      <fieldset id="praktisch">
+        <legend><div class="sec-head"><span class="sec-title">Praktisch en veiligheid</span></div></legend>
+        <p class="hint" style="margin:0;grid-column:1/-1;max-width:none">Gemeenten vragen dit bijna altijd. Weet je het nog niet, laat dan "weet niet" staan.</p>
+        <div class="field"><label for="bewaking">Bewaking</label>
+          <select id="bewaking" name="bewaking"><option value="">Weet ik nog niet</option><option value="vrijwilligers">Vrijwilligers van de organisatie</option><option value="bewakingsfirma">Erkende bewakingsfirma</option><option value="geen">Geen bewaking</option></select></div>
+        <div class="field"><label for="ehbo">EHBO</label>
+          <select id="ehbo" name="ehbo"><option value="">Weet ik nog niet</option><option value="ehbo-dienst">Rode Kruis of andere EHBO-dienst</option><option value="eigen">Eigen EHBO'er</option><option value="geen">Geen EHBO-post</option></select></div>
+        <div class="full" id="praktischyn"></div>
+        <div class="field full">
+          <div class="q" id="q_speciaal">Is er iets van dit bij? <span class="hint">(vink aan wat geldt, anders niets)</span></div>
+          <div class="seg vink" role="group" aria-labelledby="q_speciaal">
+            <label><input type="checkbox" name="speciaal" value="dieren"><span>Dieren</span></label>
+            <label><input type="checkbox" name="speciaal" value="kien of bingo"><span>Kien, bingo of tombola</span></label>
+            <label><input type="checkbox" name="speciaal" value="wapens"><span>Wapens of schietstand</span></label>
+            <label><input type="checkbox" name="speciaal" value="gemotoriseerd"><span>Auto's, motoren of tractoren in het programma</span></label>
           </div>
         </div>
-      </div>
-      <div class="field"><label for="organisatie">Naam vereniging, bedrijf of school</label><input id="organisatie" name="organisatie" autocomplete="organization"></div>
-      <div class="field"><label for="ondernemingsnummer">Ondernemingsnummer <span class="hint">(vzw, bedrijf of zelfstandige)</span></label><input id="ondernemingsnummer" name="ondernemingsnummer" inputmode="numeric" placeholder="0123.456.789"></div>
-      <div class="field"><label for="email">E-mail <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
-      <div class="field"><label for="gsm">Gsm <span class="req">*</span></label><input id="gsm" name="gsm" type="tel" autocomplete="tel" required placeholder="0470 12 34 56"></div>
-      <div class="field full"><label for="adres_organisator">Adres organisator</label><input id="adres_organisator" name="adres_organisator" autocomplete="street-address"></div>
-    </fieldset>
+      </fieldset>
+      <p class="err" data-err hidden></p>
+      <div class="stapnav"><button type="button" class="terug">← Vorige</button><div class="rechts"><button type="button" class="btn verder">Volgende <span class="arr" aria-hidden="true">→</span></button></div></div>
+    </section>
 
-    <fieldset>
-      <legend><div class="sec-head"><span class="sec-title">Het evenement</span></div></legend>
-      <div class="field full"><label for="evenement_naam">Naam van het evenement <span class="req">*</span></label><input id="evenement_naam" name="evenement_naam" required></div>
-      <div class="field"><label for="gemeente">Gemeente <span class="req">*</span></label><select id="gemeente" name="gemeente" required><option value="">Kies…</option></select></div>
-      <div class="field"><label for="type">Soort evenement <span class="req">*</span></label>
-        <select id="type" name="type" required><option value="">Kies…</option>
-          <option value="fuif">Fuif of party</option><option value="concert">Concert of festival</option><option value="buurtfeest">Buurtfeest of straatfeest</option><option value="eetfestijn">Eetfestijn</option><option value="markt">Markt of rommelmarkt</option><option value="braderij">Braderij</option><option value="kermis">Kermis</option><option value="stoet">Stoet of optocht</option><option value="sport">Sportevenement</option><option value="wielerwedstrijd">Wielerwedstrijd</option><option value="schoolfeest">Schoolfeest</option><option value="tentoonstelling">Tentoonstelling</option><option value="andere">Iets anders</option>
-        </select></div>
-      <div class="field full"><label for="locatie_naam">Naam van de zaal of plek <span class="hint">(als die er is)</span></label><input id="locatie_naam" name="locatie_naam" placeholder="bv. Parochiezaal Sint-Jan, Marktplein"></div>
-      <div class="field full"><label for="locatie">Adres <span class="req">*</span></label><input id="locatie" name="locatie" required list="adreslijst" autocomplete="off" placeholder="Straat en huisnummer"><datalist id="adreslijst"></datalist><span class="hint">Geen huisnummer, zoals bij een plein of park? Dan volstaat de straat.</span></div>
-      <div class="field"><label for="startdatum">Startdatum <span class="req">*</span></label><input id="startdatum" name="startdatum" type="date" required></div>
-      <div class="field"><label for="startuur">Startuur</label><input id="startuur" name="startuur" type="time"></div>
-      <div class="field"><label for="einddatum">Einddatum</label><input id="einddatum" name="einddatum" type="date"></div>
-      <div class="field"><label for="einduur">Einduur</label><input id="einduur" name="einduur" type="time"></div>
-      <div class="field"><label for="opbouw">Opbouw vanaf <span class="hint">(datum en uur)</span></label><input id="opbouw" name="opbouw" placeholder="bv. vrijdag 14u"></div>
-      <div class="field"><label for="afbraak">Afbraak tot <span class="hint">(datum en uur)</span></label><input id="afbraak" name="afbraak" placeholder="bv. zondag 12u"></div>
-      <div class="field"><label for="bezoekers">Aanwezigen tegelijk op het drukste moment <span class="req">*</span> <span class="hint">(publiek, medewerkers en artiesten samen)</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
-      <div class="field"><label for="openbaar_domein">Komt er iets op straat, stoep, plein, parking of in een park? <span class="req">*</span></label>
-        <select id="openbaar_domein" name="openbaar_domein" required><option value="">Kies…</option><option value="nee">Nee, alles binnen of op privéterrein</option><option value="deels">Een deel, bv. een terras, bar of foodtruck op de stoep of parking</option><option value="ja">Ja, het evenement vindt plaats op straat, plein of in een park</option></select></div>
-      <div class="field full" id="odwrap" hidden>
-        <label for="od_zone">Waar precies, en wat komt er? <span class="hint">(zo goed als je kan)</span></label>
-        <input id="od_zone" name="od_zone" placeholder="bv. bar en 10 tafels op de stoep voor nr. 12, of de straat dicht tussen nr. 2 en 20">
-        <div class="hint">Je hoeft geen grenzen of oppervlaktes te kennen. Wij duiden het stuk aan op de kaart van de gemeente.</div>
-      </div>
-      <div class="field"><label for="bezoekers_totaal">Bezoekers in totaal <span class="hint">(over het hele evenement, als je het weet)</span></label><input id="bezoekers_totaal" name="bezoekers_totaal" type="number" min="1" step="1" inputmode="numeric"></div>
-      <div class="field"><label for="doelgroep">Voor wie is het? <span class="hint">(leeftijd, soort publiek)</span></label><input id="doelgroep" name="doelgroep" placeholder="bv. jongeren 16 tot 25, gezinnen, buurtbewoners"></div>
-      <div class="termijn" id="termijn" aria-live="polite" hidden><div class="t-kop" id="t-kop"></div><p id="t-tekst"></p></div>
-    </fieldset>
-
-    <fieldset id="extras">
-      <legend><div class="sec-head"><span class="sec-title">Wat komt erbij kijken?</span></div></legend>
-    </fieldset>
-
-    <fieldset id="praktisch">
-      <legend><div class="sec-head"><span class="sec-title">Praktisch en veiligheid</span></div></legend>
-      <p class="hint" style="margin:0;grid-column:1/-1;max-width:none">Gemeenten vragen dit bijna altijd. Weet je het nog niet, laat dan "weet niet" staan.</p>
-      <div class="field"><label for="bewaking">Bewaking</label>
-        <select id="bewaking" name="bewaking"><option value="">Weet ik nog niet</option><option value="vrijwilligers">Vrijwilligers van de organisatie</option><option value="bewakingsfirma">Erkende bewakingsfirma</option><option value="geen">Geen bewaking</option></select></div>
-      <div class="field"><label for="ehbo">EHBO</label>
-        <select id="ehbo" name="ehbo"><option value="">Weet ik nog niet</option><option value="ehbo-dienst">Rode Kruis of andere EHBO-dienst</option><option value="eigen">Eigen EHBO'er</option><option value="geen">Geen EHBO-post</option></select></div>
-    </fieldset>
-
-    <fieldset id="inplanting">
-      <legend><div class="sec-head"><span class="sec-title">Inplanting en materiaal</span></div></legend>
-      <div class="field">
-        <label for="locatie_soort">Waar vindt het plaats? <span class="req">*</span></label>
-        <select id="locatie_soort" name="locatie_soort" required><option value="">Kies…</option><option value="zaal">In een zaal of gebouw</option><option value="tent">In een tent</option><option value="buiten">Buiten, zonder tent</option><option value="combinatie">Combinatie (bv. zaal en buitenbar)</option></select>
-      </div>
-      <div class="field" id="tentwrap" hidden>
-        <label for="tent_afmetingen">Afmetingen tent(en) <span class="hint">(lengte × breedte in meter)</span></label>
-        <input id="tent_afmetingen" name="tent_afmetingen" placeholder="bv. 12 × 6, en 3 × 3 voor de bar">
-      </div>
-      <div class="field" id="tentverhuurwrap" hidden>
-        <label for="tent_verhuurder">Wie levert de tent? <span class="hint">(als je het al weet)</span></label>
-        <input id="tent_verhuurder" name="tent_verhuurder" placeholder="bv. naam van de verhuurder, of eigen tent">
-      </div>
-      <div class="field full" id="zaalwrap" hidden>
-        <div class="q" id="q_zaalplan">Heeft de zaal een eigen grondplan of evacuatieplan?</div>
-        <div class="hint">Vraag het aan de uitbater. Wij tekenen jouw opstelling erop; dat is wat de brandweer meestal vraagt.</div>
-        <div class="seg" role="radiogroup" aria-labelledby="q_zaalplan">
-          <label><input type="radio" id="zp_0" name="zaal_grondplan" value="ja"><span>ja, ik voeg het toe</span></label>
-          <label><input type="radio" id="zp_1" name="zaal_grondplan" value="nee"><span>nee</span></label>
-          <label><input type="radio" id="zp_2" name="zaal_grondplan" value="weet niet" checked><span>weet niet</span></label>
+    <!-- Stap 4 -->
+    <section class="stap" data-stap="4" hidden>
+      <h2 class="stap-h" tabindex="-1">Stap 4 van 5 · Plan en materiaal</h2>
+      <fieldset id="inplanting">
+        <legend><div class="sec-head"><span class="sec-title">Plannen</span></div></legend>
+        <p class="info" id="plannote" hidden></p>
+        <div class="field full" id="zaalwrap" hidden>
+          <div class="q" id="q_zaalplan">Heeft de zaal een eigen grondplan of evacuatieplan?</div>
+          <div class="hint">Vraag het aan de uitbater. We tekenen jouw opstelling erop; dat is wat de brandweer meestal vraagt.</div>
+          <div class="seg" role="radiogroup" aria-labelledby="q_zaalplan">
+            <label><input type="radio" id="zp_0" name="zaal_grondplan" value="ja"><span>ja, ik voeg het toe</span></label>
+            <label><input type="radio" id="zp_1" name="zaal_grondplan" value="nee"><span>nee</span></label>
+            <label><input type="radio" id="zp_2" name="zaal_grondplan" value="weet niet" checked><span>weet niet</span></label>
+          </div>
         </div>
-      </div>
-      <div class="field full">
-        <div class="q" id="q_plan">Inplantingsplan en grondplan</div>
-        <div class="hint">Het inplantingsplan toont op schaal hoe alles op je terrein staat (tent, podium, bar, toiletten, doorgang voor hulpdiensten). Gebruik je openbaar domein, dan duiden wij dat stuk daarnaast ook aan op de kaart van de gemeente. Het grondplan toont één tent of zaal in detail (deuren, uitgangen, blustoestellen) en is vaak nodig voor de brandweer. Een duidelijke schets of foto volstaat om te starten. Kies je voor hulp, dan teken je het na je betaling stap voor stap in onze plantekenaar, die meteen de eisen van de brandweer controleert. Wij kijken het na.</div>
-        <div class="seg" role="radiogroup" aria-labelledby="q_plan">
-          <label><input type="radio" id="plan_0" name="inplantingsplan" value="bijgevoegd"><span>Ik voeg het toe</span></label>
-          <label><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Help me het te maken</span></label>
-          <label><input type="radio" id="plan_2" name="inplantingsplan" value="later" checked><span>Bezorg ik later</span></label>
+        <div class="field full">
+          <div class="q" id="q_plan">Hoe bezorg je je plan?</div>
+          <div class="hint">Het inplantingsplan toont op schaal hoe alles op je terrein staat (tent, podium, bar, toiletten, doorgang voor hulpdiensten). Het grondplan toont één tent of zaal in detail (deuren, uitgangen, blustoestellen). Een duidelijke schets of foto volstaat om te starten. Kies je voor hulp, dan teken je het na je betaling stap voor stap in onze plantekenaar, die meteen de eisen van de brandweer controleert. Wij kijken het na.</div>
+          <div class="seg" role="radiogroup" aria-labelledby="q_plan">
+            <label><input type="radio" id="plan_0" name="inplantingsplan" value="bijgevoegd"><span>Ik voeg het toe</span></label>
+            <label><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Help me het te maken</span></label>
+            <label><input type="radio" id="plan_2" name="inplantingsplan" value="later" checked><span>Bezorg ik later</span></label>
+          </div>
         </div>
-      </div>
-      <div class="field full" id="uploadwrap" hidden>
-        <label for="bestanden">Plannen, grondplan van de zaal, schets of foto's <span class="hint">(pdf, jpg of png, samen max. 10 MB)</span></label>
-        <input type="file" id="bestanden" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" multiple>
-        <span class="hint" id="bestandinfo"></span>
-      </div>
-      <div class="yn">
-        <div><div class="q" id="q_materiaal">Materiaal lenen van de gemeente?</div><div class="hint">We vragen alles in één keer aan bij de gemeente, met wat marge, zodat er achteraf niets bij moet. Wat de gemeente niet uitleent of niet aan jou uitleent, moet je zelf huren. Dat laten we je weten vóór we indienen.</div></div>
-        <div class="seg" role="radiogroup" aria-labelledby="q_materiaal">
-          <label><input type="radio" id="materiaal_0" name="materiaal" value="ja"><span>ja</span></label>
-          <label><input type="radio" id="materiaal_1" name="materiaal" value="nee"><span>nee</span></label>
-          <label><input type="radio" id="materiaal_2" name="materiaal" value="weet niet" checked><span>weet niet</span></label>
+        <div class="field full" id="uploadwrap" hidden>
+          <label for="bestanden">Plannen, grondplan van de zaal, schets of foto's <span class="hint">(pdf, jpg of png, samen max. 10 MB)</span></label>
+          <input type="file" id="bestanden" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" multiple>
+          <span class="hint" id="bestandinfo"></span>
         </div>
-      </div>
-      <div class="full mat" id="matlijst" hidden></div>
-      <div class="field full" id="matextra" hidden><label for="materiaal_andere">Ander materiaal of opmerkingen</label><input id="materiaal_andere" name="materiaal_andere" placeholder="bv. 2 vlaggenmasten, levering vrijdagavond"></div>
-      <div class="field full" id="levwrap" hidden><label for="materiaal_levering">Levering</label>
-        <select id="materiaal_levering" name="materiaal_levering"><option value="">Weet ik nog niet</option><option>Wij halen het zelf op</option><option>Graag laten leveren</option></select></div>
-    </fieldset>
+      </fieldset>
+      <fieldset id="materiaalblok">
+        <legend><div class="sec-head"><span class="sec-title">Materiaal</span></div></legend>
+        <p class="info" id="matnote" hidden></p>
+        <div class="yn" id="matyn">
+          <div><div class="q" id="q_materiaal">Materiaal lenen van de gemeente?</div><div class="hint">We vragen alles in één keer aan, met wat marge, zodat er achteraf niets bij moet. Wat de gemeente niet uitleent of niet aan jou uitleent, moet je zelf huren. Dat laten we je weten vóór we indienen.</div></div>
+          <div class="seg" role="radiogroup" aria-labelledby="q_materiaal">
+            <label><input type="radio" id="materiaal_0" name="materiaal" value="ja"><span>ja</span></label>
+            <label><input type="radio" id="materiaal_1" name="materiaal" value="nee"><span>nee</span></label>
+            <label><input type="radio" id="materiaal_2" name="materiaal" value="weet niet" checked><span>weet niet</span></label>
+          </div>
+        </div>
+        <div class="full mat" id="matlijst" hidden></div>
+        <div class="field full" id="matextra" hidden><label for="materiaal_andere">Ander materiaal of opmerkingen</label><input id="materiaal_andere" name="materiaal_andere" placeholder="bv. 2 vlaggenmasten, levering vrijdagavond"></div>
+        <div class="field full" id="levwrap" hidden><label for="materiaal_levering">Levering</label>
+          <select id="materiaal_levering" name="materiaal_levering"><option value="">Weet ik nog niet</option><option>Wij halen het zelf op</option><option>Graag laten leveren</option></select></div>
+      </fieldset>
+      <p class="err" data-err hidden></p>
+      <div class="stapnav"><button type="button" class="terug">← Vorige</button><div class="rechts"><button type="button" class="btn verder">Volgende <span class="arr" aria-hidden="true">→</span></button></div></div>
+    </section>
 
-    <fieldset>
-      <legend><div class="sec-head"><span class="sec-title">Meer uitleg</span></div></legend>
-      <div class="field full"><label for="beschrijving">Beschrijf je evenement <span class="req">*</span></label><textarea id="beschrijving" name="beschrijving" required placeholder="Programma, wie treedt op, tent of zaal, foodtrucks, ticketverkoop…"></textarea></div>
-      <div class="field full">
-        <div class="q" id="q_speciaal">Is er iets van dit bij? <span class="hint">(vink aan wat geldt, anders niets)</span></div>
-        <div class="seg vink" role="group" aria-labelledby="q_speciaal">
-          <label><input type="checkbox" name="speciaal" value="dieren"><span>Dieren</span></label>
-          <label><input type="checkbox" name="speciaal" value="kien of bingo"><span>Kien, bingo of tombola</span></label>
-          <label><input type="checkbox" name="speciaal" value="wapens"><span>Wapens of schietstand</span></label>
-          <label><input type="checkbox" name="speciaal" value="gemotoriseerd"><span>Auto's, motoren of tractoren in het programma</span></label>
+    <!-- Stap 5 -->
+    <section class="stap" data-stap="5" hidden>
+      <h2 class="stap-h" tabindex="-1">Stap 5 van 5 · Jij en akkoord</h2>
+      <fieldset>
+        <legend><div class="sec-head"><span class="sec-title">Organisator</span></div></legend>
+        <div class="field"><label for="organisator_naam">Naam contactpersoon <span class="req">*</span></label><input id="organisator_naam" name="organisator_naam" autocomplete="name" required></div>
+        <div class="field"><label for="organisatie">Naam vereniging, bedrijf of school</label><input id="organisatie" name="organisatie" autocomplete="organization"></div>
+        <div class="field"><label for="email">E-mail <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="gsm">Gsm <span class="req">*</span></label><input id="gsm" name="gsm" type="tel" autocomplete="tel" required placeholder="0470 12 34 56"></div>
+        <div class="field full"><label for="adres_organisator">Adres organisator</label><input id="adres_organisator" name="adres_organisator" autocomplete="street-address"></div>
+        <div class="field" id="kbowrap"><label for="ondernemingsnummer">Ondernemingsnummer <span class="hint">(vzw, bedrijf of zelfstandige)</span></label><input id="ondernemingsnummer" name="ondernemingsnummer" inputmode="numeric" placeholder="0123.456.789"></div>
+        <div class="full" id="verenigingwrap" hidden>
+          <div class="yn" id="jeugdyn">
+            <div><div class="q" id="q_jeugd">Jeugdvereniging?</div><div class="hint">Deze gemeente heeft extra aanbod voor sommige verenigingen.</div></div>
+            <div class="seg" role="radiogroup" aria-labelledby="q_jeugd">
+              <label><input type="radio" id="jeugd_0" name="jeugdvereniging" value="ja"><span>ja</span></label>
+              <label><input type="radio" id="jeugd_1" name="jeugdvereniging" value="nee" checked><span>nee</span></label>
+            </div>
+          </div>
+          <div class="yn" id="erkendyn">
+            <div><div class="q" id="q_erkend">Erkend door de gemeente van het evenement?</div><div class="hint">Bij deze gemeente lenen erkende verenigingen goedkoper of krijgen ze voorrang.</div></div>
+            <div class="seg" role="radiogroup" aria-labelledby="q_erkend">
+              <label><input type="radio" id="erkend_0" name="erkend" value="ja"><span>ja</span></label>
+              <label><input type="radio" id="erkend_1" name="erkend" value="nee"><span>nee</span></label>
+              <label><input type="radio" id="erkend_2" name="erkend" value="weet niet" checked><span>weet niet</span></label>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="yn">
-        <div><div class="q" id="q_uit">Ook in de UiT-agenda zetten?</div><div class="hint">Bij sommige gemeenten zit dat in dezelfde aanvraag. Dan komt je evenement gratis op uitinvlaanderen.be en de website van de gemeente.</div></div>
-        <div class="seg" role="radiogroup" aria-labelledby="q_uit">
-          <label><input type="radio" id="uit_0" name="uit_publiceren" value="ja"><span>ja</span></label>
-          <label><input type="radio" id="uit_1" name="uit_publiceren" value="nee" checked><span>nee</span></label>
+        <div class="field full"><label for="opmerkingen">Nog iets dat we moeten weten?</label><textarea id="opmerkingen" name="opmerkingen"></textarea></div>
+        <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend><div class="sec-head"><span class="sec-title">Nakijken en akkoord</span></div></legend>
+        <dl class="overzicht" id="overzicht"></dl>
+        <label class="check" for="toestemming_privacy"><input type="checkbox" id="toestemming_privacy" name="toestemming_privacy" required><span>Ik ga akkoord met de <a href="/voorwaarden.html" target="_blank" rel="noopener">algemene voorwaarden</a> en las de <a href="/privacy.html" target="_blank" rel="noopener">privacyverklaring</a>. <span class="req">*</span></span></label>
+        <div class="full volm">
+          <div class="q">Volmacht</div>
+          <div class="hint">Zo mogen we de aanvraag in jouw naam indienen. Je hoeft niets af te drukken of op te sturen: je getypte naam en het vinkje gelden als handtekening. Je krijgt een kopie per mail.</div>
+          <blockquote id="volmachttekst" class="volmtekst"></blockquote>
         </div>
-      </div>
-      <div class="field full" id="uitwrap" hidden>
-        <label for="uit_tekst">Korte tekst voor de agenda <span class="hint">(wat bezoekers lezen, 2 tot 4 zinnen)</span></label>
-        <textarea id="uit_tekst" name="uit_tekst" maxlength="800" placeholder="bv. De jaarlijkse fuif van KSA Kasterlee met dj's uit de buurt. Vanaf 16 jaar."></textarea>
-        <label for="uit_prijs" style="margin-top:12px">Toegangsprijs</label>
-        <input id="uit_prijs" name="uit_prijs" placeholder="bv. gratis, of 8 euro voorverkoop en 10 euro aan de deur">
-        <span class="hint">Een affiche of foto mag je later mailen.</span>
-      </div>
-      <div class="field full"><label for="opmerkingen">Nog iets dat we moeten weten?</label><textarea id="opmerkingen" name="opmerkingen"></textarea></div>
-      <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
-    </fieldset>
-
-    <fieldset>
-      <legend><div class="sec-head"><span class="sec-title">Akkoord</span></div></legend>
-      <label class="check" for="toestemming_privacy"><input type="checkbox" id="toestemming_privacy" name="toestemming_privacy" required><span>Ik ga akkoord met de <a href="/voorwaarden.html" target="_blank" rel="noopener">algemene voorwaarden</a> en las de <a href="/privacy.html" target="_blank" rel="noopener">privacyverklaring</a>. <span class="req">*</span></span></label>
-      <div class="full volm">
-        <div class="q">Volmacht</div>
-        <div class="hint">Zo mogen we de aanvraag in jouw naam indienen. Je hoeft niets af te drukken of op te sturen: je getypte naam en het vinkje gelden als handtekening. Je krijgt een kopie per mail.</div>
-        <blockquote id="volmachttekst" class="volmtekst"></blockquote>
-      </div>
-      <div class="field"><label for="volmacht_naam">Volledige naam van wie tekent <span class="req">*</span></label><input id="volmacht_naam" name="volmacht_naam" autocomplete="name" required></div>
-      <div class="field"><label for="volmacht_functie">Hoedanigheid <span class="req">*</span></label><input id="volmacht_functie" name="volmacht_functie" required placeholder="bv. voorzitter, zaakvoerder, in eigen naam"></div>
-      <label class="check" for="toestemming_mandaat"><input type="checkbox" id="toestemming_mandaat" name="toestemming_mandaat" required><span>Ik ben bevoegd om de organisator te vertegenwoordigen en geef de volmacht hierboven. Mijn getypte naam geldt als handtekening. <span class="req">*</span></span></label>
-      <label class="check" for="herroeping" id="herroepwrap" hidden><input type="checkbox" id="herroeping" name="herroeping" value="ja" disabled><span>Ik vraag om meteen te starten. Ik weet dat ik mijn herroepingsrecht verlies zodra de aanvraag volledig is ingediend. <span class="req">*</span></span></label>
-      <div class="prijs full" id="prijs" hidden></div>
-      <p class="err full" id="formerr" hidden></p>
-    </fieldset>
-
-    <div class="actions">
-      <button type="submit" class="btn" id="send">Aanvraag doorsturen <span class="arr" aria-hidden="true">→</span></button>
-      <span class="status" id="status"></span>
-    </div>
+        <div class="field"><label for="volmacht_naam">Volledige naam van wie tekent <span class="req">*</span></label><input id="volmacht_naam" name="volmacht_naam" autocomplete="name" required></div>
+        <div class="field"><label for="volmacht_functie">Hoedanigheid <span class="req">*</span></label><input id="volmacht_functie" name="volmacht_functie" required placeholder="bv. voorzitter, zaakvoerder, in eigen naam"></div>
+        <label class="check" for="toestemming_mandaat"><input type="checkbox" id="toestemming_mandaat" name="toestemming_mandaat" required><span>Ik ben bevoegd om de organisator te vertegenwoordigen en geef de volmacht hierboven. Mijn getypte naam geldt als handtekening. <span class="req">*</span></span></label>
+        <label class="check" for="herroeping" id="herroepwrap" hidden><input type="checkbox" id="herroeping" name="herroeping" value="ja" disabled><span>Ik vraag om meteen te starten. Ik weet dat ik mijn herroepingsrecht verlies zodra de aanvraag volledig is ingediend. <span class="req">*</span></span></label>
+        <div class="prijs full" id="prijs" hidden></div>
+        <p class="err full" id="formerr" hidden></p>
+      </fieldset>
+      <div class="stapnav"><button type="button" class="terug">← Vorige</button><div class="rechts"><span class="status" id="status"></span><button type="submit" class="btn" id="send">Aanvraag doorsturen <span class="arr" aria-hidden="true">→</span></button></div></div>
+    </section>
   </form>
 
   <section class="done" id="done" hidden>
@@ -354,7 +420,6 @@ const ENDPOINT = "https://script.google.com/macros/s/AKfycbz-EAv8lTkB6Y5_yKjc9SW
 
 const GEMEENTEN = {"Antwerpen": ["Aartselaar", "Antwerpen", "Arendonk", "Baarle-Hertog", "Balen", "Beerse", "Berlaar", "Boechout", "Bonheiden", "Boom", "Bornem", "Brasschaat", "Brecht", "Dessel", "Duffel", "Edegem", "Essen", "Geel", "Grobbendonk", "Heist-op-den-Berg", "Hemiksem", "Herentals", "Herenthout", "Herselt", "Hoogstraten", "Hove", "Hulshout", "Kalmthout", "Kapellen", "Kasterlee", "Kontich", "Laakdal", "Lier", "Lille", "Lint", "Malle", "Mechelen", "Meerhout", "Merksplas", "Mol", "Mortsel", "Niel", "Nijlen", "Olen", "Oud-Turnhout", "Putte", "Puurs-Sint-Amands", "Ranst", "Ravels", "Retie", "Rijkevorsel", "Rumst", "Schelle", "Schilde", "Schoten", "Sint-Katelijne-Waver", "Stabroek", "Turnhout", "Vorselaar", "Vosselaar", "Westerlo", "Wijnegem", "Willebroek", "Wommelgem", "Wuustwezel", "Zandhoven", "Zoersel"], "Limburg": ["Alken", "As", "Beringen", "Bilzen-Hoeselt", "Bocholt", "Bree", "Diepenbeek", "Dilsen-Stokkem", "Genk", "Gingelom", "Halen", "Hamont-Achel", "Hasselt", "Hechtel-Eksel", "Heers", "Herk-de-Stad", "Herstappe", "Heusden-Zolder", "Houthalen-Helchteren", "Kinrooi", "Lanaken", "Leopoldsburg", "Lommel", "Lummen", "Maaseik", "Maasmechelen", "Nieuwerkerken", "Oudsbergen", "Peer", "Pelt", "Riemst", "Sint-Truiden", "Tessenderlo-Ham", "Tongeren-Borgloon", "Voeren", "Wellen", "Zonhoven", "Zutendaal"], "Oost-Vlaanderen": ["Aalst", "Aalter", "Assenede", "Berlare", "Beveren-Kruibeke-Zwijndrecht", "Brakel", "Buggenhout", "Deinze", "Denderleeuw", "Dendermonde", "Destelbergen", "Eeklo", "Erpe-Mere", "Evergem", "Gavere", "Gent", "Geraardsbergen", "Haaltert", "Hamme", "Herzele", "Horebeke", "Kaprijke", "Kluisbergen", "Kruisem", "Laarne", "Lebbeke", "Lede", "Lierde", "Lievegem", "Lochristi", "Lokeren", "Maarkedal", "Maldegem", "Merelbeke-Melle", "Nazareth-De Pinte", "Ninove", "Oosterzele", "Oudenaarde", "Ronse", "Sint-Gillis-Waas", "Sint-Laureins", "Sint-Lievens-Houtem", "Sint-Martens-Latem", "Sint-Niklaas", "Stekene", "Temse", "Waasmunster", "Wetteren", "Wichelen", "Wortegem-Petegem", "Zele", "Zelzate", "Zottegem", "Zulte", "Zwalm"], "Vlaams-Brabant": ["Aarschot", "Affligem", "Asse", "Beersel", "Begijnendijk", "Bekkevoort", "Bertem", "Bever", "Bierbeek", "Boortmeerbeek", "Boutersem", "Diest", "Dilbeek", "Drogenbos", "Geetbets", "Glabbeek", "Grimbergen", "Haacht", "Halle", "Herent", "Hoegaarden", "Hoeilaart", "Holsbeek", "Huldenberg", "Kampenhout", "Kapelle-op-den-Bos", "Keerbergen", "Kortenaken", "Kortenberg", "Kraainem", "Landen", "Lennik", "Leuven", "Liedekerke", "Linkebeek", "Linter", "Londerzeel", "Lubbeek", "Machelen", "Meise", "Merchtem", "Opwijk", "Oud-Heverlee", "Overijse", "Pajottegem", "Pepingen", "Roosdaal", "Rotselaar", "Scherpenheuvel-Zichem", "Sint-Genesius-Rode", "Sint-Pieters-Leeuw", "Steenokkerzeel", "Ternat", "Tervuren", "Tielt-Winge", "Tienen", "Tremelo", "Vilvoorde", "Wemmel", "Wezembeek-Oppem", "Zaventem", "Zemst", "Zoutleeuw"], "West-Vlaanderen": ["Alveringem", "Anzegem", "Ardooie", "Avelgem", "Beernem", "Blankenberge", "Bredene", "Brugge", "Damme", "De Haan", "De Panne", "Deerlijk", "Dentergem", "Diksmuide", "Gistel", "Harelbeke", "Heuvelland", "Hooglede", "Houthulst", "Ichtegem", "Ieper", "Ingelmunster", "Izegem", "Jabbeke", "Knokke-Heist", "Koekelare", "Koksijde", "Kortemark", "Kortrijk", "Kuurne", "Langemark-Poelkapelle", "Ledegem", "Lendelede", "Lichtervelde", "Lo-Reninge", "Menen", "Mesen", "Middelkerke", "Moorslede", "Nieuwpoort", "Oostende", "Oostkamp", "Oostrozebeke", "Oudenburg", "Pittem", "Poperinge", "Roeselare", "Spiere-Helkijn", "Staden", "Tielt", "Torhout", "Veurne", "Vleteren", "Waregem", "Wervik", "Wevelgem", "Wielsbeke", "Wingene", "Zedelgem", "Zonnebeke", "Zuienkerke", "Zwevegem"]};
 const EXTRAS = [
-  ["eerste_editie","Is dit de eerste editie?",""],
   ["muziek","Versterkte muziek?","Dj, band of geluidsinstallatie"],
   ["alcohol","Verkoop of schenken van bier of wijn?",""],
   ["sterke_drank","Sterke drank (boven 22%)?","Cocktails, shots, jenever"],
@@ -363,7 +428,7 @@ const EXTRAS = [
   ["stroomgroep","Grote stroomgroep (boven 150 kVA)?","Bij twijfel: weet niet"],
   ["subsidie","Wil je een toelage of subsidie aanvragen?",""]
 ];
-// Vaste vragen uit de evenementformulieren (Eaglebe e.a.), zodat we ze niet achteraf moeten opvragen.
+// Vaste vragen uit de evenementformulieren (Eaglebe, Flowlab e.a.), zodat we ze niet achteraf moeten opvragen.
 const PRAKTISCH = [
   ["betalend","Betalende toegang?",""],
   ["op_uitnodiging","Enkel op uitnodiging?","Geen publiek evenement, bv. een privéfeest"],
@@ -381,11 +446,12 @@ const MATERIAAL = [
   ["borden","Verkeers- of parkeerverbodsborden"],["vuilbakken","Vuilbakken of containers"],
   ["stroom","Elektriciteitskast of aansluiting"],["water","Wateraansluiting"],["toiletten","Toiletten of urinoirs"]
 ];
+const STAPPEN = ["Je evenement", "Waar en wanneer", "Wat komt erbij kijken", "Plan en materiaal", "Jij en akkoord"];
 const MAX_BYTES = 10 * 1024 * 1024;
+const CONCEPT = "aanvraag-concept";
 
 const g = document.getElementById("gemeente");
 Object.entries(GEMEENTEN).forEach(([p, lijst]) => { const og = document.createElement("optgroup"); og.label = p; lijst.forEach(n => og.appendChild(new Option(n, n))); g.appendChild(og); });
-const ex = document.getElementById("extras");
 function janee(doel, [k, q, h]) {
   const d = document.createElement("div");
   d.className = "yn";
@@ -395,45 +461,132 @@ function janee(doel, [k, q, h]) {
     </div>`;
   doel.appendChild(d);
 }
-EXTRAS.forEach((v) => janee(ex, v));
-document.querySelectorAll('input[name="uit_publiceren"]').forEach(r => r.addEventListener("change", () => { document.getElementById("uitwrap").hidden = !document.getElementById("uit_0").checked; }));
-PRAKTISCH.forEach((v) => janee(document.getElementById("praktisch"), v));
+// "Eerste editie" telt mee voor de termijn, dus in stap 1.
+janee(document.getElementById("stap1yn"), ["eerste_editie","Is dit de eerste editie?","Sommige gemeenten vragen dan meer tijd."]);
+EXTRAS.forEach((v) => janee(document.getElementById("extras"), v));
+PRAKTISCH.forEach((v) => janee(document.getElementById("praktischyn"), v));
 
 const ml = document.getElementById("matlijst");
 MATERIAAL.forEach(([k, n]) => {
   const d = document.createElement("div");
   d.className = "matrow";
+  d.dataset.k = k;
   d.innerHTML = `<label for="mat_${k}">${n}</label><input type="number" id="mat_${k}" data-mat="${n}" min="0" step="1" inputmode="numeric" placeholder="0">`;
   ml.appendChild(d);
 });
-function toonVereniging() {
-  const ver = document.getElementById("aanvrager_type").value === "vereniging";
-  const w = document.getElementById("verenigingwrap");
-  w.hidden = !ver;
-  w.querySelectorAll("input").forEach(i => i.disabled = !ver);
+
+const intakeForm = document.getElementById("intake"), form = intakeForm;
+function veld(n) { const el = intakeForm.elements[n]; return el ? (el.value || "") : ""; }
+const gekozen = n => (intakeForm.querySelector('input[name="' + n + '"]:checked') || {}).value || "";
+
+// ---- Gegevens per gemeente: regels.json (termijn, uitleen, platform) en plannen.json (wat de gemeente aan plannen vraagt) ----
+let regelsGeladen = false, termijn = null, PLANNEN = {};
+function regelVan() { return regelsGeladen ? RULES.find(x => x.gemeente === veld("gemeente")) || null : null; }
+const PLATFORM = {
+  "Eaglebe": "online via Eaglebe, het loket dat de gemeente gebruikt",
+  "Flowlab": "online via het evenementenloket van de gemeente (Flowlab)",
+  "RIHO": "online via het evenementenformulier van de politiezone",
+  "mail/pdf": "met het aanvraagformulier van de gemeente",
+  "mail/Word-formulier": "met het aanvraagformulier van de gemeente",
+  "eigen e-loket": "via het e-loket van de gemeente",
+  "Eigen loket / anders": "via het loket van de gemeente"
+};
+// Zelfde regel als nodigePlannen() in /plan/tekenaar.js.
+function nodigePlannen() {
+  const sit = { zaal: "zaal", tent: "tent", buiten: "buiten", combinatie: "tent" }[veld("locatie_soort")] || "";
+  const gem = veld("gemeente"), pg = PLANNEN[gem] || {}, r = { inplanting: [], grondplan: [] };
+  if (sit === "tent") { r.inplanting.push("tent"); r.grondplan.push("tent"); }
+  if (sit === "buiten") r.inplanting.push("buiten");
+  if (sit === "zaal") r.grondplan.push("zaal");
+  if (/^(ja|deels)$/.test(veld("openbaar_domein"))) r.inplanting.push("openbaar domein");
+  if ((+veld("bezoekers") || 0) >= 500) r.inplanting.push("500 aanwezigen of meer");
+  if (pg.inplanting) r.inplanting.push(gem + " vraagt het");
+  if (pg.grondplan && sit !== "buiten") r.grondplan.push(gem + " vraagt het");
+  return r;
 }
-document.getElementById("aanvrager_type").addEventListener("change", toonVereniging);
-toonVereniging();
+function geenUitleen() {
+  const r = regelVan(), u = (r && r.uitleen) || {};
+  if (u.uitleendienst === "nee") return "leent geen materiaal uit";
+  if (veld("aanvrager_type") === "particulier" && u.particulieren_toegelaten === "nee") return "leent geen materiaal uit aan particulieren";
+  return "";
+}
+function prijsVoor() {
+  const bez = +veld("bezoekers") || 0, plan = gekozen("inplantingsplan");
+  const formule = plan === "hulp nodig" || bez >= 500 ? "Plus" : "Basis";
+  const factor = veld("aanvrager_type") === "bedrijf" ? 2 : 1;
+  return { formule, bedrag: { Basis: 45, Plus: 75 }[formule] * factor, factor };
+}
+
+// Past het formulier aan de gemeente en de situatie aan: enkel de vragen die hier tellen.
+function pasAan() {
+  const r = regelVan(), u = (r && r.uitleen) || {}, gem = veld("gemeente");
+  // UiT-agenda: enkel waar we weten dat de aanvraag het aanbiedt (Flowlab).
+  const uit = !!(r && r.platform === "Flowlab");
+  document.getElementById("uitblok").hidden = !uit;
+  if (!uit) { document.getElementById("uit_1").checked = true; document.getElementById("uitwrap").hidden = true; }
+  else document.getElementById("uitwrap").hidden = !document.getElementById("uit_0").checked;
+  // Vereniging: jeugd en erkenning enkel waar de gemeente er iets mee doet (of als we het niet weten).
+  const ver = veld("aanvrager_type") === "vereniging";
+  const extraAanbod = !r || (u.extra_aanbod && u.extra_aanbod.length) , categorie = !r || !!u.categorie_aanvrager;
+  const vw = document.getElementById("verenigingwrap"), jy = document.getElementById("jeugdyn"), ey = document.getElementById("erkendyn");
+  jy.hidden = !(ver && extraAanbod); ey.hidden = !(ver && categorie); vw.hidden = jy.hidden && ey.hidden;
+  jy.querySelectorAll("input").forEach(i => i.disabled = jy.hidden);
+  ey.querySelectorAll("input").forEach(i => i.disabled = ey.hidden);
+  document.getElementById("kbowrap").hidden = veld("aanvrager_type") === "particulier";
+  // Materiaal: niet vragen waar de gemeente niet (aan jou) uitleent; enkel materiaal tonen dat ze niet uitdrukkelijk weigert.
+  const geen = geenUitleen(), mn = document.getElementById("matnote");
+  document.getElementById("matyn").hidden = !!geen;
+  if (geen) { document.getElementById("materiaal_1").checked = true; mn.innerHTML = "<b>" + esc(gem) + " " + geen + ".</b> Heb je toch iets nodig, zoals nadars of tafels, dan huur je het zelf. Zet het gerust bij de opmerkingen, dan nemen we het mee in je overzicht."; }
+  mn.hidden = !geen;
+  const cat = u.catalogus || {};
+  ml.querySelectorAll(".matrow").forEach(rw => { const weg = cat[rw.dataset.k] === "nee"; rw.hidden = weg; if (weg) rw.querySelector("input").value = ""; });
+  toonMateriaal();
+  // Plannen: wat er voor deze situatie nodig is.
+  const p = nodigePlannen(), pn = document.getElementById("plannote"), delen = [];
+  if (p.inplanting.length) delen.push("een <b>inplantingsplan</b>");
+  if (p.grondplan.length) delen.push("een <b>grondplan</b>");
+  const waarom = [...new Set(p.inplanting.concat(p.grondplan))].map(x => ({ tent: "een tent", buiten: "buiten", zaal: "een zaal" })[x] || x);
+  pn.innerHTML = delen.length ? "Voor je evenement" + (gem ? " in " + esc(gem) : "") + " is wellicht nodig: " + delen.join(" en ") + ". Reden: " + waarom.map(esc).join(", ") + "." : "";
+  pn.hidden = !delen.length;
+  document.getElementById("tentwrap").hidden = !["tent", "combinatie"].includes(veld("locatie_soort"));
+  document.getElementById("tentverhuurwrap").hidden = document.getElementById("tentwrap").hidden;
+  document.getElementById("zaalwrap").hidden = !["zaal", "combinatie"].includes(veld("locatie_soort"));
+  document.getElementById("odwrap").hidden = !["ja", "deels"].includes(veld("openbaar_domein"));
+  toonUpload(); toonGembox();
+}
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
+
+// Samenvatting na stap 1: kanaal, plannen, materiaal en prijs voor deze gemeente.
+function toonGembox() {
+  const box = document.getElementById("gembox"), r = regelVan();
+  const klaar = r && veld("type") && veld("startdatum") && veld("bezoekers") && veld("locatie_soort") && veld("aanvrager_type") && veld("openbaar_domein");
+  if (!klaar || (termijn && (termijn.soort === "laat" || termijn.soort === "buiten"))) { box.hidden = true; return; }
+  const li = [];
+  if (PLATFORM[r.platform]) li.push("We dienen in " + PLATFORM[r.platform] + ".");
+  const p = nodigePlannen(), pl = [p.inplanting.length && "inplantingsplan", p.grondplan.length && "grondplan"].filter(Boolean);
+  if (pl.length) li.push("Plannen: " + pl.join(" en ") + ". Je kan ze zelf toevoegen, of tekenen in onze plantekenaar (formule Plus).");
+  const geen = geenUitleen(), u = r.uitleen || {};
+  if (geen) li.push("Materiaal: de gemeente " + geen + ".");
+  else if (u.uitleendienst === "ja") li.push("Materiaal van de gemeente vragen we mee aan als je dat wil.");
+  const pr = prijsVoor();
+  li.push(pr.formule === "Plus" ? "Prijs: € " + pr.bedrag + " (Plus)." : "Prijs: € " + pr.bedrag + " (Basis), of € " + 75 * pr.factor + " (Plus) als je hulp wil bij je plan.");
+  document.getElementById("gb-kop").textContent = "Wat dit betekent in " + r.gemeente;
+  document.getElementById("gb-lijst").innerHTML = li.map(x => "<li>" + esc(x) + "</li>").join("");
+  box.hidden = false;
+}
+
 function toonMateriaal() {
-  const ja = document.getElementById("materiaal_0").checked;
+  const ja = document.getElementById("materiaal_0").checked && !geenUitleen();
   ["matlijst","matextra","levwrap"].forEach(id => document.getElementById(id).hidden = !ja);
 }
 document.querySelectorAll('input[name="materiaal"]').forEach(r => r.addEventListener("change", toonMateriaal));
+document.querySelectorAll('input[name="uit_publiceren"]').forEach(r => r.addEventListener("change", pasAan));
 function toonUpload() {
   const wrap = document.getElementById("uploadwrap");
-  wrap.hidden = !document.getElementById("plan_0").checked && !document.getElementById("zp_0").checked;
-  if (wrap.hidden) { const f = document.getElementById("bestanden"); f.value = ""; document.getElementById("bestandinfo").textContent = ""; }
+  wrap.hidden = !document.getElementById("plan_0").checked && !(document.getElementById("zp_0").checked && !document.getElementById("zaalwrap").hidden);
+  if (wrap.hidden) { fi.value = ""; document.getElementById("bestandinfo").textContent = ""; }
 }
-const odSel = document.getElementById("openbaar_domein");
-odSel.addEventListener("change", () => { document.getElementById("odwrap").hidden = !["ja", "deels"].includes(odSel.value); });
-const ls = document.getElementById("locatie_soort");
-ls.addEventListener("change", () => {
-  document.getElementById("tentwrap").hidden = !["tent", "combinatie"].includes(ls.value);
-  document.getElementById("tentverhuurwrap").hidden = !["tent", "combinatie"].includes(ls.value);
-  document.getElementById("zaalwrap").hidden = !["zaal", "combinatie"].includes(ls.value);
-});
-document.querySelectorAll('input[name="zaal_grondplan"]').forEach(r => r.addEventListener("change", toonUpload));
-document.querySelectorAll('input[name="inplantingsplan"]').forEach(r => r.addEventListener("change", toonUpload));
+document.querySelectorAll('input[name="zaal_grondplan"], input[name="inplantingsplan"]').forEach(r => r.addEventListener("change", toonUpload));
 const fi = document.getElementById("bestanden");
 fi.addEventListener("change", () => {
   const tot = [...fi.files].reduce((s, f) => s + f.size, 0);
@@ -449,7 +602,7 @@ const leesB64 = f => new Promise((ok, nok) => { const r = new FileReader(); r.on
   inp.addEventListener("input", () => {
     clearTimeout(t);
     t = setTimeout(async () => {
-      const v = inp.value.trim(), gem = document.getElementById("gemeente").value;
+      const v = inp.value.trim(), gem = veld("gemeente");
       if (v.length < 3 || v === laatste) return; laatste = v;
       const q = gem && v.toLowerCase().indexOf(gem.toLowerCase()) < 0 ? v + " " + gem : v;
       try {
@@ -475,11 +628,7 @@ sd.min = vandaag.getFullYear() + "-" + String(vandaag.getMonth() + 1).padStart(2
 
 // ---- Termijncheck ----
 // Zelfde rekenlogica en oordeel als de startpagina (rekenlogica.js, regels.json, indienmoment.js).
-// Is de deadline van de gemeente (gekende termijn) voorbij, dan kan de aanvraag niet doorgestuurd worden.
-let regelsGeladen = false, termijn = null;
-const intakeForm = document.getElementById("intake");
-function veld(n) { const el = intakeForm.elements[n]; return el ? (el.value || "") : ""; }
-
+// Is de deadline van de gemeente (gekende termijn) voorbij, dan kan de aanvraag niet verder.
 function berekenTermijn() {
   if (!regelsGeladen) return null;
   const gemNaam = veld("gemeente"), type = veld("type"), datum = veld("startdatum");
@@ -490,7 +639,7 @@ function berekenTermijn() {
   if (!r) return { soort: "onbekend", gemeente: gemNaam };
   const od = veld("openbaar_domein");
   const ev = { gem: r.gemeente, type, date: new Date(datum + "T00:00:00"), visitors: +veld("bezoekers") || 0, marge: 5,
-    groot: false, nieuw: veld("eerste_editie") === "ja", od: od === "ja" || od === "deels", x: {} };
+    groot: false, nieuw: gekozen("eerste_editie") === "ja", od: od === "ja" || od === "deels", x: {} };
   let res = evaluate(r, ev);
   if (res.unknown) { const f = fallback(r, ev); if (!f) return { soort: "onbekend", gemeente: r.gemeente }; res = f; }
   const o = indienOordeel(res);
@@ -505,7 +654,7 @@ function berekenTermijn() {
 function toonTermijn() {
   termijn = berekenTermijn();
   const box = document.getElementById("termijn"), kop = document.getElementById("t-kop"), tekst = document.getElementById("t-tekst");
-  if (!termijn) { box.hidden = true; zetBlokkade(false); return; }
+  if (!termijn) { box.hidden = true; zetBlokkade(false); toonGembox(); return; }
   const t = termijn, d = t.deadline ? fmtLong(t.deadline) : "";
   let k, p;
   if (t.soort === "buiten") {
@@ -516,7 +665,7 @@ function toonTermijn() {
     p = "De deadline was " + d + " (" + t.termijn + " vooraf). We kunnen deze aanvraag niet meer op tijd indienen. Kies een latere datum als dat kan, of neem zelf contact op met de gemeente.";
   } else if (t.soort === "twijfel") {
     k = "Waarschijnlijk te laat";
-    p = "De termijn van " + t.gemeente + " is niet zeker gekend. Volgens onze schatting is de deadline " + d + ", en die is al voorbij. Stuur toch door: we kijken het meteen na en laten het je weten.";
+    p = "De termijn van " + t.gemeente + " is niet zeker gekend. Volgens onze schatting is de deadline " + d + ", en die is al voorbij. Ga toch verder: we kijken het meteen na en laten het je weten.";
   } else if (t.soort === "krap") {
     k = "Krap, maar het kan nog";
     p = "Deadline bij " + t.gemeente + ": " + d + ". Stuur je aanvraag vandaag nog door, dan gaan we meteen aan de slag.";
@@ -525,41 +674,30 @@ function toonTermijn() {
     p = "Geschatte deadline bij " + t.gemeente + ": " + d + ". We kijken de termijn van deze gemeente meteen voor je na.";
   } else if (t.soort === "onbekend") {
     k = "Termijn nog niet gekend";
-    p = "Voor " + t.gemeente + " kennen we de termijn nog niet. Stuur je aanvraag door, dan zoeken we hem meteen voor je op.";
+    p = "Voor " + t.gemeente + " kennen we de termijn nog niet. Ga gerust verder, we zoeken hem meteen voor je op.";
   } else {
     k = "Op tijd";
-    p = "Deadline bij " + t.gemeente + ": " + d + ". Ruim op tijd. Stuur je aanvraag door, dan gaan we meteen voor je aan de slag.";
+    p = "Deadline bij " + t.gemeente + ": " + d + ". Ruim op tijd.";
   }
-  if (t.opent && t.soort !== "laat" && t.soort !== "buiten") { k = "Je bent er vroeg bij"; p = t.gemeente + " aanvaardt aanvragen pas vanaf " + fmtLong(t.opent) + " (deadline " + d + "). Stuur gerust nu door: wij dienen in zodra het kan, jij hoeft niets meer te doen."; }
+  if (t.opent && t.soort !== "laat" && t.soort !== "buiten") { k = "Je bent er vroeg bij"; p = t.gemeente + " aanvaardt aanvragen pas vanaf " + fmtLong(t.opent) + " (deadline " + d + "). Ga gerust verder: wij dienen in zodra het kan, jij hoeft niets meer te doen."; }
   box.className = "termijn " + t.soort; kop.textContent = k; tekst.textContent = p; box.hidden = false;
   zetBlokkade(t.soort === "laat" || t.soort === "buiten");
+  toonGembox();
 }
 
 function zetBlokkade(aan) {
-  const btn = document.getElementById("send"), st = document.getElementById("status");
-  btn.classList.toggle("geblokkeerd", aan);
-  btn.setAttribute("aria-disabled", aan ? "true" : "false");
-  st.textContent = aan ? (termijn && termijn.soort === "buiten" ? "Doorsturen kan niet: dit valt niet in ons aanbod." : "Doorsturen kan niet: dit lukt niet meer voor de deadline van de gemeente.") : "";
+  const knoppen = [document.querySelector('.stap[data-stap="1"] .verder'), document.getElementById("send")];
+  knoppen.forEach(b => { b.classList.toggle("geblokkeerd", aan); b.setAttribute("aria-disabled", aan ? "true" : "false"); });
+  const tekst = aan ? (termijn && termijn.soort === "buiten" ? "Dit valt niet in ons aanbod." : "Dit lukt niet meer voor de deadline van de gemeente.") : "";
+  document.getElementById("status1").textContent = tekst; document.getElementById("status").textContent = tekst;
 }
 
-["gemeente", "type", "startdatum", "bezoekers", "openbaar_domein", "eerste_editie"].forEach(n => {
-  const els = intakeForm.querySelectorAll('[name="' + n + '"]');
-  els.forEach(el => { el.addEventListener("change", toonTermijn); el.addEventListener("input", toonTermijn); });
+["gemeente", "type", "startdatum", "bezoekers", "openbaar_domein", "eerste_editie", "locatie_soort", "aanvrager_type"].forEach(n => {
+  intakeForm.querySelectorAll('[name="' + n + '"]').forEach(el => { el.addEventListener("change", () => { toonTermijn(); pasAan(); }); el.addEventListener("input", () => { toonTermijn(); pasAan(); }); });
 });
-const regelsKlaar = fetch("/regels.json").then(r => r.json()).then(data => { RULES = data; regelsGeladen = true; toonTermijn(); })
+const regelsKlaar = fetch("/regels.json").then(r => r.json()).then(data => { RULES = data; regelsGeladen = true; toonTermijn(); pasAan(); })
   .catch(() => { /* Lijst niet geladen: niet blokkeren, de termijn wordt dan bij de verwerking nagekeken. */ });
-
-// Voorinvullen vanuit de termijncheck op de startpagina (aanvraag.html?gemeente=…&type=…&datum=JJJJ-MM-DD).
-(function () {
-  const q = new URLSearchParams(location.search);
-  let mee = {}; try { mee = JSON.parse(sessionStorage.getItem("termijncheck") || "{}") || {}; } catch (e) {}
-  // URL eerst; anders wat de bezoeker in deze sessie in de termijncheck koos.
-  const gem = q.get("gemeente") || mee.gemeente, dat = q.get("datum") || mee.datum;
-  if (gem && [...g.options].some(o => o.value === gem)) g.value = gem;
-  const typ = q.get("type") || mee.type, ts = document.getElementById("type");
-  if (typ && [...ts.options].some(o => o.value === typ)) ts.value = typ;
-  if (dat && /^\d{4}-\d{2}-\d{2}$/.test(dat)) { sd.value = dat; sd.dispatchEvent(new Event("change")); }
-})();
+fetch("/plan/plannen.json").then(r => r.json()).then(d => { PLANNEN = d || {}; pasAan(); }).catch(() => {});
 
 // Volmachttekst: zelfde sjabloon als in Code.gs (volmachtTekst). Bij wijzigen: beide aanpassen en VOLMACHT_VERSIE ophogen.
 const VOLMACHTHEBBER = "Troostberg (ondernemingsnummer 0791.797.538), handelend onder de naam evenementaanvragen.be (thomas@evenementaanvragen.be)";
@@ -579,18 +717,9 @@ om in naam en voor rekening van de organisator de evenementaanvraag en de bijhor
 De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor de organisatie van het evenement en voor de naleving van de vergunningsvoorwaarden. Na de indiening communiceert de gemeente rechtstreeks met de organisator. Deze volmacht geldt enkel voor dit evenement. Ze loopt tot 30 dagen na de indiening, zodat we een vraag van de gemeente over het ingediende dossier kunnen beantwoorden, en kan altijd ingetrokken worden met een mail aan thomas@evenementaanvragen.be.`;
 }
 const vt = document.getElementById("volmachttekst");
-function toonVolmacht() { vt.textContent = volmachtTekst(Object.fromEntries(new FormData(document.getElementById("intake")).entries())); }
-document.getElementById("intake").addEventListener("input", toonVolmacht);
-document.getElementById("intake").addEventListener("change", toonVolmacht);
-toonVolmacht();
+function toonVolmacht() { vt.textContent = volmachtTekst(Object.fromEntries(new FormData(intakeForm).entries())); }
 
-// Prijs: zelfde regels als prijsVoor() in Betaling.gs. Plus = hulp bij het plan (plantekenaar) of 500 bezoekers of meer.
-function prijsVoor() {
-  const bez = +veld("bezoekers") || 0;
-  const plan = (intakeForm.querySelector('input[name="inplantingsplan"]:checked') || {}).value;
-  const formule = plan === "hulp nodig" || bez >= 500 ? "Plus" : "Basis";
-  return { formule, bedrag: { Basis: 45, Plus: 75 }[formule] * (veld("aanvrager_type") === "bedrijf" ? 2 : 1) };
-}
+// Prijs: zelfde regels als prijsVoor() in Betaling.gs. Plus = hulp bij het plan (plantekenaar) of 500 aanwezigen of meer.
 function toonPrijs() {
   const box = document.getElementById("prijs");
   if (!veld("aanvrager_type") || !veld("bezoekers") || !veld("locatie_soort")) { box.hidden = true; return; }
@@ -602,29 +731,159 @@ function toonHerroeping() {
   const part = veld("aanvrager_type") === "particulier", w = document.getElementById("herroepwrap"), c = document.getElementById("herroeping");
   w.hidden = !part; c.disabled = !part; c.required = part;
 }
-intakeForm.addEventListener("input", () => { toonPrijs(); toonHerroeping(); });
-intakeForm.addEventListener("change", () => { toonPrijs(); toonHerroeping(); });
-toonPrijs(); toonHerroeping();
 
-const form = document.getElementById("intake");
+// ---- Stappen ----
+const secties = [...document.querySelectorAll(".stap")];
+const balk = document.getElementById("stappen");
+let stap = 1, verst = 1;
+balk.innerHTML = STAPPEN.map((s, i) => `<li><button type="button" data-naar="${i + 1}"><span class="nr">${i + 1}</span><span class="lbl">${s}</span></button></li>`).join("");
+secties.forEach((sec, i) => {
+  const v = sec.querySelector(".verder");
+  if (v) v.innerHTML = "Volgende: " + STAPPEN[i + 1].toLowerCase() + ' <span class="arr" aria-hidden="true">→</span>';
+});
+// Zichtbaar binnen de stap (verborgen blokken en uitgeschakelde velden tellen niet mee).
+function telt(el, sec) {
+  if (el.disabled) return false;
+  for (let p = el.parentElement; p && p !== sec; p = p.parentElement) if (p.hidden) return false;
+  return true;
+}
+function fouten(n) {
+  const sec = secties[n - 1];
+  return [...sec.querySelectorAll("[required]")].filter(el => telt(el, sec))
+    .filter(el => el.type === "checkbox" ? !el.checked : !el.value.trim() || !el.checkValidity());
+}
+function labelVan(el) { return (intakeForm.querySelector(`label[for="${el.id}"]`)?.innerText || el.name).replace(/\s*\*\s*$/, "").split("\n")[0].replace(/\s*\*.*$/, "").replace(/[.?]$/, ""); }
+function meldFout(n, tekst) {
+  const p = n === 5 ? document.getElementById("formerr") : secties[n - 1].querySelector("[data-err]");
+  p.textContent = tekst; p.hidden = !tekst;
+}
+function geldig(n) {
+  meldFout(n, "");
+  if (n === 1 && termijn && (termijn.soort === "laat" || termijn.soort === "buiten")) {
+    meldFout(1, termijn.soort === "buiten" ? termijn.reden : "Deze aanvraag kan niet meer op tijd ingediend worden bij " + termijn.gemeente + ". Kies een latere datum als dat kan.");
+    document.getElementById("termijn").scrollIntoView({ block: "center", behavior: "smooth" });
+    return false;
+  }
+  const bad = fouten(n);
+  if (bad.length) { meldFout(n, "Nog niet alles is ingevuld: " + bad.map(labelVan).join(", ") + "."); bad[0].focus(); return false; }
+  return true;
+}
+function gaNaar(n, push) {
+  stap = n; verst = Math.max(verst, n);
+  secties.forEach((s, i) => s.hidden = i + 1 !== n);
+  [...balk.children].forEach((li, i) => {
+    const b = li.firstElementChild;
+    li.classList.toggle("klaar", i + 1 < n);
+    if (i + 1 === n) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
+    b.disabled = i + 1 > verst;
+  });
+  if (n === 5) { toonOverzicht(); toonVolmacht(); toonPrijs(); toonHerroeping(); }
+  if (push !== false) { try { history.pushState({ stap: n }, "", "#stap-" + n); } catch (e) {} }
+  bewaar();
+  const top = balk.getBoundingClientRect().top + window.scrollY - 16;
+  if (window.scrollY > top) window.scrollTo({ top, behavior: "smooth" });
+  secties[n - 1].querySelector(".stap-h").focus({ preventScroll: true });
+}
+secties.forEach((sec, i) => {
+  const v = sec.querySelector(".verder"), t = sec.querySelector(".terug");
+  if (v) v.addEventListener("click", async () => { if (i === 0) { await regelsKlaar; toonTermijn(); } if (geldig(i + 1)) gaNaar(i + 2); });
+  if (t) t.addEventListener("click", () => gaNaar(i));
+});
+balk.addEventListener("click", e => {
+  const b = e.target.closest("button[data-naar]"); if (!b || b.disabled) return;
+  const doel = +b.dataset.naar;
+  for (let n = stap; n < doel; n++) if (!geldig(n)) { if (n !== stap) gaNaar(n); return; }
+  gaNaar(doel);
+});
+window.addEventListener("popstate", e => { const n = (e.state && e.state.stap) || 1; if (n <= verst) gaNaar(n, false); });
+
+// Overzicht in stap 5, met een knop om terug te gaan naar de stap.
+function toonOverzicht() {
+  const opt = id => { const s = document.getElementById(id); return s.selectedIndex > 0 ? s.options[s.selectedIndex].text : ""; };
+  const uren = [veld("startuur"), veld("einduur")].filter(Boolean).join(" tot ");
+  const eind = veld("einddatum") && veld("einddatum") !== veld("startdatum") ? " tot " + datumNL(veld("einddatum")) : "";
+  const matAantal = [...ml.querySelectorAll("input")].filter(i => +i.value > 0).length;
+  const rijen = [
+    ["Gemeente", veld("gemeente"), 1],
+    ["Evenement", [veld("evenement_naam"), opt("type")].filter(Boolean).join(" · "), 2],
+    ["Datum", veld("startdatum") ? datumNL(veld("startdatum")) + eind + (uren ? ", " + uren : "") : "", 2],
+    ["Waar", [veld("locatie_naam"), veld("locatie"), opt("locatie_soort")].filter(Boolean).join(" · "), 2],
+    ["Aanwezigen", veld("bezoekers") ? veld("bezoekers") + " tegelijk" : "", 1],
+    ["Plan", { "bijgevoegd": "ik voeg het toe", "hulp nodig": "hulp via de plantekenaar", "later": "bezorg ik later" }[gekozen("inplantingsplan")] || "", 4],
+    ["Materiaal", geenUitleen() ? "niet bij de gemeente" : gekozen("materiaal") === "ja" ? (matAantal ? matAantal + " soort(en) materiaal" : "ja") : gekozen("materiaal"), 4]
+  ];
+  const dl = document.getElementById("overzicht");
+  dl.innerHTML = "";
+  rijen.forEach(([k, v, s]) => {
+    const dt = document.createElement("dt"), dd = document.createElement("dd"), b = document.createElement("button");
+    dt.textContent = k; dd.textContent = v || "–";
+    b.type = "button"; b.textContent = "wijzig"; b.setAttribute("aria-label", "Wijzig " + k.toLowerCase()); b.addEventListener("click", () => gaNaar(s));
+    const w = document.createElement("dd"); w.appendChild(b);
+    dl.append(dt, dd, w);
+  });
+}
+
+// ---- Tussentijds bewaren in dit tabblad (sessionStorage), zodat terug of herladen niets wist. Geen bijlagen, geen akkoordvinkjes. ----
+const NIET_BEWAREN = new Set(["website", "toestemming_privacy", "toestemming_mandaat", "herroeping"]);
+let verzonden = false;
+function bewaar() {
+  if (verzonden) return;
+  const v = {};
+  [...intakeForm.elements].forEach(el => {
+    if (!el.name || NIET_BEWAREN.has(el.name) || el.type === "file") return;
+    if (el.type === "radio") { if (el.checked) v[el.name] = el.value; }
+    else if (el.type === "checkbox") { if (el.checked) (v[el.name] = v[el.name] || []).push(el.value); }
+    else v[el.name] = el.value;
+  });
+  const mat = {}; ml.querySelectorAll("input").forEach(i => { if (i.value) mat[i.id] = i.value; });
+  try { sessionStorage.setItem(CONCEPT, JSON.stringify({ v, mat, stap, verst })); } catch (e) {}
+}
+function herstel() {
+  let c = null; try { c = JSON.parse(sessionStorage.getItem(CONCEPT) || "null"); } catch (e) {}
+  if (!c || !c.v) return null;
+  Object.entries(c.v).forEach(([n, w]) => {
+    intakeForm.querySelectorAll('[name="' + n + '"]').forEach(el => {
+      if (el.type === "radio") el.checked = el.value === w;
+      else if (el.type === "checkbox") el.checked = Array.isArray(w) && w.includes(el.value);
+      else el.value = w;
+    });
+  });
+  Object.entries(c.mat || {}).forEach(([id, w]) => { const i = document.getElementById(id); if (i) i.value = w; });
+  return c;
+}
+let bewaarT = null;
+intakeForm.addEventListener("input", () => { clearTimeout(bewaarT); bewaarT = setTimeout(bewaar, 300); });
+intakeForm.addEventListener("change", () => { bewaar(); });
+// Een foutmelding verdwijnt zodra je iets aanpast; bij "Volgende" wordt opnieuw gecontroleerd.
+["input", "change"].forEach(t => intakeForm.addEventListener(t, () => { if (stap < 5) meldFout(stap, ""); }));
+intakeForm.addEventListener("input", () => { if (stap === 5) { toonVolmacht(); toonPrijs(); toonHerroeping(); } });
+intakeForm.addEventListener("change", () => { if (stap === 5) { toonVolmacht(); toonPrijs(); toonHerroeping(); } });
+
+// Opstart: eerst het bewaarde concept, daarna (enkel lege velden) wat uit de termijncheck op de startpagina komt.
+const concept = herstel();
+(function () {
+  const q = new URLSearchParams(location.search);
+  let mee = {}; try { mee = JSON.parse(sessionStorage.getItem("termijncheck") || "{}") || {}; } catch (e) {}
+  const gem = q.get("gemeente") || mee.gemeente, dat = q.get("datum") || mee.datum, typ = q.get("type") || mee.type, ts = document.getElementById("type");
+  if (gem && !g.value && [...g.options].some(o => o.value === gem)) g.value = gem;
+  if (typ && !ts.value && [...ts.options].some(o => o.value === typ)) ts.value = typ;
+  if (dat && !sd.value && /^\d{4}-\d{2}-\d{2}$/.test(dat)) sd.value = dat;
+})();
+volgEinddatum(); pasAan(); toonTermijn();
+if (concept && concept.verst) verst = Math.min(5, concept.verst);
+const startStap = Math.min(verst, +((location.hash.match(/^#stap-(\d)$/) || [])[1]) || (concept && concept.stap) || 1);
+try { history.replaceState({ stap: startStap }, "", "#stap-" + startStap); } catch (e) {}
+gaNaar(startStap, false);
+if (startStap === 1) window.scrollTo(0, 0);
+
+// ---- Doorsturen ----
 form.addEventListener("submit", async e => {
   e.preventDefault();
   const err = document.getElementById("formerr"), st = document.getElementById("status"), btn = document.getElementById("send");
   err.hidden = true;
   await regelsKlaar; toonTermijn();
-  if (termijn && termijn.soort === "buiten") {
-    err.textContent = termijn.reden; err.hidden = false;
-    document.getElementById("termijn").scrollIntoView({ block: "center", behavior: "smooth" }); return;
-  }
-  if (termijn && termijn.soort === "laat") {
-    err.textContent = "Deze aanvraag kan niet meer op tijd ingediend worden bij " + termijn.gemeente + ". Kies een latere datum als dat kan.";
-    err.hidden = false; document.getElementById("termijn").scrollIntoView({ block: "center", behavior: "smooth" }); return;
-  }
-  const bad = [...form.querySelectorAll("[required]")].filter(el => el.type === "checkbox" ? !el.checked : !el.value.trim() || !el.checkValidity());
-  if (bad.length) {
-    err.textContent = "Nog niet alles is ingevuld: " + bad.map(el => (form.querySelector(`label[for="${el.id}"]`)?.innerText || el.name).replace(/\s*\*\s*$/,"").split("\n")[0]).join(", ") + ".";
-    err.hidden = false; bad[0].focus(); return;
-  }
+  // Alle stappen opnieuw nakijken; bij een fout naar die stap.
+  for (let n = 1; n <= 5; n++) { if (!geldig(n)) { if (n !== 5) gaNaar(n); return; } }
   const data = Object.fromEntries(new FormData(form).entries());
   data.speciaal = new FormData(form).getAll("speciaal").join(", ");
   if (data.uit_publiceren !== "ja") { data.uit_tekst = ""; data.uit_prijs = ""; }
@@ -634,17 +893,19 @@ form.addEventListener("submit", async e => {
   const isoD = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
   data.termijn_deadline = termijn && termijn.deadline ? isoD(termijn.deadline) : "";
   data.termijn_regel = (termijn && termijn.termijn) || "";
-  const mat = [...ml.querySelectorAll("input")].filter(i => +i.value > 0).map(i => `${i.id.slice(4)}=${Math.floor(+i.value)}`);
+  // Verborgen blokken sturen niets mee.
+  if (document.getElementById("tentwrap").hidden) { data.tent_afmetingen = ""; data.tent_verhuurder = ""; }
+  if (document.getElementById("zaalwrap").hidden) delete data.zaal_grondplan;
+  if (document.getElementById("odwrap").hidden) data.od_zone = "";
+  const mat = [...ml.querySelectorAll(".matrow")].filter(r => !r.hidden).map(r => r.querySelector("input")).filter(i => +i.value > 0).map(i => `${i.id.slice(4)}=${Math.floor(+i.value)}`);
   data.materiaal_lijst = data.materiaal === "ja" ? mat.join("; ") : "";
   if (data.materiaal !== "ja") { data.materiaal_andere = ""; data.materiaal_levering = ""; }
   const files = [...fi.files];
   if (files.reduce((s, f) => s + f.size, 0) > MAX_BYTES) {
-    err.textContent = "De bijlagen zijn samen groter dan 10 MB. Kies kleinere bestanden of bezorg ze later.";
-    err.hidden = false; fi.focus(); return;
+    gaNaar(4); meldFout(4, "De bijlagen zijn samen groter dan 10 MB. Kies kleinere bestanden of bezorg ze later."); fi.focus(); return;
   }
   if (files.some(f => !/^(application\/pdf|image\/jpeg|image\/png)$/.test(f.type))) {
-    err.textContent = "Alleen pdf, jpg of png kan als bijlage.";
-    err.hidden = false; fi.focus(); return;
+    gaNaar(4); meldFout(4, "Alleen pdf, jpg of png kan als bijlage."); fi.focus(); return;
   }
   data.bijlagen = await Promise.all(files.map(async f => ({ naam: f.name, type: f.type, data: await leesB64(f) })));
   btn.disabled = true; st.textContent = "Bezig met doorsturen…";
@@ -656,6 +917,8 @@ form.addEventListener("submit", async e => {
       j = await r.json();
       if (!j.ok) throw new Error(j.error || "onbekende fout");
     }
+    verzonden = true; clearTimeout(bewaarT);
+    try { sessionStorage.removeItem(CONCEPT); } catch (e) {}
     document.getElementById("dossierid").textContent = j.id;
     // Enkel een https-link van Mollie tonen.
     const betaal = typeof j.betaalUrl === "string" && /^https:\/\/[\w.-]*mollie\.com\//.test(j.betaalUrl);
@@ -668,7 +931,7 @@ form.addEventListener("submit", async e => {
       document.getElementById("betaalbedrag").textContent = j.bedrag ? "€ " + j.bedrag : "";
       if (!j.bedrag) document.getElementById("betaalbedrag").parentElement.hidden = true;
     }
-    form.hidden = true; document.getElementById("done").hidden = false;
+    form.hidden = true; balk.hidden = true; document.getElementById("done").hidden = false;
     document.getElementById("done").scrollIntoView({ block: "start" });
   } catch (x) {
     btn.disabled = false; st.textContent = "";
