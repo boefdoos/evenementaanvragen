@@ -200,22 +200,29 @@ footer.foot a{color:var(--soft)}
       <div class="field"><label for="opbouw">Opbouw vanaf <span class="hint">(datum en uur)</span></label><input id="opbouw" name="opbouw" placeholder="bv. vrijdag 14u"></div>
       <div class="field"><label for="afbraak">Afbraak tot <span class="hint">(datum en uur)</span></label><input id="afbraak" name="afbraak" placeholder="bv. zondag 12u"></div>
       <div class="field"><label for="bezoekers">Bezoekers tegelijk op het drukste moment <span class="req">*</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
-      <div class="field"><label for="openbaar_domein">Gebruik je openbaar domein? <span class="hint">(straat, plein, park, stoep of parking)</span> <span class="req">*</span></label>
-        <select id="openbaar_domein" name="openbaar_domein" required><option value="">Kies…</option><option value="nee">Nee, volledig binnen of op privéterrein</option><option value="deels">Deels, bv. een terras of bar op de stoep</option><option value="ja">Ja, het evenement staat op openbaar domein</option></select></div>
+      <div class="field"><label for="openbaar_domein">Komt er iets op straat, stoep, plein, parking of in een park? <span class="req">*</span></label>
+        <select id="openbaar_domein" name="openbaar_domein" required><option value="">Kies…</option><option value="nee">Nee, alles binnen of op privéterrein</option><option value="deels">Een deel, bv. een terras, bar of foodtruck op de stoep of parking</option><option value="ja">Ja, het evenement vindt plaats op straat, plein of in een park</option></select></div>
       <div class="field full" id="odwrap" hidden>
-        <label for="od_zone">Welk stuk openbaar domein neem je in? <span class="hint">(als je het al weet)</span></label>
-        <input id="od_zone" name="od_zone" placeholder="bv. Wellingtonstraat tussen nr. 2 en 20, of de helft van het plein">
-        <div class="hint">Wij duiden dat stuk aan op de kaart van de gemeente. Dat is iets anders dan je inplantingsplan, dat toont hoe alles op je terrein staat.</div>
+        <label for="od_zone">Waar precies, en wat komt er? <span class="hint">(zo goed als je kan)</span></label>
+        <input id="od_zone" name="od_zone" placeholder="bv. bar en 10 tafels op de stoep voor nr. 12, of de straat dicht tussen nr. 2 en 20">
+        <div class="hint">Je hoeft geen grenzen of oppervlaktes te kennen. Wij duiden het stuk aan op de kaart van de gemeente.</div>
       </div>
-      <div class="field"><label for="bewaking">Bewaking <span class="hint">(als je het al weet)</span></label>
-        <select id="bewaking" name="bewaking"><option value="">Weet ik nog niet</option><option value="vrijwilligers">Vrijwilligers van de organisatie</option><option value="bewakingsfirma">Erkende bewakingsfirma</option><option value="geen">Geen bewaking</option></select></div>
-      <div class="field"><label for="ehbo">EHBO <span class="hint">(als je het al weet)</span></label>
-        <select id="ehbo" name="ehbo"><option value="">Weet ik nog niet</option><option value="ehbo-dienst">Rode Kruis of andere EHBO-dienst</option><option value="eigen">Eigen EHBO'er</option><option value="geen">Geen EHBO-post</option></select></div>
+      <div class="field"><label for="bezoekers_totaal">Bezoekers in totaal <span class="hint">(over het hele evenement, als je het weet)</span></label><input id="bezoekers_totaal" name="bezoekers_totaal" type="number" min="1" step="1" inputmode="numeric"></div>
+      <div class="field"><label for="doelgroep">Voor wie is het? <span class="hint">(leeftijd, soort publiek)</span></label><input id="doelgroep" name="doelgroep" placeholder="bv. jongeren 16 tot 25, gezinnen, buurtbewoners"></div>
       <div class="termijn" id="termijn" aria-live="polite" hidden><div class="t-kop" id="t-kop"></div><p id="t-tekst"></p></div>
     </fieldset>
 
     <fieldset id="extras">
       <legend><div class="sec-head"><span class="sec-title">Wat komt erbij kijken?</span></div></legend>
+    </fieldset>
+
+    <fieldset id="praktisch">
+      <legend><div class="sec-head"><span class="sec-title">Praktisch en veiligheid</span></div></legend>
+      <p class="hint" style="margin:0;grid-column:1/-1;max-width:none">Gemeenten vragen dit bijna altijd. Weet je het nog niet, laat dan "weet niet" staan.</p>
+      <div class="field"><label for="bewaking">Bewaking</label>
+        <select id="bewaking" name="bewaking"><option value="">Weet ik nog niet</option><option value="vrijwilligers">Vrijwilligers van de organisatie</option><option value="bewakingsfirma">Erkende bewakingsfirma</option><option value="geen">Geen bewaking</option></select></div>
+      <div class="field"><label for="ehbo">EHBO</label>
+        <select id="ehbo" name="ehbo"><option value="">Weet ik nog niet</option><option value="ehbo-dienst">Rode Kruis of andere EHBO-dienst</option><option value="eigen">Eigen EHBO'er</option><option value="geen">Geen EHBO-post</option></select></div>
     </fieldset>
 
     <fieldset id="inplanting">
@@ -332,6 +339,18 @@ const EXTRAS = [
   ["stroomgroep","Grote stroomgroep (boven 150 kVA)?","Bij twijfel: weet niet"],
   ["subsidie","Wil je een toelage of subsidie aanvragen?",""]
 ];
+// Vaste vragen uit de evenementformulieren (Eaglebe e.a.), zodat we ze niet achteraf moeten opvragen.
+const PRAKTISCH = [
+  ["betalend","Betalende toegang?",""],
+  ["op_uitnodiging","Enkel op uitnodiging?","Geen publiek evenement, bv. een privéfeest"],
+  ["eten","Wordt er eten bereid?","Barbecue, frituur, foodtruck"],
+  ["verkoop","Worden er nog andere dingen verkocht?","Merch, tombola, standjes"],
+  ["toiletten","Extra toiletten voorzien?",""],
+  ["elektriciteit","Elektriciteit nodig?","Voor geluid, bar of frigo"],
+  ["vuur","Vuur, fakkels of vuurwerk?",""],
+  ["verzekering_ba","Verzekering burgerlijke aansprakelijkheid voor het evenement?","Vaak via de vereniging of de koepel"],
+  ["verzekering_oa","Verzekering objectieve aansprakelijkheid brand en ontploffing?","Vraag het aan je verzekeraar als je het niet weet"]
+];
 const MATERIAAL = [
   ["nadars","Nadarafsluitingen"],["heras","Werfhekken (heras)"],["tafels","Tafels"],["stoelen","Stoelen"],
   ["banken","Bierbanken (sets)"],["podium","Podiumelementen"],["tent","Tenten of partytenten"],
@@ -343,15 +362,17 @@ const MAX_BYTES = 10 * 1024 * 1024;
 const g = document.getElementById("gemeente");
 Object.entries(GEMEENTEN).forEach(([p, lijst]) => { const og = document.createElement("optgroup"); og.label = p; lijst.forEach(n => og.appendChild(new Option(n, n))); g.appendChild(og); });
 const ex = document.getElementById("extras");
-EXTRAS.forEach(([k, q, h]) => {
+function janee(doel, [k, q, h]) {
   const d = document.createElement("div");
   d.className = "yn";
   d.innerHTML = `<div><div class="q" id="q_${k}">${q}</div>${h ? `<div class="hint">${h}</div>` : ""}</div>
     <div class="seg" role="radiogroup" aria-labelledby="q_${k}">
       ${["ja","nee","weet niet"].map((v, i) => `<label><input type="radio" id="${k}_${i}" name="${k}" value="${v}" ${v === "weet niet" ? "checked" : ""}><span>${v}</span></label>`).join("")}
     </div>`;
-  ex.appendChild(d);
-});
+  doel.appendChild(d);
+}
+EXTRAS.forEach((v) => janee(ex, v));
+PRAKTISCH.forEach((v) => janee(document.getElementById("praktisch"), v));
 
 const ml = document.getElementById("matlijst");
 MATERIAAL.forEach(([k, n]) => {
