@@ -79,6 +79,7 @@ legend + .yn{border-top:0;padding-top:4px}
 .seg input:checked+span{background:var(--text);color:var(--bg);border-color:var(--text)}
 .seg input:focus-visible+span{outline:2px solid var(--text);outline-offset:2px}
 .vink{margin-top:10px}
+#doclijst .yn{grid-template-columns:minmax(0,1fr)}
 
 .check{grid-column:1/-1;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;font-weight:400;font-size:15px;color:var(--soft);line-height:1.5}
 .check input{width:20px;height:20px;margin-top:2px;padding:0;accent-color:var(--accent)}
@@ -190,7 +191,7 @@ footer.foot a{color:var(--soft)}
 <section class="intro" id="intro"><div class="wrap narrow">
   <div class="k">Aanvraag</div>
   <h1 style="margin-top:10px">Vertel ons over <span>je evenement.</span></h1>
-  <p class="lead">Vijf korte stappen, samen een tiental minuten. Daarna nemen wij het over: dossier opmaken, materiaal aanvragen en indienen bij je gemeente. Weet je iets nog niet? Kies <b>weet niet</b>, dan zoeken wij het uit.</p>
+  <p class="lead">Vijf korte stappen, samen een tiental minuten. Daarna nemen wij het over: dossier opmaken, materiaal aanvragen en indienen bij je gemeente. Weet je iets nog niet? Kies <b>weet niet</b>. Wij zoeken uit wat je gemeente echt vraagt, en komen hoogstens één keer bij je terug met wat we nog nodig hebben.</p>
 </div></section>
 
 <div class="wrap narrow">
@@ -303,7 +304,7 @@ footer.foot a{color:var(--soft)}
 
     <!-- Stap 4 -->
     <section class="stap" data-stap="4" hidden>
-      <h2 class="stap-h" tabindex="-1">Stap 4 van 5 · Plan en materiaal</h2>
+      <h2 class="stap-h" tabindex="-1">Stap 4 van 5 · Plan, documenten en materiaal</h2>
       <fieldset id="inplanting">
         <legend><div class="sec-head"><span class="sec-title">Plannen</span></div></legend>
         <p class="info" id="plannote" hidden></p>
@@ -329,6 +330,15 @@ footer.foot a{color:var(--soft)}
           <label for="bestanden">Plannen, grondplan van de zaal, schets of foto's <span class="hint">(pdf, jpg of png, samen max. 10 MB)</span></label>
           <input type="file" id="bestanden" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" multiple>
           <span class="hint" id="bestandinfo"></span>
+        </div>
+      </fieldset>
+      <fieldset id="documenten">
+        <legend><div class="sec-head"><span class="sec-title">Documenten</span></div></legend>
+        <p class="hint" style="margin:0;grid-column:1/-1;max-width:none">Gemeenten vragen deze documenten vaak, soms pas na de aanvraag. Voeg toe wat je al hebt; de rest mag later, dan zetten we het met een datum op je lijst.</p>
+        <div id="doclijst" class="full"></div>
+        <div class="field full">
+          <label for="doc_andere_file">Andere nuttige documenten <span class="hint">(optioneel, bv. flyer, draaiboek, grondplan van de zaal)</span></label>
+          <input type="file" id="doc_andere_file" data-prefix="Document" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" multiple>
         </div>
       </fieldset>
       <fieldset id="materiaalblok">
@@ -464,7 +474,7 @@ const MATERIAAL = [
   ["borden","Verkeers- of parkeerverbodsborden"],["vuilbakken","Vuilbakken of containers"],
   ["stroom","Elektriciteitskast of aansluiting"],["water","Wateraansluiting"],["toiletten","Toiletten of urinoirs"]
 ];
-const STAPPEN = ["Je evenement", "Waar en wanneer", "Wat komt erbij kijken", "Plan en materiaal", "Jij en akkoord"];
+const STAPPEN = ["Je evenement", "Waar en wanneer", "Wat komt erbij kijken", "Plan en documenten", "Jij en akkoord"];
 const MAX_BYTES = 10 * 1024 * 1024;
 const CONCEPT = "aanvraag-concept";
 
@@ -571,7 +581,7 @@ function pasAan() {
   document.getElementById("tentverhuurwrap").hidden = document.getElementById("tentwrap").hidden;
   document.getElementById("zaalwrap").hidden = !["zaal", "combinatie"].includes(veld("locatie_soort"));
   document.getElementById("odwrap").hidden = !["ja", "deels"].includes(veld("openbaar_domein"));
-  toonUpload(); toonGembox();
+  toonUpload(); toonGembox(); toonDocs();
 }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
 
@@ -599,6 +609,7 @@ function toonMateriaal() {
   ["matlijst","matextra","levwrap"].forEach(id => document.getElementById(id).hidden = !ja);
 }
 document.querySelectorAll('input[name="materiaal"]').forEach(r => r.addEventListener("change", toonMateriaal));
+["ehbo", "bewaking"].forEach(n => document.getElementById(n).addEventListener("change", () => toonDocs()));
 document.querySelectorAll('input[name="uit_publiceren"]').forEach(r => r.addEventListener("change", pasAan));
 function toonUpload() {
   const wrap = document.getElementById("uploadwrap");
@@ -612,6 +623,68 @@ fi.addEventListener("change", () => {
   document.getElementById("bestandinfo").textContent = fi.files.length
     ? `${fi.files.length} bestand(en), ${(tot / 1048576).toFixed(1)} MB` + (tot > MAX_BYTES ? " – te groot, max. 10 MB samen" : "") : "";
 });
+// ---- Documenten die gemeenten vaak (na)vragen: per document een verplichte keuze, upload enkel bij "nu". ----
+const DOCS = [
+  { k: "verzekering", naam: "Verzekeringsattest", uitleg: "Burgerlijke aansprakelijkheid, en brand en ontploffing als je een zaal of tent uitbaat.", re: /verzeker|polis/i,
+    keuzes: [["nu", "Ik voeg het nu toe"], ["later", "Bezorg ik later"], ["geen", "Ik heb (nog) geen verzekering"]], toon: () => true },
+  { k: "ehbo", naam: "EHBO-attest of -overeenkomst", uitleg: "Van het Rode Kruis of een andere EHBO-dienst, of het attest van je eigen EHBO'er.", re: /ehbo|eerste hulp/i,
+    keuzes: [["nu", "Ik voeg het nu toe"], ["later", "Bezorg ik later"], ["nvt", "Niet van toepassing"]], toon: () => veld("ehbo") !== "geen" },
+  { k: "bewaking", naam: "Bewaking", uitleg: "Het contract met de bewakingsfirma, of de lijst van vrijwilligers die bewaken.", re: /bewaking|security/i,
+    keuzes: [["nu", "Ik voeg het nu toe"], ["later", "Bezorg ik later"], ["nvt", "Niet van toepassing"]], toon: () => ["vrijwilligers", "bewakingsfirma"].includes(veld("bewaking")) },
+  // Documenten die enkel bepaalde gemeenten vragen (regels.json: documenten_extra).
+  { k: "politiedossier", extra: true, naam: "Meldings- en veiligheidsdossier fuif", uitleg: "Een formulier van de stad voor de politie: wie verantwoordelijk is, de bewaking, EHBO en de veiligheidsmaatregelen. Jij vult de namen aan en tekent; wij laden het op bij de aanvraag.", re: /meldings- en veiligheidsdossier/i,
+    keuzes: [["nu", "Ik voeg het ingevuld toe"], ["later", "Stuur me het formulier, ik bezorg het later"]], toon: () => extraDoc("politiedossier") }
+];
+function extraDoc(k) {
+  const r = regelVan();
+  return !!(r && (r.documenten_extra || []).some(x => x.k === k && (!x.types || x.types.includes(veld("type")))));
+}
+// Zelfde filter als op de gemeentepagina's: geen onderzoeksnotities, geen adressen of links.
+const INTERN = /niet expliciet|niet (gelezen|vermeld|gevonden|leesbaar)|onbekend|geblokkeerd|robots|client_error|limiet|aanname|strengste|gemapt|nakijken|navragen|geen (e-mail|telefoon)[^;,)]*vermeld|softwarenaam|geen [^;.]*vermeld|eigen loket \/ anders/i;
+const zonderAdres = t => String(t).replace(/\s*\(?(naar|via|op)?\s*(https?:\/\/\S+|www\.\S+|[\w.+-]+@[\w-]+\.[\w.]+)\)?/gi, "").replace(/\s+/g, " ").trim();
+const docLijst = document.getElementById("doclijst");
+DOCS.forEach(d => {
+  const w = document.createElement("div");
+  w.className = "yn"; w.id = "doc_" + d.k + "_wrap";
+  w.innerHTML = `<div><div class="q" id="q_doc_${d.k}">${d.naam}</div><div class="hint">${d.uitleg}</div><div class="hint" id="doc_${d.k}_waarom"></div></div>
+    <div class="seg" role="radiogroup" aria-labelledby="q_doc_${d.k}">
+      ${d.keuzes.map(([v, t], i) => `<label><input type="radio" id="doc_${d.k}_${i}" name="doc_${d.k}" value="${v}" ${i === 0 ? `required data-label="${d.naam}"` : ""}><span>${t}</span></label>`).join("")}
+    </div>
+    <div class="field full" id="doc_${d.k}_up" hidden style="grid-column:1/-1"><input type="file" id="doc_${d.k}_file" data-prefix="${d.extra ? d.k.charAt(0).toUpperCase() + d.k.slice(1) : d.naam.split(" ")[0]}" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" multiple></div>`;
+  docLijst.appendChild(w);
+  w.querySelectorAll('input[type=radio]').forEach(r => r.addEventListener("change", toonDocs));
+});
+// Waarom vragen we het: wat de gemeente zelf schrijft, wat ze in de praktijk navraagt, of algemeen.
+function waaromDoc(d) {
+  const r = regelVan(), gem = veld("gemeente"), type = veld("type");
+  if (!r) return "Gemeenten vragen dit vaak.";
+  const b = (r.bijzonder || []).find(x => x.soort === "voorwaarde" && x.wat && d.re.test(x.wat) && !INTERN.test(x.wat) && (d.extra || !/meldings- en veiligheidsdossier/i.test(x.wat)) &&
+    (!x.als || ((!x.als.types || x.als.types.includes(type)) && Object.keys(x.als).every(k => k === "types"))));
+  if (d.extra) return gem + " vraagt dit bij een " + (veld("type") || "evenement") + ". Heb je het nog niet, dan mailen we je een leeg exemplaar.";
+  if (b) return gem + ": “" + zonderAdres(b.wat).replace(/[.;:,\s]+$/, "") + ".”";
+  if ((r.documenten_na || []).includes(d.k)) return "In " + gem + " vraagt de stad dit meestal nog na de aanvraag. Voeg het meteen toe als je het hebt.";
+  return "Gemeenten vragen dit vaak, soms pas na de aanvraag.";
+}
+function toonDocs() {
+  DOCS.forEach(d => {
+    const w = document.getElementById("doc_" + d.k + "_wrap"), zichtbaar = d.toon();
+    w.hidden = !zichtbaar;
+    w.querySelectorAll("input[type=radio]").forEach(i => i.disabled = !zichtbaar);
+    document.getElementById("doc_" + d.k + "_waarom").textContent = waaromDoc(d);
+    const nu = zichtbaar && gekozen("doc_" + d.k) === "nu", up = document.getElementById("doc_" + d.k + "_up");
+    up.hidden = !nu; if (!nu) document.getElementById("doc_" + d.k + "_file").value = "";
+  });
+}
+// Alle bestanden die meegaan: plannen (stap 4, enkel bij "ik voeg het toe") en documenten, met het soort document voor de naam.
+function alleBestanden() {
+  const uit = [];
+  if (!document.getElementById("uploadwrap").hidden) [...fi.files].forEach(f => uit.push({ f, naam: f.name }));
+  document.querySelectorAll('#documenten input[type=file]').forEach(inp => {
+    for (let el = inp.parentElement; el && el.id !== "documenten"; el = el.parentElement) if (el.hidden) return;
+    [...inp.files].forEach(f => uit.push({ f, naam: inp.dataset.prefix + " - " + f.name }));
+  });
+  return uit;
+}
 const leesB64 = f => new Promise((ok, nok) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = () => nok(new Error("bestand niet leesbaar")); r.readAsDataURL(f); });
 
 // Adressuggesties uit het Centraal Referentieadressenbestand (Digitaal Vlaanderen), binnen de gekozen gemeente.
@@ -770,7 +843,8 @@ function telt(el, sec) {
 function fouten(n) {
   const sec = secties[n - 1];
   return [...sec.querySelectorAll("[required]")].filter(el => telt(el, sec))
-    .filter(el => el.type === "checkbox" ? !el.checked : !el.value.trim() || !el.checkValidity());
+    .filter(el => el.type === "radio" ? !intakeForm.querySelector('input[name="' + el.name + '"]:checked')
+      : el.type === "checkbox" ? !el.checked : !el.value.trim() || !el.checkValidity());
 }
 function labelVan(el) { if (el.dataset.label) return el.dataset.label; return (intakeForm.querySelector(`label[for="${el.id}"]`)?.innerText || el.name).replace(/\s*\*\s*$/, "").split("\n")[0].replace(/\s*\*.*$/, "").replace(/[.?]$/, ""); }
 function meldFout(n, tekst) {
@@ -830,6 +904,8 @@ function toonOverzicht() {
     ["Waar", [veld("locatie_naam"), veld("locatie"), opt("locatie_soort")].filter(Boolean).join(" · "), 2],
     ["Aanwezigen", veld("bezoekers") ? veld("bezoekers") + " tegelijk" : "", 1],
     ["Plan", { "bijgevoegd": "ik voeg het toe", "hulp nodig": "hulp via de plantekenaar", "later": "bezorg ik later" }[gekozen("inplantingsplan")] || "", 4],
+    ["Bijlagen", alleBestanden().length ? alleBestanden().length + " bestand(en)" : "geen, bezorg ik later", 4],
+    ["Documenten", DOCS.filter(d => d.toon()).map(d => d.naam.split(" ")[0] + ": " + ({ nu: "toegevoegd", later: "later", geen: "geen verzekering", nvt: "niet van toepassing" }[gekozen("doc_" + d.k)] || "–")).join(", "), 4],
     ["Materiaal", geenUitleen() ? "niet bij de gemeente" : gekozen("materiaal") === "ja" ? (matAantal ? matAantal + " soort(en) materiaal" : "ja") : gekozen("materiaal"), 4]
   ];
   const dl = document.getElementById("overzicht");
@@ -920,14 +996,20 @@ form.addEventListener("submit", async e => {
   const mat = [...ml.querySelectorAll(".matrow")].filter(r => !r.hidden).map(r => r.querySelector("input")).filter(i => +i.value > 0).map(i => `${i.id.slice(4)}=${Math.floor(+i.value)}`);
   data.materiaal_lijst = data.materiaal === "ja" ? mat.join("; ") : "";
   if (data.materiaal !== "ja") { data.materiaal_andere = ""; data.materiaal_levering = ""; }
-  const files = [...fi.files];
-  if (files.reduce((s, f) => s + f.size, 0) > MAX_BYTES) {
-    gaNaar(4); meldFout(4, "De bijlagen zijn samen groter dan 10 MB. Kies kleinere bestanden of bezorg ze later."); fi.focus(); return;
+  const files = alleBestanden();
+  if (files.reduce((s, x) => s + x.f.size, 0) > MAX_BYTES) {
+    gaNaar(4); meldFout(4, "De bestanden zijn samen groter dan 10 MB. Kies kleinere bestanden of bezorg ze later."); return;
   }
-  if (files.some(f => !/^(application\/pdf|image\/jpeg|image\/png)$/.test(f.type))) {
-    gaNaar(4); meldFout(4, "Alleen pdf, jpg of png kan als bijlage."); fi.focus(); return;
+  if (files.length > 10) {
+    gaNaar(4); meldFout(4, "Je kan samen hoogstens 10 bestanden toevoegen. De rest mag je later bezorgen."); return;
   }
-  data.bijlagen = await Promise.all(files.map(async f => ({ naam: f.name, type: f.type, data: await leesB64(f) })));
+  if (files.some(x => !/^(application\/pdf|image\/jpeg|image\/png)$/.test(x.f.type))) {
+    gaNaar(4); meldFout(4, "Alleen pdf, jpg of png kan als bijlage."); return;
+  }
+  DOCS.forEach(d => { if (!d.toon()) data["doc_" + d.k] = ""; });
+  data.doc_extra = DOCS.filter(d => d.extra && d.toon()).map(d => d.k + "=" + (gekozen("doc_" + d.k) || "")).join("; ");
+  DOCS.filter(d => d.extra).forEach(d => delete data["doc_" + d.k]);
+  data.bijlagen = await Promise.all(files.map(async x => ({ naam: x.naam, type: x.f.type, data: await leesB64(x.f) })));
   btn.disabled = true; st.textContent = "";
   // Wachtscherm: het opslaan, de volmacht en de betaallink duren enkele seconden.
   const bezig = document.getElementById("bezig"), bs = document.getElementById("bezig-stap");

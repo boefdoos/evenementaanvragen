@@ -3542,6 +3542,16 @@
     "wat": "Aanvraag kan ten vroegste ingediend worden",
     "n": 12,
     "unit": "m"
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Fuif: meldings- en veiligheidsdossier van de stad, in te vullen en te ondertekenen door de organisator en op te laden bij de aanvraag, met bijlagen (flyer of affiche, attest burgerlijke aansprakelijkheid voor begin- en einddag, huishoudelijk reglement, plattegrond op schaal, contracten bewaking en EHBO indien van toepassing)",
+    "als": {
+     "types": [
+      "fuif"
+     ]
+    },
+    "toelichting": "Het formulier vermeldt: minstens 6 weken vooraf. Sinds Eaglebe op te laden bij de evenementaanvraag."
    }
   ],
   "college": "Goedkeuring door het college na advies van alle betrokken diensten.",
@@ -3600,7 +3610,20 @@
    "route": "B",
    "koppeling": "bij_evenementaanvraag"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "documenten_na": [
+   "verzekering",
+   "ehbo"
+  ],
+  "documenten_na_bron": "praktijkervaring (na de aanvraag via de jeugddienst nagevraagd: grondplan, EHBO-attest, verzekeringsattest)",
+  "documenten_extra": [
+   {
+    "k": "politiedossier",
+    "types": [
+     "fuif"
+    ]
+   }
+  ]
  },
  {
   "gemeente": "Oostkamp",
