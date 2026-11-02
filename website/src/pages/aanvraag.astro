@@ -603,7 +603,10 @@ function toonGembox() {
   const klaar = r && veld("type") && veld("startdatum") && veld("bezoekers") && veld("locatie_soort") && veld("aanvrager_type") && veld("openbaar_domein");
   if (!klaar || (termijn && (termijn.soort === "laat" || termijn.soort === "buiten"))) { box.hidden = true; return; }
   const li = [];
-  if (PLATFORM[r.platform]) li.push("We dienen in " + PLATFORM[r.platform] + ".");
+  // Beschrijven onze regels enkel de procedure in open lucht, dan beloven we geen kanaal voor een zaal.
+  const zaalOnzeker = veld("locatie_soort") === "zaal" && (r.zaal_te_bevestigen || /gelden? (enkel |alleen )?voor openluchtevenementen/i.test(r.note || ""));
+  if (zaalOnzeker) li.push("Voor een evenement in een zaal kijken we de procedure van " + r.gemeente + " voor je na. Dat zit in de prijs.");
+  else if (PLATFORM[r.platform]) li.push("We dienen in " + PLATFORM[r.platform] + ".");
   const p = nodigePlannen(), pl = [p.inplanting.length && "inplantingsplan", p.grondplan.length && "grondplan"].filter(Boolean);
   if (pl.length) li.push("Plannen: " + pl.join(" en ") + ". Je kan ze zelf toevoegen, of tekenen in onze plantekenaar (formule Plus).");
   const geen = geenUitleen(), u = r.uitleen || {};

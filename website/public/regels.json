@@ -584,17 +584,31 @@
     "unit": "m"
    }
   ],
-  "note": "Geldt voor openluchtevenementen.",
+  "note": "De termijnen (6 weken, groot 4 maanden) gelden voor openluchtevenementen. Voor een evenement in een zaal vonden we geen aparte evenementenaanvraag; procedure voor een zaal te bevestigen bij de stad (gevraagd 2/11/2026). Richtlijnen evenementen v2 (okt 2026): medische risicoanalyse ten laatste 6 weken vooraf en intern veiligheidsplan ten laatste 4 weken vooraf; voor welke evenementen niet duidelijk.",
   "platform": "Eigen loket / anders",
-  "kanaal": "Online vergunningsaanvraag openluchtevenement (stadswebsite)",
+  "kanaal": "Openluchtevenement: online vergunningsaanvraag openluchtevenement (stadswebsite). Evenement in een zaal: geen openluchtvergunning; bij elektronisch versterkte muziek een muziekmelding via het online formulier van de stad (1 maand vooraf), en boven 85 dB(A) vooraf een afwijking op de geluidsnorm.",
   "link": "https://www.brugge.be/vrije-tijd/organiseren-van-evenementen/vergunningen/vergunning-openlucht-evenement",
   "contact": "Huis van de Bruggeling – info@brugge.be – 050 44 80 00",
-  "bron": "https://www.brugge.be/vrije-tijd/organiseren-van-evenementen/op-weg",
+  "bron": [
+   "https://www.brugge.be/vrije-tijd/organiseren-van-evenementen/op-weg",
+   "https://www.brugge.be/muziekmelding-indienen",
+   "https://www.brugge.be/media/104586/download"
+  ],
   "termijnTekst": "Grote evenementen min. 4 maanden; kleine min. 6 weken",
   "bijzonder": [
    {
     "soort": "voorwaarde",
     "wat": "Inplantings-, afval- en veiligheidsplan verplicht bij de aanvraag; sanitair: 2 toiletten + 1 per 150 bezoekers, min. 1 mindervalidentoilet."
+   },
+   {
+    "soort": "deadline",
+    "wat": "Muziekmelding voor elektronisch versterkte muziek in een zaal of lokaal (online formulier van de stad, gratis)",
+    "n": 1,
+    "unit": "m",
+    "als": {
+     "muziek": true
+    },
+    "toelichting": "Geldt voor muziek in lokalen, ook een fuif in een zaal. Boven 85 dB(A) LAeq,15min of 92 dB(A) LAmax,slow: vooraf afwijking op de geluidsnorm aanvragen."
    }
   ],
   "college": null,
@@ -651,7 +665,8 @@
    "zekerheid": "hoog",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "zaal_te_bevestigen": true
  },
  {
   "gemeente": "Damme",
