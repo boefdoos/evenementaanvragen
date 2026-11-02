@@ -200,8 +200,13 @@ footer.foot a{color:var(--soft)}
       <div class="field"><label for="opbouw">Opbouw vanaf <span class="hint">(datum en uur)</span></label><input id="opbouw" name="opbouw" placeholder="bv. vrijdag 14u"></div>
       <div class="field"><label for="afbraak">Afbraak tot <span class="hint">(datum en uur)</span></label><input id="afbraak" name="afbraak" placeholder="bv. zondag 12u"></div>
       <div class="field"><label for="bezoekers">Bezoekers tegelijk op het drukste moment <span class="req">*</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
-      <div class="field"><label for="openbaar_domein">Op straat, plein of park? <span class="req">*</span></label>
-        <select id="openbaar_domein" name="openbaar_domein" required><option value="">Kies…</option><option value="nee">Nee, volledig binnen of op privéterrein</option><option value="deels">Deels</option><option value="ja">Ja</option></select></div>
+      <div class="field"><label for="openbaar_domein">Gebruik je openbaar domein? <span class="hint">(straat, plein, park, stoep of parking)</span> <span class="req">*</span></label>
+        <select id="openbaar_domein" name="openbaar_domein" required><option value="">Kies…</option><option value="nee">Nee, volledig binnen of op privéterrein</option><option value="deels">Deels, bv. een terras of bar op de stoep</option><option value="ja">Ja, het evenement staat op openbaar domein</option></select></div>
+      <div class="field full" id="odwrap" hidden>
+        <label for="od_zone">Welk stuk openbaar domein neem je in? <span class="hint">(als je het al weet)</span></label>
+        <input id="od_zone" name="od_zone" placeholder="bv. Wellingtonstraat tussen nr. 2 en 20, of de helft van het plein">
+        <div class="hint">Wij duiden dat stuk aan op de kaart van de gemeente. Dat is iets anders dan je inplantingsplan, dat toont hoe alles op je terrein staat.</div>
+      </div>
       <div class="field"><label for="bewaking">Bewaking <span class="hint">(als je het al weet)</span></label>
         <select id="bewaking" name="bewaking"><option value="">Weet ik nog niet</option><option value="vrijwilligers">Vrijwilligers van de organisatie</option><option value="bewakingsfirma">Erkende bewakingsfirma</option><option value="geen">Geen bewaking</option></select></div>
       <div class="field"><label for="ehbo">EHBO <span class="hint">(als je het al weet)</span></label>
@@ -238,7 +243,7 @@ footer.foot a{color:var(--soft)}
       </div>
       <div class="field full">
         <div class="q" id="q_plan">Inplantingsplan en grondplan</div>
-        <div class="hint">Het inplantingsplan toont hoe alles in de omgeving staat (tent, podium, bar, toiletten, doorgang voor hulpdiensten). Het grondplan toont één tent of zaal in detail (deuren, uitgangen, blustoestellen) en is vaak nodig voor de brandweer. Een duidelijke schets of foto volstaat om te starten. Kies je voor hulp, dan teken je het na je betaling stap voor stap in onze plantekenaar, die meteen de eisen van de brandweer controleert. Wij kijken het na.</div>
+        <div class="hint">Het inplantingsplan toont op schaal hoe alles op je terrein staat (tent, podium, bar, toiletten, doorgang voor hulpdiensten). Gebruik je openbaar domein, dan duiden wij dat stuk daarnaast ook aan op de kaart van de gemeente. Het grondplan toont één tent of zaal in detail (deuren, uitgangen, blustoestellen) en is vaak nodig voor de brandweer. Een duidelijke schets of foto volstaat om te starten. Kies je voor hulp, dan teken je het na je betaling stap voor stap in onze plantekenaar, die meteen de eisen van de brandweer controleert. Wij kijken het na.</div>
         <div class="seg" role="radiogroup" aria-labelledby="q_plan">
           <label><input type="radio" id="plan_0" name="inplantingsplan" value="bijgevoegd"><span>Ik voeg het toe</span></label>
           <label><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Help me het te maken</span></label>
@@ -373,6 +378,8 @@ function toonUpload() {
   wrap.hidden = !document.getElementById("plan_0").checked && !document.getElementById("zp_0").checked;
   if (wrap.hidden) { const f = document.getElementById("bestanden"); f.value = ""; document.getElementById("bestandinfo").textContent = ""; }
 }
+const odSel = document.getElementById("openbaar_domein");
+odSel.addEventListener("change", () => { document.getElementById("odwrap").hidden = !["ja", "deels"].includes(odSel.value); });
 const ls = document.getElementById("locatie_soort");
 ls.addEventListener("change", () => {
   document.getElementById("tentwrap").hidden = !["tent", "combinatie"].includes(ls.value);
