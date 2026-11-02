@@ -194,10 +194,10 @@ footer.foot a{color:var(--soft)}
       <h2 class="stap-h" tabindex="-1">Stap 1 van 5 · Je evenement</h2>
       <fieldset id="stap1">
         <legend><div class="sec-head"><span class="sec-title">Je evenement</span></div></legend>
-        <div class="field"><label for="gemeente">Gemeente <span class="req">*</span></label><select id="gemeente" name="gemeente" required><option value="">Kies…</option></select></div>
+        <div class="field"><label for="gemeente">Gemeente <span class="req">*</span></label><select id="gemeente" name="gemeente" data-label="Gemeente" required><option value="">Kies…</option></select></div>
         <div class="field"><label for="type">Soort evenement <span class="req">*</span></label>
           <select id="type" name="type" required><option value="">Kies…</option>
-            <option value="fuif">Fuif of party</option><option value="concert">Concert of festival</option><option value="buurtfeest">Buurtfeest of straatfeest</option><option value="eetfestijn">Eetfestijn</option><option value="markt">Markt of rommelmarkt</option><option value="braderij">Braderij</option><option value="kermis">Kermis</option><option value="stoet">Stoet of optocht</option><option value="sport">Sportevenement</option><option value="wielerwedstrijd">Wielerwedstrijd</option><option value="schoolfeest">Schoolfeest</option><option value="tentoonstelling">Tentoonstelling</option><option value="andere">Iets anders</option>
+            <option value="fuif">Fuif of party</option><option value="concert">Concert of festival</option><option value="buurtfeest">Buurtfeest of straatfeest</option><option value="eetfestijn">Eetfestijn</option><option value="markt">Markt of rommelmarkt</option><option value="braderij">Braderij</option><option value="kermis">Kermis</option><option value="stoet">Stoet of optocht (nog niet in ons aanbod)</option><option value="sport">Sportevenement</option><option value="wielerwedstrijd">Wielerwedstrijd (nog niet in ons aanbod)</option><option value="schoolfeest">Schoolfeest</option><option value="tentoonstelling">Tentoonstelling</option><option value="andere">Iets anders</option>
           </select></div>
         <div class="field"><label for="startdatum">Datum <span class="req">*</span></label><input id="startdatum" name="startdatum" type="date" required></div>
         <div class="field"><label for="bezoekers">Aanwezigen tegelijk op het drukste moment <span class="req">*</span> <span class="hint">(publiek, medewerkers en artiesten samen)</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
@@ -414,6 +414,7 @@ footer.foot a{color:var(--soft)}
 <script is:inline>var RULES = [];</script>
 <script is:inline src="/rekenlogica.js"></script>
 <script is:inline src="/indienmoment.js"></script>
+<script is:inline src="/gemeentezoeker.js"></script>
 <script is:inline>
 // Vul hier de URL van de Apps Script-webapp in (eindigt op /exec). Leeg = demomodus.
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbz-EAv8lTkB6Y5_yKjc9SWB5UrtYHjuUV_ffm4yqTiMgYR7XjiB0unzoneptmGkJYDuaQ/exec";
@@ -452,6 +453,7 @@ const CONCEPT = "aanvraag-concept";
 
 const g = document.getElementById("gemeente");
 Object.entries(GEMEENTEN).forEach(([p, lijst]) => { const og = document.createElement("optgroup"); og.label = p; lijst.forEach(n => og.appendChild(new Option(n, n))); g.appendChild(og); });
+const zoeker = gemeenteZoeker(g); zoeker.vul();
 function janee(doel, [k, q, h]) {
   const d = document.createElement("div");
   d.className = "yn";
@@ -630,11 +632,12 @@ sd.min = vandaag.getFullYear() + "-" + String(vandaag.getMonth() + 1).padStart(2
 // Zelfde rekenlogica en oordeel als de startpagina (rekenlogica.js, regels.json, indienmoment.js).
 // Is de deadline van de gemeente (gekende termijn) voorbij, dan kan de aanvraag niet verder.
 function berekenTermijn() {
-  if (!regelsGeladen) return null;
   const gemNaam = veld("gemeente"), type = veld("type"), datum = veld("startdatum");
-  if (!gemNaam || !type || !/^\d{4}-\d{2}-\d{2}$/.test(datum)) return null;
+  // Buiten ons aanbod: meteen melden, ook als gemeente of datum nog niet gekozen zijn.
   const buiten = buitenAanbod(type, +veld("bezoekers") || 0);
   if (buiten) return { soort: "buiten", gemeente: gemNaam, reden: buiten };
+  if (!regelsGeladen) return null;
+  if (!gemNaam || !type || !/^\d{4}-\d{2}-\d{2}$/.test(datum)) return null;
   const r = RULES.find(x => x.gemeente === gemNaam);
   if (!r) return { soort: "onbekend", gemeente: gemNaam };
   const od = veld("openbaar_domein");
@@ -752,7 +755,7 @@ function fouten(n) {
   return [...sec.querySelectorAll("[required]")].filter(el => telt(el, sec))
     .filter(el => el.type === "checkbox" ? !el.checked : !el.value.trim() || !el.checkValidity());
 }
-function labelVan(el) { return (intakeForm.querySelector(`label[for="${el.id}"]`)?.innerText || el.name).replace(/\s*\*\s*$/, "").split("\n")[0].replace(/\s*\*.*$/, "").replace(/[.?]$/, ""); }
+function labelVan(el) { if (el.dataset.label) return el.dataset.label; return (intakeForm.querySelector(`label[for="${el.id}"]`)?.innerText || el.name).replace(/\s*\*\s*$/, "").split("\n")[0].replace(/\s*\*.*$/, "").replace(/[.?]$/, ""); }
 function meldFout(n, tekst) {
   const p = n === 5 ? document.getElementById("formerr") : secties[n - 1].querySelector("[data-err]");
   p.textContent = tekst; p.hidden = !tekst;
@@ -765,7 +768,7 @@ function geldig(n) {
     return false;
   }
   const bad = fouten(n);
-  if (bad.length) { meldFout(n, "Nog niet alles is ingevuld: " + bad.map(labelVan).join(", ") + "."); bad[0].focus(); return false; }
+  if (bad.length) { meldFout(n, "Nog niet alles is ingevuld: " + bad.map(labelVan).join(", ") + "."); (bad[0].hidden && bad[0].nextElementSibling ? bad[0].nextElementSibling : bad[0]).focus(); return false; }
   return true;
 }
 function gaNaar(n, push) {
@@ -869,7 +872,7 @@ const concept = herstel();
   if (typ && !ts.value && [...ts.options].some(o => o.value === typ)) ts.value = typ;
   if (dat && !sd.value && /^\d{4}-\d{2}-\d{2}$/.test(dat)) sd.value = dat;
 })();
-volgEinddatum(); pasAan(); toonTermijn();
+zoeker.sync(); volgEinddatum(); pasAan(); toonTermijn();
 if (concept && concept.verst) verst = Math.min(5, concept.verst);
 const startStap = Math.min(verst, +((location.hash.match(/^#stap-(\d)$/) || [])[1]) || (concept && concept.stap) || 1);
 try { history.replaceState({ stap: startStap }, "", "#stap-" + startStap); } catch (e) {}

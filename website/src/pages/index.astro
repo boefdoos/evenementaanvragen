@@ -111,10 +111,12 @@ import huisstijl from "../huisstijl.css?raw";
 <script is:inline>var RULES = [];</script>
 <script is:inline src="/rekenlogica.js"></script>
 <script is:inline src="/indienmoment.js"></script>
+<script is:inline src="/gemeentezoeker.js"></script>
 <script is:inline>
 (function(){
   const gem=$("c-gem"), typ=$("c-type"), dat=$("c-datum"), out=$("c-out");
-  TYPES.forEach(([k,v])=>typ.appendChild(new Option(v,k)));
+  TYPES.forEach(([k,v])=>typ.appendChild(new Option(v+(BUITEN_AANBOD_TYPES.includes(k)?" (nog niet in ons aanbod)":""),k)));
+  const zoeker=gemeenteZoeker(gem);
   typ.value="fuif";
   const t0=new Date(); t0.setDate(t0.getDate()+120); dat.value=t0.toISOString().slice(0,10);
   const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
@@ -133,9 +135,9 @@ import huisstijl from "../huisstijl.css?raw";
   }
   function show(){
     meeNemen(gem.value);
-    const r=RULES.find(x=>x.gemeente===gem.value); if(!r||!dat.value) return;
     const buiten=buitenAanbod(typ.value,0);
     if(buiten){out.innerHTML='<div class="count"><span class="num">–</span><span class="unit">dagen</span></div><div class="deadline">Niet in ons aanbod</div><p class="rule">'+esc(buiten)+'</p>';return;}
+    const r=RULES.find(x=>x.gemeente===gem.value); if(!r||!dat.value) return;
     const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,od:false,
       x:{muziek:null,sterkeDrank:null,alcohol:null,verkeer:null,materiaal:null,publiciteit:null,od:null,stroomgroep:null,subsidie:null}};
     let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
@@ -155,7 +157,7 @@ import huisstijl from "../huisstijl.css?raw";
     RULES=data;
     const provs=[...new Set(RULES.map(r=>r.provincie||"West-Vlaanderen"))].sort();
     gem.innerHTML=provs.map(p=>'<optgroup label="'+esc(p)+'">'+RULES.filter(r=>(r.provincie||"West-Vlaanderen")===p).sort((a,b)=>a.gemeente.localeCompare(b.gemeente)).map(r=>'<option>'+esc(r.gemeente)+'</option>').join("")+'</optgroup>').join("");
-    gem.value="Oostende";
+    gem.value="Oostende"; zoeker.vul();
     show();
   }).catch(()=>{out.innerHTML='<div class="deadline">De gemeentelijst kon niet laden.</div><p class="rule">Start gerust je aanvraag: wij rekenen het voor je uit.</p>';});
   [gem,typ,dat].forEach(el=>{const z=()=>{aangeraakt=true;show();};el.addEventListener("change",z);el.addEventListener("input",z)});

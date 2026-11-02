@@ -212,7 +212,7 @@ const ld = [
 <script is:inline define:vars={{ GEM: g }}>
 (function(){
   const typ=$("c-type"), dat=$("c-datum"), out=$("c-out");
-  TYPES.forEach(([k,v])=>typ.appendChild(new Option(v,k)));
+  TYPES.forEach(([k,v])=>typ.appendChild(new Option(v+(BUITEN_AANBOD_TYPES.includes(k)?" (nog niet in ons aanbod)":""),k)));
   typ.value="fuif";
   const t0=new Date(); t0.setDate(t0.getDate()+120); dat.value=t0.toISOString().slice(0,10);
   const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
