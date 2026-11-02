@@ -175,6 +175,9 @@ footer.foot a{color:var(--soft)}
 .gembox .t-kop{font-weight:600;font-size:16px}
 .gembox ul{margin:8px 0 0;padding-left:20px;color:var(--soft);font-size:15px}
 .gembox li{margin:3px 0}
+.gembox.vrij{border-color:var(--accent)}
+.gembox.vrij p{margin:8px 0 0;color:var(--soft);font-size:15px}
+.gembox.vrij a{color:var(--text)}
 .info{grid-column:1/-1;border-radius:12px;padding:14px 16px;font-size:15px;color:var(--soft);background:var(--bg);border:1px solid var(--line)}
 .info b{color:var(--text);font-weight:600}
 .overzicht{grid-column:1/-1;margin:0;display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr) auto;gap:10px 16px;font-size:15px}
@@ -217,6 +220,7 @@ footer.foot a{color:var(--soft)}
           <select id="openbaar_domein" name="openbaar_domein" required><option value="">Kies…</option><option value="nee">Nee, alles binnen of op privéterrein</option><option value="deels">Een deel, bv. een terras, bar of foodtruck op de stoep of parking</option><option value="ja">Ja, het evenement vindt plaats op straat, plein of in een park</option></select></div>
         <div class="full" id="stap1yn"></div>
         <div class="termijn" id="termijn" aria-live="polite" hidden><div class="t-kop" id="t-kop"></div><p id="t-tekst"></p></div>
+        <div class="gembox vrij" id="vrijbox" hidden></div>
         <div class="gembox" id="gembox" hidden><div class="t-kop" id="gb-kop"></div><ul id="gb-lijst"></ul></div>
       </fieldset>
       <p class="err" data-err hidden></p>
@@ -458,7 +462,6 @@ const EXTRAS = [
 // Vaste vragen uit de evenementformulieren (Eaglebe, Flowlab e.a.), zodat we ze niet achteraf moeten opvragen.
 const PRAKTISCH = [
   ["betalend","Betalende toegang?",""],
-  ["op_uitnodiging","Enkel op uitnodiging?","Geen publiek evenement, bv. een privéfeest"],
   ["eten","Wordt er eten bereid?","Barbecue, frituur, foodtruck"],
   ["verkoop","Worden er nog andere dingen verkocht?","Merch, tombola, standjes"],
   ["toiletten","Extra toiletten voorzien?",""],
@@ -491,6 +494,8 @@ function janee(doel, [k, q, h]) {
 }
 // "Eerste editie" telt mee voor de termijn, dus in stap 1.
 janee(document.getElementById("stap1yn"), ["eerste_editie","Is dit de eerste editie?","Sommige gemeenten vragen dan meer tijd."]);
+// "Enkel op uitnodiging" in stap 1: sommige gemeenten vragen dan geen aanvraag (zie toonVrijstelling).
+janee(document.getElementById("stap1yn"), ["op_uitnodiging","Enkel op uitnodiging?","Geen publiek evenement, bv. een privéfeest"]);
 EXTRAS.forEach((v) => janee(document.getElementById("extras"), v));
 PRAKTISCH.forEach((v) => janee(document.getElementById("praktischyn"), v));
 
@@ -599,7 +604,54 @@ function planZin() {
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
 
 // Samenvatting na stap 1: kanaal, plannen, materiaal en prijs voor deze gemeente.
+// Vrijstelling: sommige gemeenten vragen geen aanvraag voor bv. een privéfeest op uitnodiging.
+// Enkel uit regels.json (veld "vrijstelling", met bron). We blokkeren niets: de klant beslist zelf.
+function vrijstellingen() {
+  const r = regelVan(); if (!r || !Array.isArray(r.vrijstelling)) return [];
+  const bez = +veld("bezoekers") || 0, ls = veld("locatie_soort"), uit = gekozen("op_uitnodiging"), od = veld("openbaar_domein");
+  const muz = gekozen("muziek"), verk = gekozen("verkeer");
+  const uit_ = [];
+  r.vrijstelling.forEach(v => {
+    const c = v.voorwaarden || {}, nog = [];
+    // Minstens één harde voorwaarde die we kennen, anders tonen we niets.
+    if (!(c.op_uitnodiging || c.openbaar_domein === "nee" || c.max_aanwezigen)) return;
+    if (c.op_uitnodiging && uit !== "ja") return;
+    if (c.openbaar_domein === "nee" && od !== "nee") return;
+    if (c.max_aanwezigen && !(bez > 0 && bez <= c.max_aanwezigen)) return;
+    if (c.enkel_binnen && ls !== "zaal") return;
+    if (c.enkel_buiten && ls === "zaal") return;
+    if (c.geen_versterkte_muziek) { if (muz === "ja") return; if (muz !== "nee") nog.push("zonder versterkte muziek"); }
+    if (c.max_db) { if (muz !== "nee") nog.push("geluid niet boven " + c.max_db + " dB(A)"); }
+    if (c.geen_verkeersmaatregelen) { if (verk === "ja") return; if (verk !== "nee") nog.push("zonder verkeersmaatregelen"); }
+    if (c.andere) nog.push(c.andere);
+    uit_.push({ v, nog });
+  });
+  return uit_;
+}
+function toonVrijstelling() {
+  const box = document.getElementById("vrijbox"), r = regelVan(), lijst = vrijstellingen();
+  // Gemeente nog niet nagekeken (geen veld "vrijstelling"): enkel voor een besloten feest binnen een algemene, voorzichtige melding.
+  // Grond: de Grondwet (art. 26) laat geen voorafgaande toelating toe voor bijeenkomsten binnen; in open lucht mag de gemeente wel regels stellen.
+  if (!lijst.length && r && !Array.isArray(r.vrijstelling) && gekozen("op_uitnodiging") === "ja" && veld("openbaar_domein") === "nee"
+      && veld("locatie_soort") === "zaal" && gekozen("verkeer") !== "ja") {
+    box.innerHTML = '<div class="t-kop">Misschien heb je geen aanvraag nodig</div>' +
+      '<p>Voor een besloten feest binnen, op uitnodiging, is meestal geen aanvraag bij de gemeente nodig. De regels van ' + esc(r.gemeente) + ' hebben we daarvoor nog niet nagekeken. Huur je een zaal van de gemeente, of verkoop je sterke drank, dan kan de gemeente wel iets vragen.</p>' +
+      '<p>Twijfel je, of wil je toch zekerheid? Ga gewoon verder.</p>';
+    box.hidden = false; return;
+  }
+  if (!lijst.length) { box.hidden = true; box.innerHTML = ""; return; }
+  const { v, nog } = lijst[0];
+  const bron = String(v.bron || "");
+  box.innerHTML = '<div class="t-kop">Misschien heb je geen aanvraag nodig</div>' +
+    '<p>' + esc(r.gemeente) + ' vraagt geen aanvraag voor: ' + esc(v.wat.charAt(0).toLowerCase() + v.wat.slice(1)) +
+    '.' + (nog.length ? (nog.length > 1 ? ' Voorwaarden: ' : ' Voorwaarde: ') + esc(nog.join("; ")) + '.' : '') +
+    (v.nog_wel ? ' Let op: ' + esc(v.nog_wel) + (/[.!?]$/.test(v.nog_wel) ? '' : '.') : '') + '</p>' +
+    '<p>Klopt dat voor jouw evenement, dan hoef je niets aan te vragen en ook ons niets te betalen. Twijfel je, of wil je toch zekerheid? Ga gewoon verder.</p>' +
+    (/^https:\/\//.test(bron) ? '<p class="fijn"><a href="' + esc(bron) + '" target="_blank" rel="noopener">Bron: gemeente ' + esc(r.gemeente) + '</a></p>' : '');
+  box.hidden = false;
+}
 function toonGembox() {
+  toonVrijstelling();
   const box = document.getElementById("gembox"), r = regelVan();
   const klaar = r && veld("type") && veld("startdatum") && veld("bezoekers") && veld("locatie_soort") && veld("aanvrager_type") && veld("openbaar_domein");
   if (!klaar || (termijn && (termijn.soort === "laat" || termijn.soort === "buiten"))) { box.hidden = true; return; }
@@ -802,6 +854,7 @@ function zetBlokkade(aan) {
   document.getElementById("status1").textContent = tekst; document.getElementById("status").textContent = tekst;
 }
 
+["op_uitnodiging", "muziek", "verkeer"].forEach(n => intakeForm.querySelectorAll('[name="' + n + '"]').forEach(el => el.addEventListener("change", toonVrijstelling)));
 ["gemeente", "type", "startdatum", "bezoekers", "openbaar_domein", "eerste_editie", "locatie_soort", "aanvrager_type"].forEach(n => {
   intakeForm.querySelectorAll('[name="' + n + '"]').forEach(el => { el.addEventListener("change", () => { toonTermijn(); pasAan(); }); el.addEventListener("input", () => { toonTermijn(); pasAan(); }); });
 });

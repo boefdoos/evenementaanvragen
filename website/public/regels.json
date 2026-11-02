@@ -2673,7 +2673,22 @@
     "zekerheid": "middel"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een feest op privaat domein dat niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "niet in een gemeentelijk gebouw"
+    },
+    "nog_wel": null,
+    "citaat": "je op privaat domein (zowel binnen als buiten) een fuif, (dans)feest en/of muziekoptreden organiseert ... dat publiek toegankelijk is, al dan niet met toegangsgelden. (niet van toepassing voor gekende evenementen- of feestzalen)",
+    "bron": "https://www.kuurne.be/evenementenloket",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Langemark-Poelkapelle",
@@ -4612,7 +4627,22 @@
    "zekerheid": "hoog",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement, niet op openbaar domein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "geen vergunning nodig (bv. geluid of sterke drank)"
+    },
+    "nog_wel": "is het qua omvang vergelijkbaar met een publiek evenement, dan vraagt de gemeente toch een melding, 2 maanden vooraf",
+    "citaat": "Het private karakter van een evenement betekent niet automatisch dat er geen voorwaarden gelden. ... Dan moet dit minstens 2 maanden op voorhand gemeld worden aan het gemeentebestuur.",
+    "bron": "https://www.vleteren.be/vrije-tijd/organiseren/aanvraag-evenementen",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Waregem",
@@ -5790,7 +5820,22 @@
     "https://arendonk.be/vrije-tijd/zelf-organiseren/evenementenloket"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privébijeenkomst, zoals een lente-, trouw- of ledenfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_versterkte_muziek": true
+    },
+    "nog_wel": "de gemeente beoordeelt zelf of iets privé is",
+    "citaat": "Deze toelating geldt dus niet voor privébijeenkomsten zoals een lentefeest, trouwfeest, ... ledenfeest van een vereniging of wekelijkse interne werking van een vereniging.",
+    "bron": "https://arendonk.be/vrije-tijd/zelf-organiseren/evenement-organiseren",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Baarle-Hertog",
@@ -5895,7 +5940,20 @@
     "https://www.baarle-hertog.be/evenementenwagen"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true
+    },
+    "nog_wel": null,
+    "citaat": "Bij de gemeente Baarle-Hertog is een vergunning vereist voor publieke occasionele evenementen. [...] Uitzonderingen: privé-feesten",
+    "bron": "https://www.baarle-hertog.be/producten/detail/246/evenement-organiseren",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Balen",
@@ -6114,7 +6172,20 @@
     "https://www.beerse.be/uitleen"
    ],
    "zekerheid": "laag"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true
+    },
+    "nog_wel": "straat afsluiten of parkeerverbod vraag je apart aan",
+    "citaat": "A) Privé feestjes: een vergunning is niet mogelijk/nodig.",
+    "bron": "https://www.beerse.be/evenement-aanvragen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Berlaar",
@@ -6382,7 +6453,8 @@
     "https://www.boechout.be/materialenbank-gemeente-feestmateriaal-aanvraag"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Bonheiden",
@@ -6486,7 +6558,8 @@
     "https://www.bonheiden.be/product/1459/uitleenmateriaal"
    ],
    "zekerheid": "hoog"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Boom",
@@ -6761,7 +6834,8 @@
    "voorwaarden": "onbekend",
    "bron": [],
    "zekerheid": "laag"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Brecht",
@@ -7036,7 +7110,8 @@
     "https://www.dessel.be/product/104/materiele-ondersteuning-verenigingen"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Duffel",
@@ -7318,7 +7393,24 @@
     "https://www.edegem.be/kleine-evenementen-en-activiteiten"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een activiteit die niet op openbaar domein plaatsvindt",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_db": 85,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen vuur, geen publieke fuif"
+    },
+    "nog_wel": null,
+    "citaat": "Je doet een aanvraag als je… evenement plaatsvindt op openbaar domein (straat, plein, park…) … luider muziek wil spelen dan de wettelijke norm van 85 decibel … een publieke fuif houdt (binnen of buiten)",
+    "bron": "https://www.edegem.be/moet-ik-een-aanvraag-doen",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Essen",
@@ -7620,7 +7712,24 @@
     "https://www.grobbendonk.be/ontlenen-van-evenementenmateriaal"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement zonder openbaar karakter",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "enkel_binnen": true,
+     "geen_versterkte_muziek": true,
+     "andere": "geen sterke drank"
+    },
+    "nog_wel": null,
+    "citaat": "Privé evenementen of evenementen zonder openbaar karakter moeten niet aangevraagd worden.",
+    "bron": "https://www.grobbendonk.be/aanvraag-voor-het-organiseren-van-een-evenement-in-jouw-stad-of-gemeente",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Heist-op-den-Berg",
@@ -8092,7 +8201,20 @@
     "https://www.herenthout.be/materiaaluitleendienst"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement op persoonlijke uitnodiging",
+    "voorwaarden": {
+     "op_uitnodiging": true
+    },
+    "nog_wel": "voor een privé-evenement geeft de gemeente geen afwijking van de geluidsnorm",
+    "citaat": "Privé-evenementen of evenementen zonder openbaar karakter moeten niet aangevraagd worden. [...] toegang afhankelijk is van de persoonlijke en individuele uitnodiging van de organisator",
+    "bron": "https://www.herenthout.be/fuiven-en-evenementen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Herselt",
@@ -8759,7 +8881,22 @@
     "https://kalmthout.be/vrije-tijd/evenementen/de-uitleendienst"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "geen_versterkte_muziek": true,
+     "geen_verkeersmaatregelen": true
+    },
+    "nog_wel": "met luide muziek of verkeershinder vraagt de gemeente een melding",
+    "citaat": "Geef je een privéfeest waarop je luide muziek draait of waarbij je verkeershinder verwacht? Dan doe je een melding via onderstaande link.",
+    "bron": "https://kalmthout.be/vrije-tijd/evenementen/evenement-organiseren",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Kapellen",
@@ -9008,7 +9145,8 @@
     "https://www.kasterlee.be/ontlening-materialen-evenement"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Kontich",
@@ -9403,7 +9541,21 @@
     "https://ikorganiseerinlier.uitinlier.be/sites/default/files/retributiereglement-ontlenen-stadsmaterialen-2026.pdf"
    ],
    "zekerheid": "hoog"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement op privédomein met gesloten gastenlijst",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "melden wordt aangeraden als er kans is op overlast",
+    "citaat": "Hiervoor hoef je geen aanvraag of melding te doen. Indien er echter risico is op overlast voor de buurt is het aan te raden je evenement toch te melden.",
+    "bron": "https://ikorganiseerinlier.uitinlier.be/nieuws/welke-evenementen-moet-je-aanvragen-melden",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Lille",
@@ -9940,7 +10092,24 @@
     "https://www.mechelen.be/vrije-tijd-sport-en-cultuur/een-evenement-organiseren/materiaal-lenen"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement op privédomein tot 150 personen",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 150,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen hogere geluidsnorm nodig"
+    },
+    "nog_wel": null,
+    "citaat": "Voor een evenement op privéterrein dat openstaat voor het brede publiek. Voor een evenement op openbaar domein, ongeacht of het om een publiek of privé-evenement gaat. [...] verkeersmaatregelen [...] verhoogde geluidsnorm.",
+    "bron": "https://www.mechelen.be/vrije-tijd-sport-en-cultuur/een-evenement-organiseren/je-evenement-aanvragen-melden",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Meerhout",
@@ -10791,7 +10960,22 @@
     "https://www.olen.be/flowlab-evenement-en-materiaalaanvragen"
    ],
    "zekerheid": "hoog"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op uitnodiging",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "toegang met persoonlijke uitnodiging en gastenlijst aan de ingang"
+    },
+    "nog_wel": null,
+    "citaat": "Privé-evenementen zijn festiviteiten waar de toegang afhankelijk is van de persoonlijke en individuele uitnodiging ... Privéfeesten moet je niet aanvragen, tenzij je het organiseert op het openbaar domein.",
+    "bron": "https://www.olen.be/fuif-feest-evenement-organiseren",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Oud-Turnhout",
@@ -10933,7 +11117,20 @@
     "https://www.oud-turnhout.be/buurtfeest"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest, zoals een tuin- of communiefeest",
+    "voorwaarden": {
+     "op_uitnodiging": true
+    },
+    "nog_wel": "een groot privéfeest meld je best aan de gemeente en de buren",
+    "citaat": "Privéfeesten (tuinfeest, communiefeest, …) worden niet als een evenement beschouwd en hoef je dus niet aan te vragen.",
+    "bron": "https://www.oud-turnhout.be/evenement-aanvragen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Putte",
@@ -11838,7 +12035,22 @@
     "https://www.rumst.be/materiaal-uitleendienst"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé- of tuinfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_verkeersmaatregelen": true
+    },
+    "nog_wel": "verwittig de buren; de geluidsnormen blijven gelden",
+    "citaat": "Je hoeft niets aan te vragen wat de muziek betreft. ... Enkel wanneer je verwacht dat je privéfeest een impact heeft op mobiliteit of een groot deel van openbaar domein in beslag zal nemen door geparkeerde wagens.",
+    "bron": "https://www.rumst.be/evenementenloket",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Schelle",
@@ -12074,7 +12286,20 @@
     "https://www.schilde.be/dienstverlening/cultuur-en-vrije-tijd/zelf-iets-organiseren/een-straat-buurtfeest-organiseren"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement",
+    "voorwaarden": {
+     "op_uitnodiging": true
+    },
+    "nog_wel": "de geluidsnormen blijven gelden; verwittig de buren",
+    "citaat": "Organiseer je een privé evenement? Dan heb je geen toelating nodig. [...] voor privébijeenkomsten wordt door het gemeentebestuur nooit een uitzondering op de geluidsnorm afgegeven.",
+    "bron": "https://www.schilde.be/dienstverlening/cultuur-en-vrije-tijd/zelf-iets-organiseren/een-evenement-aanvragen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Schoten",
@@ -12181,7 +12406,8 @@
     "https://www.schoten.be/sites/default/files/public/documenten/org_activiteit_feestmateriaal_reglement.pdf"
    ],
    "zekerheid": "hoog"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Sint-Katelijne-Waver",
@@ -12497,7 +12723,8 @@
     "https://www.stabroek.be/vrije-tijd-en-zorg/lokalenverhuur"
    ],
    "zekerheid": "laag"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Turnhout",
@@ -12680,7 +12907,8 @@
     "https://www.turnhout.be/nl/media/7379"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Vorselaar",
@@ -13128,7 +13356,25 @@
     "https://www.wijnegem.be/informatiepagina-voor-organisatoren"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement op uitnodiging met minder dan 200 aanwezigen",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 199,
+     "max_db": 85,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen fuif, geen tent of springkasteel, geen kampvuur"
+    },
+    "nog_wel": null,
+    "citaat": "Als je evenement aan geen van bovenstaande bepalingen beantwoordt, dan moet je geen aanvraag of melding doen.",
+    "bron": "https://www.wijnegem.be/evenement",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Willebroek",
@@ -13489,7 +13735,24 @@
     "https://www.wuustwezel.be/evenementorganiseren"
    ],
    "zekerheid": "hoog"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op uitnodiging met minder dan 200 aanwezigen",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 199,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen hinder voor de omgeving"
+    },
+    "nog_wel": "met impact op de omgeving vraagt de gemeente een melding",
+    "citaat": "bevindt zich in een (al dan niet) private inrichting ... is niet publiek toegankelijk met minder dan 200 gelijktijdige bezoekers of aanwezigen ... heeft geen impact op het openbaar domein of omgeving (verkeers- of geluidshinder).",
+    "bron": "https://www.wuustwezel.be/evenementorganiseren",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Zandhoven",
@@ -13637,7 +13900,21 @@
     "https://www.zandhoven.be/vrije-tijd/zelf-iets-organiseren/evenement/"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-activiteit op privédomein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": null,
+    "citaat": "Gaat het om een privéactiviteit op privédomein, dan is er geen toelating nodig.",
+    "bron": "https://www.zandhoven.be/vrije-tijd/zelf-iets-organiseren/evenement/",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Zoersel",
@@ -13791,7 +14068,8 @@
     "https://www.zoersel.be/vrije-tijd/organiseren-en-reserveren/materialen-ontlenen/materiaal-uitleendienst/materiaal"
    ],
    "zekerheid": "hoog"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Alken",
@@ -13899,7 +14177,8 @@
    "zekerheid": "middel",
    "categorie_aanvrager": "Bron noemt enkel Alkense verenigingen (tegen gunstige prijzen); over andere categorieën niets vermeld.",
    "extra_aanbod": []
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "As",
@@ -14170,7 +14449,8 @@
     "https://www.beringen.be/uitleendienst-materialen"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Bilzen-Hoeselt",
@@ -14627,7 +14907,21 @@
    "zekerheid": "middel",
    "categorie_aanvrager": "Twee formulieren: één voor gemeentelijke diensten, scholen en samenwerkingen met de gemeente, één voor erkende verenigingen, buurtcomités en studentenverenigingen. Uitleencheque (subsidie huur) enkel voor erkende Diepenbeekse verenigingen, instellingen en buurtcomités.",
    "extra_aanbod": []
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "voor een privéfeest geeft de gemeente geen afwijking van de geluidsnorm; de politie verwittigen wordt aangeraden",
+    "citaat": "Voor de organisatie van privéfeesten is geen toestemming nodig ... wordt wel aangeraden om de politie op de hoogte te brengen.",
+    "bron": "https://www.diepenbeek.be/activiteit-evenement-organiseren-loket",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Dilsen-Stokkem",
@@ -15288,7 +15582,24 @@
     "https://www.hasselt.be/sites/hasselt/files/2026-04/reglement_hasselt_uitleendienst.pdf"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_db": 85,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen sterke drank"
+    },
+    "nog_wel": null,
+    "citaat": "Heb ik een vergunning nodig voor een privéfeest? Nee. Privéfeesten vallen onder de algemene politiecodex.",
+    "bron": "https://www.hasselt.be/nl/vergunning-voor-je-evenement-of-activiteit-aanvragen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Hechtel-Eksel",
@@ -16885,7 +17196,20 @@
     "https://maasmechelen.onlinesmartcities.be/smartloket/aanvraagformulier-gul"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement",
+    "voorwaarden": {
+     "op_uitnodiging": true
+    },
+    "nog_wel": "een straat afsluiten vraag je wel aan",
+    "citaat": "Er wordt onderscheid gemaakt tussen publieke en private evenementen. Deze laatste vallen niet onder het politiereglement en dienen daarom niet aangevraagd te worden.",
+    "bron": "https://www.maasmechelen.be/meldenevenement",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Nieuwerkerken",
@@ -17460,7 +17784,8 @@
    "zekerheid": "laag",
    "categorie_aanvrager": "Verenigingen van Riemst lenen het volledige aanbod; particulieren enkel herbruikbare bekers, energiemeters en oprolbare oprijplaat. Geen transport naar andere gemeenten voor verenigingen.",
    "extra_aanbod": []
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Sint-Truiden",
@@ -17899,7 +18224,8 @@
      "link": "https://www.voeren.be/vrije-tijd/uitlenen-buitenspeelgoed-spelboxen"
     }
    ]
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Wellen",
@@ -18535,7 +18861,24 @@
     "https://aalst.be/cultuur-sport-en-vrije-tijd/evenementen-en-activiteiten/materiaalverhuur"
    ],
    "zekerheid": "hoog"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op privéterrein, zoals een babyborrel, trouw of personeelsfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_db": 85,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen sterke drank"
+    },
+    "nog_wel": null,
+    "citaat": "is publiek toegankelijk voor minstens 250 personen (= dus geen privéfeest/babyborrel/trouw/personeelsfeest/…)",
+    "bron": "https://aalst.be/cultuur-sport-en-vrije-tijd/evenementen-en-activiteiten/zelf-een-evenement-organiseren/een",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Aalter",
@@ -18986,7 +19329,22 @@
      "link": "https://www.berlare.be/openbare-werken/uitleenmaterialen"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement op privaat domein, zoals een babyshower of huwelijk",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "niet in een gemeentelijk gebouw"
+    },
+    "nog_wel": null,
+    "citaat": "Je op privaat domein (zowel binnen als buiten) luide muziek afspeelt [...] een publiek toegankelijk evenement, al dan niet met toegangsgeld. [...] kunnen geen vergunning krijgen [...] algemeen politiereglement respecteren",
+    "bron": "https://www.berlare.be/vrije-tijd/evenementen/toelating-evenement",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Beveren-Kruibeke-Zwijndrecht",
@@ -19096,7 +19454,23 @@
     "https://www.gemeentebkz.be/ontlenen-feestmateriaal"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-initiatief dat niet publiek is, tot 200 aanwezigen",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 200,
+     "andere": "geen overnachting van meer dan 10 personen en geen vergunning nodig (bv. geluid of sterke drank)"
+    },
+    "nog_wel": null,
+    "citaat": "een privé-initiatief met meer dan 200 gelijktijdige aanwezigen ... Elke activiteit die je organiseert op het openbaar domein of plaatsvindt op privéterrein én publiek toegankelijk is",
+    "bron": "https://www.gemeentebkz.be/evenementenloket",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Brakel",
@@ -19369,7 +19743,8 @@
      "link": "https://www.dds-verko.be/verko/afvalpreventie/afval-op-events/afvaleilanden"
     }
    ]
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Deinze",
@@ -19634,7 +20009,23 @@
      "link": "https://oost-vlaanderen.be/ontspannen/evenementen-organiseren/uitleendienst.html"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een niet-publiek evenement op privéterrein tot 150 bezoekers",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 150,
+     "andere": "geen vergunning nodig (bv. geluid of sterke drank), geen eetfestijn"
+    },
+    "nog_wel": "de gemeente raadt een melding aan, 4 weken vooraf",
+    "citaat": "Voor kleinschalige evenementen, waarvoor geen vergunning van het lokaal bestuur nodig is, wordt het aangeraden om ze op voorhand te melden.",
+    "bron": "https://denderleeuw.be/vrije-tijd/evenementenloket/aanvragen-of-melden-waar-zit-het-verschil",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Dendermonde",
@@ -19888,7 +20279,20 @@
      "link": "https://oost-vlaanderen.be/ontspannen/evenementen-organiseren/uitleendienst.html"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true
+    },
+    "nog_wel": "melden wordt aangeraden bij veel genodigden; luider dan de geluidsnormen vraagt een vergunning",
+    "citaat": "Een privéfeest hoef je in principe niet te melden. Toch raden we je dit aan om te doen bij een privéfeest met een groot aantal genodigden.",
+    "bron": "https://www.destelbergen.be/node/1668",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Eeklo",
@@ -20154,7 +20558,21 @@
    "zekerheid": "middel",
    "categorie_aanvrager": "Lenen gratis voor iedereen die mag lenen; levering/ophaling €15 voor erkende verenigingen en adviesraden, €25 voor andere organisaties. Voorrang niet vermeld.",
    "extra_aanbod": []
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op een privélocatie",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "de geluidsnormen blijven gelden",
+    "citaat": "Je hoeft een privéfeest op een privélocatie niet aan te vragen. ... Voor een privéfeest op een privélocatie kunnen we geen uitzondering toestaan op de geluidsnormen van Vlarem.",
+    "bron": "https://www.erpe-mere.be/evenement-aanvragen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Evergem",
@@ -20423,7 +20841,8 @@
      "link": "https://www.abcrent.be/"
     }
    ]
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Gent",
@@ -20625,7 +21044,8 @@
     "https://stad.gent/nl/cultuur-vrije-tijd/zelf-een-evenement-organiseren"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Geraardsbergen",
@@ -21154,7 +21574,22 @@
     "https://www.horebeke.be/src/Frontend/Files/userfiles/files/Aanvraagformulier%20evenementen%20Nieuw%281%29.pdf"
    ],
    "zekerheid": "laag"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een familiefeest met gesloten gastenlijst op privéterrein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "niet in een feestzaal"
+    },
+    "nog_wel": "de muziek mag niet luider zijn dan het achtergrondgeluid",
+    "citaat": "Privéfeesten met een gesloten gastenlijst en familiaal karakter op privéterrein [...] niet beschouwd als een evenement.",
+    "bron": "https://www.horebeke.be/vrije-tijd/evenementen/evenementenformulier",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Kaprijke",
@@ -21570,7 +22005,22 @@
     "https://www.kruisem.be/sites/default/files/2026-10/Brochure-uitleendienst-Kruisem-2026_V2_0.pdf"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement op privaat domein tot 100 personen",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 100
+    },
+    "nog_wel": "de gemeente raadt een aanvraag wel aan, voor de veiligheid",
+    "citaat": "Een evenementenaanvraag is aanbevolen vanuit veiligheidsoogpunt in volgende gevallen: ... privé evenement op privaat domein met minder dan 100 personen",
+    "bron": "https://www.kruisem.be/evenementenaanvraag",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Laarne",
@@ -21676,7 +22126,22 @@
     "https://www.laarne.be/duurzame-events-met-herbruikbare-bekers"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "niet in gemeentelijke infrastructuur"
+    },
+    "nog_wel": "een groot privéfeest meld je best bij de politie en de buren",
+    "citaat": "Organiseer je een privéfeest? Dan hoef je dat in theorie niet te melden. Toch is het aangeraden om grootschalige privéfeesten te melden bij de politie",
+    "bron": "https://www.laarne.be/aanvraag-evenementen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Lebbeke",
@@ -22259,7 +22724,21 @@
     "https://www.lochristi.be/nieuwsdetail/4398/nieuw-systeem-voor-reservaties-activiteiten-verhuur-zalen-en-materiaal-en-evenementen"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op uitnodiging op privédomein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": null,
+    "citaat": "Je moet geen aanvraag indienen bij de gemeente voor privéfeestjes. Onder deze categorie vallen evenementen en activiteiten op uitnodiging die plaatsvinden op privédomein.",
+    "bron": "https://www.lochristi.be/thema/1776/zelf-organiseren",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Lokeren",
@@ -22679,7 +23158,21 @@
      "link": "https://maldegem.be/feestmateriaal-ontlenen-retributie"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement op persoonlijke uitnodiging",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "de geluidsnormen blijven gelden",
+    "citaat": "Er is geen toelating nodig voor het organiseren van een privé-evenement. [...] Een privé-evenement wordt georganiseerd op basis van een persoonlijke uitnodiging of gastenlijst.",
+    "bron": "https://maldegem.be/evenementenkader-gemeente-maldegem",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Merelbeke-Melle",
@@ -23106,7 +23599,8 @@
      "link": "https://oosterzele.be/vrije-tijd/evenementen/materiaal-uitlenen"
     }
    ]
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Oudenaarde",
@@ -23214,7 +23708,8 @@
     "https://www.oudenaarde.be/nl/vrije-tijd/evenementen/evenement-organiseren/aanvraag-materiaal-en-nutsvoorzieningen"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Ronse",
@@ -23360,7 +23855,8 @@
     "https://www.ronse.be/sites/ronse/files/2026-04/Checklist-evenement-organiseren_1.pdf"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Sint-Gillis-Waas",
@@ -23525,7 +24021,22 @@
      "link": "https://oost-vlaanderen.be/ontspannen/evenementen-organiseren/uitleendienst.html"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een activiteit op uitnodiging in je eigen tuin of woning",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "in eigen tuin of woning"
+    },
+    "nog_wel": null,
+    "citaat": "Voor een activiteit op uitnodiging in eigen tuin of woning (bv. huwelijksfeest) is géén toelating vereist. [...] Voor het spelen van elektronisch versterkte muziek tijdens een privé-feest heb je geen muziektoelating nodig.",
+    "bron": "https://www.sint-gillis-waas.be/evenementenloket",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Sint-Laureins",
@@ -23680,7 +24191,20 @@
      "link": "https://www.sint-laureins.be/uitleendienst-verkleedkledij"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true
+    },
+    "nog_wel": "melden wordt aangeraden, zeker met muziek",
+    "citaat": "Voor privéfeesten geldt er geen meldingsplicht maar het is aangereden om dit toch te melden zeker indien er bijvoorbeeld muziek afgespeeld wordt.",
+    "bron": "https://www.sint-laureins.be/evenement-aanvragen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Sint-Lievens-Houtem",
@@ -24678,7 +25202,22 @@
     "https://www.wetteren.be/uitleendienst"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest thuis, zoals een tuin-, communie- of familiefeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "in een woning"
+    },
+    "nog_wel": null,
+    "citaat": "Privéfeesten zoals een tuinfeest, een communiefeest of familiefeesten in woningen beschouwen we niet als evenementen en moet je dus ook niet aanvragen.",
+    "bron": "https://www.wetteren.be/organiseren-van-een-evenement-of-een-activiteit",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Wichelen",
@@ -24903,7 +25442,8 @@
      "link": "https://www.wortegem-petegem.be/beleven/verenigingsleven/reservaties-en-uitleendienst"
     }
    ]
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Zele",
@@ -25235,7 +25775,22 @@
      "link": "https://www.idm.be/minder-afval/ga-ervoor/organiseer-je-evenement-afvalarm"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen hinder voor de buurt"
+    },
+    "nog_wel": null,
+    "citaat": "Het formulier geldt niet voor privéfeesten, voor zover zij geen hinder veroorzaken op openbare weg en/of buurt.",
+    "bron": "https://www.zelzate.be/nl/evenementenloket",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Zottegem",
@@ -25332,7 +25887,23 @@
     "https://zottegem.be/aanvragen-meldingen-en-e-loket/aanvraag-evenementen/formulier-aanvraag-materialen-technische-dienst"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een evenement op privéterrein dat niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen vergunning nodig (geen geluidsafwijking, parkeerverbod of sterke drank)"
+    },
+    "nog_wel": null,
+    "citaat": "moet je aanmelden wanneer: het evenement plaatsvindt op openbaar domein OF het evenement op privéterrein doorgaat en publiek toegankelijk is voor minstens 250 personen OF vergunningen vereist zijn zoals een geluidsafwijking, parkeerverbod, schenken sterke dranken…",
+    "bron": "https://zottegem.be/aanvragen-meldingen-en-e-loket/aanvraag-evenementen/evenement-eaglebe",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Zulte",
@@ -25620,7 +26191,8 @@
      "link": "https://zwalm.be/vrije-tijd/zelf-een-evenement-organiseren/nuttige-tips-voor-elke-organisator/provinciale-uitleendienst"
     }
    ]
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Aarschot",
@@ -25956,7 +26528,23 @@
     "https://www.asse.be/e-venement"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement op privéterrein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen geluidsafwijking of vuurwerk nodig"
+    },
+    "nog_wel": null,
+    "citaat": "je evenement plaatsvindt op privéterrein, maar publiek toegankelijk is voor minstens 200 personen; ... voor een privé-evenement op privéterrein kan je geen vergunning krijgen",
+    "bron": "https://www.asse.be/e-venement",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Beersel",
@@ -26416,7 +27004,22 @@
      "link": "https://www.bertem.be/eloketdetail/137/subsidieaanvraag-voor-het-ontlenen-van-een-geluidsmeter"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest, zoals een tuinfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_db": 85
+    },
+    "nog_wel": null,
+    "citaat": "Niet elk tuinfeest vereist een vergunning, maar een aanvraag is verplicht voor: [...] Elk openbaar evenement dat plaatsvindt op een privélocatie. Evenementen waarbij het geluidsvolume van de muziek hoger is dan 85 dB.",
+    "bron": "https://www.bertem.be/nieuwsdetail/8626/een-evenement-organiseren-in-bertem-dat-begint-met-een-aanvraag",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Bever",
@@ -26916,7 +27519,22 @@
    "zekerheid": "middel",
    "categorie_aanvrager": "Enkel door het gemeentebestuur erkende verenigingen, adviesraden en wijk- en buurtcomités vermeld; andere categorieën niet vermeld.",
    "extra_aanbod": []
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-activiteit, niet op openbaar domein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "geen afwijking van de geluidsnormen nodig"
+    },
+    "nog_wel": null,
+    "citaat": "Voor welke activiteiten/evenementen doe je een online aanvraag? ... private activiteiten waarvoor je een afwijking van de geluidsnormen nodig hebt ... evenementen die doorgaan op het openbaar domein",
+    "bron": "https://www.boutersem.be/evenement-organiseren",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Diest",
@@ -27522,7 +28140,22 @@
      "link": "https://www.glabbeek.be/feestcheque"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest thuis, zoals een tuin-, communie- of familiefeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "in een woning"
+    },
+    "nog_wel": null,
+    "citaat": "Privéfeesten zoals een tuinfeest, een communiefeest of familiefeesten in woningen",
+    "bron": "https://www.glabbeek.be/evenementenloket3380",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Grimbergen",
@@ -28041,7 +28674,20 @@
      "link": "http://www.vlaamsbrabant.be/vrije-tijd-cultuur/uitleendienst/index.jsp"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement",
+    "voorwaarden": {
+     "op_uitnodiging": true
+    },
+    "nog_wel": "respecteer de nachtrust tussen 22 en 7 uur",
+    "citaat": "Privé-evenementen moeten niet worden gemeld. ... Je moet steeds de nachtrust van de omwonenden respecteren tussen 22 en 7 uur.",
+    "bron": "https://www.herent.be/aanvraag-toelating-activiteit",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Hoegaarden",
@@ -28493,7 +29139,20 @@
    "zekerheid": "middel",
    "categorie_aanvrager": "Gratis voor verenigingen met activiteit in Holsbeek, scholen en adviesraden; diensten van buurgemeenten enkel mits zelf ophalen; particulieren en bedrijven niet vermeld.",
    "extra_aanbod": []
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest zonder kaartverkoop",
+    "voorwaarden": {
+     "op_uitnodiging": true
+    },
+    "nog_wel": "met veel genodigden meld je het best aan de gemeente",
+    "citaat": "Een feest is openbaar wanneer er kaarten te koop zijn of wanneer iedereen binnen mag. [...] Een privé feest hoef je niet te melden.",
+    "bron": "https://www.holsbeek.be/aanvraag-van-een-openbaar-evenement-evenementenloket",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Huldenberg",
@@ -28865,7 +29524,21 @@
    "zekerheid": "laag",
    "categorie_aanvrager": "",
    "extra_aanbod": []
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een feest bij je thuis dat niet publiek is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "andere": "bij je thuis, binnen de geluidsnormen"
+    },
+    "nog_wel": null,
+    "citaat": "Is jouw evenement voor het grote publiek? Nee ... Gaat het evenement door bij jou thuis? Ja: geen meldingsplicht tenzij je wenst af te wijken van de geluidsnormen opgenomen in het politiereglement.",
+    "bron": "https://www.kapelle-op-den-bos.be/producten/detail/1721/evenementen-en-activiteiten",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Keerbergen",
@@ -29025,7 +29698,22 @@
      "link": "https://uitleendienst.vlaamsbrabant.be"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_versterkte_muziek": true
+    },
+    "nog_wel": null,
+    "citaat": "Privéfeesten moet je niet aanvragen, tenzij je het organiseert op het openbaar domein of elektronisch versterkte muziek speelt.",
+    "bron": "https://www.keerbergen.be/Zelfeenfuif-feestofevenementorganiseren",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Kortenaken",
@@ -29852,7 +30540,8 @@
     "https://www.leuven.be/buurtfeest"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Liedekerke",
@@ -30032,7 +30721,8 @@
      "link": "https://www.liedekerke.be/buurtfeest-organiseren"
     }
    ]
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Linkebeek",
@@ -30339,7 +31029,21 @@
      "link": "https://www.londerzeel.be/vrije-tijd-en-toerisme/ik-wil-iets-organiseren/herbruikbare-bekers-gebruiken"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een activiteit bij je thuis (woning of eigen tuin) die niet publiek is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "andere": "bij je thuis"
+    },
+    "nog_wel": null,
+    "citaat": "Is je activiteit publiek toegankelijk (openbaar aangekondigd, tickets of vrije toegang)? ... Gaat ze door bij je thuis (woning of eigen tuin)? ... geen aanvraag (vol wel regels rond hinder)",
+    "bron": "https://www.londerzeel.be/activiteiten-en-evenementen-toelating-aanvragen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Lubbeek",
@@ -30513,7 +31217,22 @@
    "zekerheid": "hoog",
    "categorie_aanvrager": "Bron vermeldt enkel Lubbeekse verenigingen, instellingen en buurtfeestcomités; geen verschil tussen erkend/niet-erkend, particulier of bedrijf.",
    "extra_aanbod": []
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een activiteit met persoonlijke uitnodigingen op naam",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "geen invloed op de openbare ruimte"
+    },
+    "nog_wel": null,
+    "citaat": "Een evenement is een activiteit met een tijdelijk karakter dat publiek toegankelijk is ... plaatsvindt op het openbaar domein of privéterrein met invloed op openbare ruimte. ... Alle organisatoren van een evenement op het grondgebied van de gemeente Lubbeek dienen een aanvraag te doen",
+    "bron": "https://www.lubbeek.be/algemene-voorwaarden-evenementen",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Machelen",
@@ -30749,7 +31468,8 @@
      "link": "https://www.vlaamsbrabant.be/nl/vrije-tijd-en-toerisme/uitleendienst"
     }
    ]
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Merchtem",
@@ -31305,7 +32025,23 @@
      "link": "https://www.vlaamsbrabant.be/nl/vrije-tijd-en-toerisme/uitleendienst"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement tot 500 aanwezigen",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 500,
+     "andere": "geen sterke drank, niet in een gemeentelijk gebouw"
+    },
+    "nog_wel": null,
+    "citaat": "Een privaat evenement met meer dan 500 gelijktijdig aanwezigen [...] Om het even welke activiteit/evenement of initiatief waarvoor je denkt een vergunning of toelating nodig te hebben",
+    "bron": "https://www.overijse.be/evenementenaanvraag",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Pajottegem",
@@ -31601,7 +32337,21 @@
    "zekerheid": "laag",
    "categorie_aanvrager": "Materiaal lenen is enkel voor erkende verenigingen.",
    "extra_aanbod": []
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement (gasten op naam uitgenodigd)",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "andere": "geen sterke drank en geen vuurwerk"
+    },
+    "nog_wel": null,
+    "citaat": "Alle organisatoren van voor het publiek toegankelijke feestelijkheden en evenementen, zelfs op en/of in private eigendommen, dienen een aanvraag te doen",
+    "bron": "https://pepingen.be/algemene-voorwaarden-evenementen",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Roosdaal",
@@ -31720,7 +32470,23 @@
      "link": "https://uitleendienst.vlaamsbrabant.be/"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement op privéterrein tot 99 personen",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 99,
+     "andere": "geen vergunning nodig en geen materiaal van de gemeente"
+    },
+    "nog_wel": null,
+    "citaat": "Privé-evenementen: wanneer het doorgaat op privéterrein met een max. van 99 personen.",
+    "bron": "https://www.roosdaal.be/vrije-tijd/evenementenloket",
+    "afgeleid": false,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Rotselaar",
@@ -32383,7 +33149,24 @@
      "link": "https://www.ternat.be/gebruik-led"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement met minder dan 100 personen",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 99,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen vergunning nodig (bv. geluid)"
+    },
+    "nog_wel": null,
+    "citaat": "Als minstens één van de volgende criteria aanwezig is, dan doe je een aanvraag. ... Privé evenementen die niet publiek toegankelijk zijn voor minstens 100 personen;",
+    "bron": "https://www.ternat.be/2-wanneer",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Tervuren",
@@ -32664,7 +33447,8 @@
      "link": "https://www.tielt-winge.be/aanvraag-materiaal-voor-evenementen"
     }
    ]
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Tienen",
@@ -33343,7 +34127,8 @@
      "link": "https://www.incovo-interza.be/nl/containers-stickers/materiaal-voor-evenementen-1/materiaal-voor-evenementen"
     }
    ]
-  }
+  },
+  "vrijstelling": []
  },
  {
   "gemeente": "Zaventem",
@@ -33431,7 +34216,23 @@
     "https://www.zaventem.be/Uitleenreglement"
    ],
    "zekerheid": "laag"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een louter privé-evenement",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 299,
+     "andere": "geen fuif"
+    },
+    "nog_wel": null,
+    "citaat": "Neemt je evenement een deel van de publieke ruimte in (bijvoorbeeld de openbare weg of een park)? ... Voor indoor evenementen moet vanaf 300 bezoekers de activiteit aangevraagd worden met een evenementenfiche.",
+    "bron": "https://www.zaventem.be/evenementen-organiseren",
+    "afgeleid": true,
+    "nagekeken": "2026-11-02"
+   }
+  ]
  },
  {
   "gemeente": "Zemst",
