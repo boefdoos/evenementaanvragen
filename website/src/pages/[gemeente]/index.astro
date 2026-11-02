@@ -169,8 +169,7 @@ const ld = [
 </div></section>
 
 <section class="blk" style="padding-top:56px"><div class="wrap">
-  <div class="k">Termijnen in {g}</div>
-  <h2 style="margin-top:10px">Hoe lang op voorhand?</h2>
+  <h2>Hoe lang op voorhand?</h2>
   <dl class="feiten">
     {onbekend && <div class="feit"><dt>Evenementen in het algemeen<small style="display:block;color:var(--dim);font-size:13px">geen termijn gepubliceerd; strengste in {provincie}</small></dt><dd>{strengTxt ? strengTxt + " vooraf" : "navragen"}</dd></div>}
     {rijen.map((x) => <div class="feit"><dt>{x.wat}{x.tag && <span class="tag">niet in ons aanbod</span>}</dt><dd>{x.termijn} vooraf</dd></div>)}
@@ -178,8 +177,7 @@ const ld = [
 </div></section>
 
 <section class="blk" style="padding-top:72px"><div class="wrap">
-  <div class="k">Werkwijze bij de gemeente</div>
-  <h2 style="margin-top:10px">Een aanvraag in {g}</h2>
+  <h2>Een aanvraag in {g}</h2>
   <div class="twee">
     <div class="vak"><h3>Wat erbij komt kijken</h3><ul>
       {kanaal && <li>{kanaal}</li>}
