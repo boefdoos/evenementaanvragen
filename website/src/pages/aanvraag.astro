@@ -78,6 +78,7 @@ legend + .yn{border-top:0;padding-top:4px}
 .seg label:hover span{color:var(--text);border-color:var(--soft)}
 .seg input:checked+span{background:var(--text);color:var(--bg);border-color:var(--text)}
 .seg input:focus-visible+span{outline:2px solid var(--text);outline-offset:2px}
+.vink{margin-top:10px}
 
 .check{grid-column:1/-1;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;font-weight:400;font-size:15px;color:var(--soft);line-height:1.5}
 .check input{width:20px;height:20px;margin-top:2px;padding:0;accent-color:var(--accent)}
@@ -199,7 +200,7 @@ footer.foot a{color:var(--soft)}
       <div class="field"><label for="einduur">Einduur</label><input id="einduur" name="einduur" type="time"></div>
       <div class="field"><label for="opbouw">Opbouw vanaf <span class="hint">(datum en uur)</span></label><input id="opbouw" name="opbouw" placeholder="bv. vrijdag 14u"></div>
       <div class="field"><label for="afbraak">Afbraak tot <span class="hint">(datum en uur)</span></label><input id="afbraak" name="afbraak" placeholder="bv. zondag 12u"></div>
-      <div class="field"><label for="bezoekers">Bezoekers tegelijk op het drukste moment <span class="req">*</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
+      <div class="field"><label for="bezoekers">Aanwezigen tegelijk op het drukste moment <span class="req">*</span> <span class="hint">(publiek, medewerkers en artiesten samen)</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
       <div class="field"><label for="openbaar_domein">Komt er iets op straat, stoep, plein, parking of in een park? <span class="req">*</span></label>
         <select id="openbaar_domein" name="openbaar_domein" required><option value="">Kies…</option><option value="nee">Nee, alles binnen of op privéterrein</option><option value="deels">Een deel, bv. een terras, bar of foodtruck op de stoep of parking</option><option value="ja">Ja, het evenement vindt plaats op straat, plein of in een park</option></select></div>
       <div class="field full" id="odwrap" hidden>
@@ -279,6 +280,29 @@ footer.foot a{color:var(--soft)}
     <fieldset>
       <legend><div class="sec-head"><span class="sec-title">Meer uitleg</span></div></legend>
       <div class="field full"><label for="beschrijving">Beschrijf je evenement <span class="req">*</span></label><textarea id="beschrijving" name="beschrijving" required placeholder="Programma, wie treedt op, tent of zaal, foodtrucks, ticketverkoop…"></textarea></div>
+      <div class="field full">
+        <div class="q" id="q_speciaal">Is er iets van dit bij? <span class="hint">(vink aan wat geldt, anders niets)</span></div>
+        <div class="seg vink" role="group" aria-labelledby="q_speciaal">
+          <label><input type="checkbox" name="speciaal" value="dieren"><span>Dieren</span></label>
+          <label><input type="checkbox" name="speciaal" value="kien of bingo"><span>Kien, bingo of tombola</span></label>
+          <label><input type="checkbox" name="speciaal" value="wapens"><span>Wapens of schietstand</span></label>
+          <label><input type="checkbox" name="speciaal" value="gemotoriseerd"><span>Auto's, motoren of tractoren in het programma</span></label>
+        </div>
+      </div>
+      <div class="yn">
+        <div><div class="q" id="q_uit">Ook in de UiT-agenda zetten?</div><div class="hint">Bij sommige gemeenten zit dat in dezelfde aanvraag. Dan komt je evenement gratis op uitinvlaanderen.be en de website van de gemeente.</div></div>
+        <div class="seg" role="radiogroup" aria-labelledby="q_uit">
+          <label><input type="radio" id="uit_0" name="uit_publiceren" value="ja"><span>ja</span></label>
+          <label><input type="radio" id="uit_1" name="uit_publiceren" value="nee" checked><span>nee</span></label>
+        </div>
+      </div>
+      <div class="field full" id="uitwrap" hidden>
+        <label for="uit_tekst">Korte tekst voor de agenda <span class="hint">(wat bezoekers lezen, 2 tot 4 zinnen)</span></label>
+        <textarea id="uit_tekst" name="uit_tekst" maxlength="800" placeholder="bv. De jaarlijkse fuif van KSA Kasterlee met dj's uit de buurt. Vanaf 16 jaar."></textarea>
+        <label for="uit_prijs" style="margin-top:12px">Toegangsprijs</label>
+        <input id="uit_prijs" name="uit_prijs" placeholder="bv. gratis, of 8 euro voorverkoop en 10 euro aan de deur">
+        <span class="hint">Een affiche of foto mag je later mailen.</span>
+      </div>
       <div class="field full"><label for="opmerkingen">Nog iets dat we moeten weten?</label><textarea id="opmerkingen" name="opmerkingen"></textarea></div>
       <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
     </fieldset>
@@ -372,6 +396,7 @@ function janee(doel, [k, q, h]) {
   doel.appendChild(d);
 }
 EXTRAS.forEach((v) => janee(ex, v));
+document.querySelectorAll('input[name="uit_publiceren"]').forEach(r => r.addEventListener("change", () => { document.getElementById("uitwrap").hidden = !document.getElementById("uit_0").checked; }));
 PRAKTISCH.forEach((v) => janee(document.getElementById("praktisch"), v));
 
 const ml = document.getElementById("matlijst");
@@ -601,6 +626,8 @@ form.addEventListener("submit", async e => {
     err.hidden = false; bad[0].focus(); return;
   }
   const data = Object.fromEntries(new FormData(form).entries());
+  data.speciaal = new FormData(form).getAll("speciaal").join(", ");
+  if (data.uit_publiceren !== "ja") { data.uit_tekst = ""; data.uit_prijs = ""; }
   data.toestemming_privacy = form.toestemming_privacy.checked ? "ja" : "nee";
   data.toestemming_mandaat = form.toestemming_mandaat.checked ? "ja" : "nee";
   data.termijn_oordeel = termijn ? termijn.soort : "onbekend";
