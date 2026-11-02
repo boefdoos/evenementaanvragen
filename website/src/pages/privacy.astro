@@ -3,7 +3,7 @@
 import Basis from "../layouts/Basis.astro";
 import huisstijl from "../huisstijl.css?raw";
 import juridisch from "../juridisch.css?raw";
-const VERSIE = "1";
+const VERSIE = "2";
 const DATUM = "2 november 2026";
 const hoofdstukken = [
   ["wie", "Wie is verantwoordelijk"],
@@ -18,7 +18,7 @@ const hoofdstukken = [
   ["wijzigingen", "Wijzigingen"],
 ];
 ---
-<Basis title="Privacyverklaring – evenementaanvragen.be" description="Welke gegevens evenementaanvragen.be verwerkt, waarom, met wie we ze delen, hoe lang we ze bewaren, je rechten en welke cookies we gebruiken." canonical="/privacy.html">
+<Basis title="Privacyverklaring – evenementaanvragen.be" description="Welke gegevens evenementaanvragen.be verwerkt, waarom, met wie we ze delen, hoe lang we ze bewaren, je rechten en welke cookies we gebruiken." canonical="/privacy">
 <style is:inline slot="head" set:html={huisstijl + juridisch}></style>
 <main class="jur">
 <div class="wrap">
@@ -83,7 +83,7 @@ const hoofdstukken = [
     <thead><tr><th>Dienst</th><th>Waarvoor</th></tr></thead>
     <tbody>
       <tr><td>Google (Google Workspace)</td><td>E-mail, opslag van dossiers en het verwerken van het formulier.</td></tr>
-      <tr><td>Vercel</td><td>Hosting van deze website.</td></tr>
+      <tr><td>Cloudflare</td><td>Hosting van deze website en het beheer van de domeinnaam (DNS).</td></tr>
       <tr><td>Onze boekhouder en boekhoudsoftware</td><td>Facturen en boekhouding.</td></tr>
     </tbody>
   </table></div>
@@ -95,7 +95,7 @@ const hoofdstukken = [
   </ul>
 
   <h2 id="buiten-eu">5. Gegevens buiten de Europese Unie</h2>
-  <p>Google, Anthropic en Vercel zijn Amerikaanse bedrijven. Je gegevens kunnen daardoor in de Verenigde Staten verwerkt worden. Google en Vercel doen dat met de waarborgen die de AVG vraagt, zoals het EU-VS-gegevensprivacykader of de standaardcontractbepalingen van de Europese Commissie. Voor Anthropic gelden de voorwaarden en het privacybeleid van Anthropic.</p>
+  <p>Google, Anthropic en Cloudflare zijn Amerikaanse bedrijven. Je gegevens kunnen daardoor in de Verenigde Staten verwerkt worden. Google en Cloudflare doen dat met de waarborgen die de AVG vraagt, zoals het EU-VS-gegevensprivacykader of de standaardcontractbepalingen van de Europese Commissie. Voor Anthropic gelden de voorwaarden en het privacybeleid van Anthropic.</p>
 
   <h2 id="bewaren">6. Hoe lang we bewaren</h2>
   <div class="tabel"><table>

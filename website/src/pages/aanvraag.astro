@@ -1,7 +1,7 @@
 ---
 import Basis from "../layouts/Basis.astro";
 ---
-<Basis title="Aanvraag · evenementaanvragen.be" description="Vertel ons over je evenement. Wij berekenen de deadline bij je gemeente, maken het dossier op en dienen het in." home={false} toonStart={false} canonical="/aanvraag.html">
+<Basis title="Aanvraag · evenementaanvragen.be" description="Vertel ons over je evenement. Wij berekenen de deadline bij je gemeente, maken het dossier op en dienen het in." home={false} toonStart={false} canonical="/aanvraag">
 <style is:inline slot="head">
 /* Zelfde huisstijl als de startpagina: rustig donker, één accentkleur (koraal), verder grijswaarden.
    Formulier = één smalle kolom; elke sectie is een kaart met een genummerde kop zoals de stappen op de startpagina. */
@@ -396,7 +396,7 @@ footer.foot a{color:var(--soft)}
       <fieldset>
         <legend><div class="sec-head"><span class="sec-title">Nakijken en akkoord</span></div></legend>
         <dl class="overzicht" id="overzicht"></dl>
-        <label class="check" for="toestemming_privacy"><input type="checkbox" id="toestemming_privacy" name="toestemming_privacy" required><span>Ik ga akkoord met de <a href="/voorwaarden.html" target="_blank" rel="noopener">algemene voorwaarden</a> en las de <a href="/privacy.html" target="_blank" rel="noopener">privacyverklaring</a>. <span class="req">*</span></span></label>
+        <label class="check" for="toestemming_privacy"><input type="checkbox" id="toestemming_privacy" name="toestemming_privacy" required><span>Ik ga akkoord met de <a href="/voorwaarden" target="_blank" rel="noopener">algemene voorwaarden</a> en las de <a href="/privacy" target="_blank" rel="noopener">privacyverklaring</a>. <span class="req">*</span></span></label>
         <div class="full volm">
           <div class="q">Volmacht</div>
           <div class="hint">Zo mogen we de aanvraag in jouw naam indienen. Je hoeft niets af te drukken of op te sturen: je getypte naam en het vinkje gelden als handtekening. Je krijgt een kopie per mail.</div>

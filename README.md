@@ -4,7 +4,7 @@ Dienst die evenementaanvragen voor organisatoren in Vlaanderen opmaakt en indien
 
 ## Structuur
 
-`website/` is een Astro-project (statisch, gebouwd door Vercel bij elke push).
+`website/` is een Astro-project (statisch, gebouwd door Cloudflare Workers Builds bij elke push; zie `website/wrangler.jsonc`).
 
 - `src/layouts/Basis.astro` — gemeenschappelijke kop, menu en voet
 - `src/pages/index.astro` — startpagina met termijncheck

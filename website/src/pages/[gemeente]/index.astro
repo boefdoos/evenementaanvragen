@@ -77,7 +77,7 @@ const voorwaarden = (r.bijzonder || [])
   .slice(0, 6);
 const u = r.uitleen || {};
 const bron = Array.isArray(r.bron) ? r.bron[0] : r.bron;
-const start = `/aanvraag.html?gemeente=${encodeURIComponent(g)}`;
+const start = `/aanvraag?gemeente=${encodeURIComponent(g)}`;
 // Andere gemeenten uit dezelfde provincie (alfabetisch rond deze gemeente), voor interne links.
 const zelfde = regels.filter((x) => (x.provincie || "West-Vlaanderen") === provincie)
   .map((x) => x.gemeente).sort((a, b) => a.localeCompare(b, "nl"));
@@ -223,7 +223,7 @@ const ld = [
     if(!aangeraakt) return;
     const v={gemeente:gemNaam,type:typ.value,datum:dat.value};
     try{sessionStorage.setItem("termijncheck",JSON.stringify(v));}catch(e){}
-    document.querySelectorAll('a[href^="/aanvraag.html"]').forEach(a=>{
+    document.querySelectorAll('a[href^="/aanvraag"]').forEach(a=>{
       const u=new URL(a.getAttribute("href"),location.origin);
       for(const [k,w] of Object.entries(v)) if(w) u.searchParams.set(k,w);
       a.setAttribute("href",u.pathname+u.search);
@@ -243,7 +243,7 @@ const ld = [
     out.innerHTML='<div class="count"><span class="num">'+(voorbij?"0":String(d))+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
       '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status'+(st==="late"?" late":"")+'">'+txt+'</span></div>'+
       '<p class="rule">'+(st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>'+
-      (st==="late"?'':'<a class="go-link" href="/aanvraag.html?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+'">Wij dienen het in voor je →</a>');
+      (st==="late"?'':'<a class="go-link" href="/aanvraag?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+'">Wij dienen het in voor je →</a>');
   }
   fetch("/regels.json").then(r=>r.json()).then(data=>{RULES=data;show();})
     .catch(()=>{out.innerHTML='<div class="deadline">De termijnen konden niet laden.</div><p class="rule">Start gerust je aanvraag: wij rekenen het voor je uit.</p>';});

@@ -1,0 +1,12 @@
+// Cloudflare Workers: enkel statische bestanden uit dist (geen eigen code).
+{
+  "name": "evenementaanvragen",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    // /aanvraag.html wordt /aanvraag, mappen houden hun slash.
+    "html_handling": "auto-trailing-slash",
+    // Onbekend adres: onze eigen 404.html met status 404.
+    "not_found_handling": "404-page"
+  }
+}

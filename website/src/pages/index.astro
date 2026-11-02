@@ -10,7 +10,7 @@ import huisstijl from "../huisstijl.css?raw";
     <h1>Jij maakt het feest. <span>Wij regelen de aanvraag.</span></h1>
     <p class="lead">Deadline berekend, dossier opgemaakt, ingediend bij je gemeente.</p>
     <div class="cta">
-      <a class="btn primary" href="/aanvraag.html">Start je aanvraag <span class="arr" aria-hidden="true">→</span></a>
+      <a class="btn primary" href="/aanvraag">Start je aanvraag <span class="arr" aria-hidden="true">→</span></a>
       <a class="btn" href="#prijzen">Vanaf € 45</a>
     </div>
     <p class="facts"><a href="/gemeenten/" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--line-2)"><b>285</b> Vlaamse gemeenten</a> · <b>10 minuten</b> invullen</p>
@@ -103,7 +103,7 @@ import huisstijl from "../huisstijl.css?raw";
 
   <div class="final">
     <div><h2>Klaar voor je evenement?</h2></div>
-    <a class="btn primary" href="/aanvraag.html">Start je aanvraag <span class="arr" aria-hidden="true">→</span></a>
+    <a class="btn primary" href="/aanvraag">Start je aanvraag <span class="arr" aria-hidden="true">→</span></a>
   </div>
 </div></section>
 </main>
@@ -127,7 +127,7 @@ import huisstijl from "../huisstijl.css?raw";
     if(!aangeraakt) return;
     const v={gemeente:gemNaam,type:typ.value,datum:dat.value};
     try{sessionStorage.setItem("termijncheck",JSON.stringify(v));}catch(e){}
-    document.querySelectorAll('a[href^="/aanvraag.html"]').forEach(a=>{
+    document.querySelectorAll('a[href^="/aanvraag"]').forEach(a=>{
       const u=new URL(a.getAttribute("href"),location.origin);
       for(const [k,w] of Object.entries(v)) if(w) u.searchParams.set(k,w);
       a.setAttribute("href",u.pathname+u.search);
@@ -151,7 +151,7 @@ import huisstijl from "../huisstijl.css?raw";
     out.innerHTML='<div class="count"><span class="num">'+num+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
       '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status'+(st==="late"?" late":"")+'">'+txt+'</span></div>'+
       '<p class="rule">'+(st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>'+
-      (st==="late"?'':'<a class="go-link" href="/aanvraag.html?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+'">Wij dienen het in voor je →</a>');
+      (st==="late"?'':'<a class="go-link" href="/aanvraag?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+'">Wij dienen het in voor je →</a>');
   }
   fetch("/regels.json").then(r=>r.json()).then(data=>{
     RULES=data;

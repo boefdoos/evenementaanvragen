@@ -8,7 +8,7 @@ interface Props {
   toonStart?: boolean;  // knop "Start" in het menu
   startHref?: string;
 }
-const { title, description, canonical, home = false, toonStart = true, startHref = "/aanvraag.html" } = Astro.props;
+const { title, description, canonical, home = false, toonStart = true, startHref = "/aanvraag" } = Astro.props;
 const DOMEIN = "https://evenementaanvragen.be";
 const p = home ? "" : "/";
 // Lettertypes van de eigen server (geen verzoek naar Google Fonts).
@@ -59,7 +59,7 @@ import "@fontsource/instrument-sans/700.css";
 <footer class="foot"><div class="wrap">
   <div><b>evenementaanvragen.be</b>Troostberg<br>Zwanenlaan 45, 8400 Oostende<br>Ondernemingsnummer 0791.797.538</div>
   <div><b>Contact</b>thomas@evenementaanvragen.be<br><br><a href="/gemeenten/">Alle gemeenten</a></div>
-  <div><b>Juridisch</b><a href="/voorwaarden.html">Algemene voorwaarden</a><br><a href="/privacy.html">Privacyverklaring</a></div>
+  <div><b>Juridisch</b><a href="/voorwaarden">Algemene voorwaarden</a><br><a href="/privacy">Privacyverklaring</a></div>
 </div></footer>
 
 <slot name="scripts" />
