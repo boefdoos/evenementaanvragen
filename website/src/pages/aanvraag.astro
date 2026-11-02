@@ -426,7 +426,7 @@ footer.foot a{color:var(--soft)}
     <h2 id="done-kop">Bedankt, we hebben alles.</h2>
     <div id="done-betaal" hidden>
       <div class="betaalrij">
-        <div class="bedrag"><b id="betaalbedrag">€ 45</b><span id="betaalformule">Basis</span></div>
+        <div class="bedrag"><b id="betaalbedrag">€ 45</b><span id="betaalformule"></span></div>
         <a class="btn" id="betaallink" href="#">Betalen <span class="arr" aria-hidden="true">→</span></a>
       </div>
       <p>Na je betaling nemen wij het over.</p>
@@ -542,7 +542,9 @@ function prijsVoor() {
   const bez = +veld("bezoekers") || 0, plan = gekozen("inplantingsplan");
   const formule = plan === "hulp nodig" || bez >= 500 ? "Plus" : "Basis";
   const factor = veld("aanvrager_type") === "bedrijf" ? 2 : 1;
-  return { formule, bedrag: { Basis: 45, Plus: 75 }[formule] * factor, factor };
+  // Klanten zien geen formulenaam, wel waarom de prijs is wat hij is. Intern blijft het Basis / Plus.
+  const reden = formule === "Basis" ? "evenement tot 499 aanwezigen" : bez >= 500 ? "evenement vanaf 500 aanwezigen, plantekenaar inbegrepen" : "met hulp bij je plan";
+  return { formule, reden, bedrag: { Basis: 45, Plus: 75 }[formule] * factor, factor };
 }
 
 // Past het formulier aan de gemeente en de situatie aan: enkel de vragen die hier tellen.
@@ -607,12 +609,13 @@ function toonGembox() {
   if (zaalOnzeker) li.push("Voor een evenement in een zaal kijken we de procedure van " + r.gemeente + " voor je na. Dat zit in de prijs.");
   else if (PLATFORM[r.platform]) li.push("We dienen in " + PLATFORM[r.platform] + ".");
   const p = nodigePlannen(), pl = [p.inplanting.length && "inplantingsplan", p.grondplan.length && "grondplan"].filter(Boolean);
-  if (pl.length) li.push("Plannen: " + pl.join(" en ") + ". Je kan ze zelf toevoegen, of tekenen in onze plantekenaar (formule Plus).");
+  const pv = prijsVoor();
+  if (pl.length) li.push("Plannen: " + pl.join(" en ") + ". Je kan ze zelf toevoegen, of tekenen in onze plantekenaar" + (pv.formule === "Plus" ? " (inbegrepen)." : " (€ " + 30 * pv.factor + " extra)."));
   const geen = geenUitleen(), u = r.uitleen || {};
   if (geen) li.push("Materiaal: de gemeente " + geen + ".");
   else if (u.uitleendienst === "ja") li.push("Materiaal van de gemeente vragen we mee aan als je dat wil.");
   const pr = prijsVoor();
-  li.push(pr.formule === "Plus" ? "Prijs: € " + pr.bedrag + " (Plus)." : "Prijs: € " + pr.bedrag + " (Basis), of € " + 75 * pr.factor + " (Plus) als je hulp wil bij je plan.");
+  li.push("Prijs: € " + pr.bedrag + " (" + pr.reden + ").");
   document.getElementById("gb-kop").textContent = "Wat dit betekent in " + r.gemeente;
   document.getElementById("gb-lijst").innerHTML = li.map(x => "<li>" + esc(x) + "</li>").join("");
   box.hidden = false;
@@ -826,12 +829,12 @@ De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor d
 const vt = document.getElementById("volmachttekst");
 function toonVolmacht() { vt.textContent = volmachtTekst(Object.fromEntries(new FormData(intakeForm).entries())); }
 
-// Prijs: zelfde regels als prijsVoor() in Betaling.gs. Plus = hulp bij het plan (plantekenaar) of 500 aanwezigen of meer.
+// Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 75 bij hulp bij het plan (plantekenaar) of 500 aanwezigen of meer.
 function toonPrijs() {
   const box = document.getElementById("prijs");
   if (!veld("aanvrager_type") || !veld("bezoekers") || !veld("locatie_soort")) { box.hidden = true; return; }
   const p = prijsVoor();
-  box.innerHTML = '<span>' + p.formule + (veld("aanvrager_type") === "bedrijf" ? ", tarief bedrijf of zelfstandige" : "") + '</span><b>€ ' + p.bedrag + '</b>';
+  box.innerHTML = '<span>' + esc(p.reden.charAt(0).toUpperCase() + p.reden.slice(1)) + (veld("aanvrager_type") === "bedrijf" ? ", tarief bedrijf of zelfstandige" : "") + '</span><b>€ ' + p.bedrag + '</b>';
   box.hidden = false;
 }
 function toonHerroeping() {
@@ -978,7 +981,7 @@ const concept = herstel();
   if (gem && !g.value && [...g.options].some(o => o.value === gem)) g.value = gem;
   if (typ && !ts.value && [...ts.options].some(o => o.value === typ)) ts.value = typ;
   if (dat && !sd.value && /^\d{4}-\d{2}-\d{2}$/.test(dat)) sd.value = dat;
-  // Vanaf de prijskaart "Start met Plus": hulp bij het plan voorkiezen, tenzij de klant al zelf koos.
+  // Vanaf de knop "Start met hulp bij je plan": hulp bij het plan voorkiezen, tenzij de klant al zelf koos.
   if (q.get("formule") === "plus" && (!concept || !concept.v.inplantingsplan || concept.v.inplantingsplan === "later")) document.getElementById("plan_1").checked = true;
 })();
 zoeker.sync(); volgEinddatum(); pasAan(); toonTermijn();
@@ -1051,7 +1054,7 @@ form.addEventListener("submit", async e => {
     document.getElementById("done-navraag").hidden = betaal;
     if (betaal) {
       document.getElementById("done-kop").textContent = "Je bent er bijna.";
-      document.getElementById("betaalformule").textContent = j.formule || "";
+      document.getElementById("betaalformule").textContent = prijsVoor().reden;
       document.getElementById("betaallink").href = j.betaalUrl;
       document.getElementById("betaalbedrag").textContent = j.bedrag ? "€ " + j.bedrag : "";
       if (!j.bedrag) document.getElementById("betaalbedrag").parentElement.hidden = true;
