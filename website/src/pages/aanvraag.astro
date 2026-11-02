@@ -202,6 +202,10 @@ footer.foot a{color:var(--soft)}
       <div class="field"><label for="bezoekers">Bezoekers tegelijk op het drukste moment <span class="req">*</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
       <div class="field"><label for="openbaar_domein">Op straat, plein of park? <span class="req">*</span></label>
         <select id="openbaar_domein" name="openbaar_domein" required><option value="">Kies…</option><option value="nee">Nee, volledig binnen of op privéterrein</option><option value="deels">Deels</option><option value="ja">Ja</option></select></div>
+      <div class="field"><label for="bewaking">Bewaking <span class="hint">(als je het al weet)</span></label>
+        <select id="bewaking" name="bewaking"><option value="">Weet ik nog niet</option><option value="vrijwilligers">Vrijwilligers van de organisatie</option><option value="bewakingsfirma">Erkende bewakingsfirma</option><option value="geen">Geen bewaking</option></select></div>
+      <div class="field"><label for="ehbo">EHBO <span class="hint">(als je het al weet)</span></label>
+        <select id="ehbo" name="ehbo"><option value="">Weet ik nog niet</option><option value="ehbo-dienst">Rode Kruis of andere EHBO-dienst</option><option value="eigen">Eigen EHBO'er</option><option value="geen">Geen EHBO-post</option></select></div>
       <div class="termijn" id="termijn" aria-live="polite" hidden><div class="t-kop" id="t-kop"></div><p id="t-tekst"></p></div>
     </fieldset>
 
@@ -218,6 +222,10 @@ footer.foot a{color:var(--soft)}
       <div class="field" id="tentwrap" hidden>
         <label for="tent_afmetingen">Afmetingen tent(en) <span class="hint">(lengte × breedte in meter)</span></label>
         <input id="tent_afmetingen" name="tent_afmetingen" placeholder="bv. 12 × 6, en 3 × 3 voor de bar">
+      </div>
+      <div class="field" id="tentverhuurwrap" hidden>
+        <label for="tent_verhuurder">Wie levert de tent? <span class="hint">(als je het al weet)</span></label>
+        <input id="tent_verhuurder" name="tent_verhuurder" placeholder="bv. naam van de verhuurder, of eigen tent">
       </div>
       <div class="field full" id="zaalwrap" hidden>
         <div class="q" id="q_zaalplan">Heeft de zaal een eigen grondplan of evacuatieplan?</div>
@@ -368,6 +376,7 @@ function toonUpload() {
 const ls = document.getElementById("locatie_soort");
 ls.addEventListener("change", () => {
   document.getElementById("tentwrap").hidden = !["tent", "combinatie"].includes(ls.value);
+  document.getElementById("tentverhuurwrap").hidden = !["tent", "combinatie"].includes(ls.value);
   document.getElementById("zaalwrap").hidden = !["zaal", "combinatie"].includes(ls.value);
 });
 document.querySelectorAll('input[name="zaal_grondplan"]').forEach(r => r.addEventListener("change", toonUpload));
