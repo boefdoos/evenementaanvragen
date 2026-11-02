@@ -571,17 +571,29 @@ function pasAan() {
   ml.querySelectorAll(".matrow").forEach(rw => { const weg = cat[rw.dataset.k] === "nee"; rw.hidden = weg; if (weg) rw.querySelector("input").value = ""; });
   toonMateriaal();
   // Plannen: wat er voor deze situatie nodig is.
-  const p = nodigePlannen(), pn = document.getElementById("plannote"), delen = [];
-  if (p.inplanting.length) delen.push("een <b>inplantingsplan</b>");
-  if (p.grondplan.length) delen.push("een <b>grondplan</b>");
-  const waarom = [...new Set(p.inplanting.concat(p.grondplan))].map(x => ({ tent: "een tent", buiten: "buiten", zaal: "een zaal" })[x] || x);
-  pn.innerHTML = delen.length ? "Voor je evenement" + (gem ? " in " + esc(gem) : "") + " is wellicht nodig: " + delen.join(" en ") + ". Reden: " + waarom.map(esc).join(", ") + "." : "";
-  pn.hidden = !delen.length;
+  const pn = document.getElementById("plannote"), zin = planZin();
+  pn.innerHTML = zin; pn.hidden = !zin;
   document.getElementById("tentwrap").hidden = !["tent", "combinatie"].includes(veld("locatie_soort"));
   document.getElementById("tentverhuurwrap").hidden = document.getElementById("tentwrap").hidden;
   document.getElementById("zaalwrap").hidden = !["zaal", "combinatie"].includes(veld("locatie_soort"));
   document.getElementById("odwrap").hidden = !["ja", "deels"].includes(veld("openbaar_domein"));
   toonUpload(); toonGembox(); toonDocs();
+}
+// Leesbare zin over de plannen, bv. "Brugge vraagt een inplantingsplan. Voor de zaal heb je daarnaast een grondplan nodig."
+function planZin() {
+  const p = nodigePlannen(), gem = esc(veld("gemeente")), vraagt = x => /vraagt het$/.test(x);
+  const zinnen = [];
+  if (p.inplanting.length) {
+    const rest = p.inplanting.filter(x => !vraagt(x)).map(x => ({ tent: "er een tent staat", buiten: "het buiten plaatsvindt", "openbaar domein": "er iets op straat, stoep of plein komt", "500 aanwezigen of meer": "er 500 of meer mensen tegelijk zijn" })[x] || x);
+    if (!rest.length) zinnen.push(gem + " vraagt een <b>inplantingsplan</b>.");
+    else zinnen.push("Je hebt een <b>inplantingsplan</b> nodig, omdat " + rest.join(" en ") + "." + (p.inplanting.some(vraagt) ? " " + gem + " vraagt het ook." : ""));
+  }
+  if (p.grondplan.length) {
+    const van = p.grondplan.includes("tent") ? " van de tent" : p.grondplan.includes("zaal") ? " van de zaal" : "";
+    const alleenGemeente = p.grondplan.every(vraagt);
+    zinnen.push(alleenGemeente ? gem + " vraagt ook een <b>grondplan</b>." : (zinnen.length ? "Daarnaast heb je een <b>grondplan</b>" + van + " nodig" : "Je hebt een <b>grondplan</b>" + van + " nodig") + "; de brandweer vraagt dat meestal.");
+  }
+  return zinnen.join(" ");
 }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
 
