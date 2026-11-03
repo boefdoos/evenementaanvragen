@@ -438,6 +438,7 @@ function controles(plan) {
   if (plan === "inplanting") {
     const it = (k) => S.I.items.filter((i) => i.k === k);
     C(0, it("zone").length > 0, "Het terrein is aangeduid");
+    if (it("zone").length && S.d.gemeente && !DEMO && S.I.kaartGemeente && S.I.kaartGemeente !== "?") C(0, zelfdeGemeente(S.I.kaartGemeente), "Het terrein ligt in " + S.d.gemeente + (zelfdeGemeente(S.I.kaartGemeente) ? "" : " (nu getekend in " + S.I.kaartGemeente + ")"));
     C(1, S.I.items.some((i) => KAT_I[i.k].f === "rect" && !["zone", "doorgang"].includes(i.k)), "Alle opstellingen staan erop, met hun afmetingen");
     const nd = norm("doorgang_hulpdiensten");
     const dgMin = nd && nd.breedte_m;
@@ -611,7 +612,7 @@ function tekenStap() {
 }
 function naarStap(i) { S.stap[S.actief] = Math.max(0, Math.min(STAPPEN[S.actief].length - 1, i)); sel = null; maatModus = false; banner(null); allesTekenen(); bewaar(); }
 function tekenPlan() { if (S.actief === "inplanting") tekenKaart(); else tekenGrondplan(); }
-function allesTekenen() { tekenStap(); tekenPlan(); tekenLijst(); tekenControles(); }
+function allesTekenen() { tekenStap(); tekenPlan(); tekenLijst(); tekenControles(); if (S.actief === "inplanting") controleerGemeente(); }
 function wisselPlan(p) {
   S.actief = p; sel = null; maatModus = false; banner(null);
   document.querySelectorAll("#tabs button").forEach((b) => b.setAttribute("aria-selected", b.dataset.plan === p));
@@ -630,7 +631,29 @@ function metGemeente(v) {
 async function suggesties(v, n) {
   const vraag = async (q) => { try { const j = await (await fetch(GEO + "Suggestion?c=" + n + "&q=" + encodeURIComponent(q))).json(); return j.SuggestionResult || []; } catch (e) { return []; } };
   const metGem = metGemeente(v), eerst = await vraag(metGem);
-  return eerst.length || metGem === v ? eerst : vraag(v); // typte de klant een andere gemeente, dan zonder de onze
+  const lijst = eerst.length || metGem === v ? eerst : await vraag(v);
+  if (!S.d.gemeente || BEHEER) return lijst;
+  return lijst.filter((x) => zelfdeGemeente(String(x).split(",").pop())); // enkel adressen in de gemeente van de aanvraag
+}
+function gemNorm(g) { return String(g || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\b\d{4}\b/g, "").replace(/[^a-z]/gi, "").toLowerCase(); }
+function zelfdeGemeente(g) { return !S.d.gemeente || gemNorm(g) === gemNorm(S.d.gemeente); }
+// In welke gemeente ligt het getekende terrein? (omgekeerd zoeken op het midden van de terreinen)
+let gemT = null;
+function controleerGemeente() {
+  clearTimeout(gemT);
+  if (!S.d.gemeente || DEMO) return;
+  gemT = setTimeout(async () => {
+    const z = S.I.items.filter((i) => i.k === "zone");
+    if (!z.length) { if (S.I.kaartGemeente) { S.I.kaartGemeente = ""; tekenControles(); } return; }
+    const lat = z.reduce((a, i) => a + i.lat, 0) / z.length, lng = z.reduce((a, i) => a + i.lng, 0) / z.length;
+    const sleutelG = lat.toFixed(4) + "," + lng.toFixed(4);
+    if (S.I.kaartPunt === sleutelG && S.I.kaartGemeente) return;
+    try {
+      const j = await (await fetch(GEO + "Location?c=1&latlon=" + lat + "," + lng)).json();
+      const g = j.LocationResult && j.LocationResult[0] && j.LocationResult[0].Municipality;
+      S.I.kaartPunt = sleutelG; S.I.kaartGemeente = g || "?"; bewaar(); tekenControles();
+    } catch (e) {}
+  }, 600);
 }
 let sugT = null, sugLaatste = "";
 function adresSuggesties() {
@@ -659,7 +682,9 @@ async function zoekAdres() {
     if (!loc) { const s = (await suggesties(v, 1))[0]; if (s) loc = await locatie(s); }
     if (!loc) throw new Error("niet gevonden");
     map.setView([loc.Location.Lat_WGS84, loc.Location.Lon_WGS84], 19);
-    S.I.gezocht = true; $("msg").textContent = "Gevonden: " + loc.FormattedAddress; bewaar();
+    S.I.gezocht = true;
+    $("msg").textContent = zelfdeGemeente(loc.Municipality) ? "Gevonden: " + loc.FormattedAddress : "Let op: " + loc.FormattedAddress + " ligt niet in " + S.d.gemeente + ", de gemeente van je aanvraag. Kies een adres in " + S.d.gemeente + ".";
+    bewaar();
   } catch (e) { $("msg").textContent = "Adres niet gevonden. Verschuif de kaart zelf naar de juiste plaats."; }
 }
 
