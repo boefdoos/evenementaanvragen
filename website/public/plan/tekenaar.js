@@ -507,11 +507,14 @@ function tekenStap() {
   $("verder").hidden = !!stap.controle;
   // velden
   let v = "";
-  if (stap.veld === "terrein") v = '<div style="display:flex;flex-direction:column;gap:10px"><label for="f-adres">Adres<input id="f-adres" value="' + esc(S.d.adres || "") + '"></label><button class="btn" id="zoek" type="button">Zoek op de kaart</button><label for="f-pers">Personen tegelijk op het drukste moment<input id="f-pers" type="number" min="1" value="' + S.personen + '"></label></div>';
+  if (stap.veld === "terrein") v = '<div style="display:flex;flex-direction:column;gap:10px"><label for="f-adres">Adres<input id="f-adres" list="f-adreslijst" autocomplete="off" placeholder="Straat en nummer, gemeente" value="' + esc(S.d.adres || "") + '"><datalist id="f-adreslijst"></datalist></label><button class="btn" id="zoek" type="button">Zoek op de kaart</button><label for="f-pers">Personen tegelijk op het drukste moment<input id="f-pers" type="number" min="1" value="' + S.personen + '"></label></div>';
   if (stap.veld === "ruimte") v = '<div style="display:flex;flex-direction:column;gap:10px"><div class="r2"><label for="g-l">Lengte (m)<input id="g-l" type="number" min="2" step="0.5" value="' + S.G.l + '"></label><label for="g-b">Breedte (m)<input id="g-b" type="number" min="2" step="0.5" value="' + S.G.b + '"></label></div><label for="g-mat">Soort ruimte en materiaal<input id="g-mat" value="' + esc(S.G.mat) + '" placeholder="bv. tent met PVC-zeil, of zaal"></label><label for="g-pers">Personen tegelijk op het drukste moment<input id="g-pers" type="number" min="1" value="' + S.personen + '"></label></div>';
   $("stapvelden").innerHTML = v;
   if ($("zoek")) $("zoek").addEventListener("click", zoekAdres);
-  if ($("f-adres")) $("f-adres").addEventListener("input", () => { S.d.adres = $("f-adres").value; bewaar(); });
+  if ($("f-adres")) {
+    $("f-adres").addEventListener("input", () => { S.d.adres = $("f-adres").value; bewaar(); adresSuggesties(); });
+    $("f-adres").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); zoekAdres(); } });
+  }
   for (const id of ["f-pers", "g-pers"]) if ($(id)) $(id).addEventListener("input", () => { S.personen = Math.max(1, +$(id).value || 1); tekenControles(); bewaar(); });
   const gu = () => { S.G.l = Math.max(2, +$("g-l").value || S.G.l); S.G.b = Math.max(2, +$("g-b").value || S.G.b); S.G.mat = $("g-mat").value; S.G.items.filter((i) => KAT_G[i.k].f === "deur").forEach(klikAanWand); tekenPlan(); tekenControles(); bewaar(); };
   for (const id of ["g-l", "g-b", "g-mat"]) if ($(id)) $(id).addEventListener("input", gu);
@@ -535,13 +538,43 @@ function wisselPlan(p) {
   allesTekenen(); bewaar();
 }
 function banner(t) { $("banner").hidden = !t; $("banner").textContent = t || ""; }
+// Adressen via Digitaal Vlaanderen. De zoekdienst is streng (de gemeente twee keer erin = niets gevonden),
+// de suggestiedienst vergeeft meer. Daarom: suggesties tijdens het typen, en bij zoeken meerdere pogingen.
+const GEO = "https://geo.api.vlaanderen.be/geolocation/v4/";
+function metGemeente(v) {
+  const gem = S.d.gemeente || "";
+  return gem && !/\b\d{4}\b/.test(v) && v.toLowerCase().indexOf(gem.toLowerCase()) < 0 ? v + " " + gem : v;
+}
+async function suggesties(v, n) {
+  const vraag = async (q) => { try { const j = await (await fetch(GEO + "Suggestion?c=" + n + "&q=" + encodeURIComponent(q))).json(); return j.SuggestionResult || []; } catch (e) { return []; } };
+  const metGem = metGemeente(v), eerst = await vraag(metGem);
+  return eerst.length || metGem === v ? eerst : vraag(v); // typte de klant een andere gemeente, dan zonder de onze
+}
+let sugT = null, sugLaatste = "";
+function adresSuggesties() {
+  clearTimeout(sugT);
+  sugT = setTimeout(async () => {
+    const v = ($("f-adres") && $("f-adres").value || "").trim();
+    if (v.length < 3 || v === sugLaatste) return;
+    sugLaatste = v;
+    const lijst = await suggesties(v, 6), dl = $("f-adreslijst");
+    if (!dl) return;
+    dl.replaceChildren(...lijst.map((x) => new Option(x)));
+    if (lijst.indexOf(v) >= 0) zoekAdres(); // een suggestie gekozen: meteen tonen
+  }, 250);
+}
+async function locatie(q) {
+  const j = await (await fetch(GEO + "Location?c=1&q=" + encodeURIComponent(q))).json();
+  return (j.LocationResult && j.LocationResult[0]) || null;
+}
 async function zoekAdres() {
-  const q = ($("f-adres").value || "").trim() + (S.d.gemeente && !/\d{4}/.test($("f-adres").value) ? " " + S.d.gemeente : "");
-  if (!q.trim()) return;
+  const v = ($("f-adres").value || "").trim();
+  if (!v) return;
   $("msg").textContent = "Adres zoeken…";
   try {
-    const r = await fetch("https://geo.api.vlaanderen.be/geolocation/v4/Location?q=" + encodeURIComponent(q) + "&c=1");
-    const j = await r.json(), loc = j.LocationResult && j.LocationResult[0];
+    let loc = await locatie(v);
+    if (!loc && metGemeente(v) !== v) loc = await locatie(metGemeente(v));
+    if (!loc) { const s = (await suggesties(v, 1))[0]; if (s) loc = await locatie(s); }
     if (!loc) throw new Error("niet gevonden");
     map.setView([loc.Location.Lat_WGS84, loc.Location.Lon_WGS84], 19);
     S.I.gezocht = true; $("msg").textContent = "Gevonden: " + loc.FormattedAddress; bewaar();
