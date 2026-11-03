@@ -1074,6 +1074,10 @@ const EIGEN = "eigen-sleutel";
   const eigen = q.get("eigen");
   if (eigen && /^[0-9a-f]{24,128}$/i.test(eigen)) { try { localStorage.setItem(EIGEN, eigen); } catch (e) {} }
   if (eigen !== null) { q.delete("eigen"); try { history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "")); } catch (e) {} }
+  // Zichtbare bevestiging voor de beheerder (een klant heeft geen sleutel en ziet niets).
+  let actief = null; try { actief = localStorage.getItem(EIGEN); } catch (e) {}
+  if (actief) { const m = document.createElement("p"); m.className = "hint"; m.style.cssText = "text-align:center;margin:8px 0 0";
+    m.textContent = "Eigen-sleutel actief op dit toestel (…" + actief.slice(-4) + ")."; document.getElementById("intro").after(m); }
 })();
 zoeker.sync(); volgEinddatum(); pasAan(); toonTermijn(); toonPlanprijs();
 if (concept && concept.verst) verst = Math.min(5, concept.verst);
