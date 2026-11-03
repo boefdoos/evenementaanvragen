@@ -436,6 +436,7 @@ footer.foot a{color:var(--soft)}
       <p>Na je betaling nemen wij het over.</p>
       <p class="fijn">Bancontact of kaart, veilig via Mollie.</p>
     </div>
+    <p id="done-eigen" hidden>Geen betaling nodig. De betaalmail met de volmacht is onderweg, en de geplande taak verwerkt het dossier zoals een betaald dossier. <a id="eigen-plan" hidden>Open de plantekenaar</a></p>
     <p id="done-navraag" hidden>We kijken eerst de termijn van je gemeente na. Binnen twee werkdagen krijg je je deadline en een betaallink. Een bevestiging staat al in je mailbox.</p>
   </section>
 </div>
@@ -1041,6 +1042,7 @@ intakeForm.addEventListener("change", () => { if (stap === 5) { toonVolmacht(); 
 
 // Opstart: eerst het bewaarde concept, daarna (enkel lege velden) wat uit de termijncheck op de startpagina komt.
 const concept = herstel();
+const EIGEN = "eigen-sleutel";
 (function () {
   const q = new URLSearchParams(location.search);
   let mee = {}; try { mee = JSON.parse(sessionStorage.getItem("termijncheck") || "{}") || {}; } catch (e) {}
@@ -1050,6 +1052,11 @@ const concept = herstel();
   if (dat && !sd.value && /^\d{4}-\d{2}-\d{2}$/.test(dat)) sd.value = dat;
   // Vanaf de knop "Start met hulp bij je plan": hulp bij het plan voorkiezen, tenzij de klant al zelf koos.
   if (q.get("formule") === "plus" && (!concept || !concept.v.inplantingsplan || concept.v.inplantingsplan === "later")) document.getElementById("plan_1").checked = true;
+  // Eigen aanvragen (enkel voor de beheerder): ?eigen=<sleutel> één keer openen bewaart de sleutel op dit toestel.
+  // De server kijkt ze na samen met het e-mailadres; voor een klant doet dit niets.
+  const eigen = q.get("eigen");
+  if (eigen && /^[0-9a-f]{24,128}$/i.test(eigen)) { try { localStorage.setItem(EIGEN, eigen); } catch (e) {} }
+  if (eigen !== null) { q.delete("eigen"); try { history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "")); } catch (e) {} }
 })();
 zoeker.sync(); volgEinddatum(); pasAan(); toonTermijn();
 if (concept && concept.verst) verst = Math.min(5, concept.verst);
@@ -1072,6 +1079,7 @@ form.addEventListener("submit", async e => {
   data.toestemming_privacy = form.toestemming_privacy.checked ? "ja" : "nee";
   data.toestemming_mandaat = form.toestemming_mandaat.checked ? "ja" : "nee";
   data.termijn_oordeel = termijn ? termijn.soort : "onbekend";
+  try { const sl = localStorage.getItem(EIGEN); if (sl) data.eigen_sleutel = sl; } catch (e) {}
   const isoD = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
   data.termijn_deadline = termijn && termijn.deadline ? isoD(termijn.deadline) : "";
   data.termijn_regel = (termijn && termijn.termijn) || "";
@@ -1118,7 +1126,13 @@ form.addEventListener("submit", async e => {
     // Enkel een https-link van Mollie tonen.
     const betaal = typeof j.betaalUrl === "string" && /^https:\/\/[\w.-]*mollie\.com\//.test(j.betaalUrl);
     document.getElementById("done-betaal").hidden = !betaal;
-    document.getElementById("done-navraag").hidden = betaal;
+    document.getElementById("done-navraag").hidden = betaal || !!j.eigen;
+    document.getElementById("done-eigen").hidden = !j.eigen;
+    if (j.eigen) {
+      document.getElementById("done-kop").textContent = "Eigen aanvraag: staat op betaald.";
+      const pl = document.getElementById("eigen-plan");
+      pl.hidden = j.formule !== "Plus"; pl.href = "/plan?id=" + encodeURIComponent(j.id);
+    }
     if (betaal) {
       document.getElementById("done-kop").textContent = "Je bent er bijna.";
       document.getElementById("betaalformule").textContent = prijsVoor().reden;
