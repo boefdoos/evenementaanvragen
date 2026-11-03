@@ -76,6 +76,7 @@ legend + .yn{border-top:0;padding-top:4px}
 .seg input{position:absolute;opacity:0;pointer-events:none}
 .seg span{display:block;padding:8px 14px;border:1px solid var(--line-2);border-radius:999px;color:var(--soft);transition:background .15s,color .15s,border-color .15s}
 .seg label:hover span{color:var(--text);border-color:var(--soft)}
+.seg span.meer{display:inline;padding:0;border:0;border-radius:0;background:none;color:inherit;opacity:.65;font-weight:500;margin-left:6px;white-space:nowrap}
 .seg input:checked+span{background:var(--text);color:var(--bg);border-color:var(--text)}
 .seg input:focus-visible+span{outline:2px solid var(--text);outline-offset:2px}
 .vink{margin-top:10px}
@@ -325,7 +326,7 @@ footer.foot a{color:var(--soft)}
           <div class="hint">Het inplantingsplan toont op schaal hoe alles op je terrein staat (tent, podium, bar, toiletten, doorgang voor hulpdiensten). Het grondplan toont één tent of zaal in detail (deuren, uitgangen, blustoestellen). Een duidelijke schets of foto volstaat om te starten. Kies je voor hulp, dan teken je het na je betaling stap voor stap in onze plantekenaar, die meteen de eisen van de brandweer controleert. Wij kijken het na. Onder 500 aanwezigen kost die hulp extra; vanaf 500 zit ze in de prijs.</div>
           <div class="seg" role="radiogroup" aria-labelledby="q_plan">
             <label><input type="radio" id="plan_0" name="inplantingsplan" value="bijgevoegd"><span>Ik voeg het toe</span></label>
-            <label><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Help me het te maken<span id="plan_meer"></span></span></label>
+            <label><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Help me het te maken<span class="meer" id="plan_meer"></span></span></label>
             <label><input type="radio" id="plan_2" name="inplantingsplan" value="later" checked><span>Bezorg ik later</span></label>
           </div>
           <p class="hint" id="planprijs" aria-live="polite"></p>
@@ -407,7 +408,7 @@ footer.foot a{color:var(--soft)}
           <blockquote id="volmachttekst" class="volmtekst"></blockquote>
         </div>
         <div class="field"><label for="volmacht_naam">Volledige naam van wie tekent <span class="req">*</span></label><input id="volmacht_naam" name="volmacht_naam" autocomplete="name" required></div>
-        <div class="field"><label for="volmacht_functie">Hoedanigheid <span class="req">*</span></label><input id="volmacht_functie" name="volmacht_functie" required placeholder="bv. voorzitter, zaakvoerder, in eigen naam"></div>
+        <div class="field" id="functiewrap"><label for="volmacht_functie">Hoedanigheid <span class="req">*</span></label><input id="volmacht_functie" name="volmacht_functie" required placeholder="bv. voorzitter, secretaris, zaakvoerder"></div>
         <label class="check" for="toestemming_mandaat"><input type="checkbox" id="toestemming_mandaat" name="toestemming_mandaat" required><span>Ik ben bevoegd om de organisator te vertegenwoordigen en geef de volmacht hierboven. Mijn getypte naam geldt als handtekening. <span class="req">*</span></span></label>
         <label class="check" for="herroeping" id="herroepwrap" hidden><input type="checkbox" id="herroeping" name="herroeping" value="ja" disabled><span>Ik vraag om meteen te starten. Ik weet dat ik mijn herroepingsrecht verlies zodra de aanvraag volledig is ingediend. <span class="req">*</span></span></label>
         <div class="prijs full" id="prijs" hidden></div>
@@ -559,7 +560,7 @@ function toonPlanprijs() {
   const bez = +veld("bezoekers") || 0, factor = veld("aanvrager_type") === "bedrijf" ? 2 : 1;
   const meer = document.getElementById("plan_meer"), uitleg = document.getElementById("planprijs");
   if (bez >= 500) { meer.textContent = ""; uitleg.textContent = "Bij " + bez + " aanwezigen zit de plantekenaar al in je prijs."; return; }
-  meer.textContent = " (+ € " + 30 * factor + ")";
+  meer.textContent = "+ € " + 30 * factor;
   uitleg.textContent = "Hulp bij je plan: + € " + 30 * factor + ", je prijs wordt dan € " + 75 * factor + " in plaats van € " + 45 * factor + ".";
 }
 ["bezoekers", "aanvrager_type"].forEach(id => { const el = document.getElementById(id); el.addEventListener("input", toonPlanprijs); el.addEventListener("change", toonPlanprijs); });
@@ -571,6 +572,10 @@ const MET_MUZIEK = ["fuif", "concert"];
 function pasAan() {
   const r = regelVan(), u = (r && r.uitleen) || {}, gem = veld("gemeente");
   const vastMuziek = MET_MUZIEK.includes(veld("type"));
+  // Particulier: geen hoedanigheid (de volmacht zegt al "handelend in eigen naam").
+  const particulier = veld("aanvrager_type") === "particulier";
+  document.getElementById("functiewrap").hidden = particulier;
+  document.getElementById("volmacht_functie").required = !particulier;
   if (vastMuziek) document.getElementById("muziek_0").checked = true;
   ["muziek_1", "muziek_2"].forEach(id => { document.getElementById(id).disabled = vastMuziek; });
   // UiT-agenda: enkel waar we weten dat de aanvraag het aanbiedt (Flowlab).
@@ -894,7 +899,8 @@ function datumNL(iso) {
 function volmachtTekst(d) {
   const v = x => String(d[x] || "").trim();
   const org = v("aanvrager_type") === "particulier" || !v("organisatie") ? "in eigen naam" : v("organisatie") + (v("ondernemingsnummer") ? ", ondernemingsnummer " + v("ondernemingsnummer") : "");
-  return `Ondergetekende, ${v("volmacht_naam") || "[naam]"}, ${v("volmacht_functie") || "[hoedanigheid]"}, handelend ${org === "in eigen naam" ? "in eigen naam" : "namens " + org}${v("adres_organisator") ? ", " + v("adres_organisator") : ""},
+  const functie = v("aanvrager_type") === "particulier" ? "" : (v("volmacht_functie") || "[hoedanigheid]") + ", ";
+  return `Ondergetekende, ${v("volmacht_naam") || "[naam]"}, ${functie}handelend ${org === "in eigen naam" ? "in eigen naam" : "namens " + org}${v("adres_organisator") ? ", " + v("adres_organisator") : ""},
 
 geeft volmacht aan ${VOLMACHTHEBBER}
 
@@ -1100,6 +1106,7 @@ form.addEventListener("submit", async e => {
   data.toestemming_privacy = form.toestemming_privacy.checked ? "ja" : "nee";
   data.toestemming_mandaat = form.toestemming_mandaat.checked ? "ja" : "nee";
   data.termijn_oordeel = termijn ? termijn.soort : "onbekend";
+  if (data.aanvrager_type === "particulier") data.volmacht_functie = "in eigen naam";
   try { const sl = localStorage.getItem(EIGEN); if (sl) data.eigen_sleutel = sl; } catch (e) {}
   const isoD = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
   data.termijn_deadline = termijn && termijn.deadline ? isoD(termijn.deadline) : "";
