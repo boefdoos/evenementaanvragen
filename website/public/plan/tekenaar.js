@@ -105,8 +105,13 @@ function laad(d) {
   if (!s || (serverT && serverT > (s.t || 0))) { const n = nieuweStaat(d); vanServer(n, la); if (s) { n.stap = s.stap; n.actief = s.actief; } s = n; }
   S = s;
   S.d = d;
+  S.personen = Math.max(minPersonen(), +S.personen || 1);
   uid = 1 + Math.max(0, ...S.I.items.map((i) => i.id), ...S.I.maten.map((i) => i.id), ...S.G.items.map((i) => i.id));
 }
+
+// Het aantal personen uit de aanvraag is het minimum: lager zou de eisen voor uitgangen versoepelen.
+// In de beheermodus mag Thomas lager gaan (bv. als de aanvraag zelf fout was).
+function minPersonen() { return BEHEER || DEMO ? 1 : Math.max(1, +(S && S.d && S.d.bezoekers) || 1); }
 
 // ---------- Normen ----------
 // normen.json: { gemeenten: {gemeente: zone}, zones: {zone: {...}}, strengste: {...} }; per parameter {waarde, bron, zone}.
@@ -450,6 +455,22 @@ function controles(plan) {
     }
     C(2, S.I.maten.length > 0, "Afstand tot de gebouwen errond gemeten met een maatlijn");
     C(3, it("blus").length > 0, "Blustoestellen aangeduid");
+    // Waar staat alles? (eigen controles, geen norm: enkel of de tekening klopt)
+    const zones = it("zone").map(rectI);
+    if (zones.length) {
+      const opTerrein = (p, e) => zones.some((z) => binnenRect(p, z, e || 0));
+      const opst = S.I.items.filter((i) => KAT_I[i.k].f === "rect" && !["zone", "doorgang"].includes(i.k));
+      const buiten = opst.filter((o) => !hoekenLokaal(rectI(o)).every((p) => opTerrein(p, 0.3)));
+      C(1, !buiten.length, buiten.length ? "Staat niet (helemaal) op het terrein: " + [...new Set(buiten.map((o) => KAT_I[o.k].n.toLowerCase()))].join(", ") : "Alle opstellingen staan op het terrein");
+      const u = it("uitgang"), losU = u.filter((x) => !zones.some((z) => randAfstand(lokaal(x.lat, x.lng), z) <= 1.5));
+      if (u.length) C(2, !losU.length, losU.length ? losU.length + " nooduitgang" + (losU.length > 1 ? "en liggen" : " ligt") + " niet op de rand van het terrein" : "Nooduitgangen liggen op de rand van het terrein");
+      if (dg.length) C(2, dg.every((d) => puntenIn(rectI(d), 1).some((p) => !opTerrein(p, -0.5))), "De doorgang voor de hulpdiensten loopt tot aan de rand van het terrein");
+      const b = it("blus");
+      if (b.length) C(3, b.every((x) => opTerrein(lokaal(x.lat, x.lng), 1)), "Blustoestellen staan op het terrein");
+      const bl = norm("blustoestellen");
+      const tentT = it("tent").filter((t) => { const r = rectI(t), nodig = bl && bl.per_m2 ? Math.max(1, Math.ceil((t.w * t.l) / bl.per_m2)) : 1; return b.filter((x) => binnenRect(lokaal(x.lat, x.lng), r, 0.5)).length < nodig; });
+      if (it("tent").length) C(3, !tentT.length, bl && bl.per_m2 ? "In elke tent genoeg blustoestellen (1 per " + fmt(bl.per_m2) + " m²)" : "In elke tent een blustoestel", bl);
+    }
     const tenten = it("tent").map(rectI), stroom = it("stroom");
     C(1, !stroom.some((s) => tenten.some((t) => binnenRect(lokaal(s.lat, s.lng), t))), "De stroomgroep staat buiten de tent");
     const sa = norm("stroomgroep_afstand_m");
@@ -479,6 +500,67 @@ function controles(plan) {
     C(3, it("blus").length >= nodig, (bl && bl.per_m2 ? "Minstens " + nodig + " blustoestel" + (nodig > 1 ? "len" : "") + " (1 per " + fmt(bl.per_m2) + " m², ruimte " + fmt(opp) + " m²)" : "Blustoestellen aangeduid"), bl);
     if (nood.length) C(3, nood.every((d) => it("nood").some((n) => Math.hypot(n.x - d.x, n.y - d.y) <= 2)), "Noodverlichting bij elke nooduitgang");
     C(3, !it("stroom").some((s) => s.x > 0 && s.x < l && s.y > 0 && s.y < b), "Stroomvoorziening buiten de tijdelijke inrichting");
+    if (it("blus").length) C(3, it("blus").every((x) => x.x >= -0.3 && x.y >= -0.3 && x.x <= l + 0.3 && x.y <= b + 0.3), "Blustoestellen staan in de ruimte");
+    const tm = tentMaten();
+    if (tm && /tent/i.test(S.G.mat || "tent")) C(0, zelfdeMaten([l, b], tm), "Maten komen overeen met de tent uit je aanvraag (" + fmt(tm[0]) + " × " + fmt(tm[1]) + " m)");
+  }
+  // Klopt het plan met wat je in de aanvraag invulde?
+  for (const v of verwachtUitAanvraag(plan)) C(v.stap, v.ok, v.t);
+  return uit;
+}
+// Eén regel met de cijfers die Thomas nodig heeft om snel na te kijken (in de melding [Plan]).
+function kerncijfers(plan) {
+  const P = S.personen, r = [];
+  if (plan === "inplanting") {
+    const it = (k) => S.I.items.filter((i) => i.k === k), m2 = it("zone").reduce((s, z) => s + z.w * z.l, 0);
+    const u = it("uitgang"), dg = it("doorgang");
+    r.push(P + " personen", "terrein " + fmt(m2) + " m²" + (m2 ? " (" + fmt(m2 / P) + " m² per persoon)" : ""),
+      u.length + " nooduitgang(en), samen " + fmt(u.reduce((s, x) => s + (x.breedte || 0), 0)) + " m",
+      dg.length ? "doorgang hulpdiensten " + fmt(Math.min(...dg.map((d) => Math.min(d.w, d.l)))) + " m breed" : "geen doorgang",
+      it("tent").map((t) => "tent " + fmt(t.w) + " × " + fmt(t.l) + " m").join(", ") || "geen tent",
+      it("blus").length + " blustoestel(len)");
+  } else {
+    const it = (k) => S.G.items.filter((i) => i.k === k), n = it("nooduitgang");
+    r.push(P + " personen", "ruimte " + fmt(S.G.l) + " × " + fmt(S.G.b) + " m (" + fmt((S.G.l * S.G.b) / P) + " m² per persoon)",
+      n.length + " nooduitgang(en), samen " + fmt(n.reduce((s, x) => s + x.w, 0)) + " m", it("deur").length + " andere deur(en)",
+      it("blus").length + " blustoestel(len)", it("nood").length + " noodverlichting");
+  }
+  return r.join(" · ");
+}
+
+// ---------- Afstemming met de aanvraag ----------
+function hoekenLokaal(r) {
+  const a = (r.rot * Math.PI) / 180;
+  return [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([sx, sy]) => { const x = (sx * r.w) / 2, y = (sy * r.l) / 2; return [r.cx + x * Math.cos(a) - y * Math.sin(a), r.cy + x * Math.sin(a) + y * Math.cos(a)]; });
+}
+function randAfstand(p, r) { // afstand tot de rand van een rechthoek, binnen of buiten
+  const a = (-r.rot * Math.PI) / 180, dx = p[0] - r.cx, dy = p[1] - r.cy;
+  const x = Math.abs(dx * Math.cos(a) - dy * Math.sin(a)), y = Math.abs(dx * Math.sin(a) + dy * Math.cos(a));
+  return x <= r.w / 2 && y <= r.l / 2 ? Math.min(r.w / 2 - x, r.l / 2 - y) : afstandTotRect(p, r);
+}
+function tentMaten() {
+  const m = String((S.d && S.d.tent) || "").match(/(\d+(?:[.,]\d+)?)\s*[x×]\s*(\d+(?:[.,]\d+)?)/i);
+  return m ? [parseFloat(m[1].replace(",", ".")), parseFloat(m[2].replace(",", "."))] : null;
+}
+function zelfdeMaten(a, b) { const t = 0.5; return (Math.abs(a[0] - b[0]) <= t && Math.abs(a[1] - b[1]) <= t) || (Math.abs(a[0] - b[1]) <= t && Math.abs(a[1] - b[0]) <= t); }
+const ja = (v) => /^ja$/i.test(String(v || "").trim());
+// Wat de aanvraag zegt, moet op een plan staan. Over beide plannen samen; getoond bij het plan waar het hoort.
+function verwachtUitAanvraag(plan) {
+  const d = (S && S.d && S.d.intake) || {}, uit = [];
+  const heeft = (k) => S.I.items.some((i) => i.k === k) || S.G.items.some((i) => i.k === k);
+  const metIn = S.plannen.includes("inplanting");
+  if (plan === (metIn ? "inplanting" : "grondplan") && (ja(d.alcohol) || ja(d.sterke_drank)))
+    uit.push({ stap: metIn ? 1 : 2, ok: heeft("bar"), t: "Een bar, want je schenkt drank (aanvraag)" });
+  if (plan === "inplanting") {
+    if (ja(d.toiletten)) uit.push({ stap: 1, ok: heeft("toilet"), t: "Extra toiletten, zoals in je aanvraag" });
+    if (ja(d.stroomgroep)) uit.push({ stap: 1, ok: heeft("stroom"), t: "Een stroomgroep, zoals in je aanvraag" });
+    if (ja(d.eten)) uit.push({ stap: 1, ok: heeft("food"), t: "Een foodtruck of stand, want er wordt eten bereid (aanvraag)" });
+    const tm = tentMaten();
+    if (S.d.situatie === "tent" || tm) {
+      const tenten = S.I.items.filter((i) => i.k === "tent");
+      uit.push({ stap: 1, ok: tenten.length > 0 && (!tm || tenten.some((t) => zelfdeMaten([t.w, t.l], tm))),
+        t: tm ? "Een tent van " + fmt(tm[0]) + " × " + fmt(tm[1]) + " m, zoals in je aanvraag" : "Een tent, zoals in je aanvraag" });
+    }
   }
   return uit;
 }
@@ -507,15 +589,15 @@ function tekenStap() {
   $("verder").hidden = !!stap.controle;
   // velden
   let v = "";
-  if (stap.veld === "terrein") v = '<div style="display:flex;flex-direction:column;gap:10px"><label for="f-adres">Adres<input id="f-adres" list="f-adreslijst" autocomplete="off" placeholder="Straat en nummer, gemeente" value="' + esc(S.d.adres || "") + '"><datalist id="f-adreslijst"></datalist></label><button class="btn" id="zoek" type="button">Zoek op de kaart</button><label for="f-pers">Personen tegelijk op het drukste moment<input id="f-pers" type="number" min="1" value="' + S.personen + '"></label></div>';
-  if (stap.veld === "ruimte") v = '<div style="display:flex;flex-direction:column;gap:10px"><div class="r2"><label for="g-l">Lengte (m)<input id="g-l" type="number" min="2" step="0.5" value="' + S.G.l + '"></label><label for="g-b">Breedte (m)<input id="g-b" type="number" min="2" step="0.5" value="' + S.G.b + '"></label></div><label for="g-mat">Soort ruimte en materiaal<input id="g-mat" value="' + esc(S.G.mat) + '" placeholder="bv. tent met PVC-zeil, of zaal"></label><label for="g-pers">Personen tegelijk op het drukste moment<input id="g-pers" type="number" min="1" value="' + S.personen + '"></label></div>';
+  if (stap.veld === "terrein") v = '<div style="display:flex;flex-direction:column;gap:10px"><label for="f-adres">Adres<input id="f-adres" list="f-adreslijst" autocomplete="off" placeholder="Straat en nummer, gemeente" value="' + esc(S.d.adres || "") + '"><datalist id="f-adreslijst"></datalist></label><button class="btn" id="zoek" type="button">Zoek op de kaart</button><label for="f-pers">Personen tegelijk op het drukste moment<input id="f-pers" type="number" min="' + minPersonen() + '" value="' + S.personen + '">' + (minPersonen() > 1 ? '<small>Minstens ' + minPersonen() + ', zoals in je aanvraag. Meer mag.</small>' : "") + '</label></div>';
+  if (stap.veld === "ruimte") v = '<div style="display:flex;flex-direction:column;gap:10px"><div class="r2"><label for="g-l">Lengte (m)<input id="g-l" type="number" min="2" step="0.5" value="' + S.G.l + '"></label><label for="g-b">Breedte (m)<input id="g-b" type="number" min="2" step="0.5" value="' + S.G.b + '"></label></div><label for="g-mat">Soort ruimte en materiaal<input id="g-mat" value="' + esc(S.G.mat) + '" placeholder="bv. tent met PVC-zeil, of zaal"></label><label for="g-pers">Personen tegelijk op het drukste moment<input id="g-pers" type="number" min="' + minPersonen() + '" value="' + S.personen + '">' + (minPersonen() > 1 ? '<small>Minstens ' + minPersonen() + ', zoals in je aanvraag. Meer mag.</small>' : "") + '</label></div>';
   $("stapvelden").innerHTML = v;
   if ($("zoek")) $("zoek").addEventListener("click", zoekAdres);
   if ($("f-adres")) {
     $("f-adres").addEventListener("input", () => { S.d.adres = $("f-adres").value; bewaar(); adresSuggesties(); });
     $("f-adres").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); zoekAdres(); } });
   }
-  for (const id of ["f-pers", "g-pers"]) if ($(id)) $(id).addEventListener("input", () => { S.personen = Math.max(1, +$(id).value || 1); tekenControles(); bewaar(); });
+  for (const id of ["f-pers", "g-pers"]) if ($(id)) $(id).addEventListener("change", () => { S.personen = Math.max(minPersonen(), +$(id).value || 1); $(id).value = S.personen; tekenControles(); bewaar(); });
   const gu = () => { S.G.l = Math.max(2, +$("g-l").value || S.G.l); S.G.b = Math.max(2, +$("g-b").value || S.G.b); S.G.mat = $("g-mat").value; S.G.items.filter((i) => KAT_G[i.k].f === "deur").forEach(klikAanWand); tekenPlan(); tekenControles(); bewaar(); };
   for (const id of ["g-l", "g-b", "g-mat"]) if ($(id)) $(id).addEventListener("input", gu);
   // werkbalk bij het plan
@@ -764,7 +846,8 @@ async function tekenOpslaan() {
   const knop = BEHEER ? "Aangepast plan opslaan" : "Plan afwerken";
   w.innerHTML = '<div style="display:flex;flex-direction:column;gap:10px"><img class="voorbeeld" id="vb" alt="Voorbeeld van het plan op A3">' +
     (BEHEER ? '<label for="toel">Wat pasten we aan? (komt in de conceptmail aan de klant)<input id="toel" maxlength="500" placeholder="bv. tweede nooduitgang aan de achterkant toegevoegd"></label>' : "") +
-    '<button class="btn primary" id="opslaan" type="button"' + (ok && !DEMO ? "" : " disabled") + ">" + knop + "</button>" +
+    (!BEHEER && !DEMO && ok ? '<label class="check" for="verklaring"><input type="checkbox" id="verklaring"> <span>Dit plan toont hoe het er op de dag echt zal staan: de opstelling, de maten en de uitgangen.</span></label>' : "") +
+    '<button class="btn primary" id="opslaan" type="button"' + (ok && !DEMO && BEHEER ? "" : " disabled") + ">" + knop + "</button>" +
     (DEMO ? "" : '<button class="btn" id="downloadpdf" type="button">Download als pdf</button>') +
     (DEMO ? '<p class="melding">In de demo kan je niet afwerken.</p>'
       : !ok ? '<p class="melding">Los eerst alles in het rood op. Je kan terug naar een stap via de balk bovenaan.</p>'
@@ -773,6 +856,7 @@ async function tekenOpslaan() {
   const blad = await maakBlad(S.actief);
   voorbeeldUrl = blad.canvas.toDataURL("image/jpeg", 0.85);
   if ($("vb")) { $("vb").src = voorbeeldUrl; $("vb").onclick = () => { const d = document.createElement("div"); d.className = "groot"; d.innerHTML = '<img alt="">'; d.firstChild.src = voorbeeldUrl; d.onclick = () => d.remove(); document.body.appendChild(d); }; }
+  if ($("verklaring")) $("verklaring").addEventListener("change", () => { $("opslaan").disabled = !$("verklaring").checked; });
   if ($("opslaan")) $("opslaan").addEventListener("click", () => opslaan(blad.canvas));
   if ($("downloadpdf")) $("downloadpdf").addEventListener("click", () => downloadPdf(blad.canvas));
 }
@@ -790,12 +874,13 @@ function downloadPdf(cv) {
 }
 async function opslaan(cv) {
   if (DEMO || !alleOk(S.actief)) return;
+  if (!BEHEER && !($("verklaring") && $("verklaring").checked)) { $("msg").textContent = "Vink eerst aan dat het plan klopt met hoe het er op de dag zal staan."; return; }
   const b = $("opslaan"); b.disabled = true; $("msg").textContent = "Bezig met opslaan…";
   try {
     const data = maakPdf(cv).output("datauristring").split(",")[1];
     const plan = S.actief === "inplanting" ? { items: S.I.items, maten: S.I.maten, center: S.I.center } : { ruimte: { l: S.G.l, b: S.G.b, mat: S.G.mat }, items: S.G.items };
     const r = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ actie: "plan", id: AUTH.id, email: AUTH.email, beheer: AUTH.beheer, soort: S.actief, personen: S.personen, pdf: data, plan, controles: controles(S.actief), toelichting: $("toel") ? $("toel").value : "" }) });
+      body: JSON.stringify({ actie: "plan", id: AUTH.id, email: AUTH.email, beheer: AUTH.beheer, soort: S.actief, personen: S.personen, pdf: data, plan, controles: controles(S.actief), toelichting: $("toel") ? $("toel").value : "", verklaring: !BEHEER, kerncijfers: kerncijfers(S.actief) }) });
     const j = await r.json(); if (!j.ok) throw new Error(j.error || "onbekende fout");
     bewaar();
     $("msg").textContent = BEHEER ? NAAM_PLAN[S.actief] + " staat in de dossiermap. De conceptmail aan de klant staat klaar in Gmail."
