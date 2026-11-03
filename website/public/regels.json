@@ -5844,12 +5844,13 @@
   "base": null,
   "extra": [],
   "termijnTekst": "Geen termijn vermeld voor de gewone vergunning ('Wij onderzoeken uw aanvraag en nemen verder contact met u op'). Publieke evenementen in fuifzalen zonder wegafsluiting, tent of vuurwerk: 'minimaal 14 kalenderdagen voor het evenement een melding vereist bij de gemeente.'",
-  "note": "Vergunning vereist voor publieke occasionele evenementen (gratis); privéfeesten vrijgesteld. Melding (geen vergunning) min. 14 kalenderdagen vooraf voor publieke evenementen in fuifzalen zonder wegafsluiting/tent/vuurwerk. Geen online formulier of algemene termijn gevonden; aanvraag per mail met grondplan, uren, muziek (>85 dB = live/dj), verkeersmaatregelen, seingevers, dranghekken. Tent >500 m² vereist advies brandweer (HVZ Taxandria, standaardvoorwaarden PDF). Gemeentelijk politiereglement niet gevonden. Bij twijfel: ruim vooraf (bv. 2 maanden) contact opnemen.",
+  "note": "De gemeente bevestigt per mail (3/11/2026) dat er bewust geen vaste termijn is: die hangt af van het evenement (klein en jaarlijks terugkerend korter, groot of nieuw zoals een tentfeest langer, door noodplanning, brandweer en politie). Neem vooraf contact op, dan geeft de gemeente een tijdspanne mee. Vergunning vereist voor publieke occasionele evenementen (gratis); privéfeesten vrijgesteld. Melding (geen vergunning) min. 14 kalenderdagen vooraf voor publieke evenementen in fuifzalen zonder wegafsluiting/tent/vuurwerk. Geen online formulier of algemene termijn gevonden; aanvraag per mail met grondplan, uren, muziek (>85 dB = live/dj), verkeersmaatregelen, seingevers, dranghekken. Tent >500 m² vereist advies brandweer (HVZ Taxandria, standaardvoorwaarden PDF). Gemeentelijk politiereglement niet gevonden. Bij twijfel: ruim vooraf (bv. 2 maanden) contact opnemen.",
   "platform": "mail/pdf",
   "kanaal": "Aanvraag per e-mail aan de gemeente met de gevraagde gegevens en grondplan.",
   "link": "https://www.baarle-hertog.be/producten/detail/246/evenement-organiseren",
   "contact": "Gemeente Baarle-Hertog – gemeente@baarle-hertog.be – +32 14 69 80 70",
   "bron": [
+   "Mail gemeente Baarle-Hertog (dienst grondzaken), 3/11/2026",
    "https://www.baarle-hertog.be/producten/detail/246/evenement-organiseren",
    "https://www.baarle-hertog.be/tijdelijk%20parkeerverbod",
    "https://www.baarle-hertog.be/kampvuur",
@@ -6657,16 +6658,22 @@
  {
   "gemeente": "Bornem",
   "provincie": "Antwerpen",
-  "status": "onbekend",
-  "base": null,
+  "status": "ok",
+  "base": {
+   "*": [
+    6,
+    "w"
+   ]
+  },
   "extra": [],
-  "termijnTekst": "Geen algemene termijn op de evenementenpagina's. Buurtfeest (subsidie): aanvraag 'minstens 6 weken en maximum 12 maanden op voorhand' via het evenementenloket. Uitleenmateriaal: 'ten vroegste 6 maanden en ten laatste 6 weken voor het evenement', na registratie van het evenement (dossiernummer nodig).",
-  "note": "Geen algemene indientermijn gevonden op bornem.be (evenementenloket, evenement-organiseren, serveren-alcohol) noch op het Eaglebe-formulier (enkel metadata leesbaar). Wie materiaal nodig heeft moet het evenement vóór de materiaalaanvraag registreren, dus ten laatste ruim 6 weken vooraf. Aanvraag verplicht bij muziek >85 dB, vuur, meer dan 800 verwachte bezoekers, afsluiten/parkeervrij maken van straat/plein/parking, buurt- of straatfeest. Alcohol bij eenmalig evenement: geen vergunning, wel vermelden in evenementenloket. Uitleenreglement (PDF) niet leesbaar (robots-blokkade). Contact opnemen met dienst Evenementen voor de termijn.",
+  "termijnTekst": "Minstens 6 weken vooraf, voor alle evenementen (bevestigd door de dienst Evenementen per mail, 3/11/2026). Buurtfeest: ook maximum 12 maanden vooraf. Uitleenmateriaal: ten vroegste 6 maanden en ten laatste 6 weken vooraf, na registratie van het evenement.",
+  "note": "Termijn bevestigd per mail door dienst Evenementen (evenementen@bornem.be, 3/11/2026): 'Voor alle evenementen wordt minstens 6 weken verwacht.' Wie materiaal nodig heeft moet het evenement vóór de materiaalaanvraag registreren, dus ten laatste ruim 6 weken vooraf. Aanvraag verplicht bij muziek >85 dB, vuur, meer dan 800 verwachte bezoekers, afsluiten/parkeervrij maken van straat/plein/parking, buurt- of straatfeest. Alcohol bij eenmalig evenement: geen vergunning, wel vermelden in evenementenloket. Uitleenreglement (PDF) niet leesbaar (robots-blokkade).",
   "platform": "Eaglebe",
   "kanaal": "Online aanvraag via het evenementenloket op Eaglebe; daarna materiaal via apart formulier met dossiernummer.",
   "link": "https://app.eaglebe.com/nl-be/new/event?client=ac7c7924e018f3d6adbb7ed4e939a09f",
   "contact": "Dienst Evenementen – evenementen@bornem.be – 03 890 69 08",
   "bron": [
+   "Mail dienst Evenementen Bornem (evenementen@bornem.be), 3/11/2026",
    "https://www.bornem.be/evenementenloket",
    "https://www.bornem.be/evenement-organiseren",
    "https://www.bornem.be/aanvraag-materiaal",
