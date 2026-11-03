@@ -765,6 +765,7 @@ async function tekenOpslaan() {
   w.innerHTML = '<div style="display:flex;flex-direction:column;gap:10px"><img class="voorbeeld" id="vb" alt="Voorbeeld van het plan op A3">' +
     (BEHEER ? '<label for="toel">Wat pasten we aan? (komt in de conceptmail aan de klant)<input id="toel" maxlength="500" placeholder="bv. tweede nooduitgang aan de achterkant toegevoegd"></label>' : "") +
     '<button class="btn primary" id="opslaan" type="button"' + (ok && !DEMO ? "" : " disabled") + ">" + knop + "</button>" +
+    (DEMO ? "" : '<button class="btn" id="downloadpdf" type="button">Download als pdf</button>') +
     (DEMO ? '<p class="melding">In de demo kan je niet afwerken.</p>'
       : !ok ? '<p class="melding">Los eerst alles in het rood op. Je kan terug naar een stap via de balk bovenaan.</p>'
       : BEHEER ? '<p class="melding">De pdf komt in de dossiermap. Er staat daarna een conceptmail met het plan klaar voor de klant.</p>'
@@ -773,21 +774,32 @@ async function tekenOpslaan() {
   voorbeeldUrl = blad.canvas.toDataURL("image/jpeg", 0.85);
   if ($("vb")) { $("vb").src = voorbeeldUrl; $("vb").onclick = () => { const d = document.createElement("div"); d.className = "groot"; d.innerHTML = '<img alt="">'; d.firstChild.src = voorbeeldUrl; d.onclick = () => d.remove(); document.body.appendChild(d); }; }
   if ($("opslaan")) $("opslaan").addEventListener("click", () => opslaan(blad.canvas));
+  if ($("downloadpdf")) $("downloadpdf").addEventListener("click", () => downloadPdf(blad.canvas));
+}
+// Het plan als A3-pdf, zoals het in het dossier komt.
+function maakPdf(cv) {
+  const pdf = new window.jspdf.jsPDF({ orientation: "landscape", unit: "mm", format: "a3" });
+  pdf.addImage(cv.toDataURL("image/jpeg", 0.92), "JPEG", 0, 0, 420, 297);
+  return pdf;
+}
+// De klant mag zijn plan altijd zelf bekijken en bewaren (na betaling; niet in de demo).
+function downloadPdf(cv) {
+  if (DEMO) return;
+  try { maakPdf(cv).save(NAAM_PLAN[S.actief] + " – " + (AUTH.id || "plan") + (alleOk(S.actief) ? "" : " – ontwerp") + ".pdf"); }
+  catch (e) { $("msg").textContent = "Downloaden lukte niet (" + e.message + ")."; }
 }
 async function opslaan(cv) {
   if (DEMO || !alleOk(S.actief)) return;
   const b = $("opslaan"); b.disabled = true; $("msg").textContent = "Bezig met opslaan…";
   try {
-    const pdf = new window.jspdf.jsPDF({ orientation: "landscape", unit: "mm", format: "a3" });
-    pdf.addImage(cv.toDataURL("image/jpeg", 0.92), "JPEG", 0, 0, 420, 297);
-    const data = pdf.output("datauristring").split(",")[1];
+    const data = maakPdf(cv).output("datauristring").split(",")[1];
     const plan = S.actief === "inplanting" ? { items: S.I.items, maten: S.I.maten, center: S.I.center } : { ruimte: { l: S.G.l, b: S.G.b, mat: S.G.mat }, items: S.G.items };
     const r = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify({ actie: "plan", id: AUTH.id, email: AUTH.email, beheer: AUTH.beheer, soort: S.actief, personen: S.personen, pdf: data, plan, controles: controles(S.actief), toelichting: $("toel") ? $("toel").value : "" }) });
     const j = await r.json(); if (!j.ok) throw new Error(j.error || "onbekende fout");
     bewaar();
     $("msg").textContent = BEHEER ? NAAM_PLAN[S.actief] + " staat in de dossiermap. De conceptmail aan de klant staat klaar in Gmail."
-      : NAAM_PLAN[S.actief] + " is afgewerkt en staat in je dossier." + (S.plannen.length > 1 && S.plannen.some((p) => p !== S.actief) ? " Vergeet het " + NAAM_PLAN[S.plannen.find((p) => p !== S.actief)].toLowerCase() + " niet." : "") + " Moet er nog iets aan, dan laten we het je weten.";
+      : NAAM_PLAN[S.actief] + " is afgewerkt en staat in je dossier. Met \"Download als pdf\" bewaar je zelf een kopie." + (S.plannen.length > 1 && S.plannen.some((p) => p !== S.actief) ? " Vergeet het " + NAAM_PLAN[S.plannen.find((p) => p !== S.actief)].toLowerCase() + " niet." : "") + " Moet er nog iets aan, dan laten we het je weten.";
     b.disabled = false;
   } catch (e) { $("msg").textContent = "Afwerken lukte niet (" + e.message + "). Probeer opnieuw."; b.disabled = false; }
 }
