@@ -584,12 +584,13 @@
     "unit": "m"
    }
   ],
-  "note": "De termijnen (6 weken, groot 4 maanden) gelden voor openluchtevenementen. Voor een evenement in een zaal vonden we geen aparte evenementenaanvraag; procedure voor een zaal te bevestigen bij de stad (gevraagd 2/11/2026). Richtlijnen evenementen v2 (okt 2026): medische risicoanalyse ten laatste 6 weken vooraf en intern veiligheidsplan ten laatste 4 weken vooraf; voor welke evenementen niet duidelijk.",
+  "note": "De termijnen (6 weken, groot 4 maanden) gelden voor evenementen op het openbaar domein. Evenement binnen (mail dienst Evenementenbeleid, 3/11/2026): 'Onze dienst vergunt enkel evenementen op het openbaar domein.' In een private ruimte gelden de omgevingsvergunning en de bestemmingsvoorwaarden van het gebouw. Wijk je daarvan af: brandweer contacteren met een plan van de eventsite op schaal 1/200 (adres in de mail onvolledig: 'operaties.brugge@zone1'), de politie op de hoogte brengen (pz.brugge.evenementen@police.belgium.eu, 050 44 89 01) en ten laatste 2 weken vooraf een bewonersbrief bezorgen. Muziek in een zaal: muziekmelding via www.brugge.be/muziekmelding. Richtlijnen evenementen v2 (okt 2026): medische risicoanalyse ten laatste 6 weken vooraf en intern veiligheidsplan ten laatste 4 weken vooraf.",
   "platform": "Eigen loket / anders",
-  "kanaal": "Openluchtevenement: online vergunningsaanvraag openluchtevenement (stadswebsite). Evenement in een zaal: geen openluchtvergunning; bij elektronisch versterkte muziek een muziekmelding via het online formulier van de stad (1 maand vooraf), en boven 85 dB(A) vooraf een afwijking op de geluidsnorm.",
+  "kanaal": "Openbaar domein: online vergunningsaanvraag openluchtevenement (stadswebsite). Binnen in een zaal of private ruimte: geen evenementenvergunning van de stad; bij versterkte muziek een muziekmelding (1 maand vooraf), boven 85 dB(A) vooraf een afwijking op de geluidsnorm. Wijkt het evenement af van de omgevingsvergunning van het gebouw: brandweer (plan 1/200), politie en bewonersbrief (2 weken vooraf).",
   "link": "https://www.brugge.be/vrije-tijd/organiseren-van-evenementen/vergunningen/vergunning-openlucht-evenement",
-  "contact": "Huis van de Bruggeling – info@brugge.be – 050 44 80 00",
+  "contact": "Evenementenbeleid en -vergunningen – evenementen@brugge.be – 050 44 80 00",
   "bron": [
+   "Mail Evenementenbeleid en -vergunningen Brugge (evenementen@brugge.be), 3/11/2026",
    "https://www.brugge.be/vrije-tijd/organiseren-van-evenementen/op-weg",
    "https://www.brugge.be/muziekmelding-indienen",
    "https://www.brugge.be/media/104586/download"
@@ -609,6 +610,12 @@
      "muziek": true
     },
     "toelichting": "Geldt voor muziek in lokalen, ook een fuif in een zaal. Boven 85 dB(A) LAeq,15min of 92 dB(A) LAmax,slow: vooraf afwijking op de geluidsnorm aanvragen."
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Evenement binnen dat afwijkt van de omgevingsvergunning of bestemming van het gebouw: brandweer (plan 1/200), politie inlichten, bewonersbrief ten laatste 2 weken vooraf",
+    "als": null,
+    "toelichting": "Mail dienst Evenementenbeleid, 3/11/2026."
    }
   ],
   "college": null,
@@ -666,7 +673,22 @@
    "route": "B"
   },
   "provincie": "West-Vlaanderen",
-  "zaal_te_bevestigen": true
+  "zaal_te_bevestigen": false,
+  "vrijstelling": [
+   {
+    "wat": "een evenement binnen in een zaal of private ruimte, niet op het openbaar domein",
+    "voorwaarden": {
+     "openbaar_domein": "nee",
+     "enkel_binnen": true,
+     "andere": "binnen de omgevingsvergunning en de bestemming van het gebouw"
+    },
+    "nog_wel": "voor versterkte muziek doe je een muziekmelding bij de stad (1 maand vooraf); wijk je af van de vergunning van het gebouw, dan brandweer, politie en een bewonersbrief (2 weken vooraf)",
+    "citaat": "Onze dienst vergunt enkel evenementen op het openbaar domein.",
+    "bron": "Mail Evenementenbeleid Brugge, 3/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-03"
+   }
+  ]
  },
  {
   "gemeente": "Damme",
@@ -11494,16 +11516,23 @@
  {
   "gemeente": "Ravels",
   "provincie": "Antwerpen",
-  "status": "onbekend",
-  "base": null,
+  "status": "ok",
+  "base": {
+   "*": [
+    60,
+    "d"
+   ]
+  },
   "extra": [],
-  "termijnTekst": "Geen algemene aanvraagtermijn gevonden. Het evenementenloket (Flowlab) bewaakt de deadlines volgens de gemeentepagina zelf automatisch, maar de termijnen staan niet op de site. Wel: bewaking door vrijwilligers minimaal 1 maand vooraf; machtiging seingevers ten laatste 2 weken vooraf.",
-  "note": "Termijn navragen bij Vrije Tijd (vrije.tijd@ravels.be, 014 65 48 65) of afleiden uit Flowlab na aanmelden (niet gedaan: niet inloggen). Infofiche Flowlab (pdf) geblokkeerd door robots; pagina https://www.ravels.be/evenement gaf een fout. Ook bij een gereserveerde gemeentezaal is een evenementenaanvraag nodig. Standaardvoorwaarden brandveiligheid bij kleinschalige evenementen, uitleendienstreglement (2024-02-05) en evenementenwagen niet gelezen.",
+  "termijnTekst": "Minimaal 60 dagen vooraf, ongeacht de grootte van het evenement (politiereglement Kempen Noord-Oost, art. 4 en 5; bevestigd door de jeugdconsulent per mail, 3/11/2026). Bewaking door vrijwilligers: minimaal 1 maand vooraf; machtiging seingevers: ten laatste 2 weken vooraf.",
+  "note": "Termijn bevestigd per mail (vrije.tijd@ravels.be, 3/11/2026): 'Ongeacht de grootte van het evenement, vragen we organisatoren om minimaal 60 dagen op voorhand een evenementenaanvraag in te dienen.' De gemeente heeft de termijn naar aanleiding van onze vraag ook op de pagina evenementenloket gezet. Infofiche Flowlab (pdf) geblokkeerd door robots; pagina https://www.ravels.be/evenement gaf een fout. Ook bij een gereserveerde gemeentezaal is een evenementenaanvraag nodig. Standaardvoorwaarden brandveiligheid bij kleinschalige evenementen, uitleendienstreglement (2024-02-05) en evenementenwagen niet gelezen.",
   "platform": "Flowlab",
   "kanaal": "Online via het digitaal evenementenloket Flowlab (ravels.flowlab.be) met persoonlijk account gekoppeld aan de vereniging; basisvragen genereren verplichte en optionele deelformulieren.",
   "link": "https://ravels.flowlab.be/",
   "contact": "Vrije Tijd – vrije.tijd@ravels.be – 014 65 48 65 (jeugddienst@ravels.be voor fuiven)",
   "bron": [
+   "Mail Vrije Tijd Ravels (vrije.tijd@ravels.be), 3/11/2026",
+   "https://www.ravels.be/uniform-gemeentelijk-politiereglement-kempen-noord-oost",
    "https://www.ravels.be/evenementenloket",
    "https://www.ravels.be/organisatie-fuiven-en-evenementen",
    "https://www.ravels.be/zelf-iets-organiseren",
@@ -18513,16 +18542,28 @@
  {
   "gemeente": "Zutendaal",
   "provincie": "Limburg",
-  "status": "onbekend",
-  "base": null,
-  "extra": [],
-  "termijnTekst": "Geen indieningstermijn voor de evenementaanvraag/-melding gevonden op de gemeentesite of in het fuifreglement (4 januari 2024). Wel: 'Iedere activiteit moet je aanmelden bij het feestloket.'",
-  "note": "Aanvraagformulier feestloket dekt melding evenement, aanvraag vergunningen (o.a. nachtvergunning), uitleenmaterialen en subsidie buurtfeest; enkel stap 1 van 7 zichtbaar, geen termijn vermeld. Sluitingsuur 1 u, met nachtvergunning van de burgemeester tot 3 u. Schepencollege bepaalt of een evenement risicovol is (dan bewaking verplicht, eventueel professionele securityfirma). Sterke drank: vergunning nodig. Geen eenmalige drankrecipiënten sinds 1-1-2025 (90% inzameling herbruikbare bekers). Reglement buurtactiviteiten en wijkfeesten (pdf) niet gelezen. Termijn navragen bij feestloket@zutendaal.be.",
+  "status": "ok",
+  "base": {
+   "*": [
+    2,
+    "m"
+   ]
+  },
+  "extra": [
+   {
+    "minVisitors": 1000,
+    "n": 3,
+    "unit": "m"
+   }
+  ],
+  "termijnTekst": "Richttermijnen van de gemeente (mail 3/11/2026, voorlopig tot de nieuwe regels en het nieuwe loket, verwacht januari 2027): met versterkte muziek minstens 2 maanden vooraf, met versterkte muziek en meer dan 1.000 bezoekers minstens 3 maanden; kleinere activiteiten zonder versterkte muziek doorgaans 3 weken. We rekenen standaard met 2 maanden, omdat we vooraf niet weten of er versterkte muziek is.",
+  "note": "Bevestigd per mail door de deskundige cultuur en evenementen (3/11/2026): geen formele termijnen in een reglement; de richttermijnen zijn gebaseerd op adviezen van politie en brandweer. Nieuw digitaal evenementenloket en herwerkte reglementen verwacht rond januari 2027: dan opnieuw nakijken. Aanvraagformulier feestloket dekt melding evenement, aanvraag vergunningen (o.a. nachtvergunning), uitleenmaterialen en subsidie buurtfeest; enkel stap 1 van 7 zichtbaar, geen termijn vermeld. Sluitingsuur 1 u, met nachtvergunning van de burgemeester tot 3 u. Schepencollege bepaalt of een evenement risicovol is (dan bewaking verplicht, eventueel professionele securityfirma). Sterke drank: vergunning nodig. Geen eenmalige drankrecipiënten sinds 1-1-2025 (90% inzameling herbruikbare bekers). Reglement buurtactiviteiten en wijkfeesten (pdf) niet gelezen.",
   "platform": "eigen e-loket (webformulier feestloket op zutendaal.be)",
   "kanaal": "Digitaal aanvraagformulier van het Feestloket op zutendaal.be (melding, vergunningen, materiaal, buurtfeestsubsidie).",
   "link": "https://www.zutendaal.be/form/aanvraagformulier-feestloket",
   "contact": "Feestloket / Dienst Cultuur, Oosterzonneplein 1, 3690 Zutendaal – feestloket@zutendaal.be (reglement: feest@zutendaal.be), cultuur@zutendaal.be – 089 62 94 45 / 089 62 94 56",
   "bron": [
+   "Mail dienst cultuur en evenementen Zutendaal, 3/11/2026",
    "https://www.zutendaal.be/vrije-tijd/evenementen",
    "https://www.zutendaal.be/evenementen",
    "https://www.zutendaal.be/aanvraagformulier-feestloket",
@@ -30008,12 +30049,13 @@
   "base": null,
   "extra": [],
   "termijnTekst": "Geen termijn voor evenementaanvragen kunnen lezen. Inname openbaar domein: 5 tot 21 werkdagen op voorhand, afhankelijk van het type inname.",
-  "note": "De pagina's 'Evenement organiseren' (https://www.kraainem.be/nl/aanvraag-organisatie-evenement) en de Franstalige versie (https://www.kraainem.be/fr/product/30/demande-dorganisation-dun-evenement) gaven een fout van de site (client_error); ook het nieuwsbericht over het Eaglebe-platform kon niet geladen worden. Platform voor evenementen dus niet bevestigd (Eaglebe wordt wel gebruikt voor inname openbaar domein). Termijn navragen bij Team Vrije Tijd.",
+  "note": "De gemeente meldt per mail (3/11/2026) dat de vernieuwde website nog problemen heeft en dat de juiste pagina https://www.kraainem.be/evenement-organiseren is; die pagina nog lezen voor de termijn. De pagina's 'Evenement organiseren' (https://www.kraainem.be/nl/aanvraag-organisatie-evenement) en de Franstalige versie (https://www.kraainem.be/fr/product/30/demande-dorganisation-dun-evenement) gaven een fout van de site (client_error); ook het nieuwsbericht over het Eaglebe-platform kon niet geladen worden. Platform voor evenementen dus niet bevestigd (Eaglebe wordt wel gebruikt voor inname openbaar domein). Termijn navragen bij Team Vrije Tijd.",
   "platform": "onbekend",
   "kanaal": "Niet kunnen lezen; contact Team Vrije Tijd.",
-  "link": "https://www.kraainem.be/nl/aanvraag-organisatie-evenement",
+  "link": "https://www.kraainem.be/evenement-organiseren",
   "contact": "Team Vrije Tijd – vrijetijd@kraainem.be – 02 227 05 41 (Patronaatstraat 10)",
   "bron": [
+   "https://www.kraainem.be/evenement-organiseren",
    "https://www.kraainem.be/nl/inname-openbaar-domein",
    "https://www.kraainem.be/nl/thema/3127/evenementen"
   ],

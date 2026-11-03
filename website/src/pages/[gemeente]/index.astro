@@ -76,7 +76,9 @@ const voorwaarden = (r.bijzonder || [])
   .map((v) => cap(v) + ".")
   .slice(0, 6);
 const u = r.uitleen || {};
-const bron = Array.isArray(r.bron) ? r.bron[0] : r.bron;
+const bronnen = Array.isArray(r.bron) ? r.bron : [r.bron];
+const bron = bronnen.find((b) => /^https?:\/\//.test(String(b || "")));
+const perMail = bronnen.some((b) => /^Mail /.test(String(b || "")));
 const start = `/aanvraag?gemeente=${encodeURIComponent(g)}`;
 // Andere gemeenten uit dezelfde provincie (alfabetisch rond deze gemeente), voor interne links.
 const zelfde = regels.filter((x) => (x.provincie || "West-Vlaanderen") === provincie)
@@ -189,7 +191,7 @@ const ld = [
           {(mat.items || mat.termijn || mat.part || mat.kosten) && <ul>{mat.items && <li>{mat.items}</li>}{mat.termijn && <li>{mat.termijn}</li>}{mat.part && <li>{mat.part}</li>}{mat.kosten && <li>{mat.kosten}</li>}</ul>}</div>
       : <div class="vak"><h3>Wat wij doen</h3><p>Wij berekenen je deadline, maken het volledige dossier op met formulieren, bijlagen en bewonersbrief, en dienen het in. Jij blijft het aanspreekpunt van de gemeente.</p></div>}
   </div>
-  {bron && <p class="bron">Bron: <a href={bron} rel="nofollow noopener">website van {g}</a>. Nagekeken door evenementaanvragen.be.{r.status === "onzeker" && <> {g} publiceert geen eenduidige termijn: we rekenen met de strengste lezing.</>}{onbekend && <> {g} publiceert geen vaste termijn: we rekenen met de strengste termijn in de provincie en vragen het na.</>} De gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert.</p>}
+  {bron && <p class="bron">Bron: <a href={bron} rel="nofollow noopener">website van {g}</a>. Nagekeken door evenementaanvragen.be{perMail && <>, en per mail bevestigd door de gemeente</>}.{r.status === "onzeker" && <> {g} publiceert geen eenduidige termijn: we rekenen met de strengste lezing.</>}{onbekend && <> {g} publiceert geen vaste termijn: we rekenen met de strengste termijn in de provincie en vragen het na.</>} De gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert.</p>}
 
   {andere.length > 0 && <nav class="andere" aria-label={`Andere gemeenten in ${provincie}`}>
     <div class="k">Andere gemeenten in {provincie}</div>
