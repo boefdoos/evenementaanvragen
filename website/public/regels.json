@@ -676,13 +676,14 @@
   "zaal_te_bevestigen": false,
   "vrijstelling": [
    {
-    "wat": "een evenement binnen in een zaal of private ruimte, niet op het openbaar domein",
+    "wat": "een evenement binnen in een zaal of private ruimte, niet op het openbaar domein, zonder versterkte muziek",
     "voorwaarden": {
      "openbaar_domein": "nee",
      "enkel_binnen": true,
-     "andere": "binnen de omgevingsvergunning en de bestemming van het gebouw"
+     "andere": "binnen de omgevingsvergunning en de bestemming van het gebouw",
+     "geen_versterkte_muziek": true
     },
-    "nog_wel": "voor versterkte muziek doe je een muziekmelding bij de stad (1 maand vooraf); wijk je af van de vergunning van het gebouw, dan brandweer, politie en een bewonersbrief (2 weken vooraf)",
+    "nog_wel": "met versterkte muziek (dj, band, geluidsinstallatie) is een muziekmelding bij de stad nodig, een maand vooraf; wijk je af van de vergunning van het gebouw, dan brandweer, politie en een bewonersbrief (2 weken vooraf)",
     "citaat": "Onze dienst vergunt enkel evenementen op het openbaar domein.",
     "bron": "Mail Evenementenbeleid Brugge, 3/11/2026",
     "afgeleid": false,

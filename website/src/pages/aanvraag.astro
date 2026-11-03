@@ -322,12 +322,13 @@ footer.foot a{color:var(--soft)}
         </div>
         <div class="field full">
           <div class="q" id="q_plan">Hoe bezorg je je plan?</div>
-          <div class="hint">Het inplantingsplan toont op schaal hoe alles op je terrein staat (tent, podium, bar, toiletten, doorgang voor hulpdiensten). Het grondplan toont één tent of zaal in detail (deuren, uitgangen, blustoestellen). Een duidelijke schets of foto volstaat om te starten. Kies je voor hulp, dan teken je het na je betaling stap voor stap in onze plantekenaar, die meteen de eisen van de brandweer controleert. Wij kijken het na.</div>
+          <div class="hint">Het inplantingsplan toont op schaal hoe alles op je terrein staat (tent, podium, bar, toiletten, doorgang voor hulpdiensten). Het grondplan toont één tent of zaal in detail (deuren, uitgangen, blustoestellen). Een duidelijke schets of foto volstaat om te starten. Kies je voor hulp, dan teken je het na je betaling stap voor stap in onze plantekenaar, die meteen de eisen van de brandweer controleert. Wij kijken het na. Onder 500 aanwezigen kost die hulp extra; vanaf 500 zit ze in de prijs.</div>
           <div class="seg" role="radiogroup" aria-labelledby="q_plan">
             <label><input type="radio" id="plan_0" name="inplantingsplan" value="bijgevoegd"><span>Ik voeg het toe</span></label>
-            <label><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Help me het te maken</span></label>
+            <label><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Help me het te maken<span id="plan_meer"></span></span></label>
             <label><input type="radio" id="plan_2" name="inplantingsplan" value="later" checked><span>Bezorg ik later</span></label>
           </div>
+          <p class="hint" id="planprijs" aria-live="polite"></p>
         </div>
         <div class="field full" id="uploadwrap" hidden>
           <label for="bestanden">Plannen, grondplan van de zaal, schets of foto's <span class="hint">(pdf, jpg of png, samen max. 10 MB)</span></label>
@@ -553,9 +554,25 @@ function prijsVoor() {
   return { formule, reden, bedrag: { Basis: 45, Plus: 75 }[formule] * factor, factor };
 }
 
+// Meerprijs voor hulp bij het plan, zichtbaar bij de knop zelf (zelfde bedragen als prijsVoor).
+function toonPlanprijs() {
+  const bez = +veld("bezoekers") || 0, factor = veld("aanvrager_type") === "bedrijf" ? 2 : 1;
+  const meer = document.getElementById("plan_meer"), uitleg = document.getElementById("planprijs");
+  if (bez >= 500) { meer.textContent = ""; uitleg.textContent = "Bij " + bez + " aanwezigen zit de plantekenaar al in je prijs."; return; }
+  meer.textContent = " (+ € " + 30 * factor + ")";
+  uitleg.textContent = "Hulp bij je plan: + € " + 30 * factor + ", je prijs wordt dan € " + 75 * factor + " in plaats van € " + 45 * factor + ".";
+}
+["bezoekers", "aanvrager_type"].forEach(id => { const el = document.getElementById(id); el.addEventListener("input", toonPlanprijs); el.addEventListener("change", toonPlanprijs); });
+toonPlanprijs();
+
 // Past het formulier aan de gemeente en de situatie aan: enkel de vragen die hier tellen.
+// Een fuif of concert heeft altijd versterkte muziek: die vraag staat dan vast op ja.
+const MET_MUZIEK = ["fuif", "concert"];
 function pasAan() {
   const r = regelVan(), u = (r && r.uitleen) || {}, gem = veld("gemeente");
+  const vastMuziek = MET_MUZIEK.includes(veld("type"));
+  if (vastMuziek) document.getElementById("muziek_0").checked = true;
+  ["muziek_1", "muziek_2"].forEach(id => { document.getElementById(id).disabled = vastMuziek; });
   // UiT-agenda: enkel waar we weten dat de aanvraag het aanbiedt (Flowlab).
   const uit = !!(r && r.platform === "Flowlab");
   document.getElementById("uitblok").hidden = !uit;
@@ -615,7 +632,7 @@ function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<":
 function vrijstellingen() {
   const r = regelVan(); if (!r || !Array.isArray(r.vrijstelling)) return [];
   const bez = +veld("bezoekers") || 0, ls = veld("locatie_soort"), uit = gekozen("op_uitnodiging"), od = veld("openbaar_domein");
-  const muz = gekozen("muziek"), verk = gekozen("verkeer");
+  const muz = MET_MUZIEK.includes(veld("type")) ? "ja" : gekozen("muziek"), verk = gekozen("verkeer");
   const uit_ = [];
   r.vrijstelling.forEach(v => {
     const c = v.voorwaarden || {}, nog = [];
@@ -1058,7 +1075,7 @@ const EIGEN = "eigen-sleutel";
   if (eigen && /^[0-9a-f]{24,128}$/i.test(eigen)) { try { localStorage.setItem(EIGEN, eigen); } catch (e) {} }
   if (eigen !== null) { q.delete("eigen"); try { history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "")); } catch (e) {} }
 })();
-zoeker.sync(); volgEinddatum(); pasAan(); toonTermijn();
+zoeker.sync(); volgEinddatum(); pasAan(); toonTermijn(); toonPlanprijs();
 if (concept && concept.verst) verst = Math.min(5, concept.verst);
 const startStap = Math.min(verst, +((location.hash.match(/^#stap-(\d)$/) || [])[1]) || (concept && concept.stap) || 1);
 try { history.replaceState({ stap: startStap }, "", "#stap-" + startStap); } catch (e) {}
