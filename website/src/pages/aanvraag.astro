@@ -882,7 +882,7 @@ geeft volmacht aan ${VOLMACHTHEBBER}
 
 om in naam en voor rekening van de organisator de evenementaanvraag en de bijhorende aanvragen (zoals uitleenmateriaal) voor het evenement "${v("evenement_naam") || "[evenement]"}" op ${datumNL(v("startdatum"))} in ${v("gemeente") || "[gemeente]"} voor te bereiden en in te dienen bij de gemeente, via de kanalen die de gemeente daarvoor gebruikt.
 
-De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor de organisatie van het evenement en voor de naleving van de vergunningsvoorwaarden. Na de indiening communiceert de gemeente rechtstreeks met de organisator. Deze volmacht geldt enkel voor dit evenement. Ze loopt tot 30 dagen na de indiening, zodat we een vraag van de gemeente over het ingediende dossier kunnen beantwoorden, en kan altijd ingetrokken worden met een mail aan thomas@evenementaanvragen.be.`;
+De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor de organisatie van het evenement en voor de naleving van de vergunningsvoorwaarden. Na de indiening communiceert de gemeente rechtstreeks met de organisator. Deze volmacht geldt enkel voor dit evenement. Ze loopt tot 30 dagen na de indiening, zodat we een fout in wat wij indienden kunnen herstellen als de gemeente daarom vraagt, en kan altijd ingetrokken worden met een mail aan thomas@evenementaanvragen.be.`;
 }
 const vt = document.getElementById("volmachttekst");
 function toonVolmacht() { vt.textContent = volmachtTekst(Object.fromEntries(new FormData(intakeForm).entries())); }
