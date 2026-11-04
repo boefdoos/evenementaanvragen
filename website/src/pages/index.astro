@@ -121,6 +121,8 @@ import huisstijl from "../huisstijl.css?raw";
   const zoeker=gemeenteZoeker(gem);
   typ.value="fuif";
   const t0=new Date(); t0.setDate(t0.getDate()+120); dat.value=t0.toISOString().slice(0,10);
+  const slug=n=>n.normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  const overzicht=r=>'<a class="gem-link" href="/'+slug(r.gemeente)+'/">Zo vraag je een evenement aan in '+esc(r.gemeente)+' →</a>';
   const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 
   // Wat de bezoeker zelf koos, gaat mee naar het intakeformulier (via alle aanvraaglinks en voor deze sessie).
@@ -143,7 +145,7 @@ import huisstijl from "../huisstijl.css?raw";
     const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,od:false,
       x:{muziek:null,sterkeDrank:null,alcohol:null,verkeer:null,materiaal:null,publiciteit:null,od:null,stroomgroep:null,subsidie:null}};
     let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
-    if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';return;}
+    if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>'+overzicht(r);return;}
     // Zelfde oordeel als de intake (indienmoment.js)
     const o=indienOordeel(res), MAP={laat:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"};
     const st=MAP[o.soort];
@@ -153,7 +155,7 @@ import huisstijl from "../huisstijl.css?raw";
     out.innerHTML='<div class="count"><span class="num">'+num+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
       '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status'+(st==="late"?" late":"")+'">'+txt+'</span></div>'+
       '<p class="rule">'+(st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>'+
-      (st==="late"?'':'<a class="go-link" href="/aanvraag?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+'">Wij dienen het in voor je →</a>');
+      (st==="late"?'':'<a class="go-link" href="/aanvraag?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+'">Wij dienen het in voor je →</a>')+overzicht(r);
   }
   fetch("/regels.json").then(r=>r.json()).then(data=>{
     RULES=data;
