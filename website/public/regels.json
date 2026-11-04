@@ -4234,16 +4234,25 @@
  },
  {
   "gemeente": "Staden",
-  "status": "onbekend",
-  "base": null,
+  "status": "ok",
+  "base": {
+   "*": [
+    1,
+    "m"
+   ]
+  },
   "extra": [],
-  "note": "",
+  "note": "Termijn bevestigd per mail (preventieadviseur, 4/11/2026): geen eigen reglement, de gemeente hanteert art. 2.9.1.2 van de zonale politieverordening van PZ Arro Ieper (één maand vooraf). 'Voor grotere evenementen verwachten we dat het evenement vroeger aangevraagd wordt'; geen vaste termijn of drempel, dus wij raden voor grote evenementen ruim vroeger aan.",
   "platform": "RIHO",
   "kanaal": "Maxiformulier politiezone (RIHO)",
   "link": "https://vcs01.politiezoneriho.be/MAXIFORMULIER",
   "contact": "Vrije Tijd – vrijetijd@staden.be – 051 70 82 04",
-  "bron": "https://www.staden.be/product/224/evenementenloket",
-  "termijnTekst": "Niet vermeld",
+  "bron": [
+   "Mail preventie Staden (dre.belloy@staden.be), 4/11/2026",
+   "https://vleteren.be/sites/default/files/2022-01/zonale-politieverordening-openbare-orde.pdf",
+   "https://www.staden.be/product/224/evenementenloket"
+  ],
+  "termijnTekst": "Publiek toegankelijke feesten en evenementen minstens één maand vooraf melden bij het gemeentebestuur (zonale politieverordening PZ Arro Ieper, art. 2.9.1.2; bevestigd door de gemeente per mail, 4/11/2026). Grotere evenementen vroeger aanvragen; wielerwedstrijden volgens de wettelijke termijnen.",
   "bijzonder": [
    {
     "soort": "laatste_wijziging",
