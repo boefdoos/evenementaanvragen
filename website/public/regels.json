@@ -584,12 +584,13 @@
     "unit": "m"
    }
   ],
-  "note": "De termijnen (6 weken, groot 4 maanden) gelden voor evenementen op het openbaar domein. Evenement binnen (mail dienst Evenementenbeleid, 3/11/2026): 'Onze dienst vergunt enkel evenementen op het openbaar domein.' In een private ruimte gelden de omgevingsvergunning en de bestemmingsvoorwaarden van het gebouw. Wijk je daarvan af: brandweer contacteren met een plan van de eventsite op schaal 1/200 (adres in de mail onvolledig: 'operaties.brugge@zone1'), de politie op de hoogte brengen (pz.brugge.evenementen@police.belgium.eu, 050 44 89 01) en ten laatste 2 weken vooraf een bewonersbrief bezorgen. Muziek in een zaal: muziekmelding via www.brugge.be/muziekmelding. Richtlijnen evenementen v2 (okt 2026): medische risicoanalyse ten laatste 6 weken vooraf en intern veiligheidsplan ten laatste 4 weken vooraf.",
+  "note": "De termijnen (6 weken, groot 4 maanden) gelden voor evenementen op het openbaar domein. Evenement binnen (mail dienst Evenementenbeleid, 3/11/2026): 'Onze dienst vergunt enkel evenementen op het openbaar domein.' In een private ruimte gelden de omgevingsvergunning en de bestemmingsvoorwaarden van het gebouw. Wijk je daarvan af: brandweer contacteren met een plan van de eventsite op schaal 1/200 (operaties.brugge@zone1.be), de politie op de hoogte brengen (pz.brugge.evenementen@police.belgium.eu, 050 44 89 01) en ten laatste 2 weken vooraf een bewonersbrief bezorgen. Muziek in een zaal: muziekmelding via www.brugge.be/muziekmelding. Richtlijnen evenementen v2 (okt 2026): medische risicoanalyse ten laatste 6 weken vooraf en intern veiligheidsplan ten laatste 4 weken vooraf. Mail 4/11/2026: bevestigd dat bij een publieke fuif in een zaal binnen de vergunning van het gebouw enkel de muziekmelding nodig is. Muziekmelding namens de organisator: navragen bij handhaving.milieu@brugge.be.",
   "platform": "Eigen loket / anders",
   "kanaal": "Openbaar domein: online vergunningsaanvraag openluchtevenement (stadswebsite). Binnen in een zaal of private ruimte: geen evenementenvergunning van de stad; bij versterkte muziek een muziekmelding (1 maand vooraf), boven 85 dB(A) vooraf een afwijking op de geluidsnorm. Wijkt het evenement af van de omgevingsvergunning van het gebouw: brandweer (plan 1/200), politie en bewonersbrief (2 weken vooraf).",
   "link": "https://www.brugge.be/vrije-tijd/organiseren-van-evenementen/vergunningen/vergunning-openlucht-evenement",
-  "contact": "Evenementenbeleid en -vergunningen – evenementen@brugge.be – 050 44 80 00",
+  "contact": "Evenementenbeleid en -vergunningen – evenementen@brugge.be – 050 44 80 00. Muziekmeldingen: dienst Handhaving – handhaving.milieu@brugge.be",
   "bron": [
+   "Mail Evenementenbeleid en -vergunningen Brugge (evenementen@brugge.be), 4/11/2026",
    "Mail Evenementenbeleid en -vergunningen Brugge (evenementen@brugge.be), 3/11/2026",
    "https://www.brugge.be/vrije-tijd/organiseren-van-evenementen/op-weg",
    "https://www.brugge.be/muziekmelding-indienen",
@@ -609,7 +610,7 @@
     "als": {
      "muziek": true
     },
-    "toelichting": "Geldt voor muziek in lokalen, ook een fuif in een zaal. Boven 85 dB(A) LAeq,15min of 92 dB(A) LAmax,slow: vooraf afwijking op de geluidsnorm aanvragen."
+    "toelichting": "Geldt voor muziek in lokalen, ook een fuif in een zaal. Boven 85 dB(A) LAeq,15min of 92 dB(A) LAmax,slow: vooraf afwijking op de geluidsnorm aanvragen. Vragen over de muziekmelding (ook indienen namens de organisator): handhaving.milieu@brugge.be."
    },
    {
     "soort": "voorwaarde",
@@ -685,9 +686,9 @@
     },
     "nog_wel": "met versterkte muziek (dj, band, geluidsinstallatie) is een muziekmelding bij de stad nodig, een maand vooraf; wijk je af van de vergunning van het gebouw, dan brandweer, politie en een bewonersbrief (2 weken vooraf)",
     "citaat": "Onze dienst vergunt enkel evenementen op het openbaar domein.",
-    "bron": "Mail Evenementenbeleid Brugge, 3/11/2026",
+    "bron": "Mail Evenementenbeleid Brugge, 3/11/2026 en 4/11/2026",
     "afgeleid": false,
-    "nagekeken": "2026-11-03"
+    "nagekeken": "2026-11-04"
    }
   ]
  },
@@ -2939,16 +2940,28 @@
  },
  {
   "gemeente": "Lichtervelde",
-  "status": "onbekend",
-  "base": null,
+  "status": "ok",
+  "base": {
+   "*": [
+    1,
+    "m"
+   ],
+   "wielerwedstrijd": [
+    12,
+    "w"
+   ]
+  },
   "extra": [],
-  "note": "",
+  "note": "Termijn bevestigd per mail (Preventie & Mobiliteit, 4/11/2026): 'Voor alle gewone evenementen nemen we de gulden middenweg van 1 maand, al ligt dit niet vast in een reglement.' Grote evenementen: geen vaste regel, maar in de praktijk minstens 2 maanden vooraf gemeld of aangevraagd; wij raden 2 maanden aan. Wielerwedstrijden: wettelijke 12 weken.",
   "platform": "RIHO",
   "kanaal": "Schriftelijk (brief of mail) aan college van burgemeester en schepenen voor voorlopige toelating; bij >100 personen daarna Maxiformulier politiezone RIHO",
   "link": "http://vcs01.politiezoneriho.be/maxiformulier",
   "contact": "Geen specifieke evenementendienst vermeld; gemeentehuis 051 72 94 30. Meldingsformulier: Preventie – preventie@lichtervelde.be – 051 72 94 39 / 0476 30 54 16",
-  "bron": "https://www.lichtervelde.be/zelf-iets-organiseren",
-  "termijnTekst": "Aanvraagtermijn niet vermeld. Meldingsformulier veiligheid: dossier aanpasbaar/bijlagen uploaden tot 10 dagen voor het evenement.",
+  "bron": [
+   "Mail Preventie & Mobiliteit Lichtervelde (geert.carpentier@lichtervelde.be), 4/11/2026",
+   "https://www.lichtervelde.be/zelf-iets-organiseren"
+  ],
+  "termijnTekst": "Gewone evenementen minstens 1 maand vooraf (vaste praktijk, niet in een reglement); wielerwedstrijden minstens 12 weken. Meldingsformulier veiligheid: dossier aanpasbaar tot 10 dagen voor het evenement.",
   "bijzonder": [
    {
     "soort": "voorwaarde",
