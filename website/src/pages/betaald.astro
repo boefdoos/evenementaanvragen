@@ -61,7 +61,7 @@ import huisstijl from "../huisstijl.css?raw";
           a.textContent = "Betaal" + (j.bedrag ? " € " + j.bedrag : "") + " →"; $("acties").replaceChildren(a); $("acties").hidden = false;
         }
       } else if (j.status === "verlopen") {
-        zet("Betaallink verlopen", "Mail ons, dan sturen we een nieuwe: thomas@evenementaanvragen.be.");
+        zet("Betaallink verlopen", "Er is niets betaald, dus je bent ook niets verschuldigd. Wil je toch verder, vul het formulier dan opnieuw in, zolang de deadline van je gemeente het toelaat.");
       } else {
         zet("Nog geen betaling nodig", "We kijken eerst de termijn van je gemeente na en sturen je daarna de betaallink.");
       }
