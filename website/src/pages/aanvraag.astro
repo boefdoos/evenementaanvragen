@@ -323,13 +323,12 @@ footer.foot a{color:var(--soft)}
         </div>
         <div class="field full">
           <div class="q" id="q_plan">Hoe bezorg je je plan?</div>
-          <div class="hint">Het inplantingsplan toont op schaal hoe alles op je terrein staat (tent, podium, bar, toiletten, doorgang voor hulpdiensten). Het grondplan toont één tent of zaal in detail (deuren, uitgangen, blustoestellen). Een duidelijke schets of foto volstaat om te starten. Kies je voor hulp, dan teken je het na je betaling stap voor stap in onze plantekenaar, die meteen de eisen van de brandweer controleert. Wij kijken het na. Onder 500 aanwezigen kost die hulp extra; vanaf 500 zit ze in de prijs.</div>
+          <div class="hint">Het inplantingsplan toont op schaal hoe alles op je terrein staat (tent, podium, bar, toiletten, doorgang voor hulpdiensten). Het grondplan toont één tent of zaal in detail (deuren, uitgangen, blustoestellen). Een duidelijke schets of foto volstaat om te starten. Geen plan? Dan teken je het na je betaling stap voor stap in onze plantekenaar, die meteen de eisen van de brandweer controleert. Wij kijken het na. Dat zit altijd in de prijs.</div>
           <div class="seg" role="radiogroup" aria-labelledby="q_plan">
             <label><input type="radio" id="plan_0" name="inplantingsplan" value="bijgevoegd"><span>Ik voeg het toe</span></label>
-            <label><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Help me het te maken<span class="meer" id="plan_meer"></span></span></label>
+            <label><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Ik teken het in de plantekenaar</span></label>
             <label><input type="radio" id="plan_2" name="inplantingsplan" value="later" checked><span>Bezorg ik later</span></label>
           </div>
-          <p class="hint" id="planprijs" aria-live="polite"></p>
         </div>
         <div class="field full" id="uploadwrap" hidden>
           <label for="bestanden">Plannen, grondplan van de zaal, schets of foto's <span class="hint">(pdf, jpg of png, samen max. 10 MB)</span></label>
@@ -563,24 +562,15 @@ function geenUitleen() {
   return "";
 }
 function prijsVoor() {
-  const bez = +veld("bezoekers") || 0, plan = gekozen("inplantingsplan");
-  const formule = plan === "hulp nodig" || bez >= 500 ? "Plus" : "Basis";
+  const bez = +veld("bezoekers") || 0;
+  // Enkel de grootte telt (5/11/2026): de plantekenaar zit overal in, vanaf 500 aanwezigen ook het veiligheidsplan.
+  const formule = bez >= 500 ? "Plus" : "Basis";
   const factor = veld("aanvrager_type") === "bedrijf" ? 2 : 1;
   // Klanten zien geen formulenaam, wel waarom de prijs is wat hij is. Intern blijft het Basis / Plus.
-  const reden = formule === "Basis" ? "evenement tot 499 aanwezigen" : bez >= 500 ? "evenement vanaf 500 aanwezigen, plantekenaar inbegrepen" : "met hulp bij je plan";
+  const reden = formule === "Basis" ? "evenement tot 499 aanwezigen, plantekenaar inbegrepen" : "evenement vanaf 500 aanwezigen, met veiligheidsplan";
   return { formule, reden, bedrag: { Basis: 45, Plus: 75 }[formule] * factor, factor };
 }
 
-// Meerprijs voor hulp bij het plan, zichtbaar bij de knop zelf (zelfde bedragen als prijsVoor).
-function toonPlanprijs() {
-  const bez = +veld("bezoekers") || 0, factor = veld("aanvrager_type") === "bedrijf" ? 2 : 1;
-  const meer = document.getElementById("plan_meer"), uitleg = document.getElementById("planprijs");
-  if (bez >= 500) { meer.textContent = ""; uitleg.textContent = "Bij " + bez + " aanwezigen zit de plantekenaar al in je prijs."; return; }
-  meer.textContent = "+ € " + 30 * factor;
-  uitleg.textContent = "Hulp bij je plan: + € " + 30 * factor + ", je prijs wordt dan € " + 75 * factor + " in plaats van € " + 45 * factor + ".";
-}
-["bezoekers", "aanvrager_type"].forEach(id => { const el = document.getElementById(id); el.addEventListener("input", toonPlanprijs); el.addEventListener("change", toonPlanprijs); });
-toonPlanprijs();
 
 // Past het formulier aan de gemeente en de situatie aan: enkel de vragen die hier tellen.
 // Een fuif of concert heeft altijd versterkte muziek: die vraag staat dan vast op ja.
@@ -706,7 +696,8 @@ function toonGembox() {
   else if (PLATFORM[r.platform]) li.push("We dienen in " + PLATFORM[r.platform] + ".");
   const p = nodigePlannen(), pl = [p.inplanting.length && "inplantingsplan", p.grondplan.length && "grondplan"].filter(Boolean);
   const pv = prijsVoor();
-  if (pl.length) li.push("Plannen: " + pl.join(" en ") + ". Je kan ze zelf toevoegen, of tekenen in onze plantekenaar" + (pv.formule === "Plus" ? " (inbegrepen)." : " (€ " + 30 * pv.factor + " extra)."));
+  if (pl.length) li.push("Plannen: " + pl.join(" en ") + ". Je kan ze zelf toevoegen, of tekenen in onze plantekenaar (inbegrepen).");
+  if (pv.formule === "Plus") li.push("Veiligheidsplan: bij 500 aanwezigen of meer maken we het mee op (inbegrepen).");
   const geen = geenUitleen(), u = r.uitleen || {};
   if (geen) li.push("Materiaal: de gemeente " + geen + ".");
   else if (u.uitleendienst === "ja") li.push("Materiaal van de gemeente vragen we mee aan als je dat wil.");
@@ -927,7 +918,7 @@ De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor d
 const vt = document.getElementById("volmachttekst");
 function toonVolmacht() { vt.textContent = volmachtTekst(Object.fromEntries(new FormData(intakeForm).entries())); }
 
-// Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 75 bij hulp bij het plan (plantekenaar) of 500 aanwezigen of meer.
+// Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 75 vanaf 500 aanwezigen (met veiligheidsplan), anders € 45; de plantekenaar zit in beide.
 function toonPrijs() {
   const box = document.getElementById("prijs");
   if (!veld("aanvrager_type") || !veld("bezoekers") || !veld("locatie_soort")) { box.hidden = true; return; }
@@ -1042,7 +1033,7 @@ function toonOverzicht() {
     ["Datum", veld("startdatum") ? datumNL(veld("startdatum")) + eind + (uren ? ", " + uren : "") : "", 2],
     ["Waar", [veld("locatie_naam"), veld("locatie"), opt("locatie_soort")].filter(Boolean).join(" · "), 2],
     ["Aanwezigen", veld("bezoekers") ? veld("bezoekers") + " tegelijk" : "", 1],
-    ["Plan", { "bijgevoegd": "ik voeg het toe", "hulp nodig": "hulp via de plantekenaar", "later": "bezorg ik later" }[gekozen("inplantingsplan")] || "", 4],
+    ["Plan", { "bijgevoegd": "ik voeg het toe", "hulp nodig": "ik teken het in de plantekenaar", "later": "bezorg ik later" }[gekozen("inplantingsplan")] || "", 4],
     ["Bijlagen", alleBestanden().length ? alleBestanden().length + " bestand(en)" : "geen, bezorg ik later", 4],
     ["Documenten", DOCS.filter(d => d.toon()).map(d => d.naam.split(" ")[0] + ": " + ({ nu: "toegevoegd", later: "later", geen: "geen verzekering", nvt: "niet van toepassing" }[gekozen("doc_" + d.k)] || "–")).join(", "), 4],
     ["Materiaal", geenUitleen() ? "niet bij de gemeente" : gekozen("materiaal") === "ja" ? (matAantal ? matAantal + " soort(en) materiaal" : "ja") : gekozen("materiaal"), 4]
@@ -1191,7 +1182,7 @@ form.addEventListener("submit", async e => {
     if (j.eigen) {
       document.getElementById("done-kop").textContent = "Eigen aanvraag: staat op betaald.";
       const pl = document.getElementById("eigen-plan");
-      pl.hidden = j.formule !== "Plus"; pl.href = "/plan?id=" + encodeURIComponent(j.id);
+      pl.hidden = false; pl.href = "/plan?id=" + encodeURIComponent(j.id);
     }
     const anders = data.betaler === "anders";
     if (anders) {

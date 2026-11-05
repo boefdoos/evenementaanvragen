@@ -3,8 +3,8 @@
 import Basis from "../layouts/Basis.astro";
 import huisstijl from "../huisstijl.css?raw";
 import juridisch from "../juridisch.css?raw";
-const VERSIE = "3";
-const DATUM = "3 november 2026";
+const VERSIE = "4";
+const DATUM = "5 november 2026";
 const hoofdstukken = [
   ["wie", "Wie we zijn"],
   ["toepassing", "Wanneer deze voorwaarden gelden"],
@@ -14,7 +14,7 @@ const hoofdstukken = [
   ["prijs", "Prijs en tarief"],
   ["jij", "Wat we van jou verwachten"],
   ["volmacht", "De volmacht"],
-  ["plan", "De plantekenaar"],
+  ["plan", "Plantekenaar en veiligheidsplan"],
   ["termijnen", "Termijnen"],
   ["na", "Na de indiening"],
   ["annuleren", "Annuleren en terugbetalen"],
@@ -62,13 +62,13 @@ const hoofdstukken = [
     <li>dienen we de aanvraag in jouw naam in, via het kanaal dat de gemeente gebruikt;</li>
     <li>sturen we je na de indiening een bevestiging, met wat er nog op jou wacht.</li>
   </ul>
-  <p>De dienst geldt voor één evenement op één locatie, op één dag, in één gemeente. De prijs hangt af van je evenement en staat in het formulier voor je betaalt: het lagere tarief tot 499 aanwezigen tegelijk, als je zelf een plan bezorgt wanneer de gemeente er een vraagt; het hogere tarief vanaf 500 tot 999 aanwezigen, of als je hulp wil bij je plan. Bij het hogere tarief hoort onze begeleide plantekenaar (zie <a href="#plan">punt 9</a>).</p>
+  <p>De dienst geldt voor één evenement op één locatie, op één dag, in één gemeente. De prijs hangt enkel af van het aantal aanwezigen tegelijk en staat in het formulier voor je betaalt: het lagere tarief tot 499 aanwezigen, het hogere tarief vanaf 500 tot 999 aanwezigen. Bij beide hoort onze begeleide plantekenaar (zie <a href="#plan">punt 9</a>). Bij het hogere tarief maken we ook een veiligheidsplan op (zie <a href="#plan">punt 9</a>).</p>
   <p>We werken met de regels die gemeenten publiceren. Publiceert een gemeente geen termijn, dan rekenen we met de strengste vergelijkbare termijn en vragen we het na.</p>
 
   <h2 id="niet">4. Wat niet in de dienst zit</h2>
   <ul>
     <li><b>De beslissing.</b> De gemeente beslist over je aanvraag. We kunnen niet garanderen dat ze wordt goedgekeurd, of onder welke voorwaarden.</li>
-    <li><b>Evenementen buiten ons aanbod:</b> 1000 of meer bezoekers, meerdere dagen of locaties, meerdere gemeenten, een stoet of wielerwedstrijd, of een evenement waarvoor een veiligheidsplan nodig is. Het formulier meldt dat vóór je iets betaalt.</li>
+    <li><b>Evenementen buiten ons aanbod:</b> 1000 of meer bezoekers, meerdere dagen of locaties, meerdere gemeenten, of een stoet of wielerwedstrijd. Het formulier meldt dat vóór je iets betaalt.</li>
     <li><b>Wat de gemeente na de indiening nog vraagt,</b> behalve het herstel van onze eigen fouten (zie <a href="#na">punt 11</a>). Na de indiening praat de gemeente rechtstreeks met jou.</li>
     <li><b>Persoonlijke stappen.</b> Vraagt een gemeente of uitleendienst dat de organisator zelf inlogt (bijvoorbeeld met itsme), een account maakt of iets ondertekent, dan doe je dat zelf. We zeggen je precies wat en wanneer.</li>
     <li><b>Materiaal dat de gemeente niet uitleent,</b> of niet aan jou. Dan laten we het je weten, zodat je het tijdig zelf kan huren.</li>
@@ -100,10 +100,13 @@ const hoofdstukken = [
   <p>De volmacht geldt enkel voor het evenement in de aanvraag. Ze loopt tot 30 dagen na de indiening, zodat we een fout in wat wij indienden kunnen herstellen als de gemeente daarom vraagt (zie <a href="#na">punt 11</a>). Je kan ze altijd intrekken met een mail aan <a href="mailto:thomas@evenementaanvragen.be">thomas@evenementaanvragen.be</a>. Trek je ze in vóór de indiening, dan geldt dat als annulering (zie <a href="#annuleren">punt 12</a>).</p>
   <p>Je verklaart dat je bevoegd bent om de organisator te vertegenwoordigen. Vraagt een gemeente uitdrukkelijk een andere handtekening, bijvoorbeeld met itsme of je identiteitskaart, dan vragen we je die.</p>
 
-  <h2 id="plan">9. De plantekenaar</h2>
-  <p>Bij het hogere tarief teken je je inplantingsplan en grondplan zelf, stap voor stap, in onze plantekenaar. Je opent hem na je betaling met je dossiernummer en je e-mailadres. Jij kent je terrein het best, en het plan is jouw verklaring aan de gemeente over hoe je evenement eruit zal zien.</p>
+  <h2 id="plan">9. Plantekenaar en veiligheidsplan</h2>
+  <p>Heb je geen plan, dan teken je je inplantingsplan en grondplan zelf, stap voor stap, in onze plantekenaar. Je opent hem na je betaling met je dossiernummer en je e-mailadres. Jij kent je terrein het best, en het plan is jouw verklaring aan de gemeente over hoe je evenement eruit zal zien.</p>
   <p>De plantekenaar controleert je plan aan de eisen van de brandweer die we gevonden hebben, met de bron erbij. Vonden we voor jouw zone geen eigen regels, dan gebruikt hij de strengste eis die we kennen. Die controle is een hulp, geen advies van de brandweer. De brandweer of de gemeente kan andere of strengere eisen stellen.</p>
   <p>We kijken je plan na voor we indienen. Moet er iets aan, dan laten we het je weten. Kleine correcties zitten in de prijs.</p>
+
+  <p id="veiligheidsplan"><b>Veiligheidsplan.</b> Bij 500 aanwezigen of meer maken we een veiligheidsplan op: wie verantwoordelijk is, de bereikbaarheid op de dag zelf, de uitgangen en de doorgang voor de hulpdiensten, bewaking, EHBO, en wat er gebeurt bij brand, onwel worden, slecht weer of een evacuatie. We vertrekken van je aanvraag, je plan en een korte vragenlijst na je betaling. Vraagt je gemeente een eigen model, dan gebruiken we dat.</p>
+  <p>Het veiligheidsplan beschrijft jouw organisatie en jouw afspraken. Wij schrijven het op zoals jij het ons geeft; jij leest het na en bevestigt het voor we indienen. We beoordelen niet of je maatregelen volstaan: dat doen de gemeente, de politie en de brandweer. Een medische risicoanalyse of een plan van een bewakingsfirma maken we niet op.</p>
 
   <h2 id="termijnen">10. Termijnen</h2>
   <p>We berekenen de uiterste indiendatum met de regels van je gemeente. Bij twijfel nemen we de strengste datum, en we dienen ruim op tijd in.</p>
