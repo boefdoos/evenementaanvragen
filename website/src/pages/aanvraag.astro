@@ -375,7 +375,7 @@ footer.foot a{color:var(--soft)}
         <div class="field"><label for="organisatie">Naam vereniging, bedrijf of school <span class="req" id="orgreq" hidden>*</span></label><input id="organisatie" name="organisatie" autocomplete="organization"></div>
         <div class="field"><label for="email">E-mail <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
         <div class="field"><label for="gsm">Gsm <span class="req">*</span></label><input id="gsm" name="gsm" type="tel" autocomplete="tel" required placeholder="0470 12 34 56"></div>
-        <div class="field full"><label for="adres_organisator">Adres organisator</label><input id="adres_organisator" name="adres_organisator" autocomplete="street-address"></div>
+        <div class="field full"><label for="adres_organisator">Adres organisator <span class="req" id="adresreq" hidden>*</span> <span class="hint" id="adreshint" hidden>(voor de factuur)</span></label><input id="adres_organisator" name="adres_organisator" autocomplete="street-address"></div>
         <div class="field" id="kbowrap"><label for="ondernemingsnummer">Ondernemingsnummer <span class="req" id="kboreq" hidden>*</span> <span class="hint" id="kbohint">(vzw, bedrijf of zelfstandige)</span></label><input id="ondernemingsnummer" name="ondernemingsnummer" inputmode="numeric" placeholder="0123.456.789"></div>
         <div class="full" id="verenigingwrap" hidden>
           <div class="yn" id="jeugdyn">
@@ -411,6 +411,18 @@ footer.foot a{color:var(--soft)}
         <div class="field" id="functiewrap"><label for="volmacht_functie">Hoedanigheid <span class="req">*</span></label><input id="volmacht_functie" name="volmacht_functie" required placeholder="bv. voorzitter, secretaris, zaakvoerder"></div>
         <label class="check" for="toestemming_mandaat"><input type="checkbox" id="toestemming_mandaat" name="toestemming_mandaat" required><span>Ik ben bevoegd om de organisator te vertegenwoordigen en geef de volmacht hierboven. Mijn getypte naam geldt als handtekening. <span class="req">*</span></span></label>
         <label class="check" for="herroeping" id="herroepwrap" hidden><input type="checkbox" id="herroeping" name="herroeping" value="ja" disabled><span>Ik vraag om meteen te starten. Ik weet dat ik mijn herroepingsrecht verlies zodra de aanvraag volledig is ingediend. <span class="req">*</span></span></label>
+        <div class="full" id="betalerwrap" hidden>
+          <div class="yn">
+            <div><div class="q" id="q_betaler">Wie betaalt?</div><div class="hint">Regelt iemand anders de betaling, zoals de penningmeester of de boekhouding? Dan sturen wij het betaalverzoek rechtstreeks naar die persoon, met jou in kopie.</div></div>
+            <div class="seg" role="radiogroup" aria-labelledby="q_betaler">
+              <label><input type="radio" id="betaler_0" name="betaler" value="ik" checked><span>ik</span></label>
+              <label><input type="radio" id="betaler_1" name="betaler" value="anders"><span>iemand anders</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="field" id="betalernaamwrap" hidden><label for="betaler_naam">Naam van wie betaalt <span class="req">*</span></label><input id="betaler_naam" name="betaler_naam" autocomplete="off" placeholder="bv. penningmeester of boekhouding"></div>
+        <div class="field" id="betalermailwrap" hidden><label for="betaler_email">E-mail van wie betaalt <span class="req">*</span></label><input id="betaler_email" name="betaler_email" type="email" autocomplete="off"></div>
+        <div class="field full" id="betalerrefwrap" hidden><label for="factuur_referentie">Referentie voor de factuur <span class="hint">(optioneel, bv. bestelbonnummer)</span></label><input id="factuur_referentie" name="factuur_referentie" maxlength="100"></div>
         <div class="prijs full" id="prijs" hidden></div>
         <p class="err full" id="formerr" hidden></p>
       </fieldset>
@@ -439,6 +451,10 @@ footer.foot a{color:var(--soft)}
       <p class="fijn">Bancontact of kaart, veilig via Mollie.</p>
     </div>
     <p id="done-eigen" hidden>Geen betaling nodig. De betaalmail met de volmacht is onderweg, en de geplande taak verwerkt het dossier zoals een betaald dossier. <a id="eigen-plan" hidden>Open de plantekenaar</a></p>
+    <div id="done-betaler" hidden>
+      <p id="done-betaler-tekst"></p>
+      <p class="fijn">Toch liever zelf betalen? <a id="zelfbetalen" href="#">Dat kan hier</a>.</p>
+    </div>
     <p id="done-navraag" hidden>We kijken eerst de termijn van je gemeente na. Binnen twee werkdagen krijg je je deadline en een betaallink. Een bevestiging staat al in je mailbox.</p>
   </section>
 </div>
@@ -919,6 +935,19 @@ function toonPrijs() {
   box.innerHTML = '<span>' + esc(p.reden.charAt(0).toUpperCase() + p.reden.slice(1)) + (veld("aanvrager_type") === "bedrijf" ? ", tarief bedrijf of zelfstandige" : "") + '</span><b>€ ' + p.bedrag + '</b>';
   box.hidden = false;
 }
+// Wie betaalt: enkel voor een vereniging, school of bedrijf. Iemand anders: betaalverzoek naar die persoon, adres nodig voor de factuur.
+function anderBetaalt() { return !document.getElementById("betalerwrap").hidden && document.getElementById("betaler_1").checked; }
+function toonBetaler() {
+  const part = veld("aanvrager_type") === "particulier";
+  document.getElementById("betalerwrap").hidden = part;
+  if (part) document.getElementById("betaler_0").checked = true;
+  const anders = anderBetaalt();
+  ["betalernaamwrap", "betalermailwrap", "betalerrefwrap"].forEach(id => { document.getElementById(id).hidden = !anders; });
+  document.getElementById("betaler_naam").required = anders;
+  document.getElementById("betaler_email").required = anders;
+  document.getElementById("adres_organisator").required = anders;
+  document.getElementById("adresreq").hidden = !anders; document.getElementById("adreshint").hidden = !anders;
+}
 function toonHerroeping() {
   const part = veld("aanvrager_type") === "particulier", w = document.getElementById("herroepwrap"), c = document.getElementById("herroeping");
   w.hidden = !part; c.disabled = !part; c.required = part;
@@ -966,6 +995,8 @@ function geldig(n) {
     return false;
   }
   const bad = fouten(n);
+  if (n === 5) toonBetaler();
+  if (n === 5 && anderBetaalt() && document.getElementById("betaler_email").value.trim().toLowerCase() === document.getElementById("email").value.trim().toLowerCase()) { meldFout(n, "Het e-mailadres van wie betaalt is hetzelfde als het jouwe. Kies dan bij \"Wie betaalt?\" voor \"ik\"."); document.getElementById("betaler_email").focus(); return false; }
   if (n === 5 && !document.getElementById("kbowrap").hidden && kboVeld.value.trim() && !kboGeldig(kboVeld.value)) { meldFout(n, "Dit ondernemingsnummer klopt niet. Kijk het na op je factuur of in de KBO (kbopub.economie.fgov.be)."); kboVeld.focus(); return false; }
   if (bad.length) { meldFout(n, "Nog niet alles is ingevuld: " + bad.map(labelVan).join(", ") + "."); (bad[0].hidden && bad[0].nextElementSibling ? bad[0].nextElementSibling : bad[0]).focus(); return false; }
   return true;
@@ -979,7 +1010,7 @@ function gaNaar(n, push) {
     if (i + 1 === n) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
     b.disabled = i + 1 > verst;
   });
-  if (n === 5) { toonOverzicht(); toonVolmacht(); toonPrijs(); toonHerroeping(); }
+  if (n === 5) { toonOverzicht(); toonVolmacht(); toonPrijs(); toonHerroeping(); toonBetaler(); }
   if (push !== false) { try { history.pushState({ stap: n }, "", "#stap-" + n); } catch (e) {} }
   bewaar();
   const top = balk.getBoundingClientRect().top + window.scrollY - 16;
@@ -1060,8 +1091,8 @@ intakeForm.addEventListener("input", () => { clearTimeout(bewaarT); bewaarT = se
 intakeForm.addEventListener("change", () => { bewaar(); });
 // Een foutmelding verdwijnt zodra je iets aanpast; bij "Volgende" wordt opnieuw gecontroleerd.
 ["input", "change"].forEach(t => intakeForm.addEventListener(t, () => { if (stap < 5) meldFout(stap, ""); }));
-intakeForm.addEventListener("input", () => { if (stap === 5) { toonVolmacht(); toonPrijs(); toonHerroeping(); } });
-intakeForm.addEventListener("change", () => { if (stap === 5) { toonVolmacht(); toonPrijs(); toonHerroeping(); } });
+intakeForm.addEventListener("input", () => { if (stap === 5) { toonVolmacht(); toonPrijs(); toonHerroeping(); toonBetaler(); } });
+intakeForm.addEventListener("change", () => { if (stap === 5) { toonVolmacht(); toonPrijs(); toonHerroeping(); toonBetaler(); } });
 
 // Opstart: eerst het bewaarde concept, daarna (enkel lege velden) wat uit de termijncheck op de startpagina komt.
 const concept = herstel();
@@ -1107,6 +1138,7 @@ form.addEventListener("submit", async e => {
   data.toestemming_mandaat = form.toestemming_mandaat.checked ? "ja" : "nee";
   data.termijn_oordeel = termijn ? termijn.soort : "onbekend";
   if (data.aanvrager_type === "particulier") data.volmacht_functie = "in eigen naam";
+  if (!anderBetaalt()) { data.betaler = "ik"; data.betaler_naam = ""; data.betaler_email = ""; data.factuur_referentie = ""; }
   try { const sl = localStorage.getItem(EIGEN); if (sl) data.eigen_sleutel = sl; } catch (e) {}
   const isoD = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
   data.termijn_deadline = termijn && termijn.deadline ? isoD(termijn.deadline) : "";
@@ -1161,7 +1193,20 @@ form.addEventListener("submit", async e => {
       const pl = document.getElementById("eigen-plan");
       pl.hidden = j.formule !== "Plus"; pl.href = "/plan?id=" + encodeURIComponent(j.id);
     }
-    if (betaal) {
+    const anders = data.betaler === "anders";
+    if (anders) {
+      const wie = data.betaler_naam + " (" + data.betaler_email + ")";
+      if (betaal) {
+        document.getElementById("done-betaal").hidden = true;
+        document.getElementById("done-betaler").hidden = false;
+        document.getElementById("done-kop").textContent = "Bijna klaar.";
+        document.getElementById("done-betaler-tekst").textContent = "Binnen enkele minuten krijgt " + wie + " het betaalverzoek" + (j.bedrag ? " van € " + j.bedrag : "") + ", met jou in kopie. Zodra er betaald is, nemen wij het over.";
+        document.getElementById("zelfbetalen").href = j.betaalUrl;
+      } else if (!j.eigen) {
+        document.getElementById("done-navraag").textContent = "We kijken eerst de termijn van je gemeente na. Binnen twee werkdagen krijg je je deadline, en sturen we de betaallink naar " + wie + ". Een bevestiging staat al in je mailbox.";
+      }
+    }
+    if (betaal && !anders) {
       document.getElementById("done-kop").textContent = "Je bent er bijna.";
       document.getElementById("betaalformule").textContent = prijsVoor().reden;
       document.getElementById("betaallink").href = j.betaalUrl;
