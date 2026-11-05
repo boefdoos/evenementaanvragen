@@ -125,6 +125,13 @@ function norm(param) {
   const st = NORMEN.strengste && NORMEN.strengste[param];
   return st ? Object.assign({ strengste: true }, st) : null;
 }
+// Kleinste maat van een vlak. De doorgang voor de hulpdiensten kan niet smaller dan de norm (overal 4 m volgens
+// normen.json, met bron); andere vlakken minstens 0,5 m.
+function minZijde(it) {
+  if (it.k !== "doorgang") return 0.5;
+  const nd = norm("doorgang_hulpdiensten");
+  return (nd && nd.breedte_m) || 0.5;
+}
 function aantalUitgangen(personen) {
   const n = norm("uitgangen");
   if (!n || !Array.isArray(n.trappen)) return null;
@@ -187,20 +194,20 @@ function tekenKaart() {
         color: k.c, weight: sel === it.id ? 3 : 2,
         fillOpacity: it.k === "zone" ? 0.05 : it.k === "doorgang" ? 0.15 : 0.35,
         dashArray: it.k === "doorgang" || it.k === "zone" ? "6 4" : null,
-      }).on("click", (e) => { L.DomEvent.stop(e); if (!versleept) kies(it.id); }).addTo(laag);
+      }).on("click", (e) => { L.DomEvent.stop(e); if (maatModus) return kaartKlik(e); if (!versleept) kies(it.id); }).addTo(laag);
       polys[it.id] = p;
       vlakSleepbaar(p, it);
       const m = L.marker([it.lat, it.lng], { draggable: true, icon: L.divIcon({ className: "lbl", html: "<span>" + esc(it.naam || k.n) + " · " + fmt(it.w) + "×" + fmt(it.l) + " m</span>", iconSize: [0, 0] }) });
       m.on("dragstart", () => kies(it.id, true));
       m.on("drag", (e) => { const q = e.target.getLatLng(); it.lat = q.lat; it.lng = q.lng; polys[it.id].setLatLngs(hoeken(it)); });
       m.on("dragend", () => { allesTekenen(); bewaar(); });
-      m.on("click", () => kies(it.id));
+      m.on("click", (e) => (maatModus ? kaartKlik(e) : kies(it.id)));
       m.addTo(laag);
       if (sel === it.id) grepen(it);
     } else {
       const m = L.marker([it.lat, it.lng], { draggable: true, icon: L.divIcon({ className: "sym", html: '<span style="background:' + k.c + '">' + esc(k.s) + "</span>", iconSize: [0, 0] }) });
       m.on("dragend", (e) => { const q = e.target.getLatLng(); it.lat = q.lat; it.lng = q.lng; allesTekenen(); bewaar(); });
-      m.on("click", () => kies(it.id));
+      m.on("click", (e) => (maatModus ? kaartKlik(e) : kies(it.id)));
       m.addTo(laag);
     }
   }
@@ -257,7 +264,7 @@ function grepen(it) {
     const dx = (q.lng - vast.lng) / mLng(vast.lat), dy = (q.lat - vast.lat) / mLat();
     // terug naar het assenstelsel van het vlak
     const lx = dx * Math.cos(a()) + dy * Math.sin(a()), ly = -dx * Math.sin(a()) + dy * Math.cos(a());
-    it.w = Math.max(0.5, Math.round(lx * 10) / 10); it.l = Math.max(0.5, Math.round(ly * 10) / 10);
+    it.w = Math.max(minZijde(it), Math.round(lx * 10) / 10); it.l = Math.max(minZijde(it), Math.round(ly * 10) / 10);
     const [cx, cy] = rot(it.w / 2, it.l / 2);
     it.lat = vast.lat + cy * mLat(); it.lng = vast.lng + cx * mLng(vast.lat);
     polys[it.id].setLatLngs(hoeken(it)); draai.setLatLng(draaiPos()); lijn.setLatLngs([[it.lat, it.lng], draaiPos()]);
@@ -375,22 +382,24 @@ function tekenLijst() {
   if (!it) { ed.innerHTML = ""; return; }
   const k = KAT[S.actief][it.k];
   let h = '<div class="edit"><label for="e-naam">Naam<input id="e-naam" value="' + esc(it.naam) + '" placeholder="' + esc(k.n) + '"></label>';
-  if (k.f === "rect") h += '<div class="r3"><label for="e-w">Lengte (m)<input id="e-w" type="number" step="0.5" min="0.5" value="' + it.w + '"></label><label for="e-l">Breedte (m)<input id="e-l" type="number" step="0.5" min="0.5" value="' + it.l + '"></label><label for="e-r">Draaiing (°)<input id="e-r" type="number" step="5" value="' + it.rot + '"></label></div>';
+  if (k.f === "rect") h += '<div class="r3"><label for="e-w">Lengte (m)<input id="e-w" type="number" step="0.5" min="' + minZijde(it) + '" value="' + it.w + '"></label><label for="e-l">Breedte (m)<input id="e-l" type="number" step="0.5" min="' + minZijde(it) + '" value="' + it.l + '"></label><label for="e-r">Draaiing (°)<input id="e-r" type="number" step="5" value="' + it.rot + '"></label></div>';
+  if (it.k === "doorgang" && minZijde(it) > 0.5) h += '<p class="hint" style="margin:0">Minstens ' + fmt(minZijde(it)) + ' m breed: dat vraagt de brandweer. Smaller kan niet.</p>';
   if (k.f === "deur") h += '<div class="r2"><label for="e-w">Breedte (m)<input id="e-w" type="number" step="0.1" min="0.6" value="' + it.w + '"></label><label for="e-o">Draait<select id="e-o"><option value="buiten"' + (it.open === "buiten" ? " selected" : "") + '>naar buiten</option><option value="binnen"' + (it.open === "binnen" ? " selected" : "") + ">naar binnen</option></select></label></div>";
   if (it.k === "uitgang") h += '<label for="e-b">Vrije breedte (m)<input id="e-b" type="number" step="0.1" min="0.5" value="' + it.breedte + '"></label>';
   h += '<div class="r2">' + (k.f === "rect" ? '<button class="btn" id="e-90" type="button" title="Sneltoets: R">Draai 90°</button>' : "") + '<button class="btn" id="e-del" type="button">Verwijderen</button></div></div>';
   ed.innerHTML = h;
   const upd = () => {
     it.naam = $("e-naam").value;
-    if ($("e-w")) it.w = Math.max(0.1, +$("e-w").value || it.w);
-    if ($("e-l")) it.l = Math.max(0.1, +$("e-l").value || it.l);
+    const mz = k.f === "rect" ? minZijde(it) : 0.1;
+    if ($("e-w")) it.w = Math.max(mz, +$("e-w").value || it.w);
+    if ($("e-l")) it.l = Math.max(mz, +$("e-l").value || it.l);
     if ($("e-r")) it.rot = +$("e-r").value || 0;
     if ($("e-o")) it.open = $("e-o").value;
     if ($("e-b")) it.breedte = Math.max(0.1, +$("e-b").value || it.breedte);
     if (k.f === "deur") klikAanWand(it);
     tekenPlan(); tekenControles(); bewaar();
   };
-  ed.querySelectorAll("input,select").forEach((i) => i.addEventListener("change", upd));
+  ed.querySelectorAll("input,select").forEach((i) => i.addEventListener("change", () => { upd(); if ($("e-w")) $("e-w").value = it.w; if ($("e-l")) $("e-l").value = it.l; }));
   ed.querySelectorAll("input").forEach((i) => i.addEventListener("input", upd));
   if ($("e-90")) $("e-90").addEventListener("click", () => draai90(it));
   $("e-del").addEventListener("click", () => {
@@ -447,6 +456,12 @@ function controles(plan) {
     if (dg.length) C(2, dgMin ? dg.every((d) => Math.min(d.w, d.l) >= dgMin) : null, dgMin ? "Doorgang minstens " + fmt(dgMin) + " m breed" + (nd.hoogte_m ? " (en " + fmt(nd.hoogte_m) + " m vrije hoogte)" : "") : "Breedte van de doorgang: geen norm gevonden, vraag ze na", nd);
     const hinder = dg.some((d) => { const rd = rectI(d); return S.I.items.some((o) => o !== d && KAT_I[o.k].f === "rect" && !["zone", "doorgang"].includes(o.k) && rectsOverlappen(rd, rectI(o))); });
     if (dg.length) C(2, !hinder, "Niets staat in de doorgang voor de hulpdiensten");
+    if (GEBOUWEN.ringen) {
+      if (dg.length) C(2, !dg.some((d) => opGebouw(rectI(d))), "De doorgang voor de hulpdiensten loopt niet door een gebouw (gebouwenkaart GRB)");
+      const opst = S.I.items.filter((i) => KAT_I[i.k].f === "rect" && !["zone", "doorgang"].includes(i.k));
+      // In een zaal staat de opstelling binnen een gebouw: daar enkel de doorgang controleren.
+      if (opst.length && !/zaal/i.test(String(S.d.situatie || ""))) C(1, !opst.some((o) => opGebouw(rectI(o))), "Geen opstelling staat op een gebouw (gebouwenkaart GRB)");
+    }
     if (it("zone").length) {
       const u = it("uitgang"), nu = aantalUitgangen(P);
       C(2, nu ? u.length >= nu.aantal : u.length >= 1, nu ? "Minstens " + nu.aantal + " nooduitgang" + (nu.aantal > 1 ? "en" : "") + " voor " + P + " personen" : "Nooduitgangen van het terrein aangeduid", nu && nu.bron);
@@ -463,14 +478,22 @@ function controles(plan) {
       const opst = S.I.items.filter((i) => KAT_I[i.k].f === "rect" && !["zone", "doorgang"].includes(i.k));
       const buiten = opst.filter((o) => !hoekenLokaal(rectI(o)).every((p) => opTerrein(p, 0.3)));
       C(1, !buiten.length, buiten.length ? "Staat niet (helemaal) op het terrein: " + [...new Set(buiten.map((o) => KAT_I[o.k].n.toLowerCase()))].join(", ") : "Alle opstellingen staan op het terrein");
-      const u = it("uitgang"), losU = u.filter((x) => !zones.some((z) => randAfstand(lokaal(x.lat, x.lng), z) <= 1.5));
-      if (u.length) C(2, !losU.length, losU.length ? losU.length + " nooduitgang" + (losU.length > 1 ? "en liggen" : " ligt") + " niet op de rand van het terrein" : "Nooduitgangen liggen op de rand van het terrein");
+      // Een nooduitgang hoort in de afsluiting van het terrein (een opening in de hekken) of in de wand van een tent.
+      // Ligt hij nergens op zo'n rand, dan is het geen uitgang maar een punt midden in het publiek.
+      const tenten = it("tent"), opRand = (x) => { const p = lokaal(x.lat, x.lng); return [...zones, ...tenten.map(rectI)].some((r) => randAfstand(p, r) <= 1.5); };
+      const u = it("uitgang"), losU = u.filter((x) => !opRand(x));
+      if (u.length) C(2, !losU.length, losU.length ? losU.length + " nooduitgang" + (losU.length > 1 ? "en liggen" : " ligt") + " niet in de afsluiting van het terrein" + (tenten.length ? " of in een tentwand" : "") + ". Zet ze op de rand, waar de mensen echt naar buiten kunnen" : "Nooduitgangen liggen in de afsluiting van het terrein" + (tenten.length ? " of in een tentwand" : ""));
       if (dg.length) C(2, dg.every((d) => puntenIn(rectI(d), 1).some((p) => !opTerrein(p, -0.5))), "De doorgang voor de hulpdiensten loopt tot aan de rand van het terrein");
       const b = it("blus");
       if (b.length) C(3, b.every((x) => opTerrein(lokaal(x.lat, x.lng), 1)), "Blustoestellen staan op het terrein");
       const bl = norm("blustoestellen");
-      const tentT = it("tent").filter((t) => { const r = rectI(t), nodig = bl && bl.per_m2 ? Math.max(1, Math.ceil((t.w * t.l) / bl.per_m2)) : 1; return b.filter((x) => binnenRect(lokaal(x.lat, x.lng), r, 0.5)).length < nodig; });
-      if (it("tent").length) C(3, !tentT.length, bl && bl.per_m2 ? "In elke tent genoeg blustoestellen (1 per " + fmt(bl.per_m2) + " m²)" : "In elke tent een blustoestel", bl);
+      // Per tent: nodig = oppervlakte / norm, naar boven afgerond (612 m² bij 1 per 150 m² = 5). Toon het tekort zelf.
+      const tekort = it("tent").map((t) => {
+        const r = rectI(t), m2 = t.w * t.l, nodig = bl && bl.per_m2 ? Math.max(1, Math.ceil(m2 / bl.per_m2)) : 1;
+        const er = b.filter((x) => binnenRect(lokaal(x.lat, x.lng), r, 0.5)).length;
+        return er < nodig ? (t.naam || "Tent") + " " + fmt(t.w) + " × " + fmt(t.l) + " m (" + Math.round(m2) + " m²): " + nodig + " nodig, " + er + " getekend" : "";
+      }).filter(Boolean);
+      if (it("tent").length) C(3, !tekort.length, (bl && bl.per_m2 ? "In elke tent genoeg blustoestellen (1 per " + fmt(bl.per_m2) + " m², naar boven afgerond)" : "In elke tent een blustoestel") + (tekort.length ? ". " + tekort.join("; ") : ""), bl);
     }
     const tenten = it("tent").map(rectI), stroom = it("stroom");
     C(1, !stroom.some((s) => tenten.some((t) => binnenRect(lokaal(s.lat, s.lng), t))), "De stroomgroep staat buiten de tent");
@@ -612,7 +635,7 @@ function tekenStap() {
 }
 function naarStap(i) { S.stap[S.actief] = Math.max(0, Math.min(STAPPEN[S.actief].length - 1, i)); sel = null; maatModus = false; banner(null); allesTekenen(); bewaar(); }
 function tekenPlan() { if (S.actief === "inplanting") tekenKaart(); else tekenGrondplan(); }
-function allesTekenen() { tekenStap(); tekenPlan(); tekenLijst(); tekenControles(); if (S.actief === "inplanting") controleerGemeente(); }
+function allesTekenen() { tekenStap(); tekenPlan(); tekenLijst(); tekenControles(); if (S.actief === "inplanting") { controleerGemeente(); laadGebouwen(); } }
 function wisselPlan(p) {
   S.actief = p; sel = null; maatModus = false; banner(null);
   document.querySelectorAll("#tabs button").forEach((b) => b.setAttribute("aria-selected", b.dataset.plan === p));
@@ -654,6 +677,49 @@ function controleerGemeente() {
       S.I.kaartPunt = sleutelG; S.I.kaartGemeente = g || "?"; bewaar(); tekenControles();
     } catch (e) {}
   }, 600);
+}
+// Gebouwen uit het GRB (Digitaal Vlaanderen, laag GBG "gebouw aan de grond") rond het getekende plan, om te
+// controleren dat de doorgang voor de hulpdiensten en de opstellingen niet op een gebouw liggen (5/11/2026).
+const GRB_WFS = "https://geo.api.vlaanderen.be/GRB/wfs?service=WFS&version=2.0.0&request=GetFeature&typeNames=GRB:GBG&outputFormat=application/json&srsName=EPSG:4326&count=1000&bbox=";
+let gebT = null, GEBOUWEN = { sleutel: "", ringen: null };
+function laadGebouwen() {
+  clearTimeout(gebT);
+  const its = S.I.items.filter((i) => KAT_I[i.k].f === "rect" && i.k !== "zone");
+  if (!its.length) return;
+  gebT = setTimeout(async () => {
+    const lats = its.map((i) => i.lat), lngs = its.map((i) => i.lng), pad = 0.0006; // ruwweg 50 m marge
+    const bb = [Math.min(...lngs) - pad, Math.min(...lats) - pad, Math.max(...lngs) + pad, Math.max(...lats) + pad];
+    const sleutel = bb.map((x) => x.toFixed(4)).join(",");
+    if (GEBOUWEN.sleutel === sleutel && GEBOUWEN.ringen) return;
+    try {
+      const j = await (await fetch(GRB_WFS + bb.join(",") + ",urn:ogc:def:crs:OGC:1.3:CRS84")).json();
+      const ringen = [];
+      (j.features || []).forEach((f) => {
+        const g = f.geometry || {}, polys = g.type === "Polygon" ? [g.coordinates] : g.type === "MultiPolygon" ? g.coordinates : [];
+        polys.forEach((pl) => pl[0] && ringen.push(pl[0].map(([lng, lat]) => [lng, lat])));
+      });
+      GEBOUWEN = { sleutel, ringen }; tekenControles();
+    } catch (e) { /* zonder gebouwenkaart geen controle; de rest werkt gewoon */ }
+  }, 700);
+}
+function inRing(p, r) { // punt in veelhoek (lokale meters), even-oneven regel
+  let binnen = false;
+  for (let i = 0, k = r.length - 1; i < r.length; k = i++) {
+    const [xi, yi] = r[i], [xk, yk] = r[k];
+    if ((yi > p[1]) !== (yk > p[1]) && p[0] < ((xk - xi) * (p[1] - yi)) / (yk - yi) + xi) binnen = !binnen;
+  }
+  return binnen;
+}
+// Overlapt een rechthoek (lokale meters) een gebouw? Raster van punten in de rechthoek, plus hoekpunten van het gebouw.
+// 0,5 m marge naar binnen, zodat tegen de gevel aan nog mag.
+function opGebouw(r) {
+  if (!GEBOUWEN.ringen || !GEBOUWEN.ringen.length) return false;
+  const binnenR = { ...r, w: Math.max(0, r.w - 1), l: Math.max(0, r.l - 1) };
+  const pts = puntenIn(binnenR, 1);
+  return GEBOUWEN.ringen.some((ring) => {
+    const rl = ring.map(([lng, lat]) => lokaal(lat, lng));
+    return pts.some((p) => inRing(p, rl)) || rl.some((p) => binnenRect(p, binnenR));
+  });
 }
 let sugT = null, sugLaatste = "";
 function adresSuggesties() {
