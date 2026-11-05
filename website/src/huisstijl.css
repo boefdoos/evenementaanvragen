@@ -52,8 +52,10 @@ nav.menu a.go{color:var(--bg);background:var(--text);margin-left:6px;padding:9px
 .count .num{font:800 clamp(64px,9vw,104px)/.9 var(--f-display);letter-spacing:-.04em}
 .count .unit{font-size:16px;line-height:1.35;color:var(--soft);padding-bottom:8px}
 .deadline{font:600 18px/1.35 var(--f-body);margin-top:14px}
-.status{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--soft);margin-left:10px}
-.status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.status{display:flex;align-items:center;gap:8px;font-size:14px;line-height:1.2;font-weight:600;color:var(--soft);margin-top:10px}
+.status::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--dot,currentColor)}
+.status.ok{--dot:#3ecf7a}
+.status.tight{--dot:var(--sun)}
 .status.late{color:var(--accent)}
 .rule{color:var(--soft);font-size:15px;margin-top:6px}
 .go-link{display:inline-flex;margin-top:16px;font-weight:600;color:var(--accent);text-decoration:none}
