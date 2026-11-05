@@ -374,7 +374,7 @@ footer.foot a{color:var(--soft)}
         <div class="field"><label for="organisatie">Naam vereniging, bedrijf of school <span class="req" id="orgreq" hidden>*</span></label><input id="organisatie" name="organisatie" autocomplete="organization"></div>
         <div class="field"><label for="email">E-mail <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
         <div class="field"><label for="gsm">Gsm <span class="req">*</span></label><input id="gsm" name="gsm" type="tel" autocomplete="tel" required placeholder="0470 12 34 56"></div>
-        <div class="field full"><label for="adres_organisator">Adres organisator <span class="req" id="adresreq" hidden>*</span> <span class="hint" id="adreshint" hidden>(voor de factuur)</span></label><input id="adres_organisator" name="adres_organisator" autocomplete="street-address"></div>
+        <div class="field full"><label for="adres_organisator">Adres organisator <span class="req" id="adresreq" hidden>*</span> <span class="hint" id="adreshint" hidden>(voor de factuur)</span></label><input id="adres_organisator" name="adres_organisator" list="adreslijst_org" autocomplete="off"><datalist id="adreslijst_org"></datalist></div>
         <div class="field" id="kbowrap"><label for="ondernemingsnummer">Ondernemingsnummer <span class="req" id="kboreq" hidden>*</span> <span class="hint" id="kbohint">(vzw, bedrijf of zelfstandige)</span></label><input id="ondernemingsnummer" name="ondernemingsnummer" inputmode="numeric" placeholder="0123.456.789"></div>
         <div class="full" id="verenigingwrap" hidden>
           <div class="yn" id="jeugdyn">
@@ -419,7 +419,7 @@ footer.foot a{color:var(--soft)}
             </div>
           </div>
         </div>
-        <div class="field" id="betalernaamwrap" hidden><label for="betaler_naam">Naam van wie betaalt <span class="req">*</span></label><input id="betaler_naam" name="betaler_naam" autocomplete="off" placeholder="bv. penningmeester of boekhouding"></div>
+        <div class="field" id="betalernaamwrap" hidden><label for="betaler_naam">Naam van wie betaalt <span class="req">*</span></label><input id="betaler_naam" name="betaler_naam" autocomplete="off" placeholder="Voor- en familienaam"></div>
         <div class="field" id="betalermailwrap" hidden><label for="betaler_email">E-mail van wie betaalt <span class="req">*</span></label><input id="betaler_email" name="betaler_email" type="email" autocomplete="off"></div>
         <div class="field full" id="betalerrefwrap" hidden><label for="factuur_referentie">Referentie voor de factuur <span class="hint">(optioneel, bv. bestelbonnummer)</span></label><input id="factuur_referentie" name="factuur_referentie" maxlength="100"></div>
         <div class="prijs full" id="prijs" hidden></div>
@@ -791,23 +791,33 @@ function alleBestanden() {
 }
 const leesB64 = f => new Promise((ok, nok) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = () => nok(new Error("bestand niet leesbaar")); r.readAsDataURL(f); });
 
-// Adressuggesties uit het Centraal Referentieadressenbestand (Digitaal Vlaanderen), binnen de gekozen gemeente.
-(function () {
-  const inp = document.getElementById("locatie"), dl = document.getElementById("adreslijst");
+// Adressuggesties uit het Centraal Referentieadressenbestand (Digitaal Vlaanderen). Voor het evenement enkel
+// adressen in de gekozen gemeente (zoals in de plantekenaar); voor de organisator overal in Vlaanderen.
+const gemNorm = (g) => String(g || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z]/gi, "").toLowerCase();
+function adresSuggesties(inpId, dlId, metGemeente) {
+  const inp = document.getElementById(inpId), dl = document.getElementById(dlId);
   let t = null, laatste = "";
+  const vraag = async (q) => { const j = await (await fetch("https://geo.api.vlaanderen.be/geolocation/v4/Suggestion?c=10&q=" + encodeURIComponent(q))).json(); return j.SuggestionResult || []; };
   inp.addEventListener("input", () => {
     clearTimeout(t);
     t = setTimeout(async () => {
-      const v = inp.value.trim(), gem = veld("gemeente");
-      if (v.length < 3 || v === laatste) return; laatste = v;
-      const q = gem && v.toLowerCase().indexOf(gem.toLowerCase()) < 0 ? v + " " + gem : v;
+      const v = inp.value.trim(), gem = metGemeente ? veld("gemeente") : "";
+      if (v.length < 3 || v + "|" + gem === laatste) return; laatste = v + "|" + gem;
       try {
-        const j = await (await fetch("https://geo.api.vlaanderen.be/geolocation/v4/Suggestion?c=6&q=" + encodeURIComponent(q))).json();
-        dl.replaceChildren(...(j.SuggestionResult || []).map((x) => new Option(x)));
+        let lijst;
+        if (gem) {
+          const metGem = gemNorm(v).includes(gemNorm(gem)) ? v : v + " " + gem;
+          const inGem = (x) => gemNorm(String(x).split(",").pop()) === gemNorm(gem);
+          lijst = (await vraag(metGem)).filter(inGem);
+          if (!lijst.length && metGem !== v) lijst = (await vraag(v)).filter(inGem);
+        } else lijst = await vraag(v);
+        dl.replaceChildren(...lijst.slice(0, 6).map((x) => new Option(x)));
       } catch (e) { /* zonder suggesties gewoon verder typen */ }
     }, 250);
   });
-})();
+}
+adresSuggesties("locatie", "adreslijst", true);
+adresSuggesties("adres_organisator", "adreslijst_org", false);
 
 const sd = document.getElementById("startdatum");
 // Einddatum volgt de startdatum: nooit vroeger, en vanzelf ingevuld met de vroegst mogelijke datum.
@@ -1107,7 +1117,7 @@ const EIGEN = "eigen-sleutel";
   if (actief) { const m = document.createElement("p"); m.className = "hint"; m.style.cssText = "text-align:center;margin:8px 0 0";
     m.textContent = "Eigen-sleutel actief op dit toestel (…" + actief.slice(-4) + ")."; document.getElementById("intro").after(m); }
 })();
-zoeker.sync(); volgEinddatum(); pasAan(); toonTermijn(); toonPlanprijs();
+zoeker.sync(); volgEinddatum(); pasAan(); toonTermijn();
 if (concept && concept.verst) verst = Math.min(5, concept.verst);
 const startStap = Math.min(verst, +((location.hash.match(/^#stap-(\d)$/) || [])[1]) || (concept && concept.stap) || 1);
 try { history.replaceState({ stap: startStap }, "", "#stap-" + startStap); } catch (e) {}
