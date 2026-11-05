@@ -79,6 +79,7 @@ legend + .yn{border-top:0;padding-top:4px}
 .seg span.meer{display:inline;padding:0;border:0;border-radius:0;background:none;color:inherit;opacity:.65;font-weight:500;margin-left:6px;white-space:nowrap}
 .seg input:checked+span{background:var(--text);color:var(--bg);border-color:var(--text)}
 .seg input:focus-visible+span{outline:2px solid var(--text);outline-offset:2px}
+.seg label.uitgelicht span,.seg label.uitgelicht:hover span,.seg label.uitgelicht input:checked+span{border-color:var(--accent)}
 .vink{margin-top:10px}
 #doclijst .yn{grid-template-columns:minmax(0,1fr)}
 
@@ -326,7 +327,7 @@ footer.foot a{color:var(--soft)}
           <div class="hint">Het inplantingsplan toont op schaal hoe alles op je terrein staat (tent, podium, bar, toiletten, doorgang voor hulpdiensten). Het grondplan toont één tent of zaal in detail (deuren, uitgangen, blustoestellen). Een duidelijke schets of foto volstaat om te starten. Geen plan? Dan teken je het na je betaling stap voor stap in onze plantekenaar, die meteen de eisen van de brandweer controleert. Wij kijken het na. Dat zit altijd in de prijs.</div>
           <div class="seg" role="radiogroup" aria-labelledby="q_plan">
             <label><input type="radio" id="plan_0" name="inplantingsplan" value="bijgevoegd"><span>Ik voeg het toe</span></label>
-            <label><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Ik teken het in de plantekenaar</span></label>
+            <label class="uitgelicht"><input type="radio" id="plan_1" name="inplantingsplan" value="hulp nodig"><span>Ik teken het in de plantekenaar</span></label>
             <label><input type="radio" id="plan_2" name="inplantingsplan" value="later" checked><span>Bezorg ik later</span></label>
           </div>
         </div>
