@@ -446,7 +446,7 @@ footer.foot a{color:var(--soft)}
         <div class="bedrag"><b id="betaalbedrag">€ 45</b><span id="betaalformule"></span></div>
         <a class="btn" id="betaallink" href="#">Betalen <span class="arr" aria-hidden="true">→</span></a>
       </div>
-      <p>Na je betaling nemen wij het over.</p>
+      <p>Na je betaling nemen wij het over. Binnen enkele minuten krijg je een mail met je volmacht en wat er nu gebeurt. Betaal je liever later, dan staat de betaallink binnen een kwartier in je mailbox.</p>
       <p class="fijn">Bancontact of kaart, veilig via Mollie.</p>
     </div>
     <p id="done-eigen" hidden>Geen betaling nodig. De betaalmail met de volmacht is onderweg, en de geplande taak verwerkt het dossier zoals een betaald dossier. <a id="eigen-plan" hidden>Open de plantekenaar</a></p>
@@ -1102,9 +1102,14 @@ const EIGEN = "eigen-sleutel";
   const q = new URLSearchParams(location.search);
   let mee = {}; try { mee = JSON.parse(sessionStorage.getItem("termijncheck") || "{}") || {}; } catch (e) {}
   const gem = q.get("gemeente") || mee.gemeente, dat = q.get("datum") || mee.datum, typ = q.get("type") || mee.type, ts = document.getElementById("type");
-  if (gem && !g.value && [...g.options].some(o => o.value === gem)) g.value = gem;
-  if (typ && !ts.value && [...ts.options].some(o => o.value === typ)) ts.value = typ;
-  if (dat && !sd.value && /^\d{4}-\d{2}-\d{2}$/.test(dat)) sd.value = dat;
+  // Een link met ?gemeente= (vanaf een gemeentepagina of de termijncheck) gaat voor op een bewaard concept: de klant
+  // koos net die gemeente. Het adres van het evenement hoort dan niet meer bij die gemeente en gaat leeg.
+  // Wat enkel uit de termijncheck (sessionStorage) komt, vult alleen lege velden.
+  const ok = (sel, v) => v && [...sel.options].some(o => o.value === v);
+  if (ok(g, q.get("gemeente")) && g.value !== q.get("gemeente")) { if (g.value) document.getElementById("locatie").value = ""; g.value = q.get("gemeente"); }
+  else if (!g.value && ok(g, gem)) g.value = gem;
+  if (ok(ts, q.get("type"))) ts.value = q.get("type"); else if (!ts.value && ok(ts, typ)) ts.value = typ;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(q.get("datum") || "")) sd.value = q.get("datum"); else if (dat && !sd.value && /^\d{4}-\d{2}-\d{2}$/.test(dat)) sd.value = dat;
   // Vanaf de knop "Start met hulp bij je plan": hulp bij het plan voorkiezen, tenzij de klant al zelf koos.
   if (q.get("formule") === "plus" && (!concept || !concept.v.inplantingsplan || concept.v.inplantingsplan === "later")) document.getElementById("plan_1").checked = true;
   // Eigen aanvragen (enkel voor de beheerder): ?eigen=<sleutel> één keer openen bewaart de sleutel op dit toestel.
@@ -1201,7 +1206,7 @@ form.addEventListener("submit", async e => {
         document.getElementById("done-betaal").hidden = true;
         document.getElementById("done-betaler").hidden = false;
         document.getElementById("done-kop").textContent = "Bijna klaar.";
-        document.getElementById("done-betaler-tekst").textContent = "Binnen enkele minuten krijgt " + wie + " het betaalverzoek" + (j.bedrag ? " van € " + j.bedrag : "") + ", met jou in kopie. Zodra er betaald is, nemen wij het over.";
+        document.getElementById("done-betaler-tekst").textContent = "Binnen enkele minuten krijgt " + wie + " het betaalverzoek" + (j.bedrag ? " van € " + j.bedrag : "") + ", met jou in kopie. Je eigen bevestiging met de volmacht krijg je tegelijk. Zodra er betaald is, nemen wij het over.";
         document.getElementById("zelfbetalen").href = j.betaalUrl;
       } else if (!j.eigen) {
         document.getElementById("done-navraag").textContent = "We kijken eerst de termijn van je gemeente na. Binnen twee werkdagen krijg je je deadline, en sturen we de betaallink naar " + wie + ". Een bevestiging staat al in je mailbox.";
