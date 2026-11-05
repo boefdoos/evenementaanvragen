@@ -3,7 +3,7 @@
 import Basis from "../layouts/Basis.astro";
 import huisstijl from "../huisstijl.css?raw";
 import juridisch from "../juridisch.css?raw";
-const VERSIE = "4";
+const VERSIE = "5";
 const DATUM = "5 november 2026";
 const hoofdstukken = [
   ["wie", "Wie we zijn"],
@@ -35,7 +35,7 @@ const hoofdstukken = [
     <b>In het kort</b>
     <ul>
       <li>Wij bereiden je evenementaanvraag voor en dienen ze in jouw naam in bij de gemeente. De gemeente beslist.</li>
-      <li>Je betaalt vooraf. Annuleer je vóór de indiening, dan krijg je alles terug.</li>
+      <li>Je betaalt vooraf, of laat iemand van je vereniging, school of bedrijf betalen. We beginnen pas na de betaling. Annuleer je vóór de indiening, dan krijg je alles terug.</li>
       <li>Jij blijft de organisator: jij geeft juiste gegevens en bent verantwoordelijk voor je evenement.</li>
       <li>Maakten wij een fout in wat we indienden, dan verbeteren we die kosteloos.</li>
     </ul>
@@ -76,16 +76,18 @@ const hoofdstukken = [
   </ul>
 
   <h2 id="overeenkomst">5. Aanvraag, bevestiging en betaling</h2>
-  <p>Je stuurt het aanvraagformulier door met de volmacht. Je krijgt dan een bevestiging per mail, met de prijs en een betaallink. De overeenkomst begint wanneer je betaalt. Pas dan starten we.</p>
-  <p>Je betaalt via Mollie (Bancontact of kaart). De betaallink blijft 48 uur geldig, en korter als de deadline van je gemeente dichtbij is. Vervalt de link zonder betaling, dan doen we niets met je aanvraag.</p>
-  <p>Kunnen we de termijn van je gemeente niet met zekerheid bepalen, dan vragen we ze eerst na. Je krijgt de betaallink pas als vaststaat dat het nog op tijd kan.</p>
-  <p>We kunnen een aanvraag weigeren, bijvoorbeeld als ze buiten ons aanbod valt of de termijn niet meer haalbaar is. Heb je dan al betaald, dan betalen we alles terug.</p>
+  <p>Je stuurt het aanvraagformulier door met de volmacht. Je krijgt dan een bevestiging per mail, met de prijs, de deadline van je gemeente en een kopie van de volmacht. De overeenkomst begint wanneer er betaald is. Pas dan starten we.</p>
+  <p><b>Je betaalt zelf.</b> Je betaalt via een betaallink van Mollie, onder meer met Bancontact of een kaart. Je kan meteen betalen aan het einde van het formulier; doe je dat niet, dan krijg je de betaallink binnen een kwartier per mail. De link blijft 48 uur geldig, maar nooit langer dan tot 5 werkdagen vóór de deadline van je gemeente: die dagen hebben we nodig om je dossier op te maken en in te dienen. Is de deadline dichtbij, dan is de link korter geldig.</p>
+  <p><b>Iemand anders betaalt.</b> Organiseer je voor een vereniging, school of bedrijf, dan kan je in het formulier iemand anders laten betalen, bijvoorbeeld de penningmeester of de boekhouding. Je geeft dan de naam en het e-mailadres van die persoon, het adres van de organisator en eventueel een referentie voor de factuur. De betaler krijgt binnen enkele minuten een betaalverzoek per mail, met jou in kopie. Die betaallink blijft geldig tot 5 werkdagen vóór de deadline van je gemeente, en hoogstens 14 dagen. Is er na 2 werkdagen nog niet betaald, dan sturen we de betaler één herinnering. Na de betaling krijg jij de bevestiging dat we starten, en de betaler een ontvangstbevestiging.</p>
+  <p>Een overschrijving is niet mogelijk. Vervalt de betaallink zonder betaling, dan doen we niets met je aanvraag en is er niets verschuldigd. Wil je daarna toch verder, dan stuur je een nieuwe aanvraag door, zolang de deadline het toelaat.</p>
+  <p>Kunnen we de termijn van je gemeente niet met zekerheid bepalen, dan vragen we ze eerst na. De betaallink volgt pas als vaststaat dat het nog op tijd kan.</p>
+  <p>We kunnen een aanvraag weigeren, bijvoorbeeld als ze buiten ons aanbod valt of de termijn niet meer haalbaar is. Is er dan al betaald, dan betalen we alles terug.</p>
 
   <h2 id="prijs">6. Prijs en tarief</h2>
   <p>De prijs staat op de site en in het formulier, vóór je de aanvraag doorstuurt. Het is de volledige prijs: er komt niets bij.</p>
   <p>Het tarief hangt af van wie het evenement organiseert. Verenigingen, scholen en particulieren betalen het gewone tarief. Bedrijven en zelfstandigen betalen het dubbele tarief. Wat telt, is de rechtsvorm van de organisator, niet het soort evenement.</p>
   <p>Je verklaart dat het type organisator dat je opgeeft juist is. Blijkt vóór de indiening dat het niet klopt, dan vragen we het verschil. We dienen pas in nadat het verschil betaald is.</p>
-  <p>Heb je een factuur nodig, vraag ze dan per mail.</p>
+  <p><b>Factuur.</b> Betaalt iemand anders of organiseert een bedrijf, dan sturen we na de betaling een factuur op naam van de organisator, met de referentie die je opgaf. Heb je in een ander geval een factuur nodig, vraag ze dan per mail.</p>
 
   <h2 id="jij">7. Wat we van jou verwachten</h2>
   <ul>
@@ -124,7 +126,7 @@ const hoofdstukken = [
     <li><b>Na de indiening:</b> geen terugbetaling, ook niet als je evenement niet doorgaat of de gemeente het weigert.</li>
     <li><b>Annuleren wij,</b> bijvoorbeeld omdat de termijn niet haalbaar blijkt, dan betalen we alles terug.</li>
   </ul>
-  <p>We betalen terug via Mollie, op de rekening of kaart waarmee je betaalde, binnen 14 dagen na je annulering.</p>
+  <p>We betalen terug via Mollie, op de rekening of kaart waarmee betaald werd, binnen 14 dagen na de annulering. Betaalde iemand anders, dan gaat de terugbetaling naar die betaler.</p>
 
   <h2 id="herroeping">13. Herroepingsrecht voor consumenten</h2>
   <p>Organiseer je als particulier, dan ben je consument en heb je een herroepingsrecht van 14 dagen na je betaling. In het formulier vraag je ons uitdrukkelijk om meteen te starten. Je verliest je herroepingsrecht zodra wij de aanvraag volledig ingediend hebben.</p>
