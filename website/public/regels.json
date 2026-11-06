@@ -3583,7 +3583,7 @@
   "link": "https://app.eaglebe.com/auth/start",
   "contact": "Dienst Evenementen – evenementen@oostende.be – 059 25 81 35",
   "bron": "https://www.oostende.be/wanneer-dien-je-je-aanvraag-in",
-  "termijnTekst": "Min. 8 weken (evenement/circus); 14 weken (wielerwedstrijd); 6 weken (stoet, filmopnames, parkeerverbod); 3 weken (straatanimatie). Te late aanvragen worden niet behandeld",
+  "termijnTekst": "Min. 8 weken (evenement/circus); 14 weken (wielerwedstrijd); 6 weken (stoet, betoging, filmopnames); 3 weken (straatanimatie). Te late aanvragen worden niet behandeld. Parkeerverbod bij een evenement: ten laatste 6 weken vooraf via Eaglebe (aparte pagina oostende.be/parkeerverbod-evenement)",
   "bijzonder": [
    {
     "soort": "deadline",
@@ -3592,7 +3592,8 @@
     "unit": "w",
     "als": {
      "verkeer": true
-    }
+    },
+    "toelichting": "Ten laatste 6 weken voor de aanvang, via het Eaglebe-evenementenloket. Enkel als de organisator aantoont dat het voertuig niet op een gewone parkeerplaats kan staan; de stad plaatst de borden. Bron: https://www.oostende.be/parkeerverbod-evenement (gelezen 6/11/2026); ook https://www.politie-oostende.be/parkeerverbod-aanvragen."
    },
    {
     "soort": "deadline",
@@ -3621,6 +3622,8 @@
    }
   ],
   "college": "Goedkeuring door het college na advies van alle betrokken diensten.",
+  "intake_verplicht": ["opbouw", "afbraak", "bezoekers_totaal", "doelgroep", "op_uitnodiging", "betalend", "muziek", "alcohol", "eten", "verkoop", "verkeer", "publiciteit", "toiletten", "elektriciteit", "vuur", "bewaking", "ehbo", "verzekering_ba", "verzekering_oa"],
+  "intake_verplicht_bron": "Verplichte velden (sterretje) in het Eaglebe-formulier Aanvraag Evenement van Stad Oostende, browsertest 2/11/2026 (claude/eaglebe-oostende-formulier.md).",
   "uitleen": {
    "uitleendienst": "ja",
    "link": "https://www.oostende.be/uitleendienst-feestbenodigdheden",

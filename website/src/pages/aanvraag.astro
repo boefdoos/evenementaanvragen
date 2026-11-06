@@ -287,7 +287,7 @@ footer.foot a{color:var(--soft)}
       </fieldset>
       <fieldset id="praktisch">
         <legend><div class="sec-head"><span class="sec-title">Praktisch en veiligheid</span></div></legend>
-        <p class="hint" style="margin:0;grid-column:1/-1;max-width:none">Gemeenten vragen dit bijna altijd. Weet je het nog niet, laat dan "weet niet" staan.</p>
+        <p class="hint" id="praktischhint" style="margin:0;grid-column:1/-1;max-width:none">Gemeenten vragen dit bijna altijd. Weet je het nog niet, laat dan "weet niet" staan.</p>
         <div class="field"><label for="bewaking">Bewaking</label>
           <select id="bewaking" name="bewaking"><option value="">Weet ik nog niet</option><option value="vrijwilligers">Vrijwilligers van de organisatie</option><option value="bewakingsfirma">Erkende bewakingsfirma</option><option value="geen">Geen bewaking</option></select></div>
         <div class="field"><label for="ehbo">EHBO</label>
@@ -618,7 +618,48 @@ function pasAan() {
   document.getElementById("tentverhuurwrap").hidden = document.getElementById("tentwrap").hidden;
   document.getElementById("zaalwrap").hidden = !["zaal", "combinatie"].includes(veld("locatie_soort"));
   document.getElementById("odwrap").hidden = !["ja", "deels"].includes(veld("openbaar_domein"));
-  toonUpload(); toonGembox(); toonDocs();
+  toonUpload(); toonGembox(); toonDocs(); pasVerplichtToe();
+}
+// Velden die het aanvraagformulier van de gemeente zelf verplicht maakt (regels.json: intake_verplicht, met bron).
+// Daar vragen we een antwoord, zonder "weet niet": anders moeten we het achteraf toch nog bij de klant opvragen.
+const PRAKTISCH_HINT = document.getElementById("praktischhint").textContent;
+function sterretje(el, aan) {
+  if (!el) return;
+  let s = el.querySelector(".vreq");
+  if (!s) { s = document.createElement("span"); s.className = "req vreq"; s.textContent = "*"; s.style.margin = "0 .3em 0 .2em"; const h = el.querySelector(".hint"); el.insertBefore(s, h); }
+  s.hidden = !aan;
+}
+function pasVerplichtToe() {
+  const r = regelVan(), lijst = new Set((r && r.intake_verplicht) || []);
+  const vastMuziek = MET_MUZIEK.includes(veld("type"));
+  [...EXTRAS, ...PRAKTISCH, ["op_uitnodiging", "Enkel op uitnodiging?"]].forEach(([k, q]) => {
+    const eerste = document.getElementById(k + "_0"), wn = document.getElementById(k + "_2");
+    if (!eerste || !wn) return;
+    const v = lijst.has(k);
+    wn.closest("label").hidden = v;
+    wn.disabled = v || (k === "muziek" && vastMuziek);
+    if (v && wn.checked) wn.checked = false;
+    if (!v && !intakeForm.querySelector('input[name="' + k + '"]:checked')) wn.checked = true;
+    eerste.required = v;
+    if (v) eerste.dataset.label = q.replace(/\?$/, ""); else delete eerste.dataset.label;
+    sterretje(document.getElementById("q_" + k), v);
+  });
+  ["bewaking", "ehbo"].forEach(k => {
+    const s = document.getElementById(k), v = lijst.has(k);
+    s.required = v; s.options[0].textContent = v ? "Kies…" : "Weet ik nog niet";
+    sterretje(intakeForm.querySelector('label[for="' + k + '"]'), v);
+  });
+  ["opbouw", "afbraak", "doelgroep", "bezoekers_totaal"].forEach(k => {
+    const el = document.getElementById(k), v = lijst.has(k);
+    el.required = v;
+    sterretje(intakeForm.querySelector('label[for="' + k + '"]'), v);
+  });
+  const bt = intakeForm.querySelector('label[for="bezoekers_totaal"] .hint');
+  bt.textContent = lijst.has("bezoekers_totaal") ? "(over het hele evenement, een schatting volstaat)" : "(over het hele evenement, als je het weet)";
+  const ph = document.getElementById("praktischhint");
+  ph.textContent = PRAKTISCH.some(([k]) => lijst.has(k)) || ["bewaking", "ehbo"].some(k => lijst.has(k))
+    ? "Het aanvraagformulier van " + veld("gemeente") + " vraagt dit verplicht, dus we hebben overal een antwoord nodig. Weet je iets nog niet, vraag het dan even na: wat je invult, blijft bewaard zolang dit venster open is."
+    : PRAKTISCH_HINT;
 }
 // Leesbare zin over de plannen, bv. "Brugge vraagt een inplantingsplan. Voor de zaal heb je daarnaast een grondplan nodig."
 function planZin() {
