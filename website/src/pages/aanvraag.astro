@@ -567,10 +567,10 @@ function prijsVoor() {
   const bez = +veld("bezoekers") || 0;
   // Enkel de grootte telt (5/11/2026): de plantekenaar zit overal in, vanaf 500 aanwezigen ook het veiligheidsplan.
   const formule = bez >= 500 ? "Plus" : "Basis";
-  const toeslag = veld("aanvrager_type") === "bedrijf" ? 15 : 0; // bedrijf of zelfstandige: + € 15 (8/11/2026, was × 2)
+  // Eén prijs voor elk type organisator (8/11/2026; vroeger bedrijf × 2, kort + € 15).
   // Klanten zien geen formulenaam, wel waarom de prijs is wat hij is. Intern blijft het Basis / Plus.
   const reden = formule === "Basis" ? "evenement tot 499 aanwezigen, plantekenaar inbegrepen" : "evenement vanaf 500 aanwezigen, met veiligheidsplan";
-  return { formule, reden, bedrag: { Basis: 45, Plus: 75 }[formule] + toeslag, toeslag };
+  return { formule, reden, bedrag: { Basis: 45, Plus: 75 }[formule] };
 }
 
 
@@ -1001,12 +1001,12 @@ De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor d
 const vt = document.getElementById("volmachttekst");
 function toonVolmacht() { vt.textContent = volmachtTekst(Object.fromEntries(new FormData(intakeForm).entries())); }
 
-// Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 75 vanaf 500 aanwezigen (met veiligheidsplan), anders € 45; de plantekenaar zit in beide. Bedrijf of zelfstandige: + € 15.
+// Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 75 vanaf 500 aanwezigen (met veiligheidsplan), anders € 45; de plantekenaar zit in beide. Zelfde prijs voor elk type organisator.
 function toonPrijs() {
   const box = document.getElementById("prijs");
   if (!veld("aanvrager_type") || !veld("bezoekers") || !veld("locatie_soort")) { box.hidden = true; return; }
   const p = prijsVoor();
-  box.innerHTML = '<span>' + esc(p.reden.charAt(0).toUpperCase() + p.reden.slice(1)) + (veld("aanvrager_type") === "bedrijf" ? ", met Peppol-factuur aan je onderneming (+ € 15)" : "") + '</span><b>€ ' + p.bedrag + '</b>';
+  box.innerHTML = '<span>' + esc(p.reden.charAt(0).toUpperCase() + p.reden.slice(1)) + '</span><b>€ ' + p.bedrag + '</b>';
   box.hidden = false;
 }
 // Wie betaalt: enkel voor een vereniging, school of bedrijf. Iemand anders: betaalverzoek naar die persoon, adres nodig voor de factuur.
