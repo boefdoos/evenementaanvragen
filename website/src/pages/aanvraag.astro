@@ -293,6 +293,7 @@ footer.foot a{color:var(--soft)}
         <div class="field"><label for="ehbo">EHBO</label>
           <select id="ehbo" name="ehbo"><option value="">Weet ik nog niet</option><option value="ehbo-dienst">Rode Kruis of andere EHBO-dienst</option><option value="eigen">Eigen EHBO'er</option><option value="geen">Geen EHBO-post</option></select></div>
         <div class="full" id="praktischyn"></div>
+        <div class="full" id="extravragen"></div>
         <div class="field full">
           <div class="q" id="q_speciaal">Is er iets van dit bij? <span class="hint">(vink aan wat geldt, anders niets)</span></div>
           <div class="seg vink" role="group" aria-labelledby="q_speciaal">
@@ -629,7 +630,37 @@ function sterretje(el, aan) {
   if (!s) { s = document.createElement("span"); s.className = "req vreq"; s.textContent = "*"; s.style.margin = "0 .3em 0 .2em"; const h = el.querySelector(".hint"); el.insertBefore(s, h); }
   s.hidden = !aan;
 }
+// Extra vragen die enkel het formulier van sommige gemeenten stelt (regels.json: intake_extra, met bron).
+// Altijd verplicht, zonder "weet niet". Antwoorden gaan als "k=waarde; ..." in data.extra_vragen.
+function toonExtraVragen() {
+  const r = regelVan(), defs = (r && r.intake_extra) || [], doel = document.getElementById("extravragen");
+  const sig = defs.map(d => d.k).join(",");
+  if (doel.dataset.sig === sig) return; // zelfde gemeente(regels): antwoorden laten staan
+  doel.dataset.sig = sig; doel.replaceChildren();
+  defs.forEach(d => {
+    const k = "x_" + d.k;
+    if (d.type === "tekst") {
+      const f = document.createElement("div"); f.className = "field";
+      f.innerHTML = `<label for="${k}">${d.q}<span class="req" style="margin:0 .3em 0 .2em">*</span>${d.hint ? `<span class="hint">(${d.hint})</span>` : ""}</label><input id="${k}" name="${k}" maxlength="200" required>`;
+      doel.appendChild(f);
+      return;
+    }
+    janee(doel, [k, d.q, d.hint || ""]);
+    const wn = document.getElementById(k + "_2"), eerste = document.getElementById(k + "_0");
+    wn.checked = false; wn.disabled = true; wn.closest("label").hidden = true;
+    eerste.required = true; eerste.dataset.label = d.q.replace(/\?$/, "");
+    sterretje(document.getElementById("q_" + k), true);
+  });
+}
+function extraAntwoorden() {
+  const r = regelVan(), defs = (r && r.intake_extra) || [];
+  return defs.map(d => {
+    const el = d.type === "tekst" ? document.getElementById("x_" + d.k) : intakeForm.querySelector('input[name="x_' + d.k + '"]:checked');
+    return d.k + "=" + String(el ? el.value : "").replace(/[;=\n]/g, ",").trim();
+  }).join("; ");
+}
 function pasVerplichtToe() {
+  toonExtraVragen();
   const r = regelVan(), lijst = new Set((r && r.intake_verplicht) || []);
   const vastMuziek = MET_MUZIEK.includes(veld("type"));
   [...EXTRAS, ...PRAKTISCH, ["op_uitnodiging", "Enkel op uitnodiging?"]].forEach(([k, q]) => {
@@ -1211,7 +1242,9 @@ form.addEventListener("submit", async e => {
   DOCS.forEach(d => { if (!d.toon()) data["doc_" + d.k] = ""; });
   data.doc_extra = DOCS.filter(d => d.extra && d.toon()).map(d => d.k + "=" + (gekozen("doc_" + d.k) || "")).join("; ");
   DOCS.filter(d => d.extra).forEach(d => delete data["doc_" + d.k]);
-  data.bijlagen = await Promise.all(files.map(async x => ({ naam: x.naam, type: x.f.type, data: await leesB64(x.f) })));
+  data.extra_vragen = extraAntwoorden();
+  Object.keys(data).filter(k => k.startsWith("x_")).forEach(k => delete data[k]);
+  data.bijlagen =await Promise.all(files.map(async x => ({ naam: x.naam, type: x.f.type, data: await leesB64(x.f) })));
   btn.disabled = true; st.textContent = "";
   // Wachtscherm: het opslaan, de volmacht en de betaallink duren enkele seconden.
   const bezig = document.getElementById("bezig"), bs = document.getElementById("bezig-stap");
