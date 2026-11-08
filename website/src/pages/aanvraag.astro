@@ -666,7 +666,7 @@ function pasVerplichtToe() {
   [...EXTRAS, ...PRAKTISCH, ["op_uitnodiging", "Enkel op uitnodiging?"]].forEach(([k, q]) => {
     const eerste = document.getElementById(k + "_0"), wn = document.getElementById(k + "_2");
     if (!eerste || !wn) return;
-    const v = lijst.has(k);
+    const v = lijst.has(k) || k === "op_uitnodiging"; // wie aanvraagt, weet of het een publiek evenement is
     wn.closest("label").hidden = v;
     wn.disabled = v || (k === "muziek" && vastMuziek);
     if (v && wn.checked) wn.checked = false;
