@@ -39,7 +39,7 @@ import "@fontsource/instrument-sans/700.css";
 <meta property="og:title" content={title}>
 <meta property="og:description" content={description}>
 {canonical && <meta property="og:url" content={DOMEIN + canonical}>}
-<meta property="og:image" content={DOMEIN + "/deelbeeld.jpg"}>
+<meta property="og:image" content={DOMEIN + "/deelbeeld.jpg?v=eva"}>
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Jij maakt het feest. Wij regelen de aanvraag.">
@@ -49,7 +49,7 @@ import "@fontsource/instrument-sans/700.css";
 <body>
 
 <header class="top"><div class="wrap">
-  <a class="mark" href={home ? "#top" : "/"} aria-label={home ? "EvA, evenementaanvragen.be, naar boven" : "EvA, evenementaanvragen.be, naar de startpagina"}><img class="mark-logo" src="/eva.svg" alt="" width="63" height="28"><span class="mark-dom">evenementaanvragen.be</span></a>
+  <a class="mark" href={home ? "#top" : "/"} aria-label={home ? "EvA, evenementaanvragen.be, naar boven" : "EvA, evenementaanvragen.be, naar de startpagina"}><img class="mark-logo" src="/eva.svg" alt="" width="63" height="28"><span class="mark-dom">evenementaanvragen<b>.be</b></span></a>
   <nav class="menu" aria-label="Hoofdmenu">
     <a href={p + "#werkwijze"}>Werkwijze</a><a href={p + "#prijzen"}>Prijzen</a><a href={p + "#vragen"}>Vragen</a>{toonStart && <a class="go" href={startHref}>Start</a>}
   </nav>

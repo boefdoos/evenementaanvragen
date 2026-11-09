@@ -26,6 +26,7 @@ header.top .wrap{display:flex;align-items:center;justify-content:space-between;g
 .mark{display:inline-flex;align-items:baseline;gap:12px;color:var(--soft);text-decoration:none;font:600 13px/1 var(--f-display);letter-spacing:.02em}
 .mark-logo{display:block;height:28px;width:auto}
 @media (max-width:520px){.mark-dom{display:none}}
+.mark-dom b{font-weight:inherit;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 nav.menu{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
 nav.menu a{color:var(--soft);text-decoration:none;font-weight:600;font-size:15px;padding:8px 12px;border-radius:999px}
 nav.menu a:hover{color:var(--text)}

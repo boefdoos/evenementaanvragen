@@ -38,6 +38,7 @@ button,input,select{font:inherit;color:inherit}
 .mark{display:inline-flex;align-items:baseline;gap:12px;color:var(--soft);text-decoration:none;font:600 13px/1 var(--f-display);letter-spacing:.02em}
 .mark-logo{display:block;height:28px;width:auto}
 @media (max-width:520px){.mark-dom{display:none}}
+.mark-dom b{font-weight:inherit;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .dossier{margin-left:auto;font-size:13px;color:var(--soft);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .pill{border:1px solid var(--line-2);border-radius:999px;padding:3px 10px;font-weight:600;color:var(--text)}
 .pill.demo{border-color:var(--sun);color:var(--sun)}
@@ -112,7 +113,7 @@ label small{display:block;color:var(--soft);font-size:12px;margin-top:2px}
 </head>
 <body>
 <header class="top">
-  <a class="mark" href="/" aria-label="EvA, evenementaanvragen.be, naar de startpagina"><img class="mark-logo" src="/eva.svg" alt="" width="63" height="28"><span class="mark-dom">evenementaanvragen.be</span></a>
+  <a class="mark" href="/" aria-label="EvA, evenementaanvragen.be, naar de startpagina"><img class="mark-logo" src="/eva.svg" alt="" width="63" height="28"><span class="mark-dom">evenementaanvragen<b>.be</b></span></a>
   <div class="tabs" id="tabs" role="tablist" hidden></div>
   <div class="dossier" id="dossierinfo"></div>
 </header>
