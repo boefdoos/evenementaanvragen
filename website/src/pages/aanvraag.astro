@@ -214,9 +214,9 @@ footer.foot a{color:var(--soft)}
             <option value="fuif">Fuif of party</option><option value="concert">Concert of festival</option><option value="buurtfeest">Buurtfeest of straatfeest</option><option value="eetfestijn">Eetfestijn</option><option value="markt">Markt of rommelmarkt</option><option value="braderij">Braderij</option><option value="kermis">Kermis</option><option value="stoet">Stoet of optocht (nog niet in ons aanbod)</option><option value="sport">Sportevenement</option><option value="wielerwedstrijd">Wielerwedstrijd (nog niet in ons aanbod)</option><option value="schoolfeest">Schoolfeest</option><option value="tentoonstelling">Tentoonstelling</option><option value="andere">Iets anders</option>
           </select></div>
         <div class="field"><label for="startdatum"><span id="startlabel">Datum</span> <span class="req">*</span></label><input id="startdatum" name="startdatum" type="date" required></div>
+        <div class="field"><label for="bezoekers">Aanwezigen tegelijk <span class="req">*</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required><span class="hint">Op het drukste moment: publiek, medewerkers en artiesten samen.</span></div>
         <label class="check" for="meerdaags"><input type="checkbox" id="meerdaags" name="meerdaags" value="ja"><span>Het evenement duurt meerdere dagen <span class="hint">(een feest dat na middernacht eindigt, telt als één dag)</span></span></label>
         <div class="field" id="einddatumwrap" hidden><label for="einddatum">Laatste dag <span class="req">*</span></label><input id="einddatum" name="einddatum" type="date"><span class="hint" id="nachtnota" hidden>Loopt het feest gewoon door tot na middernacht? Dan is het één dag: vink "meerdere dagen" uit en vul het einduur in bij stap 2.</span></div>
-        <div class="field"><label for="bezoekers">Aanwezigen tegelijk op het drukste moment <span class="req">*</span> <span class="hint">(publiek, medewerkers en artiesten samen)</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
         <div class="field"><label for="locatie_soort">Waar vindt het plaats? <span class="req">*</span></label>
           <select id="locatie_soort" name="locatie_soort" required><option value="">Kies…</option><option value="zaal">In een zaal of gebouw</option><option value="tent">In een tent</option><option value="buiten">Buiten, zonder tent</option><option value="combinatie">Combinatie (bv. zaal en buitenbar)</option></select></div>
         <div class="field"><label for="aanvrager_type">Je organiseert als <span class="req">*</span></label>
@@ -236,34 +236,11 @@ footer.foot a{color:var(--soft)}
     <section class="stap" data-stap="2" hidden>
       <h2 class="stap-h" tabindex="-1">Stap 2 van 5 · Waar en wanneer</h2>
       <fieldset>
-        <legend><div class="sec-head"><span class="sec-title">Waar en wanneer</span></div></legend>
+        <legend><div class="sec-head"><span class="sec-title">Beschrijving</span></div></legend>
         <div class="field full"><label for="evenement_naam">Naam van het evenement <span class="req">*</span></label><input id="evenement_naam" name="evenement_naam" required></div>
-        <div class="field full"><label for="locatie_naam">Naam van de zaal of plek <span class="hint">(als die er is)</span></label><input id="locatie_naam" name="locatie_naam" placeholder="bv. Parochiezaal Sint-Jan, Marktplein"></div>
-        <div class="field full"><label for="locatie">Adres <span class="req">*</span></label><input id="locatie" name="locatie" required list="adreslijst" autocomplete="off" placeholder="Straat en huisnummer"><datalist id="adreslijst"></datalist><span class="hint">Geen huisnummer, zoals bij een plein of park? Dan volstaat de straat.</span></div>
-        <div class="field full"><label for="andere_plekken">Andere plekken van het evenement <span class="hint">(optioneel, in dezelfde gemeente)</span></label><input id="andere_plekken" name="andere_plekken" placeholder="bv. receptie in de kerk, Dorpsplein 1; feest in zaal De Kring, Kerkstraat 5"></div>
-        <div class="field full" id="andereodwrap" hidden><label for="andere_od">Ligt een van die plekken op straat, stoep, plein, parking of in een park? <span class="req">*</span></label>
-          <select id="andere_od" data-label="Andere plekken op openbaar domein"><option value="">Kies…</option><option value="nee">Nee, alles binnen of op privéterrein</option><option value="ja">Ja</option></select>
-          <span class="hint" id="andereodnota" hidden></span></div>
-        <div class="field full" id="odwrap" hidden>
-          <label for="od_zone">Wat komt er op straat, stoep of plein, en waar precies? <span class="hint">(zo goed als je kan)</span></label>
-          <input id="od_zone" name="od_zone" placeholder="bv. bar en 10 tafels op de stoep voor nr. 12, of de straat dicht tussen nr. 2 en 20">
-          <div class="hint">Je hoeft geen grenzen of oppervlaktes te kennen. Wij duiden het stuk aan op de kaart van de gemeente.</div>
-        </div>
-        <div class="field"><label for="startuur">Startuur</label><input id="startuur" name="startuur" type="time"></div>
-        <div class="field"><label for="einduur">Einduur</label><input id="einduur" name="einduur" type="time"></div>
-        <div class="field"><label for="opbouw">Opbouw vanaf <span class="hint">(dag en uur)</span></label><input id="opbouw" name="opbouw" placeholder="bv. vrijdag 14u"></div>
-        <div class="field"><label for="afbraak">Afbraak tot <span class="hint">(dag en uur)</span></label><input id="afbraak" name="afbraak" placeholder="bv. zondag 12u"></div>
-        <div class="field" id="tentwrap" hidden>
-          <label for="tent_afmetingen">Afmetingen tent(en) <span class="hint">(lengte × breedte in meter)</span></label>
-          <input id="tent_afmetingen" name="tent_afmetingen" placeholder="bv. 12 × 6, en 3 × 3 voor de bar">
-        </div>
-        <div class="field" id="tentverhuurwrap" hidden>
-          <label for="tent_verhuurder">Wie levert de tent? <span class="hint">(als je het al weet)</span></label>
-          <input id="tent_verhuurder" name="tent_verhuurder" placeholder="bv. naam van de verhuurder, of eigen tent">
-        </div>
-        <div class="field"><label for="bezoekers_totaal">Bezoekers in totaal <span class="hint">(over het hele evenement, als je het weet)</span></label><input id="bezoekers_totaal" name="bezoekers_totaal" type="number" min="1" step="1" inputmode="numeric"></div>
-        <div class="field"><label for="doelgroep">Voor wie is het? <span class="hint">(leeftijd, soort publiek)</span></label><input id="doelgroep" name="doelgroep" placeholder="bv. jongeren 16 tot 25, gezinnen"></div>
         <div class="field full"><label for="beschrijving">Beschrijf je evenement <span class="req">*</span></label><textarea id="beschrijving" name="beschrijving" required placeholder="Programma, wie treedt op, foodtrucks, ticketverkoop…"></textarea></div>
+        <div class="field"><label for="bezoekers_totaal">Bezoekers in totaal <span class="hint">(als je het weet)</span></label><input id="bezoekers_totaal" name="bezoekers_totaal" type="number" min="1" step="1" inputmode="numeric" placeholder="over het hele evenement"></div>
+        <div class="field"><label for="doelgroep">Voor wie is het? <span class="hint">(leeftijd, soort publiek)</span></label><input id="doelgroep" name="doelgroep" placeholder="bv. jongeren 16 tot 25, gezinnen"></div>
         <div class="full" id="uitblok" hidden>
           <div class="yn">
             <div><div class="q" id="q_uit">Ook in de UiT-agenda zetten?</div><div class="hint">Bij deze gemeente zit dat in dezelfde aanvraag. Dan komt je evenement gratis op uitinvlaanderen.be en de website van de gemeente.</div></div>
@@ -280,6 +257,35 @@ footer.foot a{color:var(--soft)}
             <span class="hint">Een affiche of foto mag je later mailen.</span>
           </div>
         </div>
+      </fieldset>
+      <fieldset>
+        <legend><div class="sec-head"><span class="sec-title">Waar</span></div></legend>
+        <div class="field full"><label for="locatie_naam">Naam van de zaal of plek <span class="hint">(als die er is)</span></label><input id="locatie_naam" name="locatie_naam" placeholder="bv. Parochiezaal Sint-Jan, Marktplein"></div>
+        <div class="field full"><label for="locatie">Adres <span class="req">*</span></label><input id="locatie" name="locatie" required list="adreslijst" autocomplete="off" placeholder="Straat en huisnummer"><datalist id="adreslijst"></datalist><span class="hint">Geen huisnummer, zoals bij een plein of park? Dan volstaat de straat.</span></div>
+        <div class="field full"><label for="andere_plekken">Andere plekken van het evenement <span class="hint">(optioneel, in dezelfde gemeente)</span></label><input id="andere_plekken" name="andere_plekken" placeholder="bv. receptie in de kerk, Dorpsplein 1; feest in zaal De Kring, Kerkstraat 5"></div>
+        <div class="field full" id="andereodwrap" hidden><label for="andere_od">Ligt een van die plekken op straat, stoep, plein, parking of in een park? <span class="req">*</span></label>
+          <select id="andere_od" data-label="Andere plekken op openbaar domein"><option value="">Kies…</option><option value="nee">Nee, alles binnen of op privéterrein</option><option value="ja">Ja</option></select>
+          <span class="hint" id="andereodnota" hidden></span></div>
+        <div class="field full" id="odwrap" hidden>
+          <label for="od_zone">Wat komt er op straat, stoep of plein, en waar precies? <span class="hint">(zo goed als je kan)</span></label>
+          <input id="od_zone" name="od_zone" placeholder="bv. bar en 10 tafels op de stoep voor nr. 12, of de straat dicht tussen nr. 2 en 20">
+          <div class="hint">Je hoeft geen grenzen of oppervlaktes te kennen. Wij duiden het stuk aan op de kaart van de gemeente.</div>
+        </div>
+        <div class="field" id="tentwrap" hidden>
+          <label for="tent_afmetingen">Afmetingen tent(en) <span class="hint">(lengte × breedte in meter)</span></label>
+          <input id="tent_afmetingen" name="tent_afmetingen" placeholder="bv. 12 × 6, en 3 × 3 voor de bar">
+        </div>
+        <div class="field" id="tentverhuurwrap" hidden>
+          <label for="tent_verhuurder">Wie levert de tent? <span class="hint">(als je het al weet)</span></label>
+          <input id="tent_verhuurder" name="tent_verhuurder" placeholder="bv. naam van de verhuurder, of eigen tent">
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend><div class="sec-head"><span class="sec-title">Wanneer</span></div></legend>
+        <div class="field"><label for="startuur">Startuur</label><input id="startuur" name="startuur" type="time"></div>
+        <div class="field"><label for="einduur">Einduur</label><input id="einduur" name="einduur" type="time"></div>
+        <div class="field"><label for="opbouw">Opbouw vanaf <span class="hint">(dag en uur)</span></label><input id="opbouw" name="opbouw" placeholder="bv. vrijdag 14u"></div>
+        <div class="field"><label for="afbraak">Afbraak tot <span class="hint">(dag en uur)</span></label><input id="afbraak" name="afbraak" placeholder="bv. zondag 12u"></div>
       </fieldset>
       <p class="err" data-err hidden></p>
       <div class="stapnav"><button type="button" class="terug">← Vorige</button><div class="rechts"><button type="button" class="btn verder">Volgende <span class="arr" aria-hidden="true">→</span></button></div></div>
@@ -316,7 +322,7 @@ footer.foot a{color:var(--soft)}
 
     <!-- Stap 4 -->
     <section class="stap" data-stap="4" hidden>
-      <h2 class="stap-h" tabindex="-1">Stap 4 van 5 · Plan, documenten en materiaal</h2>
+      <h2 class="stap-h" tabindex="-1">Stap 4 van 5 · Plan en documenten</h2>
       <fieldset id="inplanting">
         <legend><div class="sec-head"><span class="sec-title">Plannen</span></div></legend>
         <p class="info" id="plannote" hidden></p>
@@ -692,7 +698,7 @@ function pasVerplichtToe() {
     sterretje(intakeForm.querySelector('label[for="' + k + '"]'), v);
   });
   const bt = intakeForm.querySelector('label[for="bezoekers_totaal"] .hint');
-  bt.textContent = lijst.has("bezoekers_totaal") ? "(over het hele evenement, een schatting volstaat)" : "(over het hele evenement, als je het weet)";
+  bt.textContent = lijst.has("bezoekers_totaal") ? "(een schatting volstaat)" : "(als je het weet)";
   const ph = document.getElementById("praktischhint");
   ph.textContent = PRAKTISCH.some(([k]) => lijst.has(k)) || ["bewaking", "ehbo"].some(k => lijst.has(k))
     ? "Het aanvraagformulier van " + veld("gemeente") + " vraagt dit verplicht, dus we hebben overal een antwoord nodig. Weet je iets nog niet, vraag het dan even na: wat je invult, blijft bewaard zolang dit venster open is."
