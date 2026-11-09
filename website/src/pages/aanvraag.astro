@@ -84,6 +84,9 @@ legend + .yn{border-top:0;padding-top:4px}
 .seg label.uitgelicht span,.seg label.uitgelicht:hover span,.seg label.uitgelicht input:checked+span{border-color:var(--accent)}
 .vink{margin-top:10px}
 #doclijst .yn{grid-template-columns:minmax(0,1fr)}
+#extravragen{display:grid;gap:16px}
+#extravragen > .yn{margin-block:-14px 0}
+#extravragen label .hint{margin-left:.3em}
 
 .check{grid-column:1/-1;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;font-weight:400;font-size:15px;color:var(--soft);line-height:1.5}
 .check input{width:20px;height:20px;margin-top:2px;padding:0;accent-color:var(--accent)}
@@ -651,30 +654,69 @@ function sterretje(el, aan) {
 }
 // Extra vragen die enkel het formulier van sommige gemeenten stelt (regels.json: intake_extra, met bron).
 // Altijd verplicht, zonder "weet niet". Antwoorden gaan als "k=waarde; ..." in data.extra_vragen.
+// Vragen die het Eaglebe-formulier stelt (browsertests Oostende, Middelkerke, Sint-Niklaas, 9/11/2026) en die anders
+// achteraf bij de klant opgevraagd moeten worden. Enkel bij gemeenten op Eaglebe, en enkel als "als" klopt
+// ("veld=waarde|waarde", meerdere voorwaarden met komma; x_<k> verwijst naar een andere extra vraag).
+const EAGLEBE_EXTRA = [
+  { k: "muziek_uren", q: "Van hoe laat tot hoe laat speelt er versterkte muziek?", hint: "bv. 20:00 tot 02:00", type: "tekst", als: "muziek=ja" },
+  { k: "geluid", q: "Wat voor muziek?", type: "keuze", opties: ["zachte achtergrondmuziek (max. 85 dB)", "achtergrondmuziek (max. 90 dB)", "dj (max. 95 dB)", "live optreden (max. 95 dB)", "luide fuif met dj (max. 98 dB)", "groot live-optreden (max. 100 dB)"], als: "muziek=ja" },
+  { k: "soundcheck", q: "Wanneer is de soundcheck?", hint: "dag en uur; leeg laten als er geen is", type: "tekst", optioneel: true, als: "muziek=ja" },
+  { k: "afsluiting", q: "Welke straat sluit je af of waar komt een parkeerverbod, en van wanneer tot wanneer?", hint: "bv. Kerkstraat nr. 1 tot 30, za 10:00 tot zo 01:00", type: "tekst", als: "verkeer=ja" },
+  { k: "drank_in", q: "Waarin schenk je de drank?", type: "keuze", opties: ["glas", "herbruikbaar plastic", "wegwerpbekers"], als: "alcohol=ja" },
+  { k: "warmtebron", q: "Hoe wordt het eten warm gemaakt?", type: "keuze", opties: ["elektriciteit", "gas", "barbecue met kolen", "open vuur", "niets warm"], als: "eten=ja" },
+  { k: "eigenaar", q: "Van wie is de zaal?", type: "keuze", opties: ["privé-eigenaar", "gemeente of stad", "eigen lokaal van de organisator"], als: "locatie_soort=zaal|combinatie" },
+  { k: "eigenaar_contact", q: "Naam en telefoon of e-mail van de eigenaar of beheerder", type: "tekst", optioneel: true, als: "x_eigenaar=privé-eigenaar|gemeente of stad" },
+  { k: "stewards", q: "Hoeveel vrijwillige stewards zijn er?", type: "tekst", als: "bewaking=vrijwilligers" },
+  { k: "verzekeraar", q: "Bij welke verzekeraar, en met welk polisnummer?", hint: "staat op je polis of attest", type: "tekst", optioneel: true, als: "verzekering_ba=ja" },
+  { k: "opblaasbaar", q: "Komt er een springkasteel of andere opblaasbare attractie?" }
+];
+function extraDefs() {
+  const r = regelVan(), eigen = (r && r.intake_extra) || [];
+  const eb = r && /eaglebe/i.test(r.platform || "") ? EAGLEBE_EXTRA.filter(d => !eigen.some(e => e.k === d.k)) : [];
+  return eigen.concat(eb);
+}
+function extraWaarde(k) {
+  if (k.startsWith("x_")) { const r = intakeForm.querySelector('input[name="' + k + '"]:checked'); if (r) return r.value; const el = document.getElementById(k); return el ? el.value : ""; }
+  return gekozen(k) || veld(k);
+}
+function extraGeldt(d) {
+  if (!d.als) return true;
+  return d.als.split(",").every(c => { const [k, v] = c.split("="); return v.split("|").includes(extraWaarde(k.trim())); });
+}
 function toonExtraVragen() {
-  const r = regelVan(), defs = (r && r.intake_extra) || [], doel = document.getElementById("extravragen");
+  const defs = extraDefs(), doel = document.getElementById("extravragen");
   const sig = defs.map(d => d.k).join(",");
-  if (doel.dataset.sig === sig) return; // zelfde gemeente(regels): antwoorden laten staan
-  doel.dataset.sig = sig; doel.replaceChildren();
+  if (doel.dataset.sig !== sig) { // andere gemeente(regels): opnieuw opbouwen
+    doel.dataset.sig = sig; doel.replaceChildren();
+    defs.forEach(d => {
+      const k = "x_" + d.k, ster = d.optioneel ? " " : `<span class="req" style="margin:0 .3em 0 .2em">*</span>`;
+      if (d.type === "tekst" || d.type === "keuze") {
+        const f = document.createElement("div"); f.className = "field"; f.id = k + "_wrap";
+        const invoer = d.type === "tekst" ? `<input id="${k}" name="${k}" maxlength="200">`
+          : `<select id="${k}" name="${k}"><option value="">Kies…</option>${d.opties.map(o => `<option>${o}</option>`).join("")}</select>`;
+        f.innerHTML = `<label for="${k}">${d.q}${ster}${d.hint ? `<span class="hint">(${d.hint})</span>` : ""}</label>${invoer}`;
+        doel.appendChild(f);
+        return;
+      }
+      janee(doel, [k, d.q, d.hint || ""]);
+      doel.lastElementChild.id = k + "_wrap";
+      const wn = document.getElementById(k + "_2");
+      wn.checked = false; wn.disabled = true; wn.closest("label").hidden = true;
+      sterretje(document.getElementById("q_" + k), !d.optioneel);
+    });
+  }
+  // Zichtbaarheid en verplicht volgens de voorwaarden
   defs.forEach(d => {
-    const k = "x_" + d.k;
-    if (d.type === "tekst") {
-      const f = document.createElement("div"); f.className = "field";
-      f.innerHTML = `<label for="${k}">${d.q}<span class="req" style="margin:0 .3em 0 .2em">*</span>${d.hint ? `<span class="hint">(${d.hint})</span>` : ""}</label><input id="${k}" name="${k}" maxlength="200" required>`;
-      doel.appendChild(f);
-      return;
-    }
-    janee(doel, [k, d.q, d.hint || ""]);
-    const wn = document.getElementById(k + "_2"), eerste = document.getElementById(k + "_0");
-    wn.checked = false; wn.disabled = true; wn.closest("label").hidden = true;
-    eerste.required = true; eerste.dataset.label = d.q.replace(/\?$/, "");
-    sterretje(document.getElementById("q_" + k), true);
+    const k = "x_" + d.k, w = document.getElementById(k + "_wrap"), aan = extraGeldt(d);
+    if (!w) return;
+    w.hidden = !aan;
+    if (d.type === "tekst" || d.type === "keuze") { const el = document.getElementById(k); el.disabled = !aan; el.required = aan && !d.optioneel; if (el.required) el.dataset.label = d.q.replace(/\?$/, ""); }
+    else { const eerste = document.getElementById(k + "_0"); w.querySelectorAll('input[type=radio]').forEach(i => { if (i.value !== "weet niet") i.disabled = !aan; }); eerste.required = aan && !d.optioneel; eerste.dataset.label = d.q.replace(/\?$/, ""); }
   });
 }
 function extraAntwoorden() {
-  const r = regelVan(), defs = (r && r.intake_extra) || [];
-  return defs.map(d => {
-    const el = d.type === "tekst" ? document.getElementById("x_" + d.k) : intakeForm.querySelector('input[name="x_' + d.k + '"]:checked');
+  return extraDefs().filter(extraGeldt).map(d => {
+    const el = d.type === "tekst" || d.type === "keuze" ? document.getElementById("x_" + d.k) : intakeForm.querySelector('input[name="x_' + d.k + '"]:checked');
     return d.k + "=" + String(el ? el.value : "").replace(/[;=\n]/g, ",").trim();
   }).join("; ");
 }
@@ -825,11 +867,13 @@ const DOCS = [
     keuzes: [["nu", "Ik voeg het nu toe"], ["later", "Bezorg ik later"], ["geen", "Ik heb (nog) geen verzekering"]], toon: () => true },
   { k: "ehbo", naam: "EHBO-attest of -overeenkomst", uitleg: "Van het Rode Kruis of een andere EHBO-dienst, of het attest van je eigen EHBO'er.", re: /ehbo|eerste hulp/i,
     keuzes: [["nu", "Ik voeg het nu toe"], ["later", "Bezorg ik later"], ["nvt", "Niet van toepassing"]], toon: () => veld("ehbo") !== "geen" },
-  { k: "bewaking", naam: "Bewaking", uitleg: "Het contract met de bewakingsfirma, of de lijst van vrijwilligers die bewaken.", re: /bewaking|security/i,
+  { k: "bewaking", naam: "Bewaking", uitleg: "Het contract met de bewakingsfirma, of de lijst van de vrijwillige stewards (naam, geboortedatum, adres): sommige gemeenten vragen die voor de politie.", re: /bewaking|security/i,
     keuzes: [["nu", "Ik voeg het nu toe"], ["later", "Bezorg ik later"], ["nvt", "Niet van toepassing"]], toon: () => ["vrijwilligers", "bewakingsfirma"].includes(veld("bewaking")) },
   // Documenten die enkel bepaalde gemeenten vragen (regels.json: documenten_extra).
   { k: "politiedossier", extra: true, naam: "Meldings- en veiligheidsdossier fuif", uitleg: "Een formulier van de stad voor de politie: wie verantwoordelijk is, de bewaking, EHBO en de veiligheidsmaatregelen. Jij vult de namen aan en tekent; wij laden het op bij de aanvraag.", re: /meldings- en veiligheidsdossier/i,
-    keuzes: [["nu", "Ik voeg het ingevuld toe"], ["later", "Stuur me het formulier, ik bezorg het later"]], toon: () => extraDoc("politiedossier") }
+    keuzes: [["nu", "Ik voeg het ingevuld toe"], ["later", "Stuur me het formulier, ik bezorg het later"]], toon: () => extraDoc("politiedossier") },
+  { k: "zaalovereenkomst", extra: true, naam: "Overeenkomst of offerte van de zaal", uitleg: "Het ondertekende huurcontract of de offerte van de zaal waar het evenement plaatsvindt.", re: /overeenkomst met de (fuif)?zaal|offerte/i,
+    keuzes: [["nu", "Ik voeg het nu toe"], ["later", "Bezorg ik later"], ["nvt", "Eigen lokaal, geen overeenkomst"]], toon: () => extraDoc("zaalovereenkomst") && ["zaal", "combinatie"].includes(veld("locatie_soort")) }
 ];
 function extraDoc(k) {
   const r = regelVan();
@@ -856,7 +900,8 @@ function waaromDoc(d) {
   if (!r) return "Gemeenten vragen dit vaak.";
   const b = (r.bijzonder || []).find(x => x.soort === "voorwaarde" && x.wat && d.re.test(x.wat) && !INTERN.test(x.wat) && (d.extra || !/meldings- en veiligheidsdossier/i.test(x.wat)) &&
     (!x.als || ((!x.als.types || x.als.types.includes(type)) && Object.keys(x.als).every(k => k === "types"))));
-  if (d.extra) return gem + " vraagt dit bij een " + (veld("type") || "evenement") + ". Heb je het nog niet, dan mailen we je een leeg exemplaar.";
+  if (d.k === "politiedossier") return gem + " vraagt dit bij een " + (veld("type") || "evenement") + ". Heb je het nog niet, dan mailen we je een leeg exemplaar.";
+  if (d.extra) return gem + " vraagt dit bij een " + (veld("type") || "evenement") + " in een zaal.";
   if (b) return gem + ": “" + zonderAdres(b.wat).replace(/[.;:,\s]+$/, "") + ".”";
   if ((r.documenten_na || []).includes(d.k)) return "In " + gem + " vraagt de stad dit meestal nog na de aanvraag. Voeg het meteen toe als je het hebt.";
   return "Gemeenten vragen dit vaak, soms pas na de aanvraag.";
@@ -1224,6 +1269,7 @@ intakeForm.addEventListener("input", () => { clearTimeout(bewaarT); bewaarT = se
 intakeForm.addEventListener("change", () => { bewaar(); });
 // Een foutmelding verdwijnt zodra je iets aanpast; bij "Volgende" wordt opnieuw gecontroleerd.
 ["input", "change"].forEach(t => intakeForm.addEventListener(t, () => { if (stap < 5) meldFout(stap, ""); }));
+intakeForm.addEventListener("change", () => { if (stap === 3) toonExtraVragen(); });
 intakeForm.addEventListener("input", () => { if (stap === 5) { toonVolmacht(); toonPrijs(); toonHerroeping(); toonBetaler(); } });
 intakeForm.addEventListener("change", () => { if (stap === 5) { toonVolmacht(); toonPrijs(); toonHerroeping(); toonBetaler(); } });
 

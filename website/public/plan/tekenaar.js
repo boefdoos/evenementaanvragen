@@ -25,7 +25,17 @@ const KAT_I = {
   uitgang: { n: "Nooduitgang", c: "#1f9d55", f: "pt", s: "U", breedte: 1.2 },
   blus: { n: "Blustoestel", c: "#e0392e", f: "pt", s: "B" },
   ehbo: { n: "EHBO-post", c: "#1f9d55", f: "pt", s: "+" },
+  // Sinds 9/11/2026, uit de vragen van Eaglebe (zie claude/eaglebe-oostende-9-11.md)
+  od: { n: "Inname openbaar domein", c: "#c0399a", w: 20, l: 8, f: "rect" },
+  bbq: { n: "Barbecue / kookplaats", c: "#b5462b", w: 2, l: 1, f: "rect" },
+  springkasteel: { n: "Springkasteel / opblaasbaar", c: "#e46f9d", w: 6, l: 5, f: "rect" },
+  fiets: { n: "Fietsenstalling", c: "#2f8f6b", w: 6, l: 2, f: "rect" },
+  parkeerverbod: { n: "Parkeerverbod", c: "#3a5fb0", w: 20, l: 2.5, f: "rect" },
+  luidspreker: { n: "Luidspreker", c: "#6a4c93", f: "pt", s: "L" },
+  afval: { n: "Afval / container", c: "#5b6b3a", f: "pt", s: "A" },
 };
+// Vlakken die geen opstelling zijn (geen obstakel, mogen buiten het terrein liggen).
+const GEEN_OPSTELLING = ["zone", "doorgang", "od", "parkeerverbod", "fiets"];
 const KAT_G = {
   deur: { n: "Deur", c: "#3b7dd8", w: 1.0, f: "deur" },
   nooduitgang: { n: "Nooduitgang", c: "#1f9d55", w: 1.2, f: "deur" },
@@ -42,9 +52,9 @@ const NAAM_PLAN = { inplanting: "Inplantingsplan", grondplan: "Grondplan" };
 
 const STAPPEN = {
   inplanting: [
-    { t: "Terrein", u: "Zoek het adres en duid het terrein van je evenement aan. Sleep het vlak naar de juiste plaats. Met het witte hoekpunt maak je het groter of kleiner, met het ronde punt erboven draai je het.", el: ["zone"], veld: "terrein" },
-    { t: "Opstelling", u: "Zet alles wat er komt op zijn plaats, met de echte maten. Sleep een vlak om het te verplaatsen. Klik het aan: met het hoekpunt verander je de maten, met het ronde punt draai je het. Je kan de maten ook links intypen.", el: ["tent", "podium", "bar", "toilet", "food", "stroom"] },
-    { t: "Hulpdiensten en uitgangen", u: "Duid de vrije doorgang voor brandweer en ziekenwagen aan, de ingang en de nooduitgangen. Meet met een maatlijn de afstand tot de gebouwen errond.", el: ["doorgang", "ingang", "uitgang"], maat: true },
+    { t: "Terrein", u: "Zoek het adres en duid het terrein van je evenement aan. Sleep het vlak naar de juiste plaats. Met het witte hoekpunt maak je het groter of kleiner, met het ronde punt erboven draai je het.", el: ["zone", "od"], veld: "terrein" },
+    { t: "Opstelling", u: "Zet alles wat er komt op zijn plaats, met de echte maten. Sleep een vlak om het te verplaatsen. Klik het aan: met het hoekpunt verander je de maten, met het ronde punt draai je het. Je kan de maten ook links intypen.", el: ["tent", "podium", "bar", "toilet", "food", "stroom", "bbq", "springkasteel", "luidspreker", "afval", "fiets"] },
+    { t: "Hulpdiensten en uitgangen", u: "Duid de vrije doorgang voor brandweer en ziekenwagen aan, de ingang en de nooduitgangen. Meet met een maatlijn de afstand tot de gebouwen errond.", el: ["doorgang", "ingang", "uitgang", "parkeerverbod"], maat: true },
     { t: "Veiligheid", u: "Duid de blustoestellen en de EHBO-post aan.", el: ["blus", "ehbo"] },
     { t: "Controle", u: "Alles in het groen? Dan kan je je plan afwerken. Het gaat zo bij je aanvraag.", controle: true },
   ],
@@ -93,7 +103,7 @@ function bewaar() { if (S) S.t = Date.now(); try { localStorage.setItem(sleutel(
 function vanServer(s, laatste) {
   if (!laatste) return;
   const l = laatste.inplanting, g = laatste.grondplan;
-  if (l && l.plan && Array.isArray(l.plan.items)) { s.I.items = l.plan.items; s.I.maten = l.plan.maten || []; if (l.plan.center) s.I.center = l.plan.center; s.I.gezocht = true; }
+  if (l && l.plan && Array.isArray(l.plan.items)) { s.I.items = l.plan.items; s.I.maten = l.plan.maten || []; if (l.plan.center) s.I.center = l.plan.center; s.I.gezocht = true; if (l.plan.innameHeelTerrein === false) s.I.odHeel = false; }
   if (g && g.plan && Array.isArray(g.plan.items)) { s.G.items = g.plan.items; if (g.plan.ruimte) { s.G.l = +g.plan.ruimte.l || s.G.l; s.G.b = +g.plan.ruimte.b || s.G.b; s.G.mat = g.plan.ruimte.mat || ""; s.G.pts = geldigeVorm(g.plan.ruimte.pts) || rechthoek(s.G.l, s.G.b); if (g.plan.ruimte.recht === false) s.G.recht = false; } }
   const p = (l && l.personen) || (g && g.personen); if (p) s.personen = +p || s.personen;
 }
@@ -189,14 +199,14 @@ function raster() {
 function tekenKaart() {
   if (!map) return;
   laag.clearLayers(); polys = {};
-  const volgorde = (it) => (it.k === "zone" ? 0 : it.k === "doorgang" ? 1 : 2);
+  const volgorde = (it) => (it.k === "zone" ? 0 : it.k === "od" ? 1 : it.k === "doorgang" ? 2 : 3);
   for (const it of [...S.I.items].sort((a, b) => volgorde(a) - volgorde(b))) {
     const k = KAT_I[it.k];
     if (k.f === "rect") {
       const p = L.polygon(hoeken(it), {
         color: k.c, weight: sel === it.id ? 3 : 2,
-        fillOpacity: it.k === "zone" ? 0.05 : it.k === "doorgang" ? 0.15 : 0.35,
-        dashArray: it.k === "doorgang" || it.k === "zone" ? "6 4" : null,
+        fillOpacity: it.k === "zone" ? 0.05 : ["doorgang", "od", "parkeerverbod"].includes(it.k) ? 0.15 : 0.35,
+        dashArray: ["doorgang", "zone", "od", "parkeerverbod"].includes(it.k) ? "6 4" : null,
       }).on("click", (e) => { L.DomEvent.stop(e); if (maatModus) return kaartKlik(e); if (!versleept) kies(it.id); }).addTo(laag);
       polys[it.id] = p;
       vlakSleepbaar(p, it);
@@ -563,6 +573,16 @@ function vrijePlek(it) {
 
 // ---------- Elementen ----------
 function lijst() { return S.actief === "inplanting" ? S.I.items : S.G.items; }
+// Openbaar domein: bij "ja" is het hele terrein de inname (tenzij de klant dat uitvinkt), bij "deels" duidt de klant het stuk aan.
+const isOD = () => /^(ja|deels)$/i.test(String((S && S.d && S.d.openbaar) || ""));
+const odHeel = () => isOD() && /^ja$/i.test(String(S.d.openbaar)) && S.I.odHeel !== false;
+function elVan(stap) { return (stap.el || []).filter((k) => !(["od", "parkeerverbod"].includes(k) && !isOD()) && !(k === "od" && odHeel())); }
+// De inname van het openbaar domein zoals de browseragent ze in Eaglebe overneemt (lijn met buffer of zone).
+function innames() {
+  const v = odHeel() ? S.I.items.filter((i) => i.k === "zone") : S.I.items.filter((i) => i.k === "od");
+  return v.map((it) => ({ lat: +it.lat.toFixed(7), lng: +it.lng.toFixed(7), lengte: it.w, breedte: it.l, draaiing: it.rot, hoeken: hoeken(it).map((h) => [+h[0].toFixed(7), +h[1].toFixed(7)]), m2: Math.round(it.w * it.l * 10) / 10 }));
+}
+const innameM2 = () => innames().reduce((t, x) => t + x.m2, 0);
 function voegToe(k) {
   const kk = KAT[S.actief][k];
   if (S.actief === "inplanting") {
@@ -585,7 +605,7 @@ function voegToe(k) {
 function kies(id, stil) { sel = id; if (stil) { tekenLijst(); return; } allesTekenen(); }
 function tekenLijst() {
   const st = STAPPEN[S.actief][S.stap[S.actief]];
-  const toon = st.controle ? lijst() : lijst().filter((it) => (st.el || []).includes(it.k));
+  const toon = st.controle ? lijst() : lijst().filter((it) => (S.actief === "inplanting" ? elVan(st) : st.el || []).includes(it.k));
   $("lijst").innerHTML = toon.map((it) => {
     const k = KAT[S.actief][it.k];
     const m = k.f === "rect" ? fmt(it.w) + " × " + fmt(it.l) + " m" : k.f === "deur" ? fmt(it.w) + " m" : it.k === "uitgang" ? fmt(it.breedte) + " m" : "";
@@ -694,17 +714,23 @@ function controles(plan) {
     const it = (k) => S.I.items.filter((i) => i.k === k);
     C(0, it("zone").length > 0, "Het terrein is aangeduid");
     if (it("zone").length && S.d.gemeente && !DEMO && S.I.kaartGemeente && S.I.kaartGemeente !== "?") C(0, zelfdeGemeente(S.I.kaartGemeente), "Het terrein ligt in " + S.d.gemeente + (zelfdeGemeente(S.I.kaartGemeente) ? "" : " (nu getekend in " + S.I.kaartGemeente + ")"));
-    C(1, S.I.items.some((i) => KAT_I[i.k].f === "rect" && !["zone", "doorgang"].includes(i.k)), "Alle opstellingen staan erop, met hun afmetingen");
+    if (isOD()) {
+      C(0, innames().length > 0, innames().length ? "De inname van het openbaar domein is aangeduid (" + fmt(innameM2()) + " m²)" : "Duid aan welk stuk op openbaar domein ligt (\"Inname openbaar domein\")");
+      const od = it("od");
+      if (od.length && it("zone").length && !odHeel()) C(0, od.every((o) => it("zone").some((z) => rectsOverlappen(rectI(o), rectI(z), 1))), "De inname van het openbaar domein sluit aan op het terrein");
+    }
+    C(1, S.I.items.some((i) => KAT_I[i.k].f === "rect" && !GEEN_OPSTELLING.includes(i.k)), "Alle opstellingen staan erop, met hun afmetingen");
+    if (it("bbq").length) C(1, !it("bbq").some((b) => it("tent").some((t) => rectsOverlappen(rectI(b), rectI(t)))), "Barbecue en kookplaats staan buiten, niet in een tent");
     const nd = norm("doorgang_hulpdiensten");
     const dgMin = nd && nd.breedte_m;
     const dg = it("doorgang");
     C(2, dg.length > 0, "Doorgang voor de hulpdiensten aangeduid");
     if (dg.length) C(2, dgMin ? dg.every((d) => Math.min(d.w, d.l) >= dgMin) : null, dgMin ? "Doorgang minstens " + fmt(dgMin) + " m breed" + (nd.hoogte_m ? " (en " + fmt(nd.hoogte_m) + " m vrije hoogte)" : "") : "Breedte van de doorgang: geen norm gevonden, vraag ze na", nd);
-    const hinder = dg.some((d) => { const rd = rectI(d); return S.I.items.some((o) => o !== d && KAT_I[o.k].f === "rect" && !["zone", "doorgang"].includes(o.k) && rectsOverlappen(rd, rectI(o))); });
+    const hinder = dg.some((d) => { const rd = rectI(d); return S.I.items.some((o) => o !== d && KAT_I[o.k].f === "rect" && !GEEN_OPSTELLING.includes(o.k) && rectsOverlappen(rd, rectI(o))); });
     if (dg.length) C(2, !hinder, "Niets staat in de doorgang voor de hulpdiensten");
     if (GEBOUWEN.ringen) {
       if (dg.length) C(2, !dg.some((d) => opGebouw(rectI(d))), "De doorgang voor de hulpdiensten loopt niet door een gebouw (gebouwenkaart GRB)");
-      const opst = S.I.items.filter((i) => KAT_I[i.k].f === "rect" && !["zone", "doorgang"].includes(i.k));
+      const opst = S.I.items.filter((i) => KAT_I[i.k].f === "rect" && !GEEN_OPSTELLING.includes(i.k));
       // In een zaal staat de opstelling binnen een gebouw: daar enkel de doorgang controleren.
       if (opst.length && !/zaal/i.test(String(S.d.situatie || ""))) C(1, !opst.some((o) => opGebouw(rectI(o))), "Geen opstelling staat op een gebouw (gebouwenkaart GRB)");
     }
@@ -721,7 +747,7 @@ function controles(plan) {
     const zones = it("zone").map(rectI);
     if (zones.length) {
       const opTerrein = (p, e) => zones.some((z) => binnenRect(p, z, e || 0));
-      const opst = S.I.items.filter((i) => KAT_I[i.k].f === "rect" && !["zone", "doorgang"].includes(i.k));
+      const opst = S.I.items.filter((i) => KAT_I[i.k].f === "rect" && !GEEN_OPSTELLING.includes(i.k));
       const buiten = opst.filter((o) => !hoekenLokaal(rectI(o)).every((p) => opTerrein(p, 0.3)));
       C(1, !buiten.length, buiten.length ? "Staat niet (helemaal) op het terrein: " + [...new Set(buiten.map((o) => KAT_I[o.k].n.toLowerCase()))].join(", ") : "Alle opstellingen staan op het terrein");
       // Een nooduitgang hoort in de afsluiting van het terrein (een opening in de hekken) of in de wand van een tent.
@@ -796,6 +822,7 @@ function kerncijfers(plan) {
       dg.length ? "doorgang hulpdiensten " + fmt(Math.min(...dg.map((d) => Math.min(d.w, d.l)))) + " m breed" : "geen doorgang",
       it("tent").map((t) => "tent " + fmt(t.w) + " × " + fmt(t.l) + " m").join(", ") || "geen tent",
       it("blus").length + " blustoestel(len)");
+    if (isOD()) r.push("inname openbaar domein " + fmt(innameM2()) + " m²" + (odHeel() ? " (het hele terrein)" : ""));
   } else {
     const it = (k) => S.G.items.filter((i) => i.k === k), n = it("nooduitgang");
     r.push(P + " personen", "ruimte " + fmt(oppG()) + " m²" + (isRechthoek() ? " (" + fmt(S.G.l) + " × " + fmt(S.G.b) + " m)" : " (" + S.G.pts.length + " wanden)") + " (" + fmt(oppG() / P) + " m² per persoon)",
@@ -866,7 +893,10 @@ function tekenStap() {
   $("verder").hidden = !!stap.controle;
   // velden
   let v = "";
-  if (stap.veld === "terrein") v = '<div style="display:flex;flex-direction:column;gap:10px"><label for="f-adres">Adres<input id="f-adres" list="f-adreslijst" autocomplete="off" placeholder="Straat en nummer, gemeente" value="' + esc(S.d.adres || "") + '"><datalist id="f-adreslijst"></datalist></label><button class="btn" id="zoek" type="button">Zoek op de kaart</button><label for="f-pers">Personen tegelijk op het drukste moment<input id="f-pers" type="number" min="' + minPersonen() + '" value="' + S.personen + '">' + (minPersonen() > 1 ? '<small>Minstens ' + minPersonen() + ', zoals in je aanvraag. Meer mag.</small>' : "") + '</label></div>';
+  if (stap.veld === "terrein") v = '<div style="display:flex;flex-direction:column;gap:10px"><label for="f-adres">Adres<input id="f-adres" list="f-adreslijst" autocomplete="off" placeholder="Straat en nummer, gemeente" value="' + esc(S.d.adres || "") + '"><datalist id="f-adreslijst"></datalist></label><button class="btn" id="zoek" type="button">Zoek op de kaart</button><label for="f-pers">Personen tegelijk op het drukste moment<input id="f-pers" type="number" min="' + minPersonen() + '" value="' + S.personen + '">' + (minPersonen() > 1 ? '<small>Minstens ' + minPersonen() + ', zoals in je aanvraag. Meer mag.</small>' : "") + '</label>' +
+    (/^ja$/i.test(String(S.d.openbaar || "")) ? '<label for="f-odheel" style="display:flex;flex-direction:row;align-items:center;gap:8px;font-weight:500"><input id="f-odheel" type="checkbox"' + (odHeel() ? " checked" : "") + ' style="width:auto"> Mijn hele terrein ligt op straat, plein of in een park</label>' + (odHeel() ? "" : '<small>Duid dan met "Inname openbaar domein" aan welk stuk op openbaar domein ligt.</small>') : "") +
+    (/^deels$/i.test(String(S.d.openbaar || "")) ? '<small>Een deel ligt op openbaar domein. Duid met "Inname openbaar domein" aan welk stuk op straat, stoep, plein of in een park ligt (bv. het terras of de bar op de stoep).</small>' : "") +
+    (isOD() && innames().length ? '<small>Inname openbaar domein: <b>' + fmt(innameM2()) + " m²</b></small>" : "") + '</div>';
   if (stap.veld === "ruimte") {
     const rh = isRechthoek(), p = S.G.pts;
     let vh = rh
@@ -884,6 +914,7 @@ function tekenStap() {
   }
   $("stapvelden").innerHTML = v;
   if ($("zoek")) $("zoek").addEventListener("click", zoekAdres);
+  if ($("f-odheel")) $("f-odheel").addEventListener("change", () => { S.I.odHeel = $("f-odheel").checked; allesTekenen(); bewaar(); });
   if ($("f-adres")) {
     $("f-adres").addEventListener("input", () => { S.d.adres = $("f-adres").value; bewaar(); adresSuggesties(); });
     $("f-adres").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); zoekAdres(); } });
@@ -899,7 +930,7 @@ function tekenStap() {
   if ($("g-recht")) $("g-recht").addEventListener("change", () => { S.G.recht = $("g-recht").checked; bewaar(); });
   if ($("g-rh")) $("g-rh").addEventListener("click", () => { vsel = null; vormZet(rechthoek(S.G.l, S.G.b)); });
   // werkbalk bij het plan
-  let t = (stap.el || []).map((k) => '<button type="button" data-k="' + k + '"><span class="sw" style="background:' + KAT[S.actief][k].c + '"></span>' + esc(KAT[S.actief][k].n) + ' <span class="plus">+</span></button>').join("");
+  let t = (S.actief === "inplanting" ? elVan(stap) : stap.el || []).map((k) => '<button type="button" data-k="' + k + '"><span class="sw" style="background:' + KAT[S.actief][k].c + '"></span>' + esc(KAT[S.actief][k].n) + ' <span class="plus">+</span></button>').join("");
   if (stap.maat) t += '<button type="button" id="maat" class="' + (maatModus ? "aan" : "") + '">Maatlijn</button>';
   $("tools").innerHTML = t;
   $("tools").querySelectorAll("[data-k]").forEach((b) => b.addEventListener("click", () => voegToe(b.dataset.k)));
@@ -1203,6 +1234,7 @@ function titelblok(g, P, plan, schaal) {
     if (k.f === "pt") symbool(g, P(x + 7), P(y), k, P(1.8)); else { g.fillStyle = hexA(k.c, 0.45); g.fillRect(P(x + 5), P(y - 1.8), P(4), P(3.6)); g.strokeStyle = k.c; g.lineWidth = P(0.3); g.strokeRect(P(x + 5), P(y - 1.8), P(4), P(3.6)); }
     tekst(g, k.n, P(x + 12), P(y), P(3), "left", "#1a1d2b", "500"); y += 6;
   }
+  if (plan === "inplanting" && odHeel()) { tekst(g, "Het hele terrein is inname van het openbaar domein (" + fmt(innameM2()) + " m²)", P(x + 5), P(y), P(2.6), "left", "#1a1d2b", "500"); y += 6; }
   if (plan === "inplanting" && S.I.maten.length) { g.setLineDash([P(1), P(0.8)]); g.strokeStyle = "#111"; g.beginPath(); g.moveTo(P(x + 5), P(y)); g.lineTo(P(x + 10), P(y)); g.stroke(); g.setLineDash([]); tekst(g, "Maatlijn (m)", P(x + 12), P(y), P(3), "left", "#1a1d2b", "500"); y += 6; }
   const voet = plan === "inplanting" ? ["Ondergrond: Grootschalig Referentie Bestand", "Vlaanderen, Digitaal Vlaanderen"] : [];
   voet.push("Getekend met de plantekenaar van", "evenementaanvragen.be");
@@ -1253,7 +1285,7 @@ async function opslaan(cv) {
   const b = $("opslaan"); b.disabled = true; $("msg").textContent = "Bezig met opslaan…";
   try {
     const data = maakPdf(cv).output("datauristring").split(",")[1];
-    const plan = S.actief === "inplanting" ? { items: S.I.items, maten: S.I.maten, center: S.I.center } : { ruimte: { l: S.G.l, b: S.G.b, mat: S.G.mat, pts: S.G.pts, recht: S.G.recht, m2: Math.round(oppG() * 10) / 10 }, items: S.G.items };
+    const plan = S.actief === "inplanting" ? { items: S.I.items, maten: S.I.maten, center: S.I.center, inname: isOD() ? innames() : [], innameHeelTerrein: odHeel() } : { ruimte: { l: S.G.l, b: S.G.b, mat: S.G.mat, pts: S.G.pts, recht: S.G.recht, m2: Math.round(oppG() * 10) / 10 }, items: S.G.items };
     const r = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify({ actie: "plan", id: AUTH.id, email: AUTH.email, beheer: AUTH.beheer, soort: S.actief, personen: S.personen, pdf: data, plan, controles: controles(S.actief), toelichting: $("toel") ? $("toel").value : "", verklaring: !BEHEER, kerncijfers: kerncijfers(S.actief) }) });
     const j = await r.json(); if (!j.ok) throw new Error(j.error || "onbekende fout");
