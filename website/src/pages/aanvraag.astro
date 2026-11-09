@@ -576,14 +576,18 @@ function geenUitleen() {
   if (veld("aanvrager_type") === "particulier" && u.particulieren_toegelaten === "nee") return "leent geen materiaal uit aan particulieren";
   return "";
 }
+const SPOEDTOESLAG = 25;
 function prijsVoor() {
   const bez = +veld("bezoekers") || 0;
   // Enkel de grootte telt (5/11/2026): de plantekenaar zit overal in, vanaf 500 aanwezigen ook het veiligheidsplan.
   const formule = bez >= 500 ? "Plus" : "Basis";
   // Eén prijs voor elk type organisator (8/11/2026; vroeger bedrijf × 2, kort + € 15).
   // Klanten zien geen formulenaam, wel waarom de prijs is wat hij is. Intern blijft het Basis / Plus.
-  const reden = formule === "Basis" ? "evenement tot 499 aanwezigen, plantekenaar inbegrepen" : "evenement vanaf 500 aanwezigen, met veiligheidsplan";
-  return { formule, reden, bedrag: { Basis: 45, Plus: 75 }[formule] };
+  let reden = formule === "Basis" ? "evenement tot 499 aanwezigen, plantekenaar inbegrepen" : "evenement vanaf 500 aanwezigen, met veiligheidsplan";
+  // Spoedtoeslag (9/11/2026): deadline binnen 5 werkdagen ("krap"). Betaling.gs rekent hetzelfde na op termijn_deadline.
+  const spoed = !!(termijn && termijn.soort === "krap");
+  if (spoed) reden += ", met " + SPOEDTOESLAG + " euro spoedtoeslag (deadline binnen 5 werkdagen)";
+  return { formule, reden, spoed, bedrag: { Basis: 45, Plus: 75 }[formule] + (spoed ? SPOEDTOESLAG : 0) };
 }
 
 
@@ -991,7 +995,7 @@ function toonTermijn() {
     p = "De termijn van " + t.gemeente + " is niet zeker gekend. Volgens onze schatting is de deadline " + d + ", en die is al voorbij. Ga toch verder: we kijken het meteen na en laten het je weten.";
   } else if (t.soort === "krap") {
     k = "Krap, maar het kan nog";
-    p = "Deadline bij " + t.gemeente + ": " + d + ". Betaal vandaag nog, dan behandelen we je aanvraag met voorrang. Vragen we nog een plan of attest, bezorg het dan meteen: wat te laat komt, dienen we zonder in.";
+    p = "Deadline bij " + t.gemeente + ": " + d + ". Betaal vandaag nog, dan behandelen we je aanvraag met voorrang (spoedtoeslag van " + SPOEDTOESLAG + " euro). Vragen we nog een plan of attest, bezorg het dan meteen: wat te laat komt, dienen we zonder in.";
   } else if (t.soort === "geschat") {
     k = "Waarschijnlijk op tijd";
     p = "Geschatte deadline bij " + t.gemeente + ": " + d + ". We kijken de termijn van deze gemeente meteen voor je na.";
@@ -1044,7 +1048,7 @@ De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor d
 const vt = document.getElementById("volmachttekst");
 function toonVolmacht() { vt.textContent = volmachtTekst(Object.fromEntries(new FormData(intakeForm).entries())); }
 
-// Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 75 vanaf 500 aanwezigen (met veiligheidsplan), anders € 45; de plantekenaar zit in beide. Zelfde prijs voor elk type organisator.
+// Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 75 vanaf 500 aanwezigen (met veiligheidsplan), anders € 45; de plantekenaar zit in beide. Zelfde prijs voor elk type organisator. Deadline binnen 5 werkdagen: + € 25 spoedtoeslag.
 function toonPrijs() {
   const box = document.getElementById("prijs");
   if (!veld("aanvrager_type") || !veld("bezoekers") || !veld("locatie_soort")) { box.hidden = true; return; }
