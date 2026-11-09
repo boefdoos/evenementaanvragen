@@ -28,6 +28,7 @@ import "@fontsource/instrument-sans/700.css";
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 {canonical && <link rel="canonical" href={DOMEIN + canonical}>}
 <link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -48,7 +49,7 @@ import "@fontsource/instrument-sans/700.css";
 <body>
 
 <header class="top"><div class="wrap">
-  <a class="mark" href={home ? "#top" : "/"} aria-label={home ? "evenementaanvragen.be, naar boven" : "evenementaanvragen.be, naar de startpagina"}>evenementaanvragen<b>.be</b></a>
+  <a class="mark" href={home ? "#top" : "/"} aria-label={home ? "EvA, evenementaanvragen.be, naar boven" : "EvA, evenementaanvragen.be, naar de startpagina"}><img class="mark-logo" src="/eva.svg" alt="" width="63" height="28"><span class="mark-dom">evenementaanvragen.be</span></a>
   <nav class="menu" aria-label="Hoofdmenu">
     <a href={p + "#werkwijze"}>Werkwijze</a><a href={p + "#prijzen"}>Prijzen</a><a href={p + "#vragen"}>Vragen</a>{toonStart && <a class="go" href={startHref}>Start</a>}
   </nav>
