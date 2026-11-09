@@ -105,9 +105,9 @@ input[type=file]::file-selector-button{font:600 14px/1 var(--f-body);background:
 .termijn p{font-size:15px;color:var(--soft)}
 .termijn.ok .t-kop::before{background:#5fd39a}
 .termijn.krap .t-kop::before,.termijn.twijfel .t-kop::before{background:var(--sun)}
-.termijn.laat,.termijn.buiten{border-color:rgba(255,90,78,.5);background:rgba(255,90,78,.12)}
-.termijn.laat .t-kop::before,.termijn.buiten .t-kop::before{background:var(--accent)}
-.termijn.laat p,.termijn.buiten p{color:var(--text)}
+.termijn.laat,.termijn.tekort,.termijn.buiten{border-color:rgba(255,90,78,.5);background:rgba(255,90,78,.12)}
+.termijn.laat .t-kop::before,.termijn.tekort .t-kop::before,.termijn.buiten .t-kop::before{background:var(--accent)}
+.termijn.laat p,.termijn.tekort p,.termijn.buiten p{color:var(--text)}
 .err{color:var(--accent);font-size:15px;font-weight:600}
 .prijs{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--line)}
 .prijs b{font:800 28px/1 var(--f-display);letter-spacing:-.03em}
@@ -774,7 +774,7 @@ function toonGembox() {
   toonVrijstelling();
   const box = document.getElementById("gembox"), r = regelVan();
   const klaar = r && veld("type") && veld("startdatum") && veld("bezoekers") && veld("locatie_soort") && veld("aanvrager_type") && veld("openbaar_domein");
-  if (!klaar || (termijn && (termijn.soort === "laat" || termijn.soort === "buiten"))) { box.hidden = true; return; }
+  if (!klaar || (termijn && (termijn.soort === "laat" || termijn.soort === "tekort" || termijn.soort === "buiten"))) { box.hidden = true; return; }
   const li = [];
   // Beschrijven onze regels enkel de procedure in open lucht, dan beloven we geen kanaal voor een zaal.
   const zaalOnzeker = veld("locatie_soort") === "zaal" && (r.zaal_te_bevestigen || /gelden? (enkel |alleen )?voor openluchtevenementen/i.test(r.note || ""));
@@ -983,12 +983,15 @@ function toonTermijn() {
   } else if (t.soort === "laat") {
     k = "Te laat voor " + t.gemeente;
     p = "De deadline was " + d + " (" + t.termijn + " vooraf). We kunnen deze aanvraag niet meer op tijd indienen. Kies een latere datum als dat kan, of neem zelf contact op met de gemeente.";
+  } else if (t.soort === "tekort") {
+    k = "Te kort dag voor " + t.gemeente;
+    p = "De deadline is " + d + ". Dat is minder dan " + MIN_WERKDAGEN + " werkdagen weg: zo kort dag kunnen we niet beloven dat je aanvraag volledig en op tijd binnen is. Kies een latere datum als dat kan, of neem zelf meteen contact op met de gemeente.";
   } else if (t.soort === "twijfel") {
     k = "Waarschijnlijk te laat";
     p = "De termijn van " + t.gemeente + " is niet zeker gekend. Volgens onze schatting is de deadline " + d + ", en die is al voorbij. Ga toch verder: we kijken het meteen na en laten het je weten.";
   } else if (t.soort === "krap") {
     k = "Krap, maar het kan nog";
-    p = "Deadline bij " + t.gemeente + ": " + d + ". Stuur je aanvraag vandaag nog door, dan gaan we meteen aan de slag.";
+    p = "Deadline bij " + t.gemeente + ": " + d + ". Betaal vandaag nog, dan behandelen we je aanvraag met voorrang. Vragen we nog een plan of attest, bezorg het dan meteen: wat te laat komt, dienen we zonder in.";
   } else if (t.soort === "geschat") {
     k = "Waarschijnlijk op tijd";
     p = "Geschatte deadline bij " + t.gemeente + ": " + d + ". We kijken de termijn van deze gemeente meteen voor je na.";
@@ -999,16 +1002,16 @@ function toonTermijn() {
     k = "Op tijd";
     p = "Deadline bij " + t.gemeente + ": " + d + ". Ruim op tijd.";
   }
-  if (t.opent && t.soort !== "laat" && t.soort !== "buiten") { k = "Je bent er vroeg bij"; p = t.gemeente + " aanvaardt aanvragen pas vanaf " + fmtLong(t.opent) + " (deadline " + d + "). Ga gerust verder: wij dienen in zodra het kan, jij hoeft niets meer te doen."; }
+  if (t.opent && t.soort !== "laat" && t.soort !== "tekort" && t.soort !== "buiten") { k = "Je bent er vroeg bij"; p = t.gemeente + " aanvaardt aanvragen pas vanaf " + fmtLong(t.opent) + " (deadline " + d + "). Ga gerust verder: wij dienen in zodra het kan, jij hoeft niets meer te doen."; }
   box.className = "termijn " + t.soort; kop.textContent = k; tekst.textContent = p; box.hidden = false;
-  zetBlokkade(t.soort === "laat" || t.soort === "buiten");
+  zetBlokkade(t.soort === "laat" || t.soort === "tekort" || t.soort === "buiten");
   toonGembox();
 }
 
 function zetBlokkade(aan) {
   const knoppen = [document.querySelector('.stap[data-stap="1"] .verder'), document.getElementById("send")];
   knoppen.forEach(b => { b.classList.toggle("geblokkeerd", aan); b.setAttribute("aria-disabled", aan ? "true" : "false"); });
-  const tekst = aan ? (termijn && termijn.soort === "buiten" ? "Dit valt niet in ons aanbod." : "Dit lukt niet meer voor de deadline van de gemeente.") : "";
+  const tekst = aan ? (termijn && termijn.soort === "buiten" ? "Dit valt niet in ons aanbod." : termijn && termijn.soort === "tekort" ? "De deadline van de gemeente ligt te dichtbij." : "Dit lukt niet meer voor de deadline van de gemeente.") : "";
   document.getElementById("status1").textContent = tekst; document.getElementById("status").textContent = tekst;
 }
 
@@ -1103,8 +1106,8 @@ function meldFout(n, tekst) {
 }
 function geldig(n) {
   meldFout(n, "");
-  if (n === 1 && termijn && (termijn.soort === "laat" || termijn.soort === "buiten")) {
-    meldFout(1, termijn.soort === "buiten" ? termijn.reden : "Deze aanvraag kan niet meer op tijd ingediend worden bij " + termijn.gemeente + ". Kies een latere datum als dat kan.");
+  if (n === 1 && termijn && (termijn.soort === "laat" || termijn.soort === "tekort" || termijn.soort === "buiten")) {
+    meldFout(1, termijn.soort === "buiten" ? termijn.reden : termijn.soort === "tekort" ? "De deadline bij " + termijn.gemeente + " ligt minder dan " + MIN_WERKDAGEN + " werkdagen weg. Kies een latere datum als dat kan." : "Deze aanvraag kan niet meer op tijd ingediend worden bij " + termijn.gemeente + ". Kies een latere datum als dat kan.");
     document.getElementById("termijn").scrollIntoView({ block: "center", behavior: "smooth" });
     return false;
   }

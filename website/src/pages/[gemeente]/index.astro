@@ -246,12 +246,12 @@ const ld = [
     const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,meerdaags:meer.checked,od:false,x:{}};
     let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
     if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';go.innerHTML='<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>';return;}
-    const o=indienOordeel(res), st={laat:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"}[o.soort];
+    const o=indienOordeel(res), st={laat:"late",tekort:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"}[o.soort];
     const d=daysUntil(res.best.date), voorbij=res.best.date<today();
-    const txt={laat:"te laat",twijfel:"onzeker",krap:"krap",ok:"op tijd",geschat:"schatting"}[o.soort];
+    const txt={laat:"te laat",tekort:"te kort dag",twijfel:"onzeker",krap:"krap",ok:"op tijd",geschat:"schatting"}[o.soort];
     out.innerHTML='<div class="count"><span class="num">'+(voorbij?"0":String(d))+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
       '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status '+st+'">'+txt+'</span></div>'+
-      '<p class="rule">'+(st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>';
+      '<p class="rule">'+(o.soort==="tekort"?"Te kort dag: wij hebben minstens "+MIN_WERKDAGEN+" werkdagen nodig vóór de deadline.":st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>';
     go.innerHTML=st==="late"?'':'<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>';
   }
   // Wat de bezoeker eerder in deze sessie koos (soort, datum, meerdere dagen), komt terug.

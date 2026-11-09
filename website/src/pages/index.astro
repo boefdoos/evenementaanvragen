@@ -97,7 +97,7 @@ import huisstijl from "../huisstijl.css?raw";
     <details><summary>Waarom een volmacht?</summary><p>We dienen de aanvraag in jouw naam in. De volmacht toont de gemeente dat dat met jouw toestemming gebeurt. Je tekent ze online: naam typen en aanvinken. Ze geldt enkel voor dit evenement.</p></details>
     <details><summary>Moet ik zelf ergens inloggen?</summary><p>Soms. Vraagt de gemeente een account of itsme van de organisator, bijvoorbeeld om feestmateriaal te lenen, dan zeggen we je precies wat je moet doen.</p></details>
     <details><summary>Wie is het aanspreekpunt van de gemeente?</summary><p>Jij. Je staat als contactpersoon in de aanvraag, dus vragen en de beslissing komen rechtstreeks bij jou.</p></details>
-    <details><summary>Wat als ik te laat ben?</summary><p>Dat zie je meteen: is de deadline van je gemeente voorbij, dan kan je de aanvraag niet doorsturen. Kies dan een latere datum als dat kan.</p></details>
+    <details><summary>Wat als ik te laat ben?</summary><p>Dat zie je meteen. Is de deadline van je gemeente voorbij, of ligt ze minder dan 2 werkdagen weg, dan kan je de aanvraag niet doorsturen: zo kort dag kunnen we niet beloven dat het lukt. Kies dan een latere datum als dat kan, of neem zelf contact op met de gemeente. Ligt de deadline binnen de week, dan kan het nog: we behandelen je aanvraag dan met voorrang.</p></details>
     <details><summary>Komt er nog btw bij?</summary><p>Nee. De prijs is wat je betaalt. Als kleine onderneming rekenen we geen btw aan.</p></details>
     <details><summary>Wat met feestmateriaal van de gemeente?</summary><p>We vragen het mee aan, met wat marge. Leent de gemeente iets niet uit, of niet aan jou, dan laten we dat weten zodat je het tijdig zelf kan huren.</p></details>
   </div>
@@ -146,14 +146,14 @@ import huisstijl from "../huisstijl.css?raw";
     let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
     if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';go.innerHTML='<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>'+overzicht(r);return;}
     // Zelfde oordeel als de intake (indienmoment.js)
-    const o=indienOordeel(res), MAP={laat:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"};
+    const o=indienOordeel(res), MAP={laat:"late",tekort:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"};
     const st=MAP[o.soort];
     const d=daysUntil(res.best.date), voorbij=res.best.date<today();
-    const txt={laat:"te laat",twijfel:"onzeker",krap:"krap",ok:"op tijd",geschat:"schatting"}[o.soort];
+    const txt={laat:"te laat",tekort:"te kort dag",twijfel:"onzeker",krap:"krap",ok:"op tijd",geschat:"schatting"}[o.soort];
     const num = voorbij ? "0" : String(d);
     out.innerHTML='<div class="count"><span class="num">'+num+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
       '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status '+st+'">'+txt+'</span></div>'+
-      '<p class="rule">'+(st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>';
+      '<p class="rule">'+(o.soort==="tekort"?"Te kort dag: wij hebben minstens "+MIN_WERKDAGEN+" werkdagen nodig vóór de deadline.":st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>';
     go.innerHTML=(st==="late"?'':'<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>')+overzicht(r);
   }
   fetch("/regels.json").then(r=>r.json()).then(data=>{
