@@ -60,6 +60,7 @@ nav.menu a.go{color:var(--bg);background:var(--text);margin-left:6px;padding:9px
 .status.late{color:var(--accent)}
 .rule{color:var(--soft);font-size:15px;margin-top:6px}
 .go-link{display:inline-flex;margin-top:16px;font-weight:600;color:var(--accent);text-decoration:none}
+.btn.go-btn{display:flex;justify-content:center;width:100%;margin-top:18px}
 .go-link:hover{text-decoration:underline;text-underline-offset:4px}
 .gem-link{display:block;margin-top:12px;font-size:14px;color:var(--soft);text-decoration:none;border-top:1px solid var(--line-2);padding-top:12px}
 .gem-link:hover{color:inherit;text-decoration:underline;text-underline-offset:4px}

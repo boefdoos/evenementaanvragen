@@ -1186,6 +1186,8 @@ function bewaar() {
   });
   const mat = {}; ml.querySelectorAll("input").forEach(i => { if (i.value) mat[i.id] = i.value; });
   try { sessionStorage.setItem(CONCEPT, JSON.stringify({ v, mat, stap, verst })); } catch (e) {}
+  // Ook de termijncheck op de startpagina en de gemeentepagina's onthoudt zo de keuzes (o.a. "meerdere dagen").
+  try { sessionStorage.setItem("termijncheck", JSON.stringify({ gemeente: v.gemeente || "", type: v.type || "", datum: v.startdatum || "", meerdaags: md.checked ? "ja" : "" })); } catch (e) {}
 }
 function herstel() {
   let c = null; try { c = JSON.parse(sessionStorage.getItem(CONCEPT) || "null"); } catch (e) {}

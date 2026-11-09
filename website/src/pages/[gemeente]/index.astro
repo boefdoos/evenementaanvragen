@@ -174,6 +174,7 @@ const ld = [
       <label for="c-datum">Datum<input id="c-datum" type="date"></label>
       <label class="full vink" for="c-meer"><input id="c-meer" type="checkbox"> Het evenement duurt meerdere dagen <span class="vinkhint">(een feest dat na middernacht eindigt, telt als één dag)</span></label>
     </form>
+    <div id="c-go"></div>
   </aside>
 </div></section>
 
@@ -219,7 +220,7 @@ const ld = [
 <script is:inline src="/indienmoment.js"></script>
 <script is:inline define:vars={{ GEM: g }}>
 (function(){
-  const typ=$("c-type"), dat=$("c-datum"), meer=$("c-meer"), out=$("c-out");
+  const typ=$("c-type"), dat=$("c-datum"), meer=$("c-meer"), out=$("c-out"), go=$("c-go");
   TYPES.forEach(([k,v])=>typ.appendChild(new Option(v+(BUITEN_AANBOD_TYPES.includes(k)?" (nog niet in ons aanbod)":""),k)));
   typ.value="fuif";
   const t0=new Date(); t0.setDate(t0.getDate()+120); dat.value=t0.toISOString().slice(0,10);
@@ -241,18 +242,24 @@ const ld = [
     meeNemen(GEM);
     const r=RULES.find(x=>x.gemeente===GEM); if(!r||!dat.value) return;
     const buiten=buitenAanbod(typ.value,0);
-    if(buiten){out.innerHTML='<div class="count"><span class="num">–</span><span class="unit">dagen</span></div><div class="deadline">Niet in ons aanbod</div><p class="rule">'+esc(buiten)+'</p>';return;}
+    if(buiten){go.innerHTML='';out.innerHTML='<div class="count"><span class="num">–</span><span class="unit">dagen</span></div><div class="deadline">Niet in ons aanbod</div><p class="rule">'+esc(buiten)+'</p>';return;}
     const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,meerdaags:meer.checked,od:false,x:{}};
     let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
-    if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';return;}
+    if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';go.innerHTML='<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>';return;}
     const o=indienOordeel(res), st={laat:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"}[o.soort];
     const d=daysUntil(res.best.date), voorbij=res.best.date<today();
     const txt={laat:"te laat",twijfel:"onzeker",krap:"krap",ok:"op tijd",geschat:"schatting"}[o.soort];
     out.innerHTML='<div class="count"><span class="num">'+(voorbij?"0":String(d))+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
       '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status '+st+'">'+txt+'</span></div>'+
-      '<p class="rule">'+(st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>'+
-      (st==="late"?'':'<a class="go-link" href="/aanvraag?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je →</a>');
+      '<p class="rule">'+(st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>';
+    go.innerHTML=st==="late"?'':'<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>';
   }
+  // Wat de bezoeker eerder in deze sessie koos (soort, datum, meerdere dagen), komt terug.
+  {let mee={}; try{mee=JSON.parse(sessionStorage.getItem("termijncheck")||"{}")||{};}catch(e){}
+   if(mee.type&&TYPES.some(([k])=>k===mee.type)) typ.value=mee.type;
+   if(/^\d{4}-\d{2}-\d{2}$/.test(mee.datum||"")&&new Date(mee.datum+"T00:00:00")>=today()) dat.value=mee.datum;
+   meer.checked=mee.meerdaags==="ja";
+   if(mee.type) aangeraakt=true;}
   fetch("/regels.json").then(r=>r.json()).then(data=>{RULES=data;show();})
     .catch(()=>{out.innerHTML='<div class="deadline">De termijnen konden niet laden.</div><p class="rule">Start gerust je aanvraag: wij rekenen het voor je uit.</p>';});
   [typ,dat,meer].forEach(el=>{const z=()=>{aangeraakt=true;show();};el.addEventListener("change",z);el.addEventListener("input",z)});
