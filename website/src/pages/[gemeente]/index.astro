@@ -66,7 +66,12 @@ const platform = PRODUCT[pkaal.toLowerCase()] || null;
 const kanaal = platform
   ? `Online dossier via ${platform}, met bijlagen zoals plannen en affiche.`
   : /mail/i.test(pkaal) ? "Aanvraagformulier met bijlagen, in te dienen per mail."
-  : pkaal && !INTERN.test(pkaal) ? "Online dossier via het e-loket van de gemeente, met bijlagen." : null;
+  : pkaal && !INTERN.test(pkaal) ? "Online dossier via het e-loket van de gemeente, met bijlagen."
+  // "Eigen loket / anders": afleiden uit de omschrijving van het kanaal, als die iets zegt.
+  : /geen|niet|onbekend/i.test(r.kanaal || "") ? null
+  : /mail/i.test(r.kanaal || "") ? "Aanvraagformulier met bijlagen, in te dienen per mail."
+  : /digitaal|online|e-loket|webshop|platform|loket/i.test(r.kanaal || "") ? "Online dossier via het e-loket van de gemeente, met bijlagen."
+  : /formulier|fiche/i.test(r.kanaal || "") ? "Aanvraagformulier met bijlagen." : null;
 const college = zonderAdres(schoon(r.college));
 // Voorwaarden van de gemeente: tonen wat erbij komt kijken, zonder stappenplan.
 const voorwaarden = (r.bijzonder || [])
@@ -187,6 +192,7 @@ const ld = [
       {kanaal && <li>{kanaal}</li>}
       {college && <li>{college}.</li>}
       {voorwaarden.map((v) => <li>{v}</li>)}
+      {!kanaal && !college && voorwaarden.length === 0 && <li>Een dossier met de gegevens van je evenement en bijlagen zoals een inplantingsplan.</li>}
     </ul></div>
     {mat
       ? <div class="vak"><h3>Feestmateriaal lenen</h3><p>Materiaal van de uitleendienst vraag je in {g} apart aan. Wij nemen het mee in je dossier, met wat marge.</p>

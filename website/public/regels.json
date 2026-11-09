@@ -1268,13 +1268,27 @@
    }
   ],
   "note": "",
-  "platform": "Eigen loket / anders",
-  "kanaal": "Maxiformulier politiezone (meldingsfiche)",
+  "platform": "RIHO",
+  "kanaal": "Meldingsfiche van de stad = maxiformulier RIHO SEAS (vcs01.politiezoneriho.be/maxiformulier)",
   "link": "https://vcs01.politiezoneriho.be/maxiformulier",
   "contact": "Evenementen (Stadhuis) – evenementen@diksmuide.be – 051 79 30 60; dienst Vrije Tijd – vrije.tijd@diksmuide.be – 051 79 32 60",
   "bron": "https://www.uitindiksmuide.be/vrije-tijd-ontmoeting/verenigingen-diksmuide/zelf-organiseren/meldingsfiche",
   "termijnTekst": "Nieuwe evenementen: 4 maanden vooraf; bestaande evenementen: 2 maanden vooraf",
-  "bijzonder": [],
+  "bijzonder": [
+   {
+    "soort": "voorwaarde",
+    "wat": "De meldingsfiche bundelt de drankvergunning, de toelating voor versterkte muziek en eventuele mobiliteitsmaatregelen",
+    "als": null,
+    "toelichting": "Zaal- en materiaalverhuur en de muzieklicentie (Unisono) vallen er niet onder."
+   },
+   {
+    "soort": "laatste_wijziging",
+    "wat": "Dossier in Riho SEAS nog aanvullen of wijzigen",
+    "n": 10,
+    "unit": "d",
+    "toelichting": "Na de registratie krijg je een link en code om aanpassingen te doen."
+   }
+  ],
   "college": null,
   "uitleen": {
    "uitleendienst": "ja",
@@ -2169,8 +2183,8 @@
   },
   "extra": [],
   "note": "",
-  "platform": "Eigen loket / anders",
-  "kanaal": "Eigen loket (digitaal evenementenloket Flowlab)",
+  "platform": "Flowlab",
+  "kanaal": "Digitaal evenementenloket van de stad op Flowlab (izegem.flowlab.be)",
   "link": "https://izegem.flowlab.be/",
   "contact": "Dienst Vrije tijd – vrijetijd@izegem.be – 051 33 73 03",
   "bron": "https://www.izegem.be/evenementen",
