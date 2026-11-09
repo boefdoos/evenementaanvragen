@@ -15,6 +15,13 @@
    ok / geschat : ruim op tijd (gekend / onzeker of geschat) */
 const MIN_WERKDAGEN = 2;
 function plusWerkdagen(d, n) { const x = new Date(d); let c = 0; while (c < n) { x.setDate(x.getDate() + 1); if (isWorkday(x)) c++; } return x; }
+/* Aantal werkdagen na vandaag tot en met de deadline (weekends en feestdagen tellen niet). tekort <=> < MIN_WERKDAGEN. */
+function werkdagenTot(deadline) { const x = today(); let n = 0; while (true) { x.setDate(x.getDate() + 1); if (x > deadline) return n; if (isWorkday(x)) n++; } }
+/* Uitleg voor "tekort", met het echte aantal werkdagen (een deadline op een feestdag oogt anders ruimer dan ze is). */
+function tekortUitleg(deadline) {
+  const n = werkdagenTot(deadline);
+  return (n === 0 ? "Geen werkdag meer" : "Nog maar " + n + " werkdag") + " tot de deadline (weekends en feestdagen tellen niet). Wij hebben er minstens " + MIN_WERKDAGEN + " nodig.";
+}
 function indienOordeel(res) {
   const t = today(), zeker = !res.aanname && !res.onzeker, deadline = res.best.date;
   let soort;

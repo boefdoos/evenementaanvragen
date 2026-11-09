@@ -989,7 +989,7 @@ function toonTermijn() {
     p = "De deadline was " + d + " (" + t.termijn + " vooraf). We kunnen deze aanvraag niet meer op tijd indienen. Kies een latere datum als dat kan, of neem zelf contact op met de gemeente.";
   } else if (t.soort === "tekort") {
     k = "Te kort dag voor " + t.gemeente;
-    p = "De deadline is " + d + ". Dat is minder dan " + MIN_WERKDAGEN + " werkdagen weg: zo kort dag kunnen we niet beloven dat je aanvraag volledig en op tijd binnen is. Kies een latere datum als dat kan, of neem zelf meteen contact op met de gemeente.";
+    p = "De deadline is " + d + ". " + tekortUitleg(t.deadline) + " Zo kort dag kunnen we niet beloven dat je aanvraag volledig en op tijd binnen is. Kies een latere datum als dat kan, of neem zelf meteen contact op met de gemeente.";
   } else if (t.soort === "twijfel") {
     k = "Waarschijnlijk te laat";
     p = "De termijn van " + t.gemeente + " is niet zeker gekend. Volgens onze schatting is de deadline " + d + ", en die is al voorbij. Ga toch verder: we kijken het meteen na en laten het je weten.";
