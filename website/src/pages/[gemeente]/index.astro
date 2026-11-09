@@ -102,6 +102,7 @@ for (const x of r.extra || []) {
   if (x.minVisitors) v.push(`vanaf ${x.minVisitors} bezoekers`);
   if (x.groot) v.push("groot evenement");
   if (x.nieuw) v.push("eerste editie");
+  if (x.meerdaags) v.push("over meerdere dagen");
   if (x.openbaarDomein) v.push("op openbaar domein");
   if (x.types) v.push(x.types.map((t) => (TYPES[t] || t).toLowerCase()).join(", "));
   rijen.push({ wat: cap(v.join(", ")) || "Bijzonder geval", tag: false, termijn: termijn(x.n, x.unit) });
@@ -166,6 +167,7 @@ const ld = [
     <form class="fields" onsubmit="return false" aria-label="Termijncheck">
       <label for="c-type">Soort<select id="c-type"></select></label>
       <label for="c-datum">Datum<input id="c-datum" type="date"></label>
+      <label class="full vink" for="c-meer"><input id="c-meer" type="checkbox"> Het evenement duurt meerdere dagen</label>
     </form>
   </aside>
 </div></section>
@@ -211,7 +213,7 @@ const ld = [
 <script is:inline src="/indienmoment.js"></script>
 <script is:inline define:vars={{ GEM: g }}>
 (function(){
-  const typ=$("c-type"), dat=$("c-datum"), out=$("c-out");
+  const typ=$("c-type"), dat=$("c-datum"), meer=$("c-meer"), out=$("c-out");
   TYPES.forEach(([k,v])=>typ.appendChild(new Option(v+(BUITEN_AANBOD_TYPES.includes(k)?" (nog niet in ons aanbod)":""),k)));
   typ.value="fuif";
   const t0=new Date(); t0.setDate(t0.getDate()+120); dat.value=t0.toISOString().slice(0,10);
@@ -221,11 +223,11 @@ const ld = [
   let aangeraakt=false;
   function meeNemen(gemNaam){
     if(!aangeraakt) return;
-    const v={gemeente:gemNaam,type:typ.value,datum:dat.value};
+    const v={gemeente:gemNaam,type:typ.value,datum:dat.value,meerdaags:meer.checked?"ja":""};
     try{sessionStorage.setItem("termijncheck",JSON.stringify(v));}catch(e){}
     document.querySelectorAll('a[href^="/aanvraag"]').forEach(a=>{
       const u=new URL(a.getAttribute("href"),location.origin);
-      for(const [k,w] of Object.entries(v)) if(w) u.searchParams.set(k,w);
+      for(const [k,w] of Object.entries(v)) if(w) u.searchParams.set(k,w); else u.searchParams.delete(k);
       a.setAttribute("href",u.pathname+u.search);
     });
   }
@@ -234,7 +236,7 @@ const ld = [
     const r=RULES.find(x=>x.gemeente===GEM); if(!r||!dat.value) return;
     const buiten=buitenAanbod(typ.value,0);
     if(buiten){out.innerHTML='<div class="count"><span class="num">–</span><span class="unit">dagen</span></div><div class="deadline">Niet in ons aanbod</div><p class="rule">'+esc(buiten)+'</p>';return;}
-    const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,od:false,x:{}};
+    const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,meerdaags:meer.checked,od:false,x:{}};
     let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
     if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';return;}
     const o=indienOordeel(res), st={laat:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"}[o.soort];
@@ -243,11 +245,11 @@ const ld = [
     out.innerHTML='<div class="count"><span class="num">'+(voorbij?"0":String(d))+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
       '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status '+st+'">'+txt+'</span></div>'+
       '<p class="rule">'+(st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>'+
-      (st==="late"?'':'<a class="go-link" href="/aanvraag?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+'">Wij dienen het in voor je →</a>');
+      (st==="late"?'':'<a class="go-link" href="/aanvraag?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je →</a>');
   }
   fetch("/regels.json").then(r=>r.json()).then(data=>{RULES=data;show();})
     .catch(()=>{out.innerHTML='<div class="deadline">De termijnen konden niet laden.</div><p class="rule">Start gerust je aanvraag: wij rekenen het voor je uit.</p>';});
-  [typ,dat].forEach(el=>{const z=()=>{aangeraakt=true;show();};el.addEventListener("change",z);el.addEventListener("input",z)});
+  [typ,dat,meer].forEach(el=>{const z=()=>{aangeraakt=true;show();};el.addEventListener("change",z);el.addEventListener("input",z)});
 })();
 </script>
 </Fragment>

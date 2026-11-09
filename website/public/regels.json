@@ -651,6 +651,14 @@
     "wat": "Evenement binnen dat afwijkt van de omgevingsvergunning of bestemming van het gebouw: brandweer (plan 1/200), politie inlichten, bewonersbrief ten laatste 2 weken vooraf",
     "als": null,
     "toelichting": "Mail dienst Evenementenbeleid, 3/11/2026."
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Evenementenzone elke avond vegen en controleren op zwerfvuil en glas",
+    "als": {
+     "meerdaags": true
+    },
+    "toelichting": "Richtlijnen evenementen v2."
    }
   ],
   "college": null,
@@ -2572,6 +2580,11 @@
     "groot": true,
     "n": 6,
     "unit": "m"
+   },
+   {
+    "meerdaags": true,
+    "n": 6,
+    "unit": "m"
    }
   ],
   "note": "4 weken volstaat als je geen gemeentelijke steun (materiaal, logistiek) vraagt.",
@@ -4164,7 +4177,13 @@
     "d"
    ]
   },
-  "extra": [],
+  "extra": [
+   {
+    "meerdaags": true,
+    "n": 90,
+    "unit": "d"
+   }
+  ],
   "note": "90 dagen voor loopwedstrijden op de openbare weg en meerdaagse evenementen.",
   "platform": "Eaglebe",
   "kanaal": "Eaglebe (digitaal evenementenformulier)",
@@ -6369,7 +6388,8 @@
     "n": 3,
     "unit": "w",
     "als": {
-     "verkeer": true
+     "verkeer": true,
+     "meerdaags": true
     },
     "toelichting": "deelmobiliteit@antwerpen.be, op vraag van de stad bij meerdaagse evenementen."
    },
@@ -7964,6 +7984,11 @@
     "groot": true,
     "n": 60,
     "unit": "d"
+   },
+   {
+    "meerdaags": true,
+    "n": 60,
+    "unit": "d"
    }
   ],
   "termijnTekst": "Evenement categorie 1: minstens 30 dagen vooraf. Evenement categorie 2: minstens 60 dagen vooraf; wielerwedstrijden minimum 14 weken vooraf. Te laat aangevraagde evenementen kunnen niet meer behandeld en dus ook niet vergund worden.",
@@ -8900,6 +8925,15 @@
      "publiciteit": true
     },
     "toelichting": "Ten vroegste één maand voor het evenement; sandwichborden op openbare weg verboden (behalve circussen)."
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Muziek op meerdere dagen: het college beoordeelt de geluidsafwijking afzonderlijk",
+    "als": {
+     "meerdaags": true,
+     "muziek": true
+    },
+    "toelichting": ""
    }
   ],
   "college": "Niet expliciet voor de algemene aanvraag vermeld; wielerwedstrijden: burgemeesters beslissen uiterlijk 6 weken vooraf; afwijkingen geluid bij meerdaagse locaties: college.",
@@ -9232,10 +9266,16 @@
     "minVisitors": 1000,
     "n": 120,
     "unit": "d"
+   },
+   {
+    "meerdaags": true,
+    "openbaarDomein": true,
+    "n": 60,
+    "unit": "d"
    }
   ],
   "termijnTekst": "30 dagen: evenement met <1.000 bezoekers en minder dan 24 uur inname openbaar domein, zonder veiligheidsrisico en zonder verkeerswijziging. 60 dagen: meer dan 24 uur inname openbaar domein, een verkeerswijziging, een veiligheidsrisico, of meer dan 1.000 bezoekers zonder verkeerswijziging op een hoofdweg. 120 dagen: meer dan 1.000 bezoekers met verkeersimpact op een hoofdweg en/of een kampeerterrein. Termijnen lopen pas vanaf het moment dat het evenementenloket alle nodige informatie heeft.",
-  "note": "Mapping: 'groot' (veiligheidsrisico) = 60 d. Een verkeerswijziging of meer dan 24 uur inname openbaar domein geeft ook 60 d, maar dat kan niet in 'extra' uitgedrukt worden: bij verkeersmaatregelen of meerdaagse inname altijd 60 d aanhouden. Meer dan 1.000 bezoekers op 120 d gezet (strengste); zonder verkeersimpact op een hoofdweg is het 60 d. Kampeerterrein ook 120 d. Zomer- en winterbars via dezelfde aanvraag. Beschikbaarheid van de datum navragen via evenementen@hoogstraten.be. Zeer grote evenementen: veiligheidscel en 'Plan Risco manifestaties'. Regels in UGP hoofdstuk IX (niet gelezen); pagina's geluidsnormen, start- en einduren, vuurwerkverbod niet gelezen. Drank en parkeerverbod niet vermeld op de aanvraagpagina.",
+  "note": "Mapping: 'groot' (veiligheidsrisico) = 60 d. Meer dan 24 uur inname openbaar domein = extra 'meerdaags + openbaar domein' (60 d). Een verkeerswijziging geeft ook 60 d, maar dat kan niet in 'extra' uitgedrukt worden: bij verkeersmaatregelen altijd 60 d aanhouden. Meer dan 1.000 bezoekers op 120 d gezet (strengste); zonder verkeersimpact op een hoofdweg is het 60 d. Kampeerterrein ook 120 d. Zomer- en winterbars via dezelfde aanvraag. Beschikbaarheid van de datum navragen via evenementen@hoogstraten.be. Zeer grote evenementen: veiligheidscel en 'Plan Risco manifestaties'. Regels in UGP hoofdstuk IX (niet gelezen); pagina's geluidsnormen, start- en einduren, vuurwerkverbod niet gelezen. Drank en parkeerverbod niet vermeld op de aanvraagpagina.",
   "platform": "eGovFlow",
   "kanaal": "Enkel online aanvraag via eGovFlow; lukt dat niet, afspraak maken via evenementen@hoogstraten.be.",
   "link": "https://hoogstraten.egovflow.be/requests/add/SKV-aanvraagEvenement",
@@ -10436,6 +10476,15 @@
      "muziek": true
     },
     "toelichting": ""
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Afwijking op de geluidsnorm geldt per dag: alle dagen en uren vermelden",
+    "als": {
+     "meerdaags": true,
+     "muziek": true
+    },
+    "toelichting": "ikorganiseerinlier.uitinlier.be/inhoud/muziek-en-geluid"
    }
   ],
   "college": "Aanvraag: na advies beslist het schepencollege of de burgemeester; vergunning met voorwaarden. Melding: gaat naar de burgemeester.",
@@ -10554,6 +10603,14 @@
     "wat": "Evenementen vanaf 1 maart 2027 (klein) / 1 mei 2027 (groot of risicovol) en materiaal vanaf 1 maart 2027 pas aanvragen via het nieuwe platform (start januari 2027)",
     "als": null,
     "toelichting": "Aanmelden als vereniging met V-nummer."
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Meerdaags evenement telt als groot en risicovol evenement op het nieuwe evenementenplatform (2027)",
+    "als": {
+     "meerdaags": true
+    },
+    "toelichting": "Lille vraagt te wachten met aanvragen voor grote of risicovolle evenementen tot 1 mei 2027; termijnen op het nieuwe platform nog niet bekend."
    }
   ],
   "college": null,
@@ -11096,7 +11153,13 @@
     "d"
    ]
   },
-  "extra": [],
+  "extra": [
+   {
+    "meerdaags": true,
+    "n": 60,
+    "unit": "d"
+   }
+  ],
   "termijnTekst": "De algemene aanvraagtermijn voor een evenement telt minstens 45 dagen. 60 dagen voor: fuif of bal; meerdaags evenement met verschillende activiteiten; sportactiviteit buiten (bv. wielerwedstrijd, motorcross); een optreden na een ander evenement (bv. concert na eetfestijn) telt als concert.",
   "note": "Concert op 60 dagen gezet (optreden na ander evenement telt als concert en valt onder 60 dagen). Sport op 60 dagen gezet (strengst; de bron noemt sportactiviteit buiten). Meerdaagse evenementen met verschillende activiteiten: 60 dagen (geen sleutel in het formaat, hier vermeld). Vergunning nodig o.a. bij openbare weg, publiek toegankelijk gebouw, luide muziek of meer dan 1.000 gelijktijdige bezoekers. Dossier gaat pas naar advies als alle verplichte documenten volledig zijn. Uitleenreglement (pdf) geblokkeerd voor robots; aanvraagformulier feestmateriaal vereist login (niet geopend). Geen info over parkeerverbod, drank of Sabam.",
   "platform": "Eaglebe",
@@ -14839,6 +14902,14 @@
      "materiaal": true
     },
     "toelichting": "Reglement: uiterlijk 15 werkdagen vooraf, ten vroegste 1 jaar vooraf; webpagina zegt 15 dagen (strengste genomen)."
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Structureel toezicht door private veiligheid (bewakingsfirma of vrijwilligers)",
+    "als": {
+     "meerdaags": true
+    },
+    "toelichting": "Verplicht bij meerdaagse evenementen, fuiven, festivals en evenementen vanaf 500 bezoekers."
    }
   ],
   "college": "Het college van burgemeester en schepenen keurt goed of af na bespreking door dienst Evenementen en advies van politie, brandweer en andere diensten; de vergunning kan voorwaarden bevatten.",
@@ -15512,10 +15583,15 @@
     "nieuw": true,
     "n": 10,
     "unit": "w"
+   },
+   {
+    "meerdaags": true,
+    "n": 10,
+    "unit": "w"
    }
   ],
   "termijnTekst": "Reglement aanvraagtermijn evenementen (GR 19/05/2025): openbaar domein zonder verhoogd veiligheidsrisico 4 weken bij één parameter (elektronische muziek > 85 dB(A), kampvuur/vuurwerk, luchtruim, materiaal van de stad, verkeersmaatregelen, subsidie), 6 weken bij meerdere; verhoogd veiligheidsrisico (> 2000 personen, nieuw muziek- of sportevenement, meerdaags, tentfuif, Avonturenberg) 10 weken. Privédomein publiek toegankelijk: geen parameter = geen aanvraag (vanaf 150 bezoekers een melding), één parameter 4 weken, meerdere 6 weken. Kermis op openbaar domein 10 weken. Maximaal 9 maanden vooraf.",
-  "note": "Rekenregel: 6 weken als standaard (de meeste evenementen hebben meerdere parameters, bv. muziek en materiaal); bij één parameter volstaat 4 weken. 10 weken bij > 2000 personen, nieuw muziek- of sportevenement (via 'nieuw'), meerdaags, tentfuif of Avonturenberg: tent en meerdaags zijn niet apart gemodelleerd, dus als 'groot' aanvinken. be-MINE heeft eigen termijnen. Uitzonderlijke omstandigheden: laattijdige aanvraag mogelijk met motivering via e-loket. Reglement-pdf gelezen in de browser op 1/11/2026.",
+  "note": "Rekenregel: 6 weken als standaard (de meeste evenementen hebben meerdere parameters, bv. muziek en materiaal); bij één parameter volstaat 4 weken. 10 weken bij > 2000 personen, nieuw muziek- of sportevenement (via 'nieuw'), meerdaags, tentfuif of Avonturenberg: meerdaags via extra 'meerdaags'; tentfuif is niet apart gemodelleerd, dus als 'groot' aanvinken. be-MINE heeft eigen termijnen. Uitzonderlijke omstandigheden: laattijdige aanvraag mogelijk met motivering via e-loket. Reglement-pdf gelezen in de browser op 1/11/2026.",
   "platform": "eigen e-loket (portaal.beringen.be/evenementenloket, login met eID/itsme)",
   "kanaal": "Online via het digitaal evenementenloket van de stad, aanmelden met eID of itsme; ook voor materiaalaanvragen.",
   "link": "https://portaal.beringen.be/evenementenloket",
@@ -24802,6 +24878,14 @@
     "soort": "voorwaarde",
     "wat": "Eerst zaal reserveren, pas daarna evenementaanvraag indienen",
     "als": null
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Meerdaags evenement met verschillende activiteiten: per type activiteit een aparte aanvraag",
+    "als": {
+     "meerdaags": true
+    },
+    "toelichting": ""
    }
   ],
   "college": "Niet vermeld wie beslist; de aanvraag krijgt na validatie en advies de status Goedgekeurd of Afgekeurd, met vergunning en eventuele extra voorwaarden.",
@@ -28807,6 +28891,15 @@
     "soort": "voorwaarde",
     "wat": "Zaal- of materiaalaanvraag en evenementaanvraag worden apart goedgekeurd",
     "als": null
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Elektronisch versterkte muziek tot 4 uur kan maar op één dag van een meerdaags evenement",
+    "als": {
+     "meerdaags": true,
+     "muziek": true
+    },
+    "toelichting": "Vrijdag tot 2 uur, zaterdag tot 4 uur; bij vrijdag én zaterdag kiest de organisator op welke dag tot 4 uur."
    }
   ],
   "college": "Het college van burgemeester en schepenen beslist over afwijkingen van de geluidsnormen; wie over de evenementaanvraag zelf beslist staat niet op de gelezen pagina.",
@@ -32341,7 +32434,9 @@
    {
     "soort": "voorwaarde",
     "wat": "Meerdaagse of grote evenementen: verplichte coördinatievergadering met bestuur en veiligheidsdiensten",
-    "als": null,
+    "als": {
+     "meerdaags": true
+    },
     "toelichting": ""
    },
    {
@@ -34237,6 +34332,14 @@
     "soort": "voorwaarde",
     "wat": "Mobiele toiletten zelf voorzien; afvalcontainers via ILvA",
     "als": null
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Meerdaagse evenementen: veiligheidscel verplicht",
+    "als": {
+     "meerdaags": true
+    },
+    "toelichting": "Algemene voorwaarden Eaglebe Pajottegem."
    }
   ],
   "college": "Bestuur beslist na adviezen (brandweer, politie, buurgemeenten Bever, Lennik, Pepingen); sterke drank, geluidsuitzondering en vuurwerk: burgemeester.",
@@ -34394,7 +34497,9 @@
    {
     "soort": "voorwaarde",
     "wat": "Meerdaagse evenementen: voorafgaand overleg met de veiligheidscel",
-    "als": null,
+    "als": {
+     "meerdaags": true
+    },
     "toelichting": ""
    },
    {

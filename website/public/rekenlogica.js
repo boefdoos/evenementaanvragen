@@ -26,14 +26,15 @@ function evaluate(r, ev){
   const cands=[{n:bn,u:bu,why:(t==="*"?"algemene termijn":"termijn voor dit type")}];
   const mog=[];
   for(const x of r.extra||[]){
-    if(x.groot && !ev.groot){ if(!((x.types&&!x.types.includes(ev.type))||(x.minVisitors&&!(ev.visitors>=x.minVisitors))||(x.nieuw&&!ev.nieuw)||(x.openbaarDomein&&!ev.od)||(x.months&&!x.months.includes(ev.date.getMonth()+1)))) mog.push({n:x.n,u:x.unit,why:"groot evenement / grote impact",date:minus(ev.date,x.n,x.unit)}); }
+    if(x.groot && !ev.groot){ if(!((x.types&&!x.types.includes(ev.type))||(x.minVisitors&&!(ev.visitors>=x.minVisitors))||(x.nieuw&&!ev.nieuw)||(x.meerdaags&&!ev.meerdaags)||(x.openbaarDomein&&!ev.od)||(x.months&&!x.months.includes(ev.date.getMonth()+1)))) mog.push({n:x.n,u:x.unit,why:"groot evenement / grote impact",date:minus(ev.date,x.n,x.unit)}); }
     if(x.types && !x.types.includes(ev.type)) continue;
     if(x.minVisitors && !(ev.visitors>=x.minVisitors)) continue;
     if(x.groot && !ev.groot) continue;
     if(x.nieuw && !ev.nieuw) continue;
+    if(x.meerdaags && !ev.meerdaags) continue;
     if(x.openbaarDomein && !ev.od) continue;
     if(x.months && !x.months.includes(ev.date.getMonth()+1)) continue;
-    const parts=[]; if(x.minVisitors) parts.push("vanaf "+x.minVisitors+" bezoekers"); if(x.groot) parts.push("groot evenement"); if(x.nieuw) parts.push("eerste editie"); if(x.openbaarDomein) parts.push("openbaar domein"); if(x.months) parts.push("periode "+x.months.map(m=>["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"][m-1]).join("–")); if(x.types) parts.push(x.types.join(", "));
+    const parts=[]; if(x.minVisitors) parts.push("vanaf "+x.minVisitors+" bezoekers"); if(x.groot) parts.push("groot evenement"); if(x.nieuw) parts.push("eerste editie"); if(x.meerdaags) parts.push("evenement over meerdere dagen"); if(x.openbaarDomein) parts.push("openbaar domein"); if(x.months) parts.push("periode "+x.months.map(m=>["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"][m-1]).join("–")); if(x.types) parts.push(x.types.join(", "));
     cands.push({n:x.n,u:x.unit,why:parts.join(", ")});
   }
   let best=null;
@@ -48,6 +49,7 @@ function check(als,ev){
   if(als.types && !als.types.includes(ev.type)) return {ok:false};
   if(als.minVisitors && !(ev.visitors>=als.minVisitors)) return {ok:false};
   const q=[];
+  if(als.meerdaags){ if(ev.meerdaags===false) return {ok:false}; if(ev.meerdaags==null) q.push("evenement over meerdere dagen"); }
   for(const k of Object.keys(FLAGTXT)){ if(!als[k]) continue; let v=ev.x[k]; if(k==="alcohol"&&ev.x.sterkeDrank===true) v=true; if(v===false) return {ok:false}; if(v==null) q.push(FLAGTXT[k]); }
   if(als.muziekOfDrank){ const vs=[ev.x.muziek,ev.x.sterkeDrank]; if(!vs.includes(true)){ if(vs.every(v=>v===false)) return {ok:false}; q.push("muziek of sterke drank"); } }
   if(als.vraag) q.push(als.vraag);

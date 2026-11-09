@@ -66,6 +66,8 @@ nav.menu a.go{color:var(--bg);background:var(--text);margin-left:6px;padding:9px
 .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;padding-top:22px;border-top:1px solid var(--line)}
 .fields label{display:grid;gap:6px;font-size:13px;font-weight:600;color:var(--soft)}
 .fields label.full{grid-column:1/-1}
+.fields label.vink{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--text);cursor:pointer}
+.fields label.vink input{width:20px;height:20px;flex:none;margin:0;accent-color:var(--accent)}
 .fields select,.fields input{font:500 16px/1.2 var(--f-body);padding:12px 14px;border-radius:10px;border:1px solid var(--line-2);background:var(--bg);color:var(--text);width:100%;min-width:0}
 /* Overal dezelfde hoogte (Safari tekent select en datum anders) */
 .fields select,.fields input:not([type=checkbox]):not([type=radio]):not([type=file]){-webkit-appearance:none;appearance:none;height:48px;line-height:1.2}
