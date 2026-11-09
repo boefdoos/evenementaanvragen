@@ -741,7 +741,7 @@ function pasVerplichtToe() {
     s.required = v; s.options[0].textContent = v ? "Kies…" : "Weet ik nog niet";
     sterretje(intakeForm.querySelector('label[for="' + k + '"]'), v);
   });
-  ["opbouw", "afbraak", "doelgroep", "bezoekers_totaal"].forEach(k => {
+  ["startuur", "einduur", "opbouw", "afbraak", "doelgroep", "bezoekers_totaal"].forEach(k => {
     const el = document.getElementById(k), v = lijst.has(k);
     el.required = v;
     sterretje(intakeForm.querySelector('label[for="' + k + '"]'), v);
