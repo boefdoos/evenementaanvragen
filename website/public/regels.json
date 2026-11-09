@@ -5673,18 +5673,52 @@
  },
  {
   "gemeente": "Wingene",
-  "status": "onbekend",
-  "base": null,
-  "extra": [],
-  "note": "",
+  "status": "ok",
+  "base": {
+   "*": [
+    1,
+    "m"
+   ],
+   "wielerwedstrijd": [
+    14,
+    "w"
+   ]
+  },
+  "extra": [
+   {
+    "minVisitors": 251,
+    "n": 2,
+    "unit": "m"
+   },
+   {
+    "minVisitors": 1000,
+    "n": 4,
+    "unit": "m"
+   },
+   {
+    "groot": true,
+    "n": 4,
+    "unit": "m"
+   }
+  ],
+  "note": "Aanvraag verplicht bij: publiek toegankelijk evenement vanaf 100 deelnemers (behalve in een daarvoor bestemde binnenruimte), gebruik van openbaar domein (ook privé/op uitnodiging), of als een vergunning nodig is (geluidsafwijking, sterke drank). Te laat: aanvraag invullen op de eerst mogelijke datum die het formulier voorstelt en de juiste datum bij opmerkingen noteren. Toelating: burgemeester (wielerwedstrijden) of college (andere). Contactpunt 1750 verwees per mail (9/11/2026) naar deze pagina en het evenementenkader.",
   "platform": "Eaglebe",
   "kanaal": "Eaglebe",
   "link": "https://app.eaglebe.com/nl-be/new/event?client=86f4f9e4d9d758d9d8efd74be1693342",
-  "contact": "Contactpunt Gemeente Wingene – 1750@wingene.be – 1750",
-  "bron": "https://www.wingene.be/digitaal-evenementenloket",
-  "termijnTekst": "Niet vermeld",
-  "bijzonder": [],
-  "college": null,
+  "contact": "Vrijetijdspunt – vrijetijdspunt@wingene.be – 051 65 04 40; contactpunt 1750@wingene.be – 1750",
+  "bron": [
+   "https://www.wingene.be/vraag-hier-jouw-evenement-aan",
+   "https://www.wingene.be/digitaal-evenementenloket",
+   "Mail contactpunt 1750 Wingene, 9/11/2026"
+  ],
+  "termijnTekst": "Klein evenement (publiek, max. 250 bezoekers; privé max. 100): ten laatste 1 maand vooraf. Tussen klein en groot: ten laatste 2 maanden vooraf. Groot evenement (meer dan 2.000 bezoekers per dag gespreid of 1.000 tegelijk op piekmomenten): ten laatste 4 maanden vooraf. Wielerwedstrijd: 14 weken. Doortochten en speelstraten via een apart e-loket. Feestmateriaal: uiterlijk 2 weken vooraf.",
+  "bijzonder": [
+   {
+    "soort": "voorwaarde",
+    "wat": "Doortocht of speelstraat: aparte aanvraag via het e-loket op de gemeentesite, niet via het evenementenloket"
+   }
+  ],
+  "college": "College van burgemeester en schepenen (wielerwedstrijden: burgemeester)",
   "uitleen": {
    "uitleendienst": "ja",
    "link": "https://www.wingene.be/reserveren",
@@ -5742,15 +5776,16 @@
     "voorwaarden": {
      "op_uitnodiging": true,
      "openbaar_domein": "nee",
-     "andere": "geen vergunning nodig, bijvoorbeeld voor muziek of drank"
+     "andere": "geen vergunning nodig (geen afwijking van de standaard geluidsnorm, geen sterke drank)"
     },
-    "nog_wel": null,
-    "citaat": "\"Voldoet jouw evenement aan één of meerdere van onderstaande voorwaarden? Dan is een aanvraag verplicht.\" ... \"Je organiseert een evenement waarbij je (een deel van) het openbaar domein gebruikt (zowel publiek als privé/op uitnodiging)\" ... \"Je hoeft niet voor elk evenement een aanvraag te doen.\"",
+    "nog_wel": "aanvraag als je openbaar domein gebruikt of een vergunning nodig hebt (geluidsafwijking, sterke drank)",
+    "citaat": "« Voldoet jouw evenement aan één of meerdere van onderstaande voorwaarden? Dan is een aanvraag verplicht. » De voorwaarden: vrij toegankelijk voor het publiek vanaf 100 deelnemers (behalve in een daarvoor bestemde binnenruimte), gebruik van openbaar domein « (zowel publiek als privé/op uitnodiging) », of een vergunning nodig. « Je hoeft niet voor elk evenement een aanvraag te doen. »",
     "bron": "https://www.wingene.be/vraag-hier-jouw-evenement-aan",
     "afgeleid": true,
     "nagekeken": "2026-11-09"
    }
-  ]
+  ],
+  "citaat": "« Grote evenementen moeten ten laatste 4 maanden op voorhand aangevraagd worden. » / « Kleine evenementen dienen ten laatste 1 maand voor het evenement gemeld te worden. » / « Val je tussen beide categorieën, dan moet je aanvraag ten laatste 2 maanden op voorhand ingediend worden. » / « Voor wielerwedstrijden moet een termijn van 14 weken op voorhand nageleefd worden. »"
  },
  {
   "gemeente": "Zedelgem",
@@ -14701,11 +14736,16 @@
  {
   "gemeente": "Wommelgem",
   "provincie": "Antwerpen",
-  "status": "onbekend",
-  "base": null,
+  "status": "ok",
+  "base": {
+   "*": [
+    2,
+    "m"
+   ]
+  },
   "extra": [],
-  "termijnTekst": "Geen indieningstermijn voor de evenementaanvraag gevonden op de gemeentesite. Feestmateriaal: minstens 14 dagen vooraf bestellen.",
-  "note": "De productpagina 'Toestemming voor een evenement aanvragen' noemt geen termijn en geen grens klein/groot. Het e-loketformulier (evenementen, buurtfeesten, drankvergunning) laadt dynamisch en toonde geen tekst. De pdf 'Beslissingsboom evenementen' (wommelgem.be/file/download/17064/...) kon niet gelezen worden (robots-blokkade, niet omzeild): daar staan mogelijk de termijnen. Voor een termijn contact opnemen met de dienst evenementen. Toestemming van gemeente en politie nodig voor zelf georganiseerd evenement, fuif of buurtfeest; bij vuurkorven of vuurwerk advies van de brandweer; bij grote evenementen met veel bezoekers moet een veiligheidsplan mee (politie kan aanpassingen vragen). Er is ook een 'Beslissingsboom glasgebruik' (niet gelezen).",
+  "termijnTekst": "Evenementaanvraag minstens 2 maanden vooraf via het digitale loket. Buurtfeesten via een apart formulier. Feestmateriaal: minstens 14 dagen vooraf bestellen.",
+  "note": "De productpagina 'Toestemming voor een evenement aanvragen' noemt geen termijn en geen grens klein/groot. Het e-loketformulier (evenementen, buurtfeesten, drankvergunning) laadt dynamisch en toonde geen tekst. De pdf 'Beslissingsboom evenementen' (wommelgem.be/file/download/17064/...) kon niet gelezen worden (robots-blokkade, niet omzeild): daar staan mogelijk de termijnen. Toestemming van gemeente en politie nodig voor zelf georganiseerd evenement, fuif of buurtfeest; bij vuurkorven of vuurwerk advies van de brandweer; bij grote evenementen met veel bezoekers moet een veiligheidsplan mee (politie kan aanpassingen vragen). Er is ook een 'Beslissingsboom glasgebruik' (niet gelezen). | Mail dienst vrije tijd 9/11/2026: minstens twee maanden op voorhand via het digitale loket; buurtfeesten apart aanvragen omdat ze nadien een toelage kunnen aanvragen. Geen aparte termijn voor buurtfeesten genoemd.",
   "platform": "eigen e-loket (wommelgem.be digitaal loket, LCP)",
   "kanaal": "Eén online formulier via het digitaal loket (aanmelden optioneel om gegevens te bewaren), met contactgegevens organisatoren, verzekering en verloop; buurtfeesten en drankvergunning hebben aparte e-loketformulieren.",
   "link": "https://www.wommelgem.be/evenementen-aanvraagformulier",
@@ -14716,7 +14756,9 @@
    "https://www.wommelgem.be/eloket",
    "https://www.wommelgem.be/zalen-en-feestmateriaal",
    "https://www.wommelgem.be/aanbod-feestmateriaal",
-   "https://www.wommelgem.be/dienst-evenementen"
+   "https://www.wommelgem.be/dienst-evenementen",
+   "https://www.wommelgem.be/evenementen",
+   "Mail dienst vrije tijd Wommelgem, 9/11/2026"
   ],
   "bijzonder": [
    {
@@ -14747,6 +14789,16 @@
      "materiaal": true
     },
     "toelichting": "Minstens 14 dagen vooraf via het online reservatieformulier."
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Buurtfeest: apart aanvraagformulier (toelage achteraf mogelijk)",
+    "als": {
+     "types": [
+      "buurtfeest"
+     ]
+    },
+    "toelichting": "https://www.wommelgem.be/buurtfeesten-aanvraagformulier en https://www.wommelgem.be/buurtfeesten-toelage-aanvragen"
    }
   ],
   "college": null,
@@ -14806,7 +14858,8 @@
     "afgeleid": true,
     "nagekeken": "2026-11-09"
    }
-  ]
+  ],
+  "citaat": "« Je dient een evenementenaanvraag minstens twee maanden op voorhand in via het digitale loket. » (mail dienst vrije tijd 9/11/2026)"
  },
  {
   "gemeente": "Wuustwezel",
@@ -14996,11 +15049,22 @@
  {
   "gemeente": "Zandhoven",
   "provincie": "Antwerpen",
-  "status": "onbekend",
-  "base": null,
-  "extra": [],
-  "termijnTekst": "Geen algemene indieningstermijn voor evenementen gevonden. Buurtfeest: ten laatste 1 maand voor de activiteit. Materiaal: minstens één maand vooraf (evenementpagina); formulier: ten vroegste 6 maanden, ten laatste een week op voorhand. Inname openbaar domein: 8 kalenderdagen (≤5 dagen) of 14 kalenderdagen (>5 dagen) vooraf.",
-  "note": "Evenement op openbaar domein moet altijd gemeld worden; meestal toelating van het college nodig; privéactiviteit op privédomein niet. De pagina's evenement, rommelmarkt, circus en feestvuurwerk noemen geen indieningstermijn: navragen bij dienst Evenementen. Enige gevonden termijn voor een evenementtype is buurtfeest (1 maand). Parcours als gpx-bestand indienen. Herbruikbare bekers verplicht op alle evenementen. Rommelmarkt: toelating college + inplantingsplan (brandweer en politie). Professioneel vuurwerk: evenementaanvraag via platform dienst Noodplanning; feestvuurwerk particulieren via apart online formulier. Reglement inname openbaar domein (8/14 kalenderdagen) vermeldt evenementen niet expliciet; parkeerverbod (verkeersverbod plaatsen €50) via Eaglebe. Eaglebe-link op de site is de algemene startpagina (account nodig); de speelstraat/IoD-link toont client-id 346e4e540ef6aa3a9e8f62316d677c29. Niet gevonden: drank/sterke drank, geluid, Sabam.",
+  "status": "ok",
+  "base": {
+   "*": [
+    3,
+    "w"
+   ]
+  },
+  "extra": [
+   {
+    "n": 10,
+    "unit": "w",
+    "groot": true
+   }
+  ],
+  "termijnTekst": "Klein evenement (bv. fuif tot 500 bezoekers): minstens 3 weken vooraf. Grote evenementen: minstens 10 weken vooraf (geen drempel genoemd). Wielerwedstrijden: volgens KB 28/06/2019. Buurtfeest: ten laatste 1 maand vooraf. Materiaal: minstens één maand vooraf. Inname openbaar domein: 8 of 14 kalenderdagen vooraf.",
+  "note": "Evenement op openbaar domein moet altijd gemeld worden; meestal toelating van het college nodig; privéactiviteit op privédomein niet. Enige gevonden termijn voor een evenementtype is buurtfeest (1 maand). Parcours als gpx-bestand indienen. Herbruikbare bekers verplicht op alle evenementen. Rommelmarkt: toelating college + inplantingsplan (brandweer en politie). Professioneel vuurwerk: evenementaanvraag via platform dienst Noodplanning; feestvuurwerk particulieren via apart online formulier. Reglement inname openbaar domein (8/14 kalenderdagen) vermeldt evenementen niet expliciet; parkeerverbod (verkeersverbod plaatsen €50) via Eaglebe. Eaglebe-link op de site is de algemene startpagina (account nodig); de speelstraat/IoD-link toont client-id 346e4e540ef6aa3a9e8f62316d677c29. Niet gevonden: drank/sterke drank, geluid, Sabam. | Mail dienst evenementen 9/11/2026: klein 3 w, groot 10 w, wielerwedstrijden volgens KB 28/06/2019; enkel het KB is wettelijk verplicht, de andere termijnen zijn vastgelegd door het college en de veiligheidsdiensten. Termijnen staan op de evenementpagina (als afbeelding).",
   "platform": "Eaglebe",
   "kanaal": "Digitaal evenementenformulier op het Eagle-platform (account aanmaken bij eerste aanvraag, later eerdere aanvraag kopiëren); dossier gaat naar de juiste dienst en is online op te volgen.",
   "link": "https://app.eaglebe.com/auth/start",
@@ -15016,7 +15080,8 @@
    "https://www.zandhoven.be/mobiliteit/vergunning-inname-openbaar-domein/",
    "https://www.zandhoven.be/wp-content/uploads/2025/12/Reglement-Reglement-inzake-de-inname-van-het-openbaar-dom.pdf",
    "https://www.zandhoven.be/vrije-tijd/uitleendienst/",
-   "https://www.zandhoven.be/formulieren/aanvraagformulier-ontlenen-huren-of-kopen-van-materiaal/"
+   "https://www.zandhoven.be/formulieren/aanvraagformulier-ontlenen-huren-of-kopen-van-materiaal/",
+   "Mail dienst evenementen Zandhoven, 9/11/2026"
   ],
   "bijzonder": [
    {
@@ -15078,6 +15143,15 @@
     "als": {
      "types": [
       "markt"
+     ]
+    }
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Wielerwedstrijd: termijnen volgens KB 28/06/2019 (wielerwedstrijden en alle-terreinwedstrijden)",
+    "als": {
+     "types": [
+      "wielerwedstrijd"
      ]
     }
    }
@@ -15153,7 +15227,8 @@
     "afgeleid": false,
     "nagekeken": "2026-11-02"
    }
-  ]
+  ],
+  "citaat": "« Minstens 3 weken » (klein evenement) en « Voor grote evenementen minstens 10 weken » (mail dienst evenementen 9/11/2026)"
  },
  {
   "gemeente": "Zoersel",
@@ -20041,7 +20116,7 @@
    }
   ],
   "termijnTekst": "Richttermijnen van de gemeente (mail 3/11/2026, voorlopig tot de nieuwe regels en het nieuwe loket, verwacht januari 2027): met versterkte muziek minstens 2 maanden vooraf, met versterkte muziek en meer dan 1.000 bezoekers minstens 3 maanden; kleinere activiteiten zonder versterkte muziek doorgaans 3 weken. We rekenen standaard met 2 maanden, omdat we vooraf niet weten of er versterkte muziek is.",
-  "note": "Bevestigd per mail door de deskundige cultuur en evenementen (3/11/2026): geen formele termijnen in een reglement; de richttermijnen zijn gebaseerd op adviezen van politie en brandweer. Nieuw digitaal evenementenloket en herwerkte reglementen verwacht rond januari 2027: dan opnieuw nakijken. Aanvraagformulier feestloket dekt melding evenement, aanvraag vergunningen (o.a. nachtvergunning), uitleenmaterialen en subsidie buurtfeest; enkel stap 1 van 7 zichtbaar, geen termijn vermeld. Sluitingsuur 1 u, met nachtvergunning van de burgemeester tot 3 u. Schepencollege bepaalt of een evenement risicovol is (dan bewaking verplicht, eventueel professionele securityfirma). Sterke drank: vergunning nodig. Geen eenmalige drankrecipiënten sinds 1-1-2025 (90% inzameling herbruikbare bekers). Reglement buurtactiviteiten en wijkfeesten (pdf) niet gelezen.",
+  "note": "Bevestigd per mail door de deskundige cultuur en evenementen (3/11/2026): geen formele termijnen in een reglement; de richttermijnen zijn gebaseerd op adviezen van politie en brandweer. Nieuw digitaal evenementenloket en herwerkte reglementen verwacht rond januari 2027: dan opnieuw nakijken. Aanvraagformulier feestloket dekt melding evenement, aanvraag vergunningen (o.a. nachtvergunning), uitleenmaterialen en subsidie buurtfeest; enkel stap 1 van 7 zichtbaar, geen termijn vermeld. Sluitingsuur 1 u, met nachtvergunning van de burgemeester tot 3 u. Schepencollege bepaalt of een evenement risicovol is (dan bewaking verplicht, eventueel professionele securityfirma). Sterke drank: vergunning nodig. Geen eenmalige drankrecipiënten sinds 1-1-2025 (90% inzameling herbruikbare bekers). Reglement buurtactiviteiten en wijkfeesten (pdf) niet gelezen. | Mail cultuurbeleidscoördinator 9/11/2026: het reglement wordt herschreven en er komt een ander programma voor het feestloket (geen nieuwe termijn of datum genoemd).",
   "platform": "eigen e-loket (webformulier feestloket op zutendaal.be)",
   "kanaal": "Digitaal aanvraagformulier van het Feestloket op zutendaal.be (melding, vergunningen, materiaal, buurtfeestsubsidie).",
   "link": "https://www.zutendaal.be/form/aanvraagformulier-feestloket",
@@ -20055,7 +20130,8 @@
    "https://www.zutendaal.be/vrije-tijd/evenementen-organiseren/sluitingsuur",
    "https://www.zutendaal.be/subsidie-buurtfeesten",
    "https://www.zutendaal.be/vrije-tijd/evenementen/materialen-uitlenen",
-   "https://www.zutendaal.be/sites/default/files/2025-05/reglement-uitleenmaterialen-2025-GR-22-mei-2025.pdf"
+   "https://www.zutendaal.be/sites/default/files/2025-05/reglement-uitleenmaterialen-2025-GR-22-mei-2025.pdf",
+   "Mail cultuurbeleidscoördinator Zutendaal, 9/11/2026"
   ],
   "bijzonder": [
    {
