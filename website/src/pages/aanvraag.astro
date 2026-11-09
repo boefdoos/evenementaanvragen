@@ -723,6 +723,9 @@ function extraAntwoorden() {
 function pasVerplichtToe() {
   toonExtraVragen();
   const r = regelVan(), lijst = new Set((r && r.intake_verplicht) || []);
+  // Eaglebe: de stap Periode vraagt altijd start opbouw, start en einde evenement en einde afbraak, met uur
+  // (zelfde blok in Oostende, Middelkerke, Sint-Niklaas, Knokke-Heist, Torhout, Geel en Bilzen-Hoeselt; browsertests 9/11/2026).
+  if (r && /eaglebe/i.test(r.platform || "")) ["startuur", "einduur", "opbouw", "afbraak"].forEach(k => lijst.add(k));
   const vastMuziek = MET_MUZIEK.includes(veld("type"));
   [...EXTRAS, ...PRAKTISCH, ["op_uitnodiging", "Enkel op uitnodiging?"]].forEach(([k, q]) => {
     const eerste = document.getElementById(k + "_0"), wn = document.getElementById(k + "_2");
