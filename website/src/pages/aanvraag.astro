@@ -742,7 +742,7 @@ function toonVrijstelling() {
   if (!lijst.length && r && !Array.isArray(r.vrijstelling) && gekozen("op_uitnodiging") === "ja" && veld("openbaar_domein") === "nee"
       && veld("locatie_soort") === "zaal" && gekozen("verkeer") !== "ja") {
     box.innerHTML = '<div class="t-kop">Misschien heb je geen aanvraag nodig</div>' +
-      '<p>Voor een besloten feest binnen, op uitnodiging, is meestal geen aanvraag bij de gemeente nodig. De regels van ' + esc(r.gemeente) + ' hebben we daarvoor nog niet nagekeken. Huur je een zaal van de gemeente, of verkoop je sterke drank, dan kan de gemeente wel iets vragen.</p>' +
+      '<p>Voor een besloten feest binnen, op uitnodiging, is meestal geen aanvraag bij de gemeente nodig. Wat ' + esc(r.gemeente) + ' hierover precies zegt, hebben we niet nagekeken. Huur je een zaal van de gemeente, of verkoop je sterke drank, dan kan de gemeente wel iets vragen.</p>' +
       '<p>Twijfel je, of wil je toch zekerheid? Ga gewoon verder.</p>';
     box.hidden = false; return;
   }

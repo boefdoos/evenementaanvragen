@@ -70,7 +70,8 @@
    "zekerheid": "hoog",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Anzegem",
@@ -160,7 +161,8 @@
     "zekerheid": "hoog"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Ardooie",
@@ -233,7 +235,22 @@
    "zekerheid": "middel",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement op persoonlijke uitnodiging",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "de organisator heeft een namenlijst van de genodigden"
+    },
+    "nog_wel": "muziek die op straat hoorbaar is, vraagt een toelating van de burgemeester",
+    "citaat": "\"Een evenement is niet voor het publiek toegankelijk als er op het evenement enkel personen worden toegelaten die een persoonlijke uitnodiging hebben ontvangen en waarvan de organisator een namenlijst heeft.\" (art. 2.2.1.0.2)",
+    "bron": "https://ardooie.be/systems/file_download.ashx?pg=3208&ver=3",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Avelgem",
@@ -317,7 +334,22 @@
     "zekerheid": "middel"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest, zoals een tuin-, communie- of familiefeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "geen geluidsafwijking of sterke drank nodig"
+    },
+    "nog_wel": null,
+    "citaat": "Uitzonderingen zijn privé-feesten zoals een tuinfeest, een communiefeest of familiefeest. Deze worden niet als een evenement beschouwd en moeten niet aangevraagd worden.",
+    "bron": "https://www.avelgem.be/evenement-organiseren-in-avelgem",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Beernem",
@@ -389,7 +421,8 @@
    "zekerheid": "middel",
    "route": "A"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Blankenberge",
@@ -566,7 +599,8 @@
    "zekerheid": "middel",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Brugge",
@@ -776,7 +810,21 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privaat evenement op uitnodiging, binnen of op private grond",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "een gewijzigde verkeerssituatie vraagt wel een toelating van het college",
+    "citaat": "Volgende evenementen vereisen geen toelating van/melding aan de burgemeester: [...] alle private evenementen in openlucht op private ruimte; alle private evenementen in een binnenruimte.",
+    "bron": "https://www.damme.be/product/1416/evenementenkader",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "De Haan",
@@ -848,7 +896,23 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op uitnodiging, op privédomein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_db": 85,
+     "andere": "muziek niet hoorbaar op straat en geen geluidshinder na 22 uur"
+    },
+    "nog_wel": null,
+    "citaat": "Je moet geen aanvraag indienen bij de gemeente voor privéfeestjes. [...] Je moet wel een aanvraag indienen voor privéfeestjes als [...] op openbaar domein of op de openbare weg [...] 85 dB(A)",
+    "bron": "https://www.dehaan.be/een-evenement-of-activiteit-organiseren",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "De Panne",
@@ -929,7 +993,22 @@
    "zekerheid": "hoog",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privaat evenement op uitnodiging op naam",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "geen uitnodiging via de media of sociale media"
+    },
+    "nog_wel": null,
+    "citaat": "Alle organisatoren van voor het publiek toegankelijke feestelijkheden en evenementen, zelfs op en/of in private eigendommen, dienen een aanvraag te doen via het Eaglebe evenementenloket. | Privaat evenement: Een evenement waarvoor je op naam wordt uitgenodigd, of waarvoor de genodigden worden gekozen, omdat er 'n specifieke band bestaat tussen de gastheer en de genodigden.",
+    "bron": "https://visit.depanne.be/nl/algemene-voorwaarden-voor-evenementen",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Deerlijk",
@@ -1015,7 +1094,24 @@
    "zekerheid": "hoog",
    "route": "C"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een feest op privaat domein dat niet voor iedereen toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_versterkte_muziek": true,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen mogelijke lawaaihinder voor de buren"
+    },
+    "nog_wel": null,
+    "citaat": "Toelating nodig voor: \"Evenementen die (binnen of in de openlucht) op privaat domein worden georganiseerd, maar waar iedereen welkom is\" (al dan niet tegen betaling van inkomprijs); ook \"Evenementen waarbij mogelijk lawaaihinder zal veroorzaakt worden\".",
+    "bron": "https://www.deerlijk.be/uitindeerlijk/evenementenloket",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Dentergem",
@@ -1130,7 +1226,22 @@
    "zekerheid": "middel",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een activiteit die niet publiek is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "niet in een zaal van de gemeente"
+    },
+    "nog_wel": null,
+    "citaat": "Je hebt toestemming nodig als je evenement aan één van onderstaande voorwaarden voldoet: een publieke activiteit (gedeeltelijk) op openbaar domein; een publieke activiteit op privaat domein; alle activiteiten die plaatsvinden in de gemeentelijke zalen",
+    "bron": "https://www.dentergem.be/je-evenement-melden",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Diksmuide",
@@ -1216,7 +1327,8 @@
    "zekerheid": "hoog",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Gistel",
@@ -1339,7 +1451,22 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een feest op privaat domein zonder openbaar karakter",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "niet in een zaal van de stad of het OCMW"
+    },
+    "nog_wel": null,
+    "citaat": "Evenement: Een feest, concert, optreden, manifestatie, activiteit [...] zowel op openbaar als op privaat domein met openbaar karakter [...] Evenementen in voor publiek toegankelijke locaties [...] dienen [...] gemeld te worden",
+    "bron": "https://www.gistel.be/evenement-organiseren",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Harelbeke",
@@ -1445,7 +1572,8 @@
    "zekerheid": "hoog",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Heuvelland",
@@ -1527,7 +1655,22 @@
    "zekerheid": "hoog",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest dat niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen bijkomende vergunning nodig, zoals voor openbare parkeerplaatsen"
+    },
+    "nog_wel": null,
+    "citaat": "Hiervoor is er geen goedkeuring nodig, tenzij je bijkomende vergunningen nodig hebt",
+    "bron": "https://www.heuvelland.be/vrije-tijd/zelf-een-evenement-organiseren/aanvraag-evenement",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Hooglede",
@@ -1603,7 +1746,8 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Houthulst",
@@ -1670,7 +1814,8 @@
     "zekerheid": "middel"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Ichtegem",
@@ -1754,7 +1899,21 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een activiteit op privaat domein die niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": null,
+    "citaat": "Melden moet: \"Iedereen die een evenement wil organiseren op het openbaar domein (ongeacht het aantal deelnemers)\" en wie een \"publiek toegankelijke activiteit voor meer dan 100 personen\" organiseert in een gemeentelijk gebouw of op privaat domein.",
+    "bron": "https://www.ichtegem.be/evenement-organiseren",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Ieper",
@@ -1840,7 +1999,22 @@
    "route": "B",
    "koppeling": "bij_evenementaanvraag"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een feest op privéterrein dat niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "geen vergunning nodig, zoals een geluidsafwijking of sterke drank"
+    },
+    "nog_wel": null,
+    "citaat": "Plaatsvindt op het openbaar domein / Plaatsvindt op privéterrein en publiek toegankelijk is voor minstens 100 personen / Vergunningen vereist (geluidsafwijking, schenken van sterke dranken, …) ... dan ben je verplicht toestemming te vragen bij de stad via het digitaal evenementenloket EagleBe.",
+    "bron": "https://www.ieper.be/evenementenloket",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Ingelmunster",
@@ -1952,7 +2126,21 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een activiteit die niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "een straat- of buurtfeest waarvoor je subsidie wil, vraag je wel aan",
+    "citaat": "Je hebt toestemming nodig als je evenement aan één van onderstaande voorwaarden voldoet: een publieke activiteit (gedeeltelijk) op openbaar domein. een publieke activiteit op privaat domein [...]",
+    "bron": "https://www.ingelmunster.be/loketvrijetijd/evenementen-en-activiteiten-aanvragen",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Izegem",
@@ -2052,7 +2240,24 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een evenement dat niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_versterkte_muziek": true,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen andere vergunning nodig en geen overnachting van meer dan 10 personen"
+    },
+    "nog_wel": null,
+    "citaat": "Een publiek evenement met meer dan 100 bezoekers.",
+    "bron": "https://www.izegem.be/evenementen",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Jabbeke",
@@ -2335,7 +2540,23 @@
    "zekerheid": "laag",
    "route": "E"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement met minder dan 100 aanwezigen",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 99,
+     "geen_verkeersmaatregelen": true
+    },
+    "nog_wel": null,
+    "citaat": "Wanneer dien ik mijn evenement te melden via dit meldingsformulier? [...] elk evenement dat vrij toegankelijk is voor het publiek; elk privé-evenement vanaf 100 personen",
+    "bron": "https://www.koekelare.be/een-evenement-melden",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Koksijde",
@@ -2427,7 +2648,22 @@
    "route": "B",
    "volgorde": "na_goedkeuring_bij_od"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest, zoals een babyborrel, communiefeest of pensioenviering",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "geen specifieke vergunning nodig, zoals een milieuvergunning voor muziek of een parkeerverbod"
+    },
+    "nog_wel": null,
+    "citaat": "3. Alle niet publiek toegankelijke (= privé of enkel voor eigen leden) evenementen die plaatsvinden ofwel in openbare infrastructuur ofwel op privaat domein, waarbij een specifieke vergunning vereist is, zoals bijvoorbeeld een milieuvergunning voor muziek of een parkeerverbod. Bijvoorbeeld WEL: straatfeest Bijvoorbeeld NIET: babyborrel, communiefeest, pensioenviering",
+    "bron": "https://www.koksijde.be/nl/menu/vrije-tijd/zelf-organiseren/zelf-een-evenement-organiseren",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Kortemark",
@@ -2504,7 +2740,23 @@
     "zekerheid": "middel"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een activiteit die niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen alcohol schenken en geen andere vergunning nodig"
+    },
+    "nog_wel": "alcohol schenken meld je altijd via Eaglebe, ook op privédomein",
+    "citaat": "Melden: \"Iedereen die een evenement organiseert op het openbaar domein (ongeacht het aantal deelnemers).\" \"Iedereen die een publiek toegankelijke activiteit voor meer dan 100 personen organiseert in een gemeentelijk gebouw of op privaat terrein.\" \"Niet-publiek toegankelijke activiteiten/evenementen waar bijkomende vergunningen nodig zijn (bv. verkeersmaatregelen,…)\"",
+    "bron": "https://www.kortemark.be/evenement-organiseren",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Kortrijk",
@@ -2606,7 +2858,8 @@
    "zekerheid": "hoog",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Kuurne",
@@ -2788,7 +3041,23 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest dat niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "max_aanwezigen": 100,
+     "geen_verkeersmaatregelen": true,
+     "andere": "uitnodigingen op naam en controle aan de ingang; geen andere vergunning nodig"
+    },
+    "nog_wel": null,
+    "citaat": "1. Niet-publiek toegankelijke activiteiten/evenementen. Denk hierbij aan private feesten en reguliere activiteiten in club-/verenigingsverband. Er is geen goedkeuring nodig voor deze activiteiten, tenzij je bijkomende vergunningen nodig hebt (bv. verkeersmaatregelen,...).",
+    "bron": "https://www.langemark-poelkapelle.be/activiteiten-evenementen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Ledegem",
@@ -2856,7 +3125,21 @@
    "zekerheid": "middel",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een activiteit die niet publiek is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": null,
+    "citaat": "Voor alle publieke activiteiten (fuiven, optredens, buurtfeesten, sportactiviteiten, ...) moet u vooraf een aanvraag indienen bij het lokaal bestuur.",
+    "bron": "https://www.ledegem.be/ledegem/vrije-tijd/zelf-organiseren/organisatie-van-een-evenement",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Lendelede",
@@ -2936,7 +3219,22 @@
    "zekerheid": "middel",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een feest dat niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_verkeersmaatregelen": true
+    },
+    "nog_wel": null,
+    "citaat": "\"Evenementen zijn publiek toegankelijke activiteiten\", bijvoorbeeld \"een fuif, rommelmarkt, sporttornooi, wielerwedstrijd, muziekoptreden, activiteit met impact op verkeer\".",
+    "bron": "https://www.lendelede.be/evenement-aanvragen",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Lichtervelde",
@@ -3032,7 +3330,21 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een besloten privéfeest zonder openbaar karakter",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": null,
+    "citaat": "Voor het organiseren van een evenement met een openbaar karakter heb je een toelating nodig. Dit kan bijvoorbeeld gaan over een burenfeest, een voor het publiek toegankelijke party",
+    "bron": "https://www.lichtervelde.be/evenement-organiseren",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Lo-Reninge",
@@ -3099,7 +3411,22 @@
    "zekerheid": "laag",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een activiteit op privéterrein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "geen specifieke vergunning nodig, zoals een geluidsafwijking of vuurwerk"
+    },
+    "nog_wel": null,
+    "citaat": "een activiteit die plaatsvindt op het openbaar domein; een activiteit die plaatsvindt op privéterrein met een gedeeltelijke inname van het openbaar domein; een activiteit waarvoor specifieke vergunningen vereist zijn",
+    "bron": "https://www.lo-reninge.be/evenementenloket",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Menen",
@@ -3222,7 +3549,21 @@
    "zekerheid": "middel",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een activiteit die niet publiek is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": null,
+    "citaat": "Vul het aanvraagformulier in voor alle publieke activiteiten (fuiven, optredens, buurtfeesten, eetfestijnen, wielerwedstrijden, sportactiviteiten, ...). Doe dit 8 weken op voorhand.",
+    "bron": "https://www.menen.be/ik-organiseer",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Mesen",
@@ -3279,7 +3620,21 @@
    "zekerheid": "laag",
    "route": "E"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een besloten feest op privéterrein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "de stad zegt zelf: twijfel je, vraag het dan toch aan",
+    "citaat": "\"Organiseer je een evenement dat plaatsvindt op het openbaar domein? Of plan je een publieke activiteit op privé-terrein die voor iedereen toegankelijk is? Vraag tijdig toelating aan de Stad!\"",
+    "bron": "https://www.mesen.be/organiseren-evenementen-aanvragen-organisation-demande-devenements",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Middelkerke",
@@ -3397,7 +3752,23 @@
    "route": "C",
    "koppeling": "bij_evenementaanvraag"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een feest op privéterrein dat niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_versterkte_muziek": true,
+     "andere": "geen fuif, niet in een zaal van de gemeente of het OCMW, geen specifieke vergunning nodig"
+    },
+    "nog_wel": "een fuif meld je in Middelkerke altijd, ook onder 100 aanwezigen",
+    "citaat": "of plaatsvindt op privéterrein en publiek toegankelijk is (zowel in openlucht als in besloten plaatsen) en waar meer dan 100 personen verwacht worden",
+    "bron": "https://www.middelkerke.be/nl/vrije-tijd/organiseer-een-evenement/zelf-een-evenement-organiseren",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Moorslede",
@@ -3476,7 +3847,23 @@
    "zekerheid": "middel",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op uitnodiging",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_db": 85,
+     "geen_verkeersmaatregelen": true
+    },
+    "nog_wel": "voor een privéfeest geeft de gemeente geen geluidsafwijking en geen inname van openbaar domein",
+    "citaat": "Een publiek* evenement dat geheel (of gedeeltelijk) plaatsvindt op openbaar domein; Een publiek* evenement dat afwijkt van de geluidsnormen (vanaf 85 dB) [...] *Er wordt geen geluidsafwijking of inname openbaar domein toegestaan voor privéfeesten.",
+    "bron": "https://www.moorslede.be/aanvraagformulier-evenement",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Nieuwpoort",
@@ -3557,7 +3944,22 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privaat evenement op privéterrein of in een privégebouw",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "geen vergunning nodig"
+    },
+    "nog_wel": "in een zaal van de stad kan de zaalbeheerder toch een aanvraag vragen",
+    "citaat": "een publiek evenement op privéterrein of in een privégebouw vanaf 100 personen; een publiek evenement of privaat evenement deels of geheel op het openbaar domein; evenementen waarvoor een vergunning nodig is;",
+    "bron": "https://www.nieuwpoort.be/evenementenloket",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Oostende",
@@ -3694,6 +4096,23 @@
      "fuif"
     ]
    }
+  ],
+  "vrijstelling": [
+   {
+    "wat": "een feest op privaat domein dat niet openbaar is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_versterkte_muziek": true,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen fuif en geen mogelijke lawaaihinder"
+    },
+    "nog_wel": "een fuif vraag je in Oostende altijd aan; bij twijfel neem je contact op met de dienst Evenementen",
+    "citaat": "\"In de volgende gevallen moet een organisator bij de Stad een aanvraag indienen:\" o.a. \"evenementen of attracties op openbaar domein\", \"openbare evenementen op privaat domein (meer dan 200 personen)\", \"evenementen die mogelijk lawaaihinder veroorzaken\", \"fuiven\".",
+    "bron": "https://www.oostende.be/wanneer-is-een-toelating-noodzakelijk",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
   ]
  },
  {
@@ -3803,7 +4222,21 @@
    "zekerheid": "middel",
    "route": "A"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op privédomein, zoals een huwelijks-, doop- of verjaardagsfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "het algemeen politiereglement blijft gelden",
+    "citaat": "Private aangelegenheden op privédomein (bijvoorbeeld huwelijksfeest, doopfeest, verjaardagsfeest ... ) ... Opgelet! Bij deze activiteiten en evenementen blijft het Algemeen Politiereglement wel steeds van toepassing.",
+    "bron": "https://www.oostkamp.be/evenement-of-activiteit-aanvragen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Oostrozebeke",
@@ -3886,7 +4319,23 @@
    "zekerheid": "middel",
    "route": "C"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op uitnodiging",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen vergunning nodig, zoals een geluidsafwijking, sterke drank of een later sluitingsuur"
+    },
+    "nog_wel": null,
+    "citaat": "Voldoet jouw evenement aan één of meerdere van onderstaande voorwaarden? Dan is een aanvraag in verplicht. [...] vrij toegankelijk is voor het publiek vanaf 100 deelnemers/bezoekers [...] (zowel publiek als privé/op uitnodiging)",
+    "bron": "https://www.oostrozebeke.be/evenementen",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Oudenburg",
@@ -3945,7 +4394,22 @@
    "zekerheid": "middel",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een evenement op privédomein zonder impact op het openbaar domein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_verkeersmaatregelen": true
+    },
+    "nog_wel": null,
+    "citaat": "Als je een evenement wil organiseren op het openbaar domein of op privédomein met impact op het openbaar domein (bv. parkeerverbod) moet je toestemming krijgen van de stad.",
+    "bron": "https://www.oudenburg.be/organisatie-evenementen",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Pittem",
@@ -4021,7 +4485,21 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een besloten feest zonder openbaar karakter",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": null,
+    "citaat": "\"Voor het organiseren van een evenement met een openbaar karakter dien je dit te melden aan het College van Burgemeester en Schepenen.\" Bv. \"een voor het publiek toegankelijke fuif\", \"een publiek optreden\".",
+    "bron": "https://www.pittem.be/nl/vrije-tijd/activiteit-organiseren/evenement-melden",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Poperinge",
@@ -4084,7 +4562,23 @@
    "zekerheid": "middel",
    "route": "C"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een feest op privéterrein dat niet openbaar is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_verkeersmaatregelen": true,
+     "andere": "uitnodigingen op naam, niet publiek verspreid, met controle aan de ingang; geen geluidsafwijking of sterke drank"
+    },
+    "nog_wel": null,
+    "citaat": "Het doorgaat op privéterrein én publiek toegankelijk is voor minstens 100 personen ... Een bijeenkomst is openbaar wanneer in principe iedereen kan deelnemen. ... Er gewerkt wordt met algemene uitnodigingen zonder persoonlijke naam;",
+    "bron": "https://www.poperinge.be/toelating-organiseren-evenement",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Roeselare",
@@ -4175,7 +4669,25 @@
    "zekerheid": "laag",
    "route": "E"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privé-initiatief tot 500 aanwezigen",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 500,
+     "geen_versterkte_muziek": true,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen overnachting van meer dan 10 personen en geen andere vergunning of toelating nodig"
+    },
+    "nog_wel": null,
+    "citaat": "Een publiek evenement met meer dan 100 aanwezigen tegelijk. Een privé-initiatief met meer dan 500 aanwezigen tegelijk. [...] Elke activiteit waarvan je denkt dat je een vergunning of toelating nodig hebt.",
+    "bron": "https://roeselare.be/nl/vrije-tijd/activiteit-evenement-organiseren/toelating-voor-een-evenement",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Spiere-Helkijn",
@@ -4235,7 +4747,8 @@
    "zekerheid": "laag",
    "route": "E"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Staden",
@@ -4516,7 +5029,8 @@
    "zekerheid": "middel",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Veurne",
@@ -4599,7 +5113,34 @@
     "zekerheid": "middel"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "met verhoogd geluidsniveau in een ontmoetingscentrum of andere openbare zaal vraag je dat apart aan, minstens twee weken vooraf",
+    "citaat": "Dit is de enige manier om activiteiten met een impact op het openbaar domein te organiseren. Voor een privé-feest moet je deze vergunning niet aanvragen.",
+    "bron": "https://www.veurne.be/nl/toelating-vragen-voor-een-evenement",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   },
+   {
+    "wat": "een privéfeest in je eigen woning of tuin",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "in je eigen woning of tuin"
+    },
+    "nog_wel": null,
+    "citaat": "Voor een privé-evenement in je eigen woning of tuin, moet je niets aanvragen.",
+    "bron": "https://www.veurne.be/nl/vrije-tijd/evenement-organiseren/geluid-toestemming-voor-prive-organisator-voor-verhoogd-geluidsniveau-aanvragen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Vleteren",
@@ -4759,7 +5300,22 @@
    "zekerheid": "hoog",
    "route": "A"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privé-activiteit",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_versterkte_muziek": true
+    },
+    "nog_wel": "voor een privé-activiteit geeft de stad geen muziekvergunning, dus de gewone geluidsnormen blijven gelden",
+    "citaat": "\"Organisatoren van privé-activiteiten moeten geen activiteitenfiche invullen en kunnen geen muziekvergunning aanvragen.\" \"Toch moeten ook privé-activiteiten zich houden aan bepaalde beperkingen.\"",
+    "bron": "https://www.waregem.be/duurzaam-feesten-geluid",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Wervik",
@@ -4842,7 +5398,8 @@
     "zekerheid": "middel"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": []
  },
  {
   "gemeente": "Wevelgem",
@@ -4937,7 +5494,22 @@
    "route": "C",
    "volgorde": "na_indiening"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest of privéfuif op uitnodiging",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "met een gastenlijst en zonder publieke promotie, ook niet op sociale media"
+    },
+    "nog_wel": "ook voor een private fuif blijven Sabam en de billijke vergoeding verplicht",
+    "citaat": "Enkel toegankelijk voor mensen met een uitnodiging (al dan niet betalend). [...] De meeste wettelijke bepalingen zijn hiervoor niet van toepassing. [...] Ook voor een private fuif is het aanvragen van Sabam en Billijke vergoeding verplicht!",
+    "bron": "https://www.wevelgem.be/publiek-prive",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Wielsbeke",
@@ -5032,7 +5604,39 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een feest van een privépersoon op eigen terrein, met persoonlijke uitnodiging",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_aanwezigen": 99,
+     "max_db": 85,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen sterke drank"
+    },
+    "nog_wel": null,
+    "citaat": "Alle evenementen, activiteiten die georganiseerd worden door een privépersoon en doorgaan op eigen privé-domein met persoonlijke uitnodiging.",
+    "bron": "https://www.wielsbeke.be/evenementen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   },
+   {
+    "wat": "een verjaardags- of familiefeest in een daarvoor voorziene zaal van de gemeente",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "enkel_binnen": true,
+     "andere": "geen specifieke vergunning nodig"
+    },
+    "nog_wel": null,
+    "citaat": "Alle evenementen, activiteiten die doorgaan in de daarvoor voorziene gemeentelijke accommodaties (bv. ... babyborrels, verjaardags- en familiefeesten, sportwedstrijden, ...) behalve wanneer er specifieke vergunningen nodig zijn.",
+    "bron": "https://www.wielsbeke.be/evenementen",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Wingene",
@@ -5098,7 +5702,22 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op uitnodiging",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "geen vergunning nodig, bijvoorbeeld voor muziek of drank"
+    },
+    "nog_wel": null,
+    "citaat": "\"Voldoet jouw evenement aan één of meerdere van onderstaande voorwaarden? Dan is een aanvraag verplicht.\" ... \"Je organiseert een evenement waarbij je (een deel van) het openbaar domein gebruikt (zowel publiek als privé/op uitnodiging)\" ... \"Je hoeft niet voor elk evenement een aanvraag te doen.\"",
+    "bron": "https://www.wingene.be/vraag-hier-jouw-evenement-aan",
+    "afgeleid": true,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Zedelgem",
@@ -5211,7 +5830,21 @@
     "zekerheid": "middel"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privaat evenement",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": null,
+    "citaat": "Alle openbare evenementen waarbij je openbare ruimte inneemt en/of elektronisch versterkte muziek speelt en/of dat bepaalde risico's inhoudt moeten aangevraagd worden. Private evenementen moeten dus niet aangevraagd worden.",
+    "bron": "https://www.zedelgem.be/evenement-aanvragen-voorwaarden-en-tips",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Zonnebeke",
@@ -5318,7 +5951,23 @@
     "zekerheid": "middel"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest dat niet publiek toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen openbare parkeerplaatsen voorbehouden en geen andere vergunning nodig"
+    },
+    "nog_wel": "de gemeente schrijft 'meestal'; bij twijfel neem je contact op met de dienst evenementen",
+    "citaat": "Dit zijn activiteiten of evenementen die enkel toegankelijk zijn voor een beperkte groep personen, zoals privéfeesten [...] Voor deze activiteiten heb je meestal geen goedkeuring van de gemeente nodig, tenzij:",
+    "bron": "https://www.zonnebeke.be/vrije-tijd/zelf-organiseren/aangifte-evenement/evenement/",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Zuienkerke",
@@ -5454,7 +6103,21 @@
    "zekerheid": "middel",
    "route": "C"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een besloten evenement, zoals een verjaardags- of personeelsfeest",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": null,
+    "citaat": "\"In de gemeente Zwevegem dient er voor besloten evenementen geen aanvraag ingediend te worden, m.u.v. evenementen die plaatsvinden op de openbare weg of op het openbaar domein.\"",
+    "bron": "https://www.zwevegem.be/media/36344/download",
+    "afgeleid": false,
+    "nagekeken": "2026-11-09"
+   }
+  ]
  },
  {
   "gemeente": "Aartselaar",
