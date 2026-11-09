@@ -214,8 +214,8 @@ footer.foot a{color:var(--soft)}
             <option value="fuif">Fuif of party</option><option value="concert">Concert of festival</option><option value="buurtfeest">Buurtfeest of straatfeest</option><option value="eetfestijn">Eetfestijn</option><option value="markt">Markt of rommelmarkt</option><option value="braderij">Braderij</option><option value="kermis">Kermis</option><option value="stoet">Stoet of optocht (nog niet in ons aanbod)</option><option value="sport">Sportevenement</option><option value="wielerwedstrijd">Wielerwedstrijd (nog niet in ons aanbod)</option><option value="schoolfeest">Schoolfeest</option><option value="tentoonstelling">Tentoonstelling</option><option value="andere">Iets anders</option>
           </select></div>
         <div class="field"><label for="startdatum"><span id="startlabel">Datum</span> <span class="req">*</span></label><input id="startdatum" name="startdatum" type="date" required></div>
-        <label class="check" for="meerdaags"><input type="checkbox" id="meerdaags" name="meerdaags" value="ja"><span>Het evenement duurt meerdere dagen <span class="hint">(tot na middernacht doorgaan telt niet mee)</span></span></label>
-        <div class="field" id="einddatumwrap" hidden><label for="einddatum">Laatste dag <span class="req">*</span></label><input id="einddatum" name="einddatum" type="date"></div>
+        <label class="check" for="meerdaags"><input type="checkbox" id="meerdaags" name="meerdaags" value="ja"><span>Het evenement duurt meerdere dagen <span class="hint">(een feest dat na middernacht eindigt, telt als één dag)</span></span></label>
+        <div class="field" id="einddatumwrap" hidden><label for="einddatum">Laatste dag <span class="req">*</span></label><input id="einddatum" name="einddatum" type="date"><span class="hint" id="nachtnota" hidden>Loopt het feest gewoon door tot na middernacht? Dan is het één dag: vink "meerdere dagen" uit en vul het einduur in bij stap 2.</span></div>
         <div class="field"><label for="bezoekers">Aanwezigen tegelijk op het drukste moment <span class="req">*</span> <span class="hint">(publiek, medewerkers en artiesten samen)</span></label><input id="bezoekers" name="bezoekers" type="number" min="1" step="1" inputmode="numeric" required></div>
         <div class="field"><label for="locatie_soort">Waar vindt het plaats? <span class="req">*</span></label>
           <select id="locatie_soort" name="locatie_soort" required><option value="">Kies…</option><option value="zaal">In een zaal of gebouw</option><option value="tent">In een tent</option><option value="buiten">Buiten, zonder tent</option><option value="combinatie">Combinatie (bv. zaal en buitenbar)</option></select></div>
@@ -241,6 +241,9 @@ footer.foot a{color:var(--soft)}
         <div class="field full"><label for="locatie_naam">Naam van de zaal of plek <span class="hint">(als die er is)</span></label><input id="locatie_naam" name="locatie_naam" placeholder="bv. Parochiezaal Sint-Jan, Marktplein"></div>
         <div class="field full"><label for="locatie">Adres <span class="req">*</span></label><input id="locatie" name="locatie" required list="adreslijst" autocomplete="off" placeholder="Straat en huisnummer"><datalist id="adreslijst"></datalist><span class="hint">Geen huisnummer, zoals bij een plein of park? Dan volstaat de straat.</span></div>
         <div class="field full"><label for="andere_plekken">Andere plekken van het evenement <span class="hint">(optioneel, in dezelfde gemeente)</span></label><input id="andere_plekken" name="andere_plekken" placeholder="bv. receptie in de kerk, Dorpsplein 1; feest in zaal De Kring, Kerkstraat 5"></div>
+        <div class="field full" id="andereodwrap" hidden><label for="andere_od">Ligt een van die plekken op straat, stoep, plein, parking of in een park? <span class="req">*</span></label>
+          <select id="andere_od" data-label="Andere plekken op openbaar domein"><option value="">Kies…</option><option value="nee">Nee, alles binnen of op privéterrein</option><option value="ja">Ja</option></select>
+          <span class="hint" id="andereodnota" hidden></span></div>
         <div class="field full" id="odwrap" hidden>
           <label for="od_zone">Wat komt er op straat, stoep of plein, en waar precies? <span class="hint">(zo goed als je kan)</span></label>
           <input id="od_zone" name="od_zone" placeholder="bv. bar en 10 tafels op de stoep voor nr. 12, of de straat dicht tussen nr. 2 en 20">
@@ -911,7 +914,27 @@ function volgEinddatum() {
 }
 sd.addEventListener("change", volgEinddatum);
 sd.addEventListener("input", volgEinddatum);
-md.addEventListener("change", () => { volgEinddatum(); toonTermijn(); });
+md.addEventListener("change", () => { volgEinddatum(); toonTermijn(); toonNachtnota(); });
+// Eén dag later als laatste dag: wellicht een feest tot na middernacht, geen meerdaags evenement.
+function toonNachtnota() { document.getElementById("nachtnota").hidden = !(md.checked && sd.value && ed.value === plusDag(sd.value, 1)); }
+ed.addEventListener("change", toonNachtnota); sd.addEventListener("change", toonNachtnota);
+
+// Andere plekken: vraag of er een op openbaar domein ligt. Zo ja en stap 1 zegt "nee", dan zetten we
+// openbaar domein op "deels" (bepaalt termijn en inname); geen aparte kolom in de Sheet nodig.
+const ap = document.getElementById("andere_plekken"), aod = document.getElementById("andere_od");
+function volgAndereOd() {
+  const gevuld = !!ap.value.trim();
+  document.getElementById("andereodwrap").hidden = !gevuld;
+  aod.required = gevuld;
+  const nota = document.getElementById("andereodnota");
+  if (gevuld && aod.value === "ja" && veld("openbaar_domein") === "nee") {
+    const sel = document.getElementById("openbaar_domein");
+    sel.value = "deels"; sel.dispatchEvent(new Event("change", { bubbles: true }));
+    nota.textContent = "We hebben bij stap 1 \"Komt er iets op straat, stoep, plein, parking of in een park?\" aangepast naar \"Een deel\". De termijn is opnieuw berekend" + (termijn && termijn.deadline ? ": deadline " + fmtLong(termijn.deadline) + "." : ".");
+    nota.hidden = false;
+  } else if (!gevuld || aod.value !== "ja") nota.hidden = true;
+}
+ap.addEventListener("input", volgAndereOd); aod.addEventListener("change", volgAndereOd);
 const vandaag = today();
 sd.min = vandaag.getFullYear() + "-" + String(vandaag.getMonth() + 1).padStart(2, "0") + "-" + String(vandaag.getDate()).padStart(2, "0");
 
@@ -1207,7 +1230,7 @@ const EIGEN = "eigen-sleutel";
   if (actief) { const m = document.createElement("p"); m.className = "hint"; m.style.cssText = "text-align:center;margin:8px 0 0";
     m.textContent = "Eigen-sleutel actief op dit toestel (…" + actief.slice(-4) + ")."; document.getElementById("intro").after(m); }
 })();
-zoeker.sync(); volgEinddatum(); pasAan(); toonTermijn();
+zoeker.sync(); volgEinddatum(); pasAan(); toonTermijn(); toonNachtnota(); volgAndereOd();
 if (concept && concept.verst) verst = Math.min(5, concept.verst);
 const startStap = Math.min(verst, +((location.hash.match(/^#stap-(\d)$/) || [])[1]) || (concept && concept.stap) || 1);
 try { history.replaceState({ stap: startStap }, "", "#stap-" + startStap); } catch (e) {}
