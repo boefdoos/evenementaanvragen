@@ -19169,19 +19169,24 @@
   "status": "ok",
   "base": {
    "*": [
-    25,
+    15,
     "wd"
    ]
   },
   "extra": [
+   {
+    "minVisitors": 1500,
+    "n": 25,
+    "unit": "wd"
+   },
    {
     "groot": true,
     "n": 25,
     "unit": "wd"
    }
   ],
-  "termijnTekst": "Kleine evenementen: minstens 2 werkdagen vooraf. Middelgrote evenementen: minstens 15 werkdagen vooraf. Grote evenementen: minstens 25 werkdagen vooraf. (Pagina /evenement: minstens 15 werkdagen op voorhand.)",
-  "note": "Base = middelgroot (15 werkdagen); klein (2 wd) niet als base gebruikt omdat de definities klein/middelgroot/groot in het politiereglement evenementen (27/02/2023) staan en die pdf niet leesbaar was (robots). Bij twijfel over de grootte 25 werkdagen nemen. Betaling ten laatste 5 werkdagen voor de start. Fuiven via het fuifloket op hetzelfde reserveringsplatform (geen aparte termijn gelezen). Het reserveringsplatform zelf was niet leesbaar (robots). Standaard op 25 werkdagen (grote evenementen) gezet zolang de grootteklasse niet vaststaat.",
+  "termijnTekst": "Politiereglement evenementen (GR 27/02/2023), art. 11: klein evenement (vergunning C) minimum 48 uur vooraf; middelgroot (B) minimum 15 werkdagen; groot (A) minimum 25 werkdagen. Voorlopige vergunning A of B: minimum 4 maanden vooraf (optioneel).",
+  "note": "Art. 7: klein = minder dan 400 bezoekers, tussen 7 en 22 uur, muziek tot 85 dB(A), in een binnenruimte die daartoe bestemd is en niet op rijbaan/parking; groot = meer dan 3.000 bezoekers per dag of 1.500 op het drukste moment; middelgroot = de rest. Base = middelgroot (15 werkdagen), omdat klein aan alle criteria moet voldoen. Betaling ten laatste 5 werkdagen voor de start. Besloten kleine en middelgrote evenementen in een private ruimte of binnenruimte: geen toelating of melding (matrix art. 10).",
   "platform": "eigen reserveringsplatform (reservering.sint-truiden.be, 'Evenementen- en fuifloket')",
   "kanaal": "Online via het digitale evenementenloket op het reserveringsplatform; bij de eerste aanvraag een profiel aanmaken.",
   "link": "https://reservering.sint-truiden.be/Evenementenfuifloket.aspx",
@@ -19192,7 +19197,8 @@
    "https://www.sint-truiden.be/fuifloket",
    "https://www.sint-truiden.be/politiereglement-evenementen",
    "https://www.sint-truiden.be/uitleendienst",
-   "https://www.sint-truiden.be/bekendmakingen/detail/359/retributiereglement-uitleendienst"
+   "https://www.sint-truiden.be/bekendmakingen/detail/359/retributiereglement-uitleendienst",
+   "https://www.sint-truiden.be/file/download/402dab85-4aab-4dff-a2e4-a9b48754683a/uaJAmQUBwbZ2hz4eGo5KYqgPL8WRXgWWI6YerQZOU3d.pdf"
   ],
   "bijzonder": [
    {
@@ -19207,7 +19213,7 @@
     "soort": "voorwaarde",
     "wat": "Veiligheidsdossier en grond- en omgevingsplan",
     "als": null,
-    "toelichting": "Verplicht voor middelgrote en grote evenementen."
+    "toelichting": "Verplicht voor middelgrote en grote evenementen. Definitief grondplan en omgevingsplan ten laatste 10 werkdagen voor het evenement."
    },
    {
     "soort": "voorwaarde",
@@ -34869,22 +34875,28 @@
  {
   "gemeente": "Sint-Pieters-Leeuw",
   "provincie": "Vlaams-Brabant",
-  "status": "onzeker",
+  "status": "ok",
   "base": {
    "*": [
-    90,
+    45,
     "d"
    ]
   },
-  "extra": [],
-  "termijnTekst": "APV (01/01/2020) art. 6.3.1: evenement in openlucht: toestemming burgemeester, aanvraag 'minstens 90 kalenderdagen voor de geplande datum' via het gemeentelijk evenementenformulier; in gesloten of overdekte plaats: kennisgeving 'minstens 45 kalenderdagen voor de geplande datum'.",
-  "note": "Termijn enkel uit de APV-versie van 2020; de evenementenloketpagina en het algemeen aanvraagformulier op de gemeentesite gaven client_error en konden niet gelezen worden, dus een recentere termijn kan afwijken. Strengste termijn (90 kalenderdagen, openlucht) als standaard genomen; voor evenementen in gesloten/overdekte ruimte geldt volgens de APV een kennisgeving 45 kalenderdagen vooraf. Manifestaties/optochten in openlucht: schriftelijke toelating 10 werkdagen vooraf (art. 3.1.1). Wielerwedstrijden niet apart vermeld in de APV. Aparte pagina voor toelating doortocht (fietstocht, wandeling) niet gelezen.",
+  "extra": [
+   {
+    "groot": true,
+    "n": 3,
+    "unit": "m"
+   }
+  ],
+  "termijnTekst": "Grootschalige publiek toegankelijke evenementen: minstens drie maanden vooraf. Kleinschalige publiek toegankelijke evenementen: minstens 45 dagen vooraf. Privé-evenementen: afhankelijk van de aard minstens 45 dagen vooraf (aanvraag, of melding per mail).",
+  "note": "Termijnen van de pagina 'Een evenement aanvragen' (gelezen 9/11/2026). De gemeente omschrijft niet wanneer een evenement grootschalig is; 3 maanden geldt als groot evenement. Privé-evenement buiten de thuisomgeving: aanvraag via het evenementenloket bij einde na 01.00 uur, muziek boven 85 dB(A) of cocktails, anders melding per mail aan evenementen@sint-pieters-leeuw.be. De APV van 2020 (vroegere bron: 90 dagen in openlucht) is niet meer online.",
   "platform": "eigen e-loket (webformulier op de gemeentesite)",
-  "kanaal": "Algemeen aanvraagformulier evenementen op de gemeentesite (niet kunnen lezen).",
-  "link": "https://www.sint-pieters-leeuw.be/vrije-tijd/jouw-activiteit/evenementenloket/algemene-aanvraag-evenementen/algemeen-aanvraagformulier",
-  "contact": "Evenementenloket gemeente Sint-Pieters-Leeuw (mail/telefoon niet gelezen); sportdienst@sint-pieters-leeuw.be – 02 371 14 20; jeugddienst@sint-pieters-leeuw.be – 02 370 82 80; cultuurdienst@sint-pieters-leeuw.be",
+  "kanaal": "Online via het algemeen aanvraagformulier (digitaal loket 'Evenement aanvragen') op de gemeentesite.",
+  "link": "https://www.sint-pieters-leeuw.be/evenement-aanvragen",
+  "contact": "Evenementenloket gemeente Sint-Pieters-Leeuw – evenementen@sint-pieters-leeuw.be",
   "bron": [
-   "https://www.sint-pieters-leeuw.be/sites/default/files/gemeente/mv/documenten/APV_SPL_2020.pdf",
+   "https://www.sint-pieters-leeuw.be/een-evenement-aanvragen",
    "https://www.sint-pieters-leeuw.be/sites/default/files/gemeente/uitleendienst/documenten/Stappenplan_aanvraag_uitleen_gemeentelijk_materiaal.pdf"
   ],
   "bijzonder": [
