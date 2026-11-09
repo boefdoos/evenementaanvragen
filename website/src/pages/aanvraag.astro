@@ -436,6 +436,8 @@ footer.foot a{color:var(--soft)}
         </div>
         <div class="field" id="betalernaamwrap" hidden><label for="betaler_naam">Naam van wie betaalt <span class="req">*</span></label><input id="betaler_naam" name="betaler_naam" autocomplete="off" placeholder="Voor- en familienaam"></div>
         <div class="field" id="betalermailwrap" hidden><label for="betaler_email">E-mail van wie betaalt <span class="req">*</span></label><input id="betaler_email" name="betaler_email" type="email" autocomplete="off"></div>
+        <label class="check full" for="factuur_vink" id="factuurwrap"><input type="checkbox" id="factuur_vink"><span>Ik wil een factuur <span class="hint">(op naam van de organisator; vul dan ook het adres hierboven in)</span></span></label>
+        <p class="hint full" id="factuurauto" hidden>Je krijgt na de betaling automatisch een factuur op naam van de organisator.</p>
         <div class="field full" id="betalerrefwrap" hidden><label for="factuur_referentie">Referentie voor de factuur <span class="hint">(optioneel, bv. bestelbonnummer)</span></label><input id="factuur_referentie" name="factuur_referentie" maxlength="100"></div>
         <div class="prijs full" id="prijs" hidden></div>
         <p class="err full" id="formerr" hidden></p>
@@ -1063,12 +1065,19 @@ function toonBetaler() {
   document.getElementById("betalerwrap").hidden = part;
   if (part) document.getElementById("betaler_0").checked = true;
   const anders = anderBetaalt();
-  ["betalernaamwrap", "betalermailwrap", "betalerrefwrap"].forEach(id => { document.getElementById(id).hidden = !anders; });
+  ["betalernaamwrap", "betalermailwrap"].forEach(id => { document.getElementById(id).hidden = !anders; });
   document.getElementById("betaler_naam").required = anders;
   document.getElementById("betaler_email").required = anders;
-  document.getElementById("adres_organisator").required = anders;
-  document.getElementById("adresreq").hidden = !anders; document.getElementById("adreshint").hidden = !anders;
+  // Factuur (9/11/2026): automatisch bij een bedrijf of als iemand anders betaalt, anders op aanvraag (vinkje).
+  const auto = factuurAutomatisch(), fact = wilFactuur();
+  document.getElementById("factuurwrap").hidden = auto;
+  document.getElementById("factuurauto").hidden = !auto;
+  document.getElementById("betalerrefwrap").hidden = !fact;
+  document.getElementById("adres_organisator").required = fact;
+  document.getElementById("adresreq").hidden = !fact; document.getElementById("adreshint").hidden = !fact;
 }
+function factuurAutomatisch() { return anderBetaalt() || veld("aanvrager_type") === "bedrijf"; }
+function wilFactuur() { return factuurAutomatisch() || document.getElementById("factuur_vink").checked; }
 function toonHerroeping() {
   const part = veld("aanvrager_type") === "particulier", w = document.getElementById("herroepwrap"), c = document.getElementById("herroeping");
   w.hidden = !part; c.disabled = !part; c.required = part;
@@ -1270,7 +1279,9 @@ form.addEventListener("submit", async e => {
   if (!md.checked) { data.einddatum = data.startdatum; if (data.startuur && data.einduur && data.einduur <= data.startuur) data.einddatum = plusDag(data.startdatum, 1); }
   data.termijn_oordeel = termijn ? termijn.soort : "onbekend";
   if (data.aanvrager_type === "particulier") data.volmacht_functie = "in eigen naam";
-  if (!anderBetaalt()) { data.betaler = "ik"; data.betaler_naam = ""; data.betaler_email = ""; data.factuur_referentie = ""; }
+  if (!anderBetaalt()) { data.betaler = "ik"; data.betaler_naam = ""; data.betaler_email = ""; }
+  data.factuur = wilFactuur() ? "ja" : "nee";
+  if (data.factuur !== "ja") data.factuur_referentie = "";
   try { const sl = localStorage.getItem(EIGEN); if (sl) data.eigen_sleutel = sl; } catch (e) {}
   const isoD = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
   data.termijn_deadline = termijn && termijn.deadline ? isoD(termijn.deadline) : "";
