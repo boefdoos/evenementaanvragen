@@ -49,9 +49,9 @@ const STAPPEN = {
     { t: "Controle", u: "Alles in het groen? Dan kan je je plan afwerken. Het gaat zo bij je aanvraag.", controle: true },
   ],
   grondplan: [
-    { t: "Ruimte", u: "Geef de binnenmaten van de tent of zaal en het materiaal.", el: [], veld: "ruimte" },
-    { t: "Uitgangen", u: "Zet de deuren en nooduitgangen in de wanden. Ze klikken vast aan de dichtste wand. Kies bij elke deur de draairichting.", el: ["deur", "nooduitgang"] },
-    { t: "Opstelling", u: "Zet podium, bar, dj en tafels op hun plaats. Hou de ruimte voor de uitgangen vrij.", el: ["podium", "bar", "dj", "tafel"] },
+    { t: "Ruimte", u: "Teken de vorm van de tent of zaal met de binnenmaten. Sleep een hoekpunt of een wand om de maten te veranderen, of klik een wand aan en typ de lengte. Is de zaal niet rechthoekig: klik een hoek aan en kies \"Hoek inspringen\", of splits een wand en sleep het middenstuk naar binnen of buiten.", el: [], veld: "ruimte" },
+    { t: "Uitgangen", u: "Zet de deuren en nooduitgangen in de wanden. Ze klikken vast aan de dichtste wand, naast elkaar en nooit over elkaar. Kies bij elke deur de draairichting.", el: ["deur", "nooduitgang"] },
+    { t: "Opstelling", u: "Zet podium, bar, dj en tafels op hun plaats. Hou de ruimte voor de uitgangen vrij. Wat over elkaar of buiten de ruimte staat, kleurt rood.", el: ["podium", "bar", "dj", "tafel"] },
     { t: "Veiligheid", u: "Duid de blustoestellen, de noodverlichting boven de uitgangen en de stroomaansluiting aan.", el: ["blus", "nood", "stroom"] },
     { t: "Controle", u: "Alles in het groen? Dan kan je je plan afwerken. Het gaat zo bij je aanvraag.", controle: true },
   ],
@@ -84,7 +84,7 @@ function nieuweStaat(d) {
     d, plannen, actief: plannen[0], stap: { inplanting: 0, grondplan: 0 },
     personen: +d.bezoekers || 150,
     I: { center: [51.2265, 2.9085], zoom: 19, items: [], maten: [], tent: [tl, tb], gezocht: false },
-    G: { l: sit === "zaal" ? 20 : tl, b: sit === "zaal" ? 12 : tb, mat: sit === "zaal" ? "" : "tent", items: [] },
+    G: { l: sit === "zaal" ? 20 : tl, b: sit === "zaal" ? 12 : tb, mat: sit === "zaal" ? "" : "tent", items: [], pts: rechthoek(sit === "zaal" ? 20 : tl, sit === "zaal" ? 12 : tb), recht: true },
   };
 }
 const sleutel = () => "plantekenaar:" + (DEMO ? "demo" : (BEHEER ? "beheer:" : "") + AUTH.id);
@@ -94,7 +94,7 @@ function vanServer(s, laatste) {
   if (!laatste) return;
   const l = laatste.inplanting, g = laatste.grondplan;
   if (l && l.plan && Array.isArray(l.plan.items)) { s.I.items = l.plan.items; s.I.maten = l.plan.maten || []; if (l.plan.center) s.I.center = l.plan.center; s.I.gezocht = true; }
-  if (g && g.plan && Array.isArray(g.plan.items)) { s.G.items = g.plan.items; if (g.plan.ruimte) { s.G.l = +g.plan.ruimte.l || s.G.l; s.G.b = +g.plan.ruimte.b || s.G.b; s.G.mat = g.plan.ruimte.mat || ""; } }
+  if (g && g.plan && Array.isArray(g.plan.items)) { s.G.items = g.plan.items; if (g.plan.ruimte) { s.G.l = +g.plan.ruimte.l || s.G.l; s.G.b = +g.plan.ruimte.b || s.G.b; s.G.mat = g.plan.ruimte.mat || ""; s.G.pts = geldigeVorm(g.plan.ruimte.pts) || rechthoek(s.G.l, s.G.b); if (g.plan.ruimte.recht === false) s.G.recht = false; } }
   const p = (l && l.personen) || (g && g.personen); if (p) s.personen = +p || s.personen;
 }
 function laad(d) {
@@ -106,6 +106,9 @@ function laad(d) {
   S = s;
   S.d = d;
   S.personen = Math.max(minPersonen(), +S.personen || 1);
+  if (!geldigeVorm(S.G.pts)) S.G.pts = rechthoek(S.G.l, S.G.b); // plannen van vóór de vrije vorm
+  if (S.G.recht === undefined) S.G.recht = true;
+  normaliseer();
   uid = 1 + Math.max(0, ...S.I.items.map((i) => i.id), ...S.I.maten.map((i) => i.id), ...S.G.items.map((i) => i.id));
 }
 
@@ -291,30 +294,131 @@ function kaartKlik(e) {
 }
 
 // ---------- Grondplan (SVG in meter) ----------
+// De ruimte is een veelhoek (S.G.pts, hoekpunten in meter, linksboven op 0,0). S.G.l en S.G.b zijn de buitenmaten.
+// "Rechte hoeken" (S.G.recht): bij het slepen van een hoekpunt schuiven de aangrenzende wanden mee, zodat
+// horizontale en verticale wanden recht blijven. Uit = vrije vorm (bv. een schuine wand).
+function rechthoek(l, b) { return [[0, 0], [l, 0], [l, b], [0, b]]; }
+function geldigeVorm(p) { return Array.isArray(p) && p.length >= 3 && p.every((q) => Array.isArray(q) && isFinite(q[0]) && isFinite(q[1])) ? p.map((q) => [+q[0], +q[1]]) : null; }
+const r2 = (n) => Math.round(n * 100) / 100;
+function wandenG(p) { p = p || S.G.pts; return p.map((a, i) => [a, p[(i + 1) % p.length]]); }
+function oppG(p) { p = p || S.G.pts; let s = 0; for (let i = 0; i < p.length; i++) { const a = p[i], b = p[(i + 1) % p.length]; s += a[0] * b[1] - b[0] * a[1]; } return Math.abs(s) / 2; }
+function inVorm(q, p) { // even-oneven-regel
+  p = p || S.G.pts; let binnen = false;
+  for (let i = 0, j = p.length - 1; i < p.length; j = i++) {
+    const a = p[i], b = p[j];
+    if ((a[1] > q[1]) !== (b[1] > q[1]) && q[0] < ((b[0] - a[0]) * (q[1] - a[1])) / (b[1] - a[1]) + a[0]) binnen = !binnen;
+  }
+  return binnen;
+}
+function afstSeg(q, a, b) {
+  const dx = b[0] - a[0], dy = b[1] - a[1], L2 = dx * dx + dy * dy;
+  const t = L2 ? Math.max(0, Math.min(1, ((q[0] - a[0]) * dx + (q[1] - a[1]) * dy) / L2)) : 0;
+  return Math.hypot(q[0] - a[0] - t * dx, q[1] - a[1] - t * dy);
+}
+function afstRand(q, p) { return Math.min(...wandenG(p).map(([a, b]) => afstSeg(q, a, b))); }
+function binnenG(q, tol) { return inVorm(q) || afstRand(q) <= (tol || 0); }
+function isRechthoek(p) {
+  p = p || S.G.pts; if (p.length !== 4) return false;
+  return wandenG(p).every(([a, b]) => Math.abs(a[0] - b[0]) < 1e-6 || Math.abs(a[1] - b[1]) < 1e-6);
+}
+function snijden(a, b, c, d) { // snijden de lijnstukken ab en cd elkaar (eindpunten niet meegerekend)?
+  const o = (p, q, r) => (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]);
+  const d1 = o(c, d, a), d2 = o(c, d, b), d3 = o(a, b, c), d4 = o(a, b, d);
+  return ((d1 > 1e-9 && d2 < -1e-9) || (d1 < -1e-9 && d2 > 1e-9)) && ((d3 > 1e-9 && d4 < -1e-9) || (d3 < -1e-9 && d4 > 1e-9));
+}
+// Een bruikbare vorm: elke wand minstens 0,5 m, geen wanden die elkaar kruisen, minstens 2 m².
+function vormOk(p) {
+  const w = wandenG(p);
+  if (w.some(([a, b]) => Math.hypot(b[0] - a[0], b[1] - a[1]) < 0.5)) return false;
+  for (let i = 0; i < w.length; i++) for (let j = i + 2; j < w.length; j++) {
+    if (i === 0 && j === w.length - 1) continue;
+    if (snijden(w[i][0], w[i][1], w[j][0], w[j][1])) return false;
+  }
+  return oppG(p) >= 2;
+}
+// Linksboven op 0,0 zetten (elementen schuiven mee), punten op elkaar en punten midden op een rechte wand weghalen.
+function normaliseer() {
+  let p = S.G.pts.map((q) => [r2(q[0]), r2(q[1])]);
+  p = p.filter((q, i) => { const v = p[(i - 1 + p.length) % p.length]; return Math.hypot(q[0] - v[0], q[1] - v[1]) > 1e-6; });
+  let veranderd = true;
+  while (veranderd && p.length > 3) {
+    veranderd = false;
+    for (let i = 0; i < p.length; i++) {
+      const a = p[(i - 1 + p.length) % p.length], q = p[i], c = p[(i + 1) % p.length];
+      if (Math.abs((q[0] - a[0]) * (c[1] - a[1]) - (q[1] - a[1]) * (c[0] - a[0])) < 1e-6) { p.splice(i, 1); veranderd = true; break; }
+    }
+  }
+  const mx = Math.min(...p.map((q) => q[0])), my = Math.min(...p.map((q) => q[1]));
+  if (mx || my) { p = p.map((q) => [r2(q[0] - mx), r2(q[1] - my)]); for (const it of S.G.items) { it.x = r2(it.x - mx); it.y = r2(it.y - my); } }
+  S.G.pts = p; S.G.l = Math.max(...p.map((q) => q[0])); S.G.b = Math.max(...p.map((q) => q[1]));
+}
+// Na een wijziging van de vorm: elke deur opnieuw in een wand, naast de andere deuren.
+function deurenInWand() { for (const d of S.G.items.filter((i) => KAT_G[i.k].f === "deur")) klikAanWand(d); }
+
+let vsel = null, vsleep = null; // gekozen hoekpunt of wand ({t: "v"|"e", i}) en slepen in de stap Ruimte
+const vormStap = () => S.actief === "grondplan" && STAPPEN.grondplan[S.stap.grondplan].veld === "ruimte";
+// Wat over elkaar of buiten de ruimte staat (rood in de tekening).
+function conflicten() {
+  const uit = new Set(), rects = S.G.items.filter((i) => KAT_G[i.k].f === "rect"), R = (o) => ({ cx: o.x, cy: o.y, w: o.w, l: o.l, rot: o.rot });
+  for (const o of rects) if (puntenIn(R(o), 0.25).some((q) => !binnenG(q, 0.01))) uit.add(o.id);
+  for (let i = 0; i < rects.length; i++) for (let j = i + 1; j < rects.length; j++) if (rectsOverlappen(R(rects[i]), R(rects[j]), 0.05)) { uit.add(rects[i].id); uit.add(rects[j].id); }
+  for (const d of S.G.items.filter((i) => KAT_G[i.k].f === "deur")) if (afstRand([d.x, d.y]) > 0.05) uit.add(d.id);
+  return uit;
+}
 function tekenGrondplan() {
-  const { l, b } = S.G, mg = 2, W = l + 2 * mg, H = b + 2 * mg;
+  const { l, b } = S.G, mg = 2, W = l + 2 * mg, H = b + 2 * mg, p = S.G.pts, vs = vormStap();
   const px = Math.max(14, Math.min(48, Math.floor(Math.min(($("gp").clientWidth - 48) / W, ($("gp").clientHeight - 110) / H))));
+  const pad = "M " + p.map((q) => q[0] + " " + q[1]).join(" L ") + " Z";
   let s = '<svg id="gsvg" xmlns="http://www.w3.org/2000/svg" viewBox="' + -mg + " " + -mg + " " + W + " " + H + '" width="' + W * px + '" height="' + H * px + '" font-family="Instrument Sans, Arial, sans-serif">';
+  s += '<defs><clipPath id="gclip"><path d="' + pad + '"/></clipPath></defs><g clip-path="url(#gclip)">';
   for (let x = 0; x <= l; x++) s += '<line x1="' + x + '" y1="0" x2="' + x + '" y2="' + b + '" stroke="#e4e6ee" stroke-width="0.02"/>';
   for (let y = 0; y <= b; y++) s += '<line x1="0" y1="' + y + '" x2="' + l + '" y2="' + y + '" stroke="#e4e6ee" stroke-width="0.02"/>';
-  s += '<rect x="0" y="0" width="' + l + '" height="' + b + '" fill="none" stroke="#1a1d2b" stroke-width="0.15"/>';
-  s += '<text x="' + l / 2 + '" y="-0.6" text-anchor="middle" font-size="0.45" fill="#1a1d2b">' + fmt(l) + " m</text>";
-  s += '<text x="-0.6" y="' + b / 2 + '" text-anchor="middle" font-size="0.45" fill="#1a1d2b" transform="rotate(-90 -0.6 ' + b / 2 + ')">' + fmt(b) + " m</text>";
-  for (const it of S.G.items) s += svgItem(it, sel === it.id);
+  s += "</g>";
+  s += '<path d="' + pad + '" fill="none" stroke="#1a1d2b" stroke-width="0.15" stroke-linejoin="miter"/>';
+  // maat van elke wand, aan de buitenkant
+  wandenG().forEach(([a, c], i) => {
+    const L = Math.hypot(c[0] - a[0], c[1] - a[1]); if (L < 0.01) return;
+    const ux = (c[0] - a[0]) / L, uy = (c[1] - a[1]) / L, mx = (a[0] + c[0]) / 2, my = (a[1] + c[1]) / 2;
+    let nx = uy, ny = -ux; if (inVorm([mx + nx * 0.05, my + ny * 0.05])) { nx = -nx; ny = -ny; }
+    let hoek = (Math.atan2(uy, ux) * 180) / Math.PI; if (hoek > 90) hoek -= 180; if (hoek <= -90) hoek += 180;
+    const tx = mx + nx * 0.6, ty = my + ny * 0.6 + 0.15;
+    const gekozen = vs && vsel && vsel.t === "e" && vsel.i === i;
+    s += '<text x="' + tx + '" y="' + ty + '" text-anchor="middle" font-size="0.42" font-weight="' + (gekozen ? 700 : 400) + '" fill="' + (gekozen ? "#d9480f" : "#1a1d2b") + '" transform="rotate(' + hoek + " " + tx + " " + (ty - 0.15) + ')">' + fmt(L) + " m</text>";
+  });
+  const bots = vs ? new Set() : conflicten();
+  for (const it of S.G.items) s += svgItem(it, sel === it.id, bots.has(it.id), vs);
+  if (vs) { // handvatten om de vorm te tekenen
+    wandenG().forEach(([a, c], i) => {
+      const gekozen = vsel && vsel.t === "e" && vsel.i === i;
+      s += '<line data-e="' + i + '" x1="' + a[0] + '" y1="' + a[1] + '" x2="' + c[0] + '" y2="' + c[1] + '" stroke="' + (gekozen ? "#d9480f" : "transparent") + '" stroke-width="' + (gekozen ? 0.2 : 0.6) + '" style="cursor:move"/>';
+      if (!gekozen) s += '<line data-e="' + i + '" x1="' + a[0] + '" y1="' + a[1] + '" x2="' + c[0] + '" y2="' + c[1] + '" stroke="transparent" stroke-width="0.6" style="cursor:move"/>';
+    });
+    p.forEach((q, i) => {
+      const gekozen = vsel && vsel.t === "v" && vsel.i === i;
+      s += '<circle data-v="' + i + '" cx="' + q[0] + '" cy="' + q[1] + '" r="' + (gekozen ? 0.38 : 0.3) + '" fill="' + (gekozen ? "#d9480f" : "#fff") + '" stroke="#d9480f" stroke-width="0.08" style="cursor:grab"/>';
+    });
+  }
   s += "</svg>";
   $("gp").innerHTML = s;
-  $("gsvg").querySelectorAll("g[data-id]").forEach((g) => g.addEventListener("pointerdown", startSleep));
-  $("gsvg").addEventListener("pointerdown", (e) => { if (e.target.id === "gsvg" || e.target.tagName === "line" || e.target.tagName === "rect" && !e.target.closest("g[data-id]")) kies(null); });
+  const svg = $("gsvg");
+  if (vs) {
+    svg.querySelectorAll("[data-v]").forEach((c) => c.addEventListener("pointerdown", (e) => startVorm(e, "v", +c.dataset.v)));
+    svg.querySelectorAll("[data-e]").forEach((c) => c.addEventListener("pointerdown", (e) => startVorm(e, "e", +c.dataset.e)));
+    svg.addEventListener("pointerdown", (e) => { if (!e.target.closest("[data-v],[data-e]")) { vsel = null; tekenGrondplan(); tekenStap(); } });
+  } else {
+    svg.querySelectorAll("g[data-id]").forEach((g) => g.addEventListener("pointerdown", startSleep));
+    svg.addEventListener("pointerdown", (e) => { if (!e.target.closest("g[data-id]")) kies(null); });
+  }
 }
-function svgItem(it, gekozen) {
-  const k = KAT_G[it.k], sw = gekozen ? 0.09 : 0.045;
-  let s = '<g data-id="' + it.id + '" transform="translate(' + it.x + " " + it.y + ") rotate(" + it.rot + ')" style="cursor:move">';
+function svgItem(it, gekozen, bots, stil) {
+  const k = KAT_G[it.k], sw = gekozen ? 0.09 : 0.045, rand = bots ? "#e0392e" : k.c, streep = bots ? ' stroke-dasharray="0.25 0.15"' : "";
+  let s = '<g data-id="' + it.id + '" transform="translate(' + it.x + " " + it.y + ") rotate(" + it.rot + ')" style="cursor:' + (stil ? "default" : "move") + (stil ? ";pointer-events:none;opacity:.55" : "") + '">';
   if (k.f === "rect") {
-    s += '<rect x="' + -it.w / 2 + '" y="' + -it.l / 2 + '" width="' + it.w + '" height="' + it.l + '" fill="' + k.c + '" fill-opacity="0.3" stroke="' + k.c + '" stroke-width="' + sw + '"/>';
+    s += '<rect x="' + -it.w / 2 + '" y="' + -it.l / 2 + '" width="' + it.w + '" height="' + it.l + '" fill="' + k.c + '" fill-opacity="0.3" stroke="' + rand + '" stroke-width="' + (bots ? 0.1 : sw) + '"' + streep + "/>";
     s += '<text y="0.15" text-anchor="middle" font-size="0.4" fill="#1a1d2b">' + esc(it.naam || k.n) + "</text>";
   } else if (k.f === "deur") {
     const r = it.w, dir = it.open === "binnen" ? -1 : 1; // lokaal: wand langs x, +y = buiten
-    s += '<rect x="' + -r / 2 + '" y="-0.15" width="' + r + '" height="0.3" fill="#fff" stroke="' + k.c + '" stroke-width="' + sw + '"/>';
+    s += '<rect x="' + -r / 2 + '" y="-0.15" width="' + r + '" height="0.3" fill="#fff" stroke="' + rand + '" stroke-width="' + sw + '"/>';
     s += '<path d="M ' + -r / 2 + " 0 L " + -r / 2 + " " + dir * r + " A " + r + " " + r + " 0 0 " + (dir > 0 ? 0 : 1) + " " + r / 2 + ' 0" fill="none" stroke="' + k.c + '" stroke-width="0.045" stroke-dasharray="0.12 0.08"/>';
     if (it.k === "nooduitgang") s += '<rect x="-0.4" y="' + (-dir * 0.75 - 0.2) + '" width="0.8" height="0.4" fill="#1f9d55"/><text x="0" y="' + (-dir * 0.75 + 0.1) + '" text-anchor="middle" font-size="0.24" font-weight="700" fill="#fff">NOOD</text>';
     s += '<text y="' + dir * (r + 0.45) + '" text-anchor="middle" font-size="0.32" fill="#1a1d2b" transform="rotate(' + -it.rot + " 0 " + dir * (r + 0.45) + ')">' + fmt(it.w) + " m</text>";
@@ -329,24 +433,132 @@ function startSleep(e) {
   const id = +e.currentTarget.dataset.id, it = S.G.items.find((i) => i.id === id); if (!it) return;
   kies(id, true); const p = svgPunt(e); sleep = { it, dx: p.x - it.x, dy: p.y - it.y }; e.preventDefault();
 }
+function startVorm(e, t, i) {
+  e.preventDefault(); e.stopPropagation();
+  const q = svgPunt(e); vsel = { t, i }; vsleep = { t, i, p0: [q.x, q.y], basis: S.G.pts.map((x) => x.slice()), bewogen: false };
+  tekenGrondplan(); tekenStap();
+}
+const snap = (v, st) => Math.round(v / st) * st;
+// Nieuwe vorm tijdens het slepen van hoekpunt i naar q. Met rechte hoeken schuiven de buren mee.
+function vormMetHoek(basis, i, q) {
+  const p = basis.map((x) => x.slice()), n = p.length, oud = basis[i], st = S.G.recht ? 0.5 : 0.1;
+  const nieuw = [r2(snap(q[0], st)), r2(snap(q[1], st))];
+  if (S.G.recht) for (const j of [(i - 1 + n) % n, (i + 1) % n]) {
+    const bu = basis[j];
+    if (Math.abs(bu[1] - oud[1]) < 1e-6 && Math.abs(bu[0] - oud[0]) > 1e-6) p[j] = [bu[0], nieuw[1]];
+    else if (Math.abs(bu[0] - oud[0]) < 1e-6 && Math.abs(bu[1] - oud[1]) > 1e-6) p[j] = [nieuw[0], bu[1]];
+  }
+  p[i] = nieuw; return p;
+}
+// Wand i evenwijdig verschuiven (loodrecht op de wand).
+function vormMetWand(basis, i, d) {
+  const p = basis.map((x) => x.slice()), n = p.length, a = basis[i], c = basis[(i + 1) % n];
+  const L = Math.hypot(c[0] - a[0], c[1] - a[1]); if (!L) return p;
+  const nx = (c[1] - a[1]) / L, ny = -(c[0] - a[0]) / L, st = S.G.recht ? 0.5 : 0.1;
+  const v = snap(d[0] * nx + d[1] * ny, st);
+  p[i] = [r2(a[0] + nx * v), r2(a[1] + ny * v)]; p[(i + 1) % n] = [r2(c[0] + nx * v), r2(c[1] + ny * v)];
+  return p;
+}
 window.addEventListener("pointermove", (e) => {
+  if (vsleep) {
+    const q = svgPunt(e), nieuw = vsleep.t === "v" ? vormMetHoek(vsleep.basis, vsleep.i, [q.x, q.y]) : vormMetWand(vsleep.basis, vsleep.i, [q.x - vsleep.p0[0], q.y - vsleep.p0[1]]);
+    if (vormOk(nieuw) && JSON.stringify(nieuw) !== JSON.stringify(S.G.pts)) { S.G.pts = nieuw; vsleep.bewogen = true; tekenGrondplan(); }
+    return;
+  }
   if (!sleep) return; const p = svgPunt(e);
   sleep.it.x = Math.round((p.x - sleep.dx) * 10) / 10; sleep.it.y = Math.round((p.y - sleep.dy) * 10) / 10;
   if (KAT_G[sleep.it.k].f === "deur") klikAanWand(sleep.it);
   const g = document.querySelector('g[data-id="' + sleep.it.id + '"]');
   if (g) g.setAttribute("transform", "translate(" + sleep.it.x + " " + sleep.it.y + ") rotate(" + sleep.it.rot + ")");
 });
-window.addEventListener("pointerup", () => { if (sleep) { sleep = null; allesTekenen(); bewaar(); } });
-// Deuren hangen altijd in een wand: dichtste wand kiezen, draaiing zo dat +y naar buiten wijst.
+window.addEventListener("pointerup", () => {
+  if (vsleep) { const b = vsleep.bewogen; vsleep = null; if (b) { vormGewijzigd(); return; } return; }
+  if (sleep) { sleep = null; allesTekenen(); bewaar(); }
+});
+function vormGewijzigd() {
+  const n = S.G.pts.length; normaliseer(); if (S.G.pts.length !== n) vsel = null;
+  deurenInWand(); allesTekenen(); bewaar();
+}
+// Bewerkingen op de vorm (knoppen bij de stap Ruimte).
+function vormZet(p) { if (!vormOk(p)) { $("msg").textContent = "Zo kruisen de wanden elkaar of wordt een wand korter dan 0,5 m. Probeer een andere maat."; return false; } $("msg").textContent = ""; S.G.pts = p; vormGewijzigd(); return true; }
+function wandLengte(i, Lnieuw) {
+  const p = S.G.pts.map((x) => x.slice()), n = p.length, a = p[i], c = p[(i + 1) % n];
+  const L = Math.hypot(c[0] - a[0], c[1] - a[1]); if (!L || !(Lnieuw >= 0.5)) return;
+  const ux = (c[0] - a[0]) / L, uy = (c[1] - a[1]) / L, dl = Lnieuw - L, j = (i + 1) % n, k = (i + 2) % n;
+  const volgende = p[k], loodrecht = Math.abs((volgende[0] - c[0]) * ux + (volgende[1] - c[1]) * uy) < 1e-6;
+  p[j] = [r2(c[0] + ux * dl), r2(c[1] + uy * dl)];
+  if (S.G.recht && loodrecht && k !== i) p[k] = [r2(volgende[0] + ux * dl), r2(volgende[1] + uy * dl)]; // de volgende wand schuift mee
+  vormZet(p);
+}
+function wandSplitsen(i) {
+  const p = S.G.pts.map((x) => x.slice()), n = p.length, a = p[i], c = p[(i + 1) % n];
+  const L = Math.hypot(c[0] - a[0], c[1] - a[1]); if (L < 1.5) { $("msg").textContent = "Deze wand is te kort om te splitsen."; return; }
+  const st = S.G.recht ? 0.5 : 0.1, t1 = Math.max(st, snap(L / 3, st)), t2 = Math.min(L - st, snap((2 * L) / 3, st));
+  const ux = (c[0] - a[0]) / L, uy = (c[1] - a[1]) / L;
+  const q1 = [r2(a[0] + ux * t1), r2(a[1] + uy * t1)], q2 = [r2(a[0] + ux * t2), r2(a[1] + uy * t2)];
+  // Met rechte hoeken: elk splitspunt dubbel, zodat er bij het verschuiven van het middenstuk haaks op de wand
+  // twee korte wanden ontstaan (een uitsprong of nis) in plaats van schuine wanden.
+  if (S.G.recht) { p.splice(i + 1, 0, q1, q1.slice(), q2, q2.slice()); S.G.pts = p; vsel = { t: "e", i: i + 2 }; }
+  else { p.splice(i + 1, 0, q1, q2); S.G.pts = p; vsel = { t: "e", i: i + 1 }; }
+  deurenInWand(); allesTekenen(); bewaar(); // niet normaliseren: dan vallen de nieuwe punten weg
+  $("msg").textContent = "Sleep het gemarkeerde middenstuk naar binnen of naar buiten.";
+}
+function hoekInspringen(i) {
+  const p = S.G.pts.map((x) => x.slice()), n = p.length, a = p[(i - 1 + n) % n], v = p[i], c = p[(i + 1) % n];
+  const La = Math.hypot(a[0] - v[0], a[1] - v[1]), Lc = Math.hypot(c[0] - v[0], c[1] - v[1]);
+  const m = Math.min(2, snap(Math.min(La, Lc) / 3, 0.5)); if (m < 0.5) { $("msg").textContent = "De wanden bij deze hoek zijn te kort."; return; }
+  const ua = [(a[0] - v[0]) / La, (a[1] - v[1]) / La], uc = [(c[0] - v[0]) / Lc, (c[1] - v[1]) / Lc];
+  const v1 = [r2(v[0] + ua[0] * m), r2(v[1] + ua[1] * m)], v2 = [r2(v[0] + (ua[0] + uc[0]) * m), r2(v[1] + (ua[1] + uc[1]) * m)], v3 = [r2(v[0] + uc[0] * m), r2(v[1] + uc[1] * m)];
+  p.splice(i, 1, v1, v2, v3);
+  if (vormZet(p)) { vsel = { t: "v", i: i + 1 }; allesTekenen(); }
+}
+function hoekWeg(i) {
+  if (S.G.pts.length <= 3) return;
+  const p = S.G.pts.filter((_, j) => j !== i); if (vormZet(p)) { vsel = null; allesTekenen(); }
+}
+// Deuren hangen altijd in een wand: de dichtste vrije plek op een wand, nooit over een andere deur.
+// Draaiing zo dat lokaal +x langs de wand loopt en +y naar buiten wijst.
 function klikAanWand(it) {
-  const { l, b } = S.G, h = it.w / 2;
-  const opties = [
-    { d: Math.abs(it.y - b), x: Math.min(l - h, Math.max(h, it.x)), y: b, rot: 0 },
-    { d: Math.abs(it.y), x: Math.min(l - h, Math.max(h, it.x)), y: 0, rot: 180 },
-    { d: Math.abs(it.x), x: 0, y: Math.min(b - h, Math.max(h, it.y)), rot: 90 },
-    { d: Math.abs(it.x - l), x: l, y: Math.min(b - h, Math.max(h, it.y)), rot: 270 },
-  ].sort((a, c) => a.d - c.d)[0];
-  it.x = opties.x; it.y = opties.y; it.rot = opties.rot;
+  const h = it.w / 2, andere = S.G.items.filter((d) => d !== it && KAT_G[d.k].f === "deur");
+  let best = null;
+  for (const [a, b] of wandenG()) {
+    const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy); if (L < it.w + 0.1) continue;
+    const ux = dx / L, uy = dy / L, t = (it.x - a[0]) * ux + (it.y - a[1]) * uy;
+    let vrij = [[h + 0.05, L - h - 0.05]];
+    for (const d of andere) {
+      if (afstSeg([d.x, d.y], a, b) > 0.05) continue;
+      const td = (d.x - a[0]) * ux + (d.y - a[1]) * uy, s0 = td - d.w / 2 - h - 0.1, s1 = td + d.w / 2 + h + 0.1;
+      vrij = vrij.flatMap(([x, y]) => (s1 <= x || s0 >= y ? [[x, y]] : [...(s0 > x ? [[x, s0]] : []), ...(s1 < y ? [[s1, y]] : [])]));
+    }
+    for (const [x, y] of vrij) {
+      if (y < x) continue;
+      const tt = Math.min(y, Math.max(x, t)), qx = a[0] + ux * tt, qy = a[1] + uy * tt, dd = Math.hypot(qx - it.x, qy - it.y);
+      if (!best || dd < best.d) best = { d: dd, x: qx, y: qy, ux, uy };
+    }
+  }
+  if (!best) return false;
+  let nx = best.uy, ny = -best.ux; if (inVorm([best.x + nx * 0.05, best.y + ny * 0.05])) { nx = -nx; ny = -ny; }
+  it.x = r2(best.x); it.y = r2(best.y); it.rot = (((Math.round((Math.atan2(-nx, ny) * 180) / Math.PI)) % 360) + 360) % 360;
+  return true;
+}
+// Een vrije plek voor een nieuw element: binnen de ruimte en niet op een ander element.
+function vrijePlek(it) {
+  const k = KAT_G[it.k], { l, b } = S.G, R = (o) => ({ cx: o.x, cy: o.y, w: o.w, l: o.l, rot: o.rot });
+  const ander = S.G.items.filter((o) => o !== it);
+  const past = (x, y) => {
+    if (k.f === "rect") {
+      const r = { cx: x, cy: y, w: it.w, l: it.l, rot: 0 };
+      return puntenIn(r, 0.25).every((q) => inVorm(q)) && !ander.some((o) => KAT_G[o.k].f === "rect" && rectsOverlappen(r, R(o), 0.05));
+    }
+    return inVorm([x, y]) && afstRand([x, y]) >= 0.4 && !ander.some((o) => (KAT_G[o.k].f === "pt" && Math.hypot(o.x - x, o.y - y) < 0.9) || (KAT_G[o.k].f === "rect" && binnenRect([x, y], R(o), 0.3)));
+  };
+  const cx = S.G.pts.reduce((s, q) => s + q[0], 0) / S.G.pts.length, cy = S.G.pts.reduce((s, q) => s + q[1], 0) / S.G.pts.length;
+  const kand = [];
+  for (let x = 0.5; x < l; x += 0.5) for (let y = 0.5; y < b; y += 0.5) kand.push([x, y, Math.hypot(x - cx, y - cy)]);
+  kand.sort((p1, p2) => p1[2] - p2[2]);
+  const v = kand.find(([x, y]) => past(x, y));
+  if (v) { it.x = v[0]; it.y = v[1]; return true; }
+  it.x = r2(cx); it.y = r2(cy); return false;
 }
 
 // ---------- Elementen ----------
@@ -360,9 +572,12 @@ function voegToe(k) {
     if (k === "uitgang") it.breedte = kk.breedte;
     S.I.items.push(it);
   } else {
-    const { l, b } = S.G, n = S.G.items.length;
-    const it = { id: uid++, k, naam: "", x: Math.min(l - 1, 1.5 + ((n * 2.5) % Math.max(3, l - 3))), y: b / 2, w: kk.w || 0, l: kk.l || 0, rot: 0 };
-    if (kk.f === "deur") { it.y = b; it.open = "buiten"; klikAanWand(it); }
+    const { l, b } = S.G;
+    const it = { id: uid++, k, naam: "", x: l / 2, y: b, w: kk.w || 0, l: kk.l || 0, rot: 0 };
+    if (kk.f === "deur") {
+      it.open = "buiten";
+      if (!klikAanWand(it)) { $("msg").textContent = "Er is geen vrije plek meer in de wanden voor nog een " + kk.n.toLowerCase() + " van " + fmt(it.w) + " m."; uid--; return; }
+    } else if (!vrijePlek(it)) $("msg").textContent = "Er is geen vrije plek meer: het nieuwe element staat in het midden. Schuif het op zijn plaats.";
     S.G.items.push(it);
   }
   kies(uid - 1); bewaar();
@@ -437,7 +652,38 @@ function afstandTotRect(p, r) {
   const x = dx * Math.cos(a) - dy * Math.sin(a), y = dx * Math.sin(a) + dy * Math.cos(a);
   return Math.hypot(Math.max(0, Math.abs(x) - r.w / 2), Math.max(0, Math.abs(y) - r.l / 2));
 }
-function rectsOverlappen(r1, r2) { return puntenIn(r1, 0.5).some((p) => binnenRect(p, r2)) || puntenIn(r2, 0.5).some((p) => binnenRect(p, r1)); }
+// marge m: vlakken die elkaar enkel raken (tot m meter) tellen niet als overlap.
+function rectsOverlappen(r1, r2, m) { const st = m != null ? 0.25 : 0.5, e = -(m || 0); return puntenIn(r1, st).some((p) => binnenRect(p, r2, e)) || puntenIn(r2, st).some((p) => binnenRect(p, r1, e)); }
+
+// Langste weg naar de dichtste nooduitgang, binnen de ruimte (rond hoeken heen bij een niet-bolle vorm).
+function isBol(p) { let t = 0; for (let i = 0; i < p.length; i++) { const a = p[i], b = p[(i + 1) % p.length], c = p[(i + 2) % p.length]; const cr = (b[0] - a[0]) * (c[1] - b[1]) - (b[1] - a[1]) * (c[0] - b[0]); if (Math.abs(cr) < 1e-9) continue; if (!t) t = Math.sign(cr); else if (Math.sign(cr) !== t) return false; } return true; }
+let evacMemo = { k: "", v: 0 };
+function evacuatieAfstand(nood) {
+  const key = JSON.stringify([S.G.pts, nood.map((d) => [d.x, d.y])]);
+  if (evacMemo.k === key) return evacMemo.v;
+  const p = S.G.pts, bol = isBol(p), V = bol ? [] : p;
+  const zicht = (a, b) => { if (bol) return true; const L = Math.hypot(b[0] - a[0], b[1] - a[1]), n = Math.max(2, Math.ceil(L / 0.4)); for (let i = 1; i < n; i++) { const t = i / n; if (!binnenG([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t], 0.02)) return false; } return true; };
+  const D = nood.map((d) => { // Dijkstra over de hoekpunten
+    const q = [d.x, d.y], dist = V.map((v) => (zicht(q, v) ? Math.hypot(v[0] - q[0], v[1] - q[1]) : Infinity)), klaar = V.map(() => false);
+    for (let r = 0; r < V.length; r++) {
+      let m = -1; for (let i = 0; i < V.length; i++) if (!klaar[i] && (m < 0 || dist[i] < dist[m])) m = i;
+      if (m < 0 || dist[m] === Infinity) break; klaar[m] = true;
+      for (let j = 0; j < V.length; j++) if (!klaar[j] && zicht(V[m], V[j])) dist[j] = Math.min(dist[j], dist[m] + Math.hypot(V[j][0] - V[m][0], V[j][1] - V[m][1]));
+    }
+    return { q, dist };
+  });
+  let slechtst = 0;
+  for (let x = 0.5; x < S.G.l; x += 1) for (let y = 0.5; y < S.G.b; y += 1) {
+    const q = [x, y]; if (!inVorm(q)) continue;
+    let best = Infinity;
+    for (const { q: dq, dist } of D) {
+      if (zicht(q, dq)) best = Math.min(best, Math.hypot(dq[0] - x, dq[1] - y));
+      else V.forEach((v, i) => { if (dist[i] < best && zicht(q, v)) best = Math.min(best, dist[i] + Math.hypot(v[0] - x, v[1] - y)); });
+    }
+    slechtst = Math.max(slechtst, best);
+  }
+  evacMemo = { k: key, v: slechtst }; return slechtst;
+}
 
 // ---------- Controles ----------
 // {stap, ok: true|false|null (advies, blokkeert niet), t, n (norm met bron)}
@@ -500,8 +746,8 @@ function controles(plan) {
     const sa = norm("stroomgroep_afstand_m");
     if (sa && stroom.length && tenten.length) C(1, stroom.every((s) => tenten.every((t) => afstandTotRect(lokaal(s.lat, s.lng), t) >= sa.waarde)), "Stroomgroep minstens " + fmt(sa.waarde) + " m van de tent", sa);
   } else {
-    const { l, b } = S.G, it = (k) => S.G.items.filter((i) => i.k === k), nood = it("nooduitgang"), deuren = [...it("deur"), ...nood];
-    C(0, l > 0 && b > 0, "Binnenmaten ingevuld: " + fmt(l) + " × " + fmt(b) + " m");
+    const { l, b } = S.G, it = (k) => S.G.items.filter((i) => i.k === k), nood = it("nooduitgang"), deuren = [...it("deur"), ...nood], opp = oppG();
+    C(0, opp > 0 && vormOk(S.G.pts), "Vorm en binnenmaten ingevuld: " + fmt(opp) + " m²" + (isRechthoek() ? " (" + fmt(l) + " × " + fmt(b) + " m)" : ", " + S.G.pts.length + " wanden"));
     C(0, !!S.G.mat.trim(), "Soort ruimte en materiaal vermeld");
     const nu = aantalUitgangen(P);
     C(1, nu ? nood.length >= nu.aantal : nood.length >= 1, nu ? "Minstens " + nu.aantal + " nooduitgang" + (nu.aantal > 1 ? "en" : "") + " voor " + P + " personen" : "Nooduitgangen aangeduid", nu && nu.bron);
@@ -509,24 +755,31 @@ function controles(plan) {
     if (nood.length && cm) C(1, nood.reduce((s, x) => s + x.w, 0) * 100 >= P * cm.waarde, "Samen minstens " + fmt((P * cm.waarde) / 100) + " m uitgangsbreedte (" + fmt(cm.waarde) + " cm per persoon)", cm);
     if (nood.length && bm) C(1, nood.every((x) => x.w >= bm.waarde), "Elke nooduitgang minstens " + fmt(bm.waarde) + " m breed", bm);
     if (nood.length) C(1, nood.every((d) => d.open === "buiten"), "Nooduitgangen draaien naar buiten");
+    if (deuren.length) {
+      C(1, deuren.every((d) => afstRand([d.x, d.y]) <= 0.05), "Elke deur zit in een wand");
+      const opElkaar = deuren.some((d, i) => deuren.some((e, j) => j > i && Math.hypot(d.x - e.x, d.y - e.y) < (d.w + e.w) / 2 - 0.01 && Math.abs(((d.rot - e.rot) % 180 + 180) % 180) < 1));
+      C(1, !opElkaar, "Geen deuren over elkaar");
+    }
     const ea = norm("evacuatieafstand_max_m");
     if (ea && nood.length) {
-      let slechtst = 0;
-      for (let x = 0.5; x < l; x += 1) for (let y = 0.5; y < b; y += 1) slechtst = Math.max(slechtst, Math.min(...nood.map((d) => Math.hypot(d.x - x, d.y - y))));
-      C(1, slechtst <= ea.waarde, "Van overal minder dan " + fmt(ea.waarde) + " m tot een nooduitgang (nu " + fmt(slechtst) + " m)", ea);
+      const slechtst = evacuatieAfstand(nood);
+      C(1, slechtst <= ea.waarde, "Van overal minder dan " + fmt(ea.waarde) + " m tot een nooduitgang, langs de wanden gemeten (nu " + fmt(slechtst) + " m)", ea);
     }
     const voorDeur = (d) => { const a = (d.rot * Math.PI) / 180; return { cx: d.x - Math.sin(a) * -d.w / 2, cy: d.y + Math.cos(a) * -d.w / 2, w: d.w, l: d.w, rot: d.rot }; };
     const obst = S.G.items.filter((i) => KAT_G[i.k].f === "rect").map((o) => ({ cx: o.x, cy: o.y, w: o.w, l: o.l, rot: o.rot }));
     if (deuren.length) C(2, !deuren.some((d) => obst.some((o) => rectsOverlappen(voorDeur(d), o))), "Niets staat vlak voor een uitgang (eigen controle: vrije ruimte zo diep als de deur breed is)");
-    C(2, !obst.some((o) => puntenIn(o, 0.5).some((p) => p[0] < 0 || p[1] < 0 || p[0] > l || p[1] > b)), "Alles staat binnen de ruimte");
-    const bl = norm("blustoestellen"), opp = l * b;
+    C(2, !obst.some((o, i) => obst.some((q, j) => j > i && rectsOverlappen(o, q, 0.05))), "Niets van de opstelling staat over elkaar");
+    C(2, !obst.some((o) => puntenIn(o, 0.25).some((q) => !binnenG(q, 0.01))), "Alles staat binnen de ruimte");
+    const bl = norm("blustoestellen");
     const nodig = bl && bl.per_m2 ? Math.max(bl.min || 1, Math.ceil(opp / bl.per_m2)) : 1;
     C(3, it("blus").length >= nodig, (bl && bl.per_m2 ? "Minstens " + nodig + " blustoestel" + (nodig > 1 ? "len" : "") + " (1 per " + fmt(bl.per_m2) + " m², ruimte " + fmt(opp) + " m²)" : "Blustoestellen aangeduid"), bl);
     if (nood.length) C(3, nood.every((d) => it("nood").some((n) => Math.hypot(n.x - d.x, n.y - d.y) <= 2)), "Noodverlichting bij elke nooduitgang");
-    C(3, !it("stroom").some((s) => s.x > 0 && s.x < l && s.y > 0 && s.y < b), "Stroomvoorziening buiten de tijdelijke inrichting");
-    if (it("blus").length) C(3, it("blus").every((x) => x.x >= -0.3 && x.y >= -0.3 && x.x <= l + 0.3 && x.y <= b + 0.3), "Blustoestellen staan in de ruimte");
+    // Een tent is een tijdelijke inrichting: de stroomvoorziening staat erbuiten. In een zaal mag de aansluiting binnen.
+    const isTent = S.d.situatie === "tent" || /tent/i.test(S.G.mat || "");
+    if (isTent) C(3, !it("stroom").some((s) => inVorm([s.x, s.y]) && afstRand([s.x, s.y]) > 0.05), "Stroomvoorziening buiten de tent (tijdelijke inrichting)");
+    if (it("blus").length) C(3, it("blus").every((x) => binnenG([x.x, x.y], 0.3)), "Blustoestellen staan in de ruimte");
     const tm = tentMaten();
-    if (tm && /tent/i.test(S.G.mat || "tent")) C(0, zelfdeMaten([l, b], tm), "Maten komen overeen met de tent uit je aanvraag (" + fmt(tm[0]) + " × " + fmt(tm[1]) + " m)");
+    if (tm && isTent) C(0, isRechthoek() && zelfdeMaten([l, b], tm), "Rechthoekig, met de maten van de tent uit je aanvraag (" + fmt(tm[0]) + " × " + fmt(tm[1]) + " m)");
   }
   // Klopt het plan met wat je in de aanvraag invulde?
   for (const v of verwachtUitAanvraag(plan)) C(v.stap, v.ok, v.t);
@@ -545,7 +798,7 @@ function kerncijfers(plan) {
       it("blus").length + " blustoestel(len)");
   } else {
     const it = (k) => S.G.items.filter((i) => i.k === k), n = it("nooduitgang");
-    r.push(P + " personen", "ruimte " + fmt(S.G.l) + " × " + fmt(S.G.b) + " m (" + fmt((S.G.l * S.G.b) / P) + " m² per persoon)",
+    r.push(P + " personen", "ruimte " + fmt(oppG()) + " m²" + (isRechthoek() ? " (" + fmt(S.G.l) + " × " + fmt(S.G.b) + " m)" : " (" + S.G.pts.length + " wanden)") + " (" + fmt(oppG() / P) + " m² per persoon)",
       n.length + " nooduitgang(en), samen " + fmt(n.reduce((s, x) => s + x.w, 0)) + " m", it("deur").length + " andere deur(en)",
       it("blus").length + " blustoestel(len)", it("nood").length + " noodverlichting");
   }
@@ -614,7 +867,21 @@ function tekenStap() {
   // velden
   let v = "";
   if (stap.veld === "terrein") v = '<div style="display:flex;flex-direction:column;gap:10px"><label for="f-adres">Adres<input id="f-adres" list="f-adreslijst" autocomplete="off" placeholder="Straat en nummer, gemeente" value="' + esc(S.d.adres || "") + '"><datalist id="f-adreslijst"></datalist></label><button class="btn" id="zoek" type="button">Zoek op de kaart</button><label for="f-pers">Personen tegelijk op het drukste moment<input id="f-pers" type="number" min="' + minPersonen() + '" value="' + S.personen + '">' + (minPersonen() > 1 ? '<small>Minstens ' + minPersonen() + ', zoals in je aanvraag. Meer mag.</small>' : "") + '</label></div>';
-  if (stap.veld === "ruimte") v = '<div style="display:flex;flex-direction:column;gap:10px"><div class="r2"><label for="g-l">Lengte (m)<input id="g-l" type="number" min="2" step="0.5" value="' + S.G.l + '"></label><label for="g-b">Breedte (m)<input id="g-b" type="number" min="2" step="0.5" value="' + S.G.b + '"></label></div><label for="g-mat">Soort ruimte en materiaal<input id="g-mat" value="' + esc(S.G.mat) + '" placeholder="bv. tent met PVC-zeil, of zaal"></label><label for="g-pers">Personen tegelijk op het drukste moment<input id="g-pers" type="number" min="' + minPersonen() + '" value="' + S.personen + '">' + (minPersonen() > 1 ? '<small>Minstens ' + minPersonen() + ', zoals in je aanvraag. Meer mag.</small>' : "") + '</label></div>';
+  if (stap.veld === "ruimte") {
+    const rh = isRechthoek(), p = S.G.pts;
+    let vh = rh
+      ? '<div class="r2"><label for="g-l">Lengte (m)<input id="g-l" type="number" min="2" step="0.5" value="' + S.G.l + '"></label><label for="g-b">Breedte (m)<input id="g-b" type="number" min="2" step="0.5" value="' + S.G.b + '"></label></div>'
+      : '<p class="hint" style="margin:0">Oppervlakte <b>' + fmt(oppG()) + " m²</b> · " + p.length + " wanden · buitenmaten " + fmt(S.G.l) + " × " + fmt(S.G.b) + " m</p>";
+    if (vsel && vsel.t === "e" && wandenG()[vsel.i]) {
+      const [a, c] = wandenG()[vsel.i];
+      vh += '<div class="r2"><label for="g-wl">Lengte van deze wand (m)<input id="g-wl" type="number" min="0.5" step="0.1" value="' + r2(Math.hypot(c[0] - a[0], c[1] - a[1])) + '"></label><button class="btn" id="g-split" type="button" style="align-self:end">Wand opsplitsen</button></div>';
+    } else if (vsel && vsel.t === "v" && p[vsel.i]) {
+      vh += '<div class="r2"><button class="btn" id="g-insp" type="button">Hoek inspringen</button>' + (p.length > 3 ? '<button class="btn" id="g-weg" type="button">Hoekpunt weg</button>' : "") + "</div>";
+    } else vh += '<p class="hint" style="margin:0">Klik een hoekpunt of een wand aan voor meer opties.</p>';
+    vh += '<label for="g-recht" style="display:flex;flex-direction:row;align-items:center;gap:8px;font-weight:500"><input id="g-recht" type="checkbox"' + (S.G.recht ? " checked" : "") + ' style="width:auto"> Rechte hoeken behouden</label>';
+    if (!rh) vh += '<button class="btn" id="g-rh" type="button">Terug naar een rechthoek</button>';
+    v = '<div style="display:flex;flex-direction:column;gap:10px">' + vh + '<label for="g-mat">Soort ruimte en materiaal<input id="g-mat" value="' + esc(S.G.mat) + '" placeholder="bv. tent met PVC-zeil, of zaal"></label><label for="g-pers">Personen tegelijk op het drukste moment<input id="g-pers" type="number" min="' + minPersonen() + '" value="' + S.personen + '">' + (minPersonen() > 1 ? '<small>Minstens ' + minPersonen() + ', zoals in je aanvraag. Meer mag.</small>' : "") + '</label></div>';
+  }
   $("stapvelden").innerHTML = v;
   if ($("zoek")) $("zoek").addEventListener("click", zoekAdres);
   if ($("f-adres")) {
@@ -622,8 +889,15 @@ function tekenStap() {
     $("f-adres").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); zoekAdres(); } });
   }
   for (const id of ["f-pers", "g-pers"]) if ($(id)) $(id).addEventListener("change", () => { S.personen = Math.max(minPersonen(), +$(id).value || 1); $(id).value = S.personen; tekenControles(); bewaar(); });
-  const gu = () => { S.G.l = Math.max(2, +$("g-l").value || S.G.l); S.G.b = Math.max(2, +$("g-b").value || S.G.b); S.G.mat = $("g-mat").value; S.G.items.filter((i) => KAT_G[i.k].f === "deur").forEach(klikAanWand); tekenPlan(); tekenControles(); bewaar(); };
-  for (const id of ["g-l", "g-b", "g-mat"]) if ($(id)) $(id).addEventListener("input", gu);
+  const gu = () => { const l = Math.max(2, +$("g-l").value || S.G.l), b = Math.max(2, +$("g-b").value || S.G.b); S.G.pts = rechthoek(l, b); normaliseer(); deurenInWand(); tekenPlan(); tekenControles(); bewaar(); };
+  for (const id of ["g-l", "g-b"]) if ($(id)) $(id).addEventListener("input", gu);
+  if ($("g-mat")) $("g-mat").addEventListener("input", () => { S.G.mat = $("g-mat").value; tekenControles(); bewaar(); });
+  if ($("g-wl")) $("g-wl").addEventListener("change", () => wandLengte(vsel.i, +$("g-wl").value));
+  if ($("g-split")) $("g-split").addEventListener("click", () => wandSplitsen(vsel.i));
+  if ($("g-insp")) $("g-insp").addEventListener("click", () => hoekInspringen(vsel.i));
+  if ($("g-weg")) $("g-weg").addEventListener("click", () => hoekWeg(vsel.i));
+  if ($("g-recht")) $("g-recht").addEventListener("change", () => { S.G.recht = $("g-recht").checked; bewaar(); });
+  if ($("g-rh")) $("g-rh").addEventListener("click", () => { vsel = null; vormZet(rechthoek(S.G.l, S.G.b)); });
   // werkbalk bij het plan
   let t = (stap.el || []).map((k) => '<button type="button" data-k="' + k + '"><span class="sw" style="background:' + KAT[S.actief][k].c + '"></span>' + esc(KAT[S.actief][k].n) + ' <span class="plus">+</span></button>').join("");
   if (stap.maat) t += '<button type="button" id="maat" class="' + (maatModus ? "aan" : "") + '">Maatlijn</button>';
@@ -633,7 +907,7 @@ function tekenStap() {
   $("opslaanwrap").hidden = !stap.controle;
   $("lijstwrap").hidden = !!stap.controle;
 }
-function naarStap(i) { S.stap[S.actief] = Math.max(0, Math.min(STAPPEN[S.actief].length - 1, i)); sel = null; maatModus = false; banner(null); allesTekenen(); bewaar(); }
+function naarStap(i) { S.stap[S.actief] = Math.max(0, Math.min(STAPPEN[S.actief].length - 1, i)); sel = null; vsel = null; maatModus = false; banner(null); allesTekenen(); bewaar(); }
 function tekenPlan() { if (S.actief === "inplanting") tekenKaart(); else tekenGrondplan(); }
 function allesTekenen() { tekenStap(); tekenPlan(); tekenLijst(); tekenControles(); if (S.actief === "inplanting") { controleerGemeente(); laadGebouwen(); } }
 function wisselPlan(p) {
@@ -835,12 +1109,22 @@ async function maakBlad(plan) {
     schaal = [50, 100, 200, 500].find((s) => ((l + 4) * 1000) / s <= VAK.w && ((b + 4) * 1000) / s <= VAK.h) || 500;
     const ox = VAK.x + (VAK.w - (l * 1000) / schaal) / 2, oy = VAK.y + (VAK.h - (b * 1000) / schaal) / 2, u = 1000 / schaal;
     toMm = (p) => [ox + p[0] * u, oy + p[1] * u];
+    const vormPad = () => { g.beginPath(); S.G.pts.forEach((q, i) => { const m = toMm(q); if (i) g.lineTo(P(m[0]), P(m[1])); else g.moveTo(P(m[0]), P(m[1])); }); g.closePath(); };
+    g.save(); vormPad(); g.clip();
     g.strokeStyle = "#e4e6ee"; g.lineWidth = P(0.1);
     for (let x = 0; x <= l; x++) { g.beginPath(); g.moveTo(P(ox + x * u), P(oy)); g.lineTo(P(ox + x * u), P(oy + b * u)); g.stroke(); }
     for (let y = 0; y <= b; y++) { g.beginPath(); g.moveTo(P(ox), P(oy + y * u)); g.lineTo(P(ox + l * u), P(oy + y * u)); g.stroke(); }
-    g.strokeStyle = "#1a1d2b"; g.lineWidth = P(0.8); g.strokeRect(P(ox), P(oy), P(l * u), P(b * u));
-    tekst(g, fmt(l) + " m", P(ox + (l * u) / 2), P(oy - 3), P(3), "center");
-    g.save(); g.translate(P(ox - 3), P(oy + (b * u) / 2)); g.rotate(-Math.PI / 2); tekst(g, fmt(b) + " m", 0, 0, P(3), "center"); g.restore();
+    g.restore();
+    g.strokeStyle = "#1a1d2b"; g.lineWidth = P(0.8); g.lineJoin = "miter"; vormPad(); g.stroke();
+    // maat van elke wand, aan de buitenkant
+    for (const [a, c] of wandenG()) {
+      const L = Math.hypot(c[0] - a[0], c[1] - a[1]); if (L < 0.01) continue;
+      const ux = (c[0] - a[0]) / L, uy = (c[1] - a[1]) / L, mx = (a[0] + c[0]) / 2, my = (a[1] + c[1]) / 2;
+      let nx = uy, ny = -ux; if (inVorm([mx + nx * 0.05, my + ny * 0.05])) { nx = -nx; ny = -ny; }
+      let hoek = Math.atan2(uy, ux); if (hoek > Math.PI / 2) hoek -= Math.PI; if (hoek <= -Math.PI / 2) hoek += Math.PI;
+      const m = toMm([mx, my]);
+      g.save(); g.translate(P(m[0] + nx * 3.2), P(m[1] + ny * 3.2)); g.rotate(hoek); tekst(g, fmt(L) + " m", 0, 0, P(3), "center", "#1a1d2b", "500"); g.restore();
+    }
     for (const it of S.G.items) {
       const k = KAT_G[it.k], c = toMm([it.x, it.y]);
       g.save(); g.translate(P(c[0]), P(c[1])); g.rotate((it.rot * Math.PI) / 180);
@@ -907,7 +1191,7 @@ function titelblok(g, P, plan, schaal) {
   rij("Plaats", [S.d.plek, S.d.adres || S.d.gemeente].filter(Boolean).join(", "));
   rij("Datum evenement", S.d.datum);
   rij("Personen tegelijk", String(S.personen));
-  if (plan === "grondplan") rij("Ruimte", (S.G.mat || "") + " · " + fmt(S.G.l) + " × " + fmt(S.G.b) + " m");
+  if (plan === "grondplan") rij("Ruimte", (S.G.mat ? S.G.mat + " · " : "") + fmt(oppG()) + " m²" + (isRechthoek() ? " (" + fmt(S.G.l) + " × " + fmt(S.G.b) + " m)" : " (" + S.G.pts.length + " wanden, " + fmt(S.G.l) + " × " + fmt(S.G.b) + " m buitenmaten)"));
   rij("Dossier", DEMO ? "demo" : AUTH.id);
   rij("Schaal", "1/" + schaal + " op A3 · noorden boven");
   rij("Opgesteld door", BEHEER ? "evenementaanvragen.be, in opdracht van de organisator" : "de organisator");
@@ -969,7 +1253,7 @@ async function opslaan(cv) {
   const b = $("opslaan"); b.disabled = true; $("msg").textContent = "Bezig met opslaan…";
   try {
     const data = maakPdf(cv).output("datauristring").split(",")[1];
-    const plan = S.actief === "inplanting" ? { items: S.I.items, maten: S.I.maten, center: S.I.center } : { ruimte: { l: S.G.l, b: S.G.b, mat: S.G.mat }, items: S.G.items };
+    const plan = S.actief === "inplanting" ? { items: S.I.items, maten: S.I.maten, center: S.I.center } : { ruimte: { l: S.G.l, b: S.G.b, mat: S.G.mat, pts: S.G.pts, recht: S.G.recht, m2: Math.round(oppG() * 10) / 10 }, items: S.G.items };
     const r = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify({ actie: "plan", id: AUTH.id, email: AUTH.email, beheer: AUTH.beheer, soort: S.actief, personen: S.personen, pdf: data, plan, controles: controles(S.actief), toelichting: $("toel") ? $("toel").value : "", verklaring: !BEHEER, kerncijfers: kerncijfers(S.actief) }) });
     const j = await r.json(); if (!j.ok) throw new Error(j.error || "onbekende fout");

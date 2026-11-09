@@ -7274,11 +7274,22 @@
  {
   "gemeente": "Bonheiden",
   "provincie": "Antwerpen",
-  "status": "onbekend",
-  "base": null,
-  "extra": [],
-  "termijnTekst": "Geen algemene termijn vermeld. Buurtfeest (wijkfeest) met ondersteuning: 'minimum 6 weken op voorhand' / 'minimum zes weken voor het feest' aanvragen bij het college.",
-  "note": "Enkel voor buurt-/wijkfeesten staat een termijn (6 weken). Voor andere evenementen geeft de gemeentesite geen termijn; Eaglebe-handleiding (PDF) niet leesbaar (robots-blokkade). Contact opnemen met het evenementenloket (enkel op afspraak). Aanvraag verplicht bij openbaar of privé evenement met 100+ aanwezigen, of bij inname openbaar domein, geluid >85 dB(A), einduur na 22.00 u, tijdelijke verkeersverordening (straatafsluiting, parkeerverbod), sterke drank, tijdelijke wegwijzers/promoborden. Wegwerpverpakkingen voor dranken verboden op publieke evenementen. Fuifcharter voor jongerenfuiven. Retributie voor openbaar domein en nutsvoorzieningen.",
+  "status": "ok",
+  "base": {
+   "*": [
+    6,
+    "w"
+   ]
+  },
+  "extra": [
+   {
+    "minVisitors": 501,
+    "n": 3,
+    "unit": "m"
+   }
+  ],
+  "termijnTekst": "Klein evenement (tot 500 personen): 6 weken vooraf via Eaglebe. Groter evenement (meer dan 500 bezoekers tegelijk): minstens 3 maanden vooraf, met veiligheidsoverleg. Buurtfeest/wijkfeest: 6 weken.",
+  "note": "Aanvraag verplicht bij openbaar of privé evenement met 100+ aanwezigen, of bij inname openbaar domein, geluid >85 dB(A), einduur na 22.00 u, tijdelijke verkeersverordening (straatafsluiting, parkeerverbod), sterke drank, tijdelijke wegwijzers/promoborden. Wegwerpverpakkingen voor dranken verboden op publieke evenementen. Fuifcharter voor jongerenfuiven. Retributie voor openbaar domein en nutsvoorzieningen. | Mail evenementenloket 9/11/2026: tot 500 personen 6 weken; meer dan 500 tegelijk 3 maanden met veiligheidsoverleg. Termijnen staan nog niet in een reglement (in voorbereiding) maar zitten in de Eaglebe-modules; de gemeente overweegt ze op de webpagina te zetten.",
   "platform": "Eaglebe",
   "kanaal": "Online aanvraag via Eaglebe (account aanmaken, bij voorkeur met algemeen e-mailadres van de vereniging).",
   "link": "https://app.eaglebe.com/auth/start",
@@ -7287,7 +7298,8 @@
    "https://www.bonheiden.be/evenementen-organiseren",
    "https://www.bonheiden.be/subsidie-voor-wijkfeest",
    "https://www.bonheiden.be/product/1459/uitleenmateriaal",
-   "https://www.bonheiden.be/aankondigingsborden-voor-evenementen"
+   "https://www.bonheiden.be/aankondigingsborden-voor-evenementen",
+   "Mail evenementenloket Bonheiden, 9/11/2026"
   ],
   "bijzonder": [
    {
@@ -7374,7 +7386,9 @@
    ],
    "zekerheid": "hoog"
   },
-  "vrijstelling": []
+  "vrijstelling": [],
+  "citaat": "« De aanvraag voor de gemeente Bonheiden voor kleine evenementen tot 500 personen bedraagt 6 weken. » / « Voor grotere evenementen met > 500 bezoekers tegelijkertijd is een veiligheidsoverleg noodzakelijk, is de minimum aanvraag 3 maanden. » (mail evenementenloket 9/11/2026)",
+  "navraag": "beantwoord 9/11/2026"
  },
  {
   "gemeente": "Boom",
@@ -18308,11 +18322,16 @@
  {
   "gemeente": "Lummen",
   "provincie": "Limburg",
-  "status": "onbekend",
-  "base": null,
+  "status": "ok",
+  "base": {
+   "*": [
+    6,
+    "w"
+   ]
+  },
   "extra": [],
-  "termijnTekst": "Geen algemene indieningstermijn voor evenementen gevonden op de gemeentesite of in het smartloketformulier. Wel: aanvraag buurtcheque/buurtfeest minstens 3 weken vooraf; aanvraag reclameborden langs gewestwegen bij AWV minimaal 21 dagen vooraf (en opnemen in de evenementenaanvraag).",
-  "note": "Pagina's 'Aanvraag evenement', 'Organisatie van evenementen', 'Zelf organiseren' en het smartloketformulier 'Vergunning evenement' vermelden geen termijn. Aanvraag nodig bij gebruik publieke ruimte/gemeentelijke voorzieningen, verkeersmaatregelen, geluid >85 dB(A), veiligheidsaspecten (groot publiek, springkastelen, vuurwerk, EHBO/beveiliging) en speciale activiteiten (optredens, tenten/podia, sport, optochten). Smartloketformulier heeft 11 stappen (o.a. Data, Locatie, Verkeer, Veiligheid, Materiaal); aanmelden met itsme/eID of 'verdergaan zonder aanmelden'. Geluid: 85-95 dB(A) vergunning via smartloket (tot 04u, meten en registreren), 95-100 dB(A) enkel bij hoge uitzondering (tot 02u, oordopjes, buren binnen 500 m verwittigen); metingen binnen 48 u na het evenement bezorgen. Reservatietool uitleenmateriaal (reservaties.lummen.be) geblokkeerd (robots). Termijn telefonisch na te vragen bij dienst Vrije Tijd.",
+  "termijnTekst": "Elk evenement minstens 6 weken vooraf via het smartloket (het formulier aanvaardt enkel data vanaf 6 weken later). Aanvraag buurtcheque/buurtfeest minstens 3 weken vooraf; reclameborden langs gewestwegen bij AWV minimaal 21 dagen vooraf.",
+  "note": "Pagina's 'Aanvraag evenement', 'Organisatie van evenementen', 'Zelf organiseren' en het smartloketformulier 'Vergunning evenement' vermelden geen termijn. Aanvraag nodig bij gebruik publieke ruimte/gemeentelijke voorzieningen, verkeersmaatregelen, geluid >85 dB(A), veiligheidsaspecten (groot publiek, springkastelen, vuurwerk, EHBO/beveiliging) en speciale activiteiten (optredens, tenten/podia, sport, optochten). Smartloketformulier heeft 11 stappen (o.a. Data, Locatie, Verkeer, Veiligheid, Materiaal); aanmelden met itsme/eID of 'verdergaan zonder aanmelden'. Geluid: 85-95 dB(A) vergunning via smartloket (tot 04u, meten en registreren), 95-100 dB(A) enkel bij hoge uitzondering (tot 02u, oordopjes, buren binnen 500 m verwittigen); metingen binnen 48 u na het evenement bezorgen. Reservatietool uitleenmateriaal (reservaties.lummen.be) geblokkeerd (robots). | Mail dienst vrije tijd 9/11/2026: 6 weken voor elk evenement, enkel digitaal via het smartloket; daar kan men enkel een datum van 6 weken of later ingeven.",
   "platform": "Smartloket (lummen.smartloket.be, onlinesmartcities)",
   "kanaal": "Digitaal via de evenementenknop in het Smartloket (formulier 'Vergunning evenement'), met stap-voor-stapbegeleiding en upload van documenten.",
   "link": "https://lummen.smartloket.be/smartloket/vergunning-evenement",
@@ -18328,7 +18347,8 @@
    "https://www.lummen.be/sport-en-vrije-tijd/zelf-organiseren/buurtfeesten",
    "https://www.lummen.be/sites/default/files/public/Lummen/Vrije_tijd/documenten/evenementen/Reglement%20buurtfeesten%20met%20uitleenmaterialen_1.pdf",
    "https://www.lummen.be/sport-en-vrije-tijd/zelf-organiseren/duurzaam-cateringmateriaal",
-   "https://www.lummen.be/uitleenmateriaal-voor-lummense-verenigingen"
+   "https://www.lummen.be/uitleenmateriaal-voor-lummense-verenigingen",
+   "Mail dienst vrije tijd Lummen, 9/11/2026"
   ],
   "bijzonder": [
    {
@@ -18446,7 +18466,9 @@
     "afgeleid": true,
     "nagekeken": "2026-11-09"
    }
-  ]
+  ],
+  "citaat": "« Wij rekenen op 6 weken voor elk evenement. » (mail dienst vrije tijd 9/11/2026)",
+  "navraag": "beantwoord 9/11/2026"
  },
  {
   "gemeente": "Maaseik",
