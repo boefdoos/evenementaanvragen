@@ -68,7 +68,7 @@ const STAPPEN = {
 };
 
 // ---------- Toestand ----------
-let S = null, sel = null, uid = 1, DEMO = false, AUTH = null, NORMEN = null, BEHEER = false;
+let S = null, sel = null, uid = 1, AUTH = null, NORMEN = null, BEHEER = false;
 // Welke plannen dit dossier nodig heeft, met de reden. Zelfde regels als de agent (skill, stap 4 punt 7):
 // inplantingsplan bij buiten, tent, openbaar domein, vanaf 500 bezoekers of als de gemeente het vraagt;
 // grondplan bij een tent of zaal (bij een zaal vraagt de brandweer het meestal), of als de gemeente het vraagt.
@@ -97,7 +97,7 @@ function nieuweStaat(d) {
     G: { l: sit === "zaal" ? 20 : tl, b: sit === "zaal" ? 12 : tb, mat: sit === "zaal" ? "" : "tent", items: [], pts: rechthoek(sit === "zaal" ? 20 : tl, sit === "zaal" ? 12 : tb), recht: true },
   };
 }
-const sleutel = () => "plantekenaar:" + (DEMO ? "demo" : (BEHEER ? "beheer:" : "") + AUTH.id);
+const sleutel = () => "plantekenaar:" + (BEHEER ? "beheer:" : "") + AUTH.id;
 function bewaar() { if (S) S.t = Date.now(); try { localStorage.setItem(sleutel(), JSON.stringify(S)); } catch (e) {} }
 // Het laatst opgeslagen plan uit het dossier (bv. aangepast door ons, of op een ander toestel getekend).
 function vanServer(s, laatste) {
@@ -124,7 +124,7 @@ function laad(d) {
 
 // Het aantal personen uit de aanvraag is het minimum: lager zou de eisen voor uitgangen versoepelen.
 // In de beheermodus mag Thomas lager gaan (bv. als de aanvraag zelf fout was).
-function minPersonen() { return BEHEER || DEMO ? 1 : Math.max(1, +(S && S.d && S.d.bezoekers) || 1); }
+function minPersonen() { return BEHEER ? 1 : Math.max(1, +(S && S.d && S.d.bezoekers) || 1); }
 
 // ---------- Normen ----------
 // normen.json: { gemeenten: {gemeente: zone}, zones: {zone: {...}}, strengste: {...} }; per parameter {waarde, bron, zone}.
@@ -602,6 +602,18 @@ function voegToe(k) {
   }
   kies(uid - 1); bewaar();
 }
+const VUILBAK = '<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/></svg>';
+const vuilbak = (naam) => '<button class="del" type="button" title="Verwijderen" aria-label="' + esc(naam) + ' verwijderen">' + VUILBAK + "</button>";
+// Opnieuw beginnen: het plan waarop je zit leeg maken (na bevestiging). Het andere plan blijft staan.
+function opnieuw() {
+  const naam = NAAM_PLAN[S.actief].toLowerCase();
+  if (!confirm("Opnieuw beginnen met het " + naam + "?\n\nAlles wat je erop tekende, wordt gewist. Dat kan je niet ongedaan maken.")) return;
+  const n = nieuweStaat(S.d);
+  if (S.actief === "inplanting") S.I = Object.assign(n.I, { center: S.I.center, zoom: S.I.zoom, gezocht: S.I.gezocht }); // de kaart blijft waar ze stond
+  else S.G = n.G;
+  S.stap[S.actief] = 0; sel = null; vsel = null; maatModus = false; banner(null); $("msg").textContent = "";
+  allesTekenen(); bewaar();
+}
 function kies(id, stil) { sel = id; if (stil) { tekenLijst(); return; } allesTekenen(); }
 function tekenLijst() {
   const st = STAPPEN[S.actief][S.stap[S.actief]];
@@ -609,10 +621,16 @@ function tekenLijst() {
   $("lijst").innerHTML = toon.map((it) => {
     const k = KAT[S.actief][it.k];
     const m = k.f === "rect" ? fmt(it.w) + " × " + fmt(it.l) + " m" : k.f === "deur" ? fmt(it.w) + " m" : it.k === "uitgang" ? fmt(it.breedte) + " m" : "";
-    return '<div class="item' + (sel === it.id ? " sel" : "") + '" data-id="' + it.id + '"><span class="sw" style="background:' + k.c + '"></span>' + esc(it.naam || k.n) + (m ? '<span class="maat">' + m + "</span>" : "") + "</div>";
-  }).join("") + (S.actief === "inplanting" && st.maat ? S.I.maten.map((m) => '<div class="item" data-maat="' + m.id + '"><span class="sw" style="background:#111"></span>Maatlijn<span class="maat">' + fmt(map.distance(m.a, m.b)) + " m · wissen</span></div>").join("") : "");
+    return '<div class="item' + (sel === it.id ? " sel" : "") + '" data-id="' + it.id + '"><span class="sw" style="background:' + k.c + '"></span>' + esc(it.naam || k.n) + (m ? '<span class="maat">' + m + "</span>" : "") + vuilbak(it.naam || k.n) + "</div>";
+  }).join("") + (S.actief === "inplanting" && st.maat ? S.I.maten.map((m) => '<div class="item" data-maat="' + m.id + '"><span class="sw" style="background:#111"></span>Maatlijn<span class="maat">' + fmt(map.distance(m.a, m.b)) + " m</span>" + vuilbak("maatlijn") + "</div>").join("") : "");
   $("lijst").querySelectorAll("[data-id]").forEach((d) => d.addEventListener("click", () => kies(+d.dataset.id)));
-  $("lijst").querySelectorAll("[data-maat]").forEach((d) => d.addEventListener("click", () => { S.I.maten = S.I.maten.filter((m) => m.id !== +d.dataset.maat); allesTekenen(); bewaar(); }));
+  $("lijst").querySelectorAll(".del").forEach((b) => b.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const d = b.closest(".item");
+    if (d.dataset.maat) S.I.maten = S.I.maten.filter((m) => m.id !== +d.dataset.maat);
+    else { const id = +d.dataset.id; if (S.actief === "inplanting") S.I.items = S.I.items.filter((i) => i.id !== id); else S.G.items = S.G.items.filter((i) => i.id !== id); if (sel === id) sel = null; }
+    allesTekenen(); bewaar();
+  }));
   const it = lijst().find((i) => i.id === sel), ed = $("edit");
   if (!it) { ed.innerHTML = ""; return; }
   const k = KAT[S.actief][it.k];
@@ -621,7 +639,7 @@ function tekenLijst() {
   if (it.k === "doorgang" && minZijde(it) > 0.5) h += '<p class="hint" style="margin:0">Minstens ' + fmt(minZijde(it)) + ' m breed: dat vraagt de brandweer. Smaller kan niet.</p>';
   if (k.f === "deur") h += '<div class="r2"><label for="e-w">Breedte (m)<input id="e-w" type="number" step="0.1" min="0.6" value="' + it.w + '"></label><label for="e-o">Draait<select id="e-o"><option value="buiten"' + (it.open === "buiten" ? " selected" : "") + '>naar buiten</option><option value="binnen"' + (it.open === "binnen" ? " selected" : "") + ">naar binnen</option></select></label></div>";
   if (it.k === "uitgang") h += '<label for="e-b">Vrije breedte (m)<input id="e-b" type="number" step="0.1" min="0.5" value="' + it.breedte + '"></label>';
-  h += '<div class="r2">' + (k.f === "rect" ? '<button class="btn" id="e-90" type="button" title="Sneltoets: R">Draai 90°</button>' : "") + '<button class="btn" id="e-del" type="button">Verwijderen</button></div></div>';
+  h += (k.f === "rect" ? '<div class="r2"><button class="btn" id="e-90" type="button" title="Sneltoets: R">Draai 90°</button></div>' : "") + "</div>";
   ed.innerHTML = h;
   const upd = () => {
     it.naam = $("e-naam").value;
@@ -637,10 +655,6 @@ function tekenLijst() {
   ed.querySelectorAll("input,select").forEach((i) => i.addEventListener("change", () => { upd(); if ($("e-w")) $("e-w").value = it.w; if ($("e-l")) $("e-l").value = it.l; }));
   ed.querySelectorAll("input").forEach((i) => i.addEventListener("input", upd));
   if ($("e-90")) $("e-90").addEventListener("click", () => draai90(it));
-  $("e-del").addEventListener("click", () => {
-    if (S.actief === "inplanting") S.I.items = S.I.items.filter((i) => i !== it); else S.G.items = S.G.items.filter((i) => i !== it);
-    sel = null; allesTekenen(); bewaar();
-  });
 }
 
 function draai90(it) {
@@ -713,7 +727,7 @@ function controles(plan) {
   if (plan === "inplanting") {
     const it = (k) => S.I.items.filter((i) => i.k === k);
     C(0, it("zone").length > 0, "Het terrein is aangeduid");
-    if (it("zone").length && S.d.gemeente && !DEMO && S.I.kaartGemeente && S.I.kaartGemeente !== "?") C(0, zelfdeGemeente(S.I.kaartGemeente), "Het terrein ligt in " + S.d.gemeente + (zelfdeGemeente(S.I.kaartGemeente) ? "" : " (nu getekend in " + S.I.kaartGemeente + ")"));
+    if (it("zone").length && S.d.gemeente && S.I.kaartGemeente && S.I.kaartGemeente !== "?") C(0, zelfdeGemeente(S.I.kaartGemeente), "Het terrein ligt in " + S.d.gemeente + (zelfdeGemeente(S.I.kaartGemeente) ? "" : " (nu getekend in " + S.I.kaartGemeente + ")"));
     if (isOD()) {
       C(0, innames().length > 0, innames().length ? "De inname van het openbaar domein is aangeduid (" + fmt(innameM2()) + " m²)" : "Duid aan welk stuk op openbaar domein ligt (\"Inname openbaar domein\")");
       const od = it("od");
@@ -969,7 +983,7 @@ function zelfdeGemeente(g) { return !S.d.gemeente || gemNorm(g) === gemNorm(S.d.
 let gemT = null;
 function controleerGemeente() {
   clearTimeout(gemT);
-  if (!S.d.gemeente || DEMO) return;
+  if (!S.d.gemeente) return;
   gemT = setTimeout(async () => {
     const z = S.I.items.filter((i) => i.k === "zone");
     if (!z.length) { if (S.I.kaartGemeente) { S.I.kaartGemeente = ""; tekenControles(); } return; }
@@ -1183,9 +1197,6 @@ async function maakBlad(plan) {
   schaalstok(g, P, schaal, VAK.x, VAK.y + VAK.h + 8);
   noordpijl(g, P, VAK.x + VAK.w - 10, VAK.y + 14);
   titelblok(g, P, plan, schaal);
-  // watermerk enkel in de demo
-  if (DEMO) { g.save(); g.translate(cv.width / 2, cv.height / 2); g.rotate(-Math.PI / 9); g.fillStyle = "rgba(255,90,78,0.16)";
-    g.font = "700 " + P(22) + "px 'Instrument Sans', Arial, sans-serif"; g.textAlign = "center"; g.fillText("DEMO – geen geldig plan", 0, 0); g.restore(); }
   return { canvas: cv, schaal };
 }
 function hexA(h, a) { const n = parseInt(h.slice(1), 16); return "rgba(" + (n >> 16) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")"; }
@@ -1223,7 +1234,7 @@ function titelblok(g, P, plan, schaal) {
   rij("Datum evenement", S.d.datum);
   rij("Personen tegelijk", String(S.personen));
   if (plan === "grondplan") rij("Ruimte", (S.G.mat ? S.G.mat + " · " : "") + fmt(oppG()) + " m²" + (isRechthoek() ? " (" + fmt(S.G.l) + " × " + fmt(S.G.b) + " m)" : " (" + S.G.pts.length + " wanden, " + fmt(S.G.l) + " × " + fmt(S.G.b) + " m buitenmaten)"));
-  rij("Dossier", DEMO ? "demo" : AUTH.id);
+  rij("Dossier", AUTH.id);
   rij("Schaal", "1/" + schaal + " op A3 · noorden boven");
   rij("Opgesteld door", BEHEER ? "evenementaanvragen.be, in opdracht van de organisator" : "de organisator");
   rij("Versie", new Date().toLocaleString("nl-BE", { day: "numeric", month: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" }));
@@ -1253,11 +1264,10 @@ async function tekenOpslaan() {
   const knop = BEHEER ? "Aangepast plan opslaan" : "Plan afwerken";
   w.innerHTML = '<div style="display:flex;flex-direction:column;gap:10px"><img class="voorbeeld" id="vb" alt="Voorbeeld van het plan op A3">' +
     (BEHEER ? '<label for="toel">Wat pasten we aan? (komt in de conceptmail aan de klant)<input id="toel" maxlength="500" placeholder="bv. tweede nooduitgang aan de achterkant toegevoegd"></label>' : "") +
-    (!BEHEER && !DEMO && ok ? '<label class="check" for="verklaring"><input type="checkbox" id="verklaring"> <span>Dit plan toont hoe het er op de dag echt zal staan: de opstelling, de maten en de uitgangen.</span></label>' : "") +
-    '<button class="btn primary" id="opslaan" type="button"' + (ok && !DEMO && BEHEER ? "" : " disabled") + ">" + knop + "</button>" +
-    (DEMO ? "" : '<button class="btn" id="downloadpdf" type="button">Download als pdf</button>') +
-    (DEMO ? '<p class="melding">In de demo kan je niet afwerken.</p>'
-      : !ok ? '<p class="melding">Los eerst alles in het rood op. Je kan terug naar een stap via de balk bovenaan.</p>'
+    (!BEHEER && ok ? '<label class="check" for="verklaring"><input type="checkbox" id="verklaring"> <span>Dit plan toont hoe het er op de dag echt zal staan: de opstelling, de maten en de uitgangen.</span></label>' : "") +
+    '<button class="btn primary" id="opslaan" type="button"' + (ok && BEHEER ? "" : " disabled") + ">" + knop + "</button>" +
+    '<button class="btn" id="downloadpdf" type="button">Download als pdf</button>' +
+    (!ok ? '<p class="melding">Los eerst alles in het rood op. Je kan terug naar een stap via de balk bovenaan.</p>'
       : BEHEER ? '<p class="melding">De pdf komt in de dossiermap. Er staat daarna een conceptmail met het plan klaar voor de klant.</p>'
       : '<p class="melding">Je plan gaat in je dossier en zo bij je aanvraag. We kijken alles na voor we indienen. Je kan het daarna nog aanpassen.</p>') + "</div>";
   const blad = await maakBlad(S.actief);
@@ -1273,14 +1283,13 @@ function maakPdf(cv) {
   pdf.addImage(cv.toDataURL("image/jpeg", 0.92), "JPEG", 0, 0, 420, 297);
   return pdf;
 }
-// De klant mag zijn plan altijd zelf bekijken en bewaren (na betaling; niet in de demo).
+// De klant mag zijn plan altijd zelf bekijken en bewaren (na betaling).
 function downloadPdf(cv) {
-  if (DEMO) return;
   try { maakPdf(cv).save(NAAM_PLAN[S.actief] + " – " + (AUTH.id || "plan") + (alleOk(S.actief) ? "" : " – ontwerp") + ".pdf"); }
   catch (e) { $("msg").textContent = "Downloaden lukte niet (" + e.message + ")."; }
 }
 async function opslaan(cv) {
-  if (DEMO || !alleOk(S.actief)) return;
+  if (!alleOk(S.actief)) return;
   if (!BEHEER && !($("verklaring") && $("verklaring").checked)) { $("msg").textContent = "Vink eerst aan dat het plan klopt met hoe het er op de dag zal staan."; return; }
   const b = $("opslaan"); b.disabled = true; $("msg").textContent = "Bezig met opslaan…";
   try {
@@ -1305,17 +1314,17 @@ async function start(d) {
   S.plannen = np.plannen; if (!S.plannen.includes(S.actief)) S.actief = S.plannen[0];
   $("nodig").innerHTML = "Nodig voor dit evenement: " + S.plannen.map((p) => "<b>" + NAAM_PLAN[p].toLowerCase() + "</b> (" + esc(np.redenen[p].join(", ")) + ")").join(" en ") + ".";
   $("nodig").title = S.plannen.filter((p) => np.citaat[p]).map((p) => d.gemeente + ": " + np.citaat[p]).join("\n");
-  $("dossierinfo").innerHTML = (DEMO ? '<span class="pill demo">Demo</span>' : (BEHEER ? '<span class="pill demo">Beheer</span>' : "") + '<span class="pill">' + esc(AUTH.id) + "</span>") + "<span>" + esc(d.evenement || "") + (d.gemeente ? " · " + esc(d.gemeente) : "") + "</span>";
+  $("dossierinfo").innerHTML = (BEHEER ? '<span class="pill beheer">Beheer</span>' : "") + '<span class="pill">' + esc(AUTH.id) + "</span>" + "<span>" + esc(d.evenement || "") + (d.gemeente ? " · " + esc(d.gemeente) : "") + "</span>";
   $("tabs").innerHTML = S.plannen.map((p) => '<button role="tab" type="button" data-plan="' + p + '">' + NAAM_PLAN[p] + "</button>").join("");
   $("tabs").hidden = S.plannen.length < 2;
   $("tabs").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => wisselPlan(b.dataset.plan)));
   $("terug").addEventListener("click", () => naarStap(S.stap[S.actief] - 1));
   $("verder").addEventListener("click", () => naarStap(S.stap[S.actief] + 1));
+  $("opnieuw").addEventListener("click", opnieuw);
   window.addEventListener("resize", () => { if (S.actief === "grondplan") tekenGrondplan(); });
   wisselPlan(S.actief);
   if (S.actief === "inplanting" && !S.I.gezocht && S.d.adres) setTimeout(zoekAdres, 300);
 }
-const DEMO_DOSSIER = { openbaar: "nee", evenement: "Lentefuif (demo)", gemeente: "Oostende", adres: "Wellingtonstraat 10, 8400 Oostende", datum: "zaterdag 17 april 2027", bezoekers: 300, situatie: "tent", tent: "20 x 10", organisator: "Jeugdhuis Voorbeeld" };
 async function login(id, email) {
   $("l-err").hidden = true; $("l-go").disabled = true;
   try {
@@ -1334,14 +1343,12 @@ let BEHEERSLEUTEL = null;
 try { if (q.get("beheer")) sessionStorage.setItem("plantekenaar-beheer", q.get("beheer")); BEHEERSLEUTEL = sessionStorage.getItem("plantekenaar-beheer"); } catch (e) { BEHEERSLEUTEL = q.get("beheer"); }
 if (q.get("beheer")) { q.delete("beheer"); history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "")); }
 BEHEER = !!BEHEERSLEUTEL;
-if (q.get("demo") !== null) { BEHEER = false; DEMO = true; start(DEMO_DOSSIER); }
-else {
+{
   $("login").hidden = false;
-  if (BEHEER) { $("l-mail").closest("label").hidden = true; $("l-demo").hidden = true; document.querySelector("#login h1").textContent = "Beheer: plan openen"; document.querySelector("#login .uitleg").textContent = "Geef het dossiernummer. Je opent het laatst opgeslagen plan."; }
+  if (BEHEER) { $("l-mail").closest("label").hidden = true; document.querySelector("#login h1").textContent = "Beheer: plan openen"; document.querySelector("#login .uitleg").textContent = "Geef het dossiernummer. Je opent het laatst opgeslagen plan."; }
   if (q.get("id")) $("l-id").value = q.get("id");
   let opgeslagen = null; try { opgeslagen = JSON.parse(sessionStorage.getItem("plantekenaar-login") || "null"); } catch (e) {}
   if (!BEHEER && opgeslagen && (!q.get("id") || q.get("id") === opgeslagen.id)) login(opgeslagen.id, opgeslagen.email);
   $("l-go").addEventListener("click", () => { const id = $("l-id").value.trim().toUpperCase(), em = $("l-mail").value.trim(); if (!id || (!em && !BEHEER)) { $("l-err").textContent = "Vul je dossiernummer en e-mail in."; $("l-err").hidden = false; return; } login(id, em); });
-  $("l-demo").addEventListener("click", () => { DEMO = true; history.replaceState(null, "", "?demo"); start(DEMO_DOSSIER); });
 }
 })();
