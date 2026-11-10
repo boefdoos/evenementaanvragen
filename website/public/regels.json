@@ -462,7 +462,10 @@
   "kanaal": "Online via Eaglebe",
   "link": "https://app.eaglebe.com/auth/start",
   "contact": "Dienst Evenementen – evenementen@blankenberge.be – 050 636 630",
-  "bron": "https://www.blankenberge.be/toelating-voor-het-organiseren-van-een-evenement",
+  "bron": [
+   "https://www.blankenberge.be/toelating-voor-het-organiseren-van-een-evenement",
+   "Mail Dienst Evenementen Blankenberge, 10/11/2026"
+  ],
   "termijnTekst": "Klein: 14 dagen; bijzondere muziekactiviteit: 15 dagen (22 in schoolvakanties); optocht/fuif/concert tot ±500: 28 dagen; groot: 2 maanden",
   "bijzonder": [
    {
@@ -523,7 +526,21 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een besloten feest of evenement op uitnodiging",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "een inname van het openbaar domein zonder publiek karakter loopt via de Dienst Inname Openbaar Domein",
+    "citaat": "\"Voor besloten feesten of evenementen op uitnodiging leveren wij geen vergunningen af. Wanneer deze doorgaan op privé domein is er sowieso geen vergunning nodig.\"",
+    "bron": "Mail Dienst Evenementen Blankenberge, 10/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-10"
+   }
+  ]
  },
  {
   "gemeente": "Bredene",
@@ -4802,15 +4819,16 @@
    ]
   },
   "extra": [],
-  "note": "Termijn bevestigd per mail (preventieadviseur, 4/11/2026): geen eigen reglement, de gemeente hanteert art. 2.9.1.2 van de zonale politieverordening van PZ Arro Ieper (één maand vooraf). 'Voor grotere evenementen verwachten we dat het evenement vroeger aangevraagd wordt'; geen vaste termijn of drempel, dus wij raden voor grote evenementen ruim vroeger aan.",
+  "note": "Termijn bevestigd per mail (preventieadviseur, 4/11/2026): geen eigen reglement, de gemeente hanteert art. 2.9.1.2 van de zonale politieverordening van PZ Arro Ieper (één maand vooraf). 'Voor grotere evenementen verwachten we dat het evenement vroeger aangevraagd wordt'; geen vaste termijn of drempel, dus wij raden voor grote evenementen ruim vroeger aan. Mail Vrije Tijd 10/11/2026: vragen over evenementen gaan naar ruimte@staden.be (Vrije Tijd beheert geen evenementen).",
   "platform": "RIHO",
   "kanaal": "Maxiformulier politiezone (RIHO)",
   "link": "https://vcs01.politiezoneriho.be/MAXIFORMULIER",
-  "contact": "Vrije Tijd – vrijetijd@staden.be – 051 70 82 04",
+  "contact": "Dienst Ruimte – ruimte@staden.be",
   "bron": [
    "Mail preventie Staden (dre.belloy@staden.be), 4/11/2026",
    "https://vleteren.be/sites/default/files/2022-01/zonale-politieverordening-openbare-orde.pdf",
-   "https://www.staden.be/product/224/evenementenloket"
+   "https://www.staden.be/product/224/evenementenloket",
+   "Mail Vrije Tijd Staden, 10/11/2026"
   ],
   "termijnTekst": "Publiek toegankelijke feesten en evenementen minstens één maand vooraf melden bij het gemeentebestuur (zonale politieverordening PZ Arro Ieper, art. 2.9.1.2; bevestigd door de gemeente per mail, 4/11/2026). Grotere evenementen vroeger aanvragen; wielerwedstrijden volgens de wettelijke termijnen.",
   "bijzonder": [
@@ -11517,12 +11535,13 @@
   "platform": "Flowlab (Evenementenkluis, mol.flowlab.be)",
   "kanaal": "Online aanvraag via de Evenementenkluis; deadlines worden daar automatisch aangegeven.",
   "link": "https://mol.flowlab.be/",
-  "contact": "Gemeente Mol (werkt op afspraak) – 2400@gemeentemol.be – 014 27 24 00",
+  "contact": "Dienst evenementen en veiligheid – evenementen@gemeentemol.be – 014 27 24 09",
   "bron": [
    "https://www.gemeentemol.be/evenement-organiseren",
    "https://www.gemeentemol.be/verkeersmaatregelen-bij-evenementen",
    "https://www.gemeentemol.be/rommel-of-ruilmarkt",
-   "https://www.gemeentemol.be/uitleendienst-feestmateriaal"
+   "https://www.gemeentemol.be/uitleendienst-feestmateriaal",
+   "Mail dienst evenementen en veiligheid Mol, 10/11/2026"
   ],
   "bijzonder": [
    {
@@ -11597,7 +11616,21 @@
     "https://www.gemeentemol.be/uitleendienst-feestmateriaal"
    ],
    "zekerheid": "middel"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement (besloten feest op uitnodiging)",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "de gemeente raadt aan de buren op de hoogte te brengen",
+    "citaat": "\"Klopt een privé evenement moet niet worden aangevraagd. Wel raden wij aan om de buren hiervan in kennis te stellen zo zijn zij op de hoogte en kunnen zij jullie contacteren wanneer er klachten zijn.\"",
+    "bron": "Mail dienst evenementen en veiligheid Mol, 10/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-10"
+   }
+  ]
  },
  {
   "gemeente": "Mortsel",
@@ -12946,7 +12979,7 @@
   },
   "extra": [],
   "termijnTekst": "Een evenement moet minstens drie maanden vooraf aangevraagd worden bij het college van burgemeester en schepenen. Aanvraagformulier: 'dien het ten laatste 3 maanden voor het evenement in.' Buurt- en straatfeesten: 'bij voorkeur drie maanden voor de datum van het feest'.",
-  "note": "Bij overschrijding van de termijn kan het evenement geweigerd worden. Buurtfeest zonder verkeersmaatregelen, parkeerverbod of inname openbaar domein: melding bij evenementenloket volstaat (geen aparte termijn vermeld). Toertochten over meerdere gemeenten: ook via e-loket Sport Vlaanderen; voor wielerwedstrijden geen specifieke termijn op de site gevonden (algemene 3 maanden aangehouden). Grondplan nodig voor tenten e.d. (anders mogelijk ongunstig advies HVZ Taxandria). Algemene voorwaarden worden vermeld als bijlage maar stonden niet bij de bestanden. Geen spoedprocedure gevonden.",
+  "note": "Bij overschrijding van de termijn kan het evenement geweigerd worden. Buurtfeest zonder verkeersmaatregelen, parkeerverbod of inname openbaar domein: melding bij evenementenloket volstaat (geen aparte termijn vermeld). Toertochten over meerdere gemeenten: ook via e-loket Sport Vlaanderen; voor wielerwedstrijden geen specifieke termijn op de site gevonden (algemene 3 maanden aangehouden). Grondplan nodig voor tenten e.d. (anders mogelijk ongunstig advies HVZ Taxandria). Algemene voorwaarden worden vermeld als bijlage maar stonden niet bij de bestanden. Geen spoedprocedure gevonden. Mail coördinator evenementen 10/11/2026: 'sommige private evenementen' = bv. een privéfeest in een niet-vergunde zaal (goedkeuring college); de meeste bepalingen staan in het UGP. Materiaal lenen enkel voor erkende verenigingen/organisaties.",
   "platform": "mail/pdf",
   "kanaal": "Pdf-aanvraagformulier invullen en mailen naar evenementen@rijkevorsel.be (ook af te halen aan het evenementenloket); materiaal apart via Flowlab.",
   "link": "https://www.rijkevorsel.be/sites/default/files/2026-08/Aanvraagformulier_Organisatie_evenementen_Rijkevorsel.pdf",
@@ -12960,7 +12993,8 @@
    "https://www.rijkevorsel.be/vrije-tijd/evenementen/niets-vergeten/verkeerssignalisatie",
    "https://www.rijkevorsel.be/vrije-tijd/evenementen/niets-vergeten/gebruik-elektriciteitskasten",
    "https://www.rijkevorsel.be/vrije-tijd/evenementen/promotie/lichtkrant-en-plakpalen",
-   "https://www.rijkevorsel.be/vrije-tijd/evenementen/materialen"
+   "https://www.rijkevorsel.be/vrije-tijd/evenementen/materialen",
+   "Mail coördinator evenementen Rijkevorsel, 10/11/2026"
   ],
   "bijzonder": [
    {
@@ -13092,7 +13126,22 @@
     "https://www.rijkevorsel.be/sites/default/files/2026-03/Richtlijnen_uitleen_materialen_2026-2031.pdf"
    ],
    "zekerheid": "hoog"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op privégrond, ook in een tent",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "andere": "op privégrond of in een vergunde zaal (een privéfeest in een niet-vergunde zaal vraagt wel een goedkeuring van het college)"
+    },
+    "nog_wel": "het feest moet wel gemeld worden bij het evenementenloket, en de regels over geluid, hinder en nachtlawaai blijven gelden",
+    "citaat": "\"Een privéfeest op privégrond (al dan niet in een tent) moet gemeld worden, dit moet niet aangevraagd worden.\"",
+    "bron": "Mail coördinator evenementen Rijkevorsel, 10/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-10"
+   }
+  ]
  },
  {
   "gemeente": "Rumst",
@@ -16423,7 +16472,8 @@
    "https://www.genk.be/organiseer-een-activiteit",
    "https://www.genk.be/uitleendienst",
    "https://www.genk.be/openbaar-domein",
-   "https://www.genk.be/promotie-voeren"
+   "https://www.genk.be/promotie-voeren",
+   "Mail Maatschappelijke Veiligheid Genk, 10/11/2026"
   ],
   "bijzonder": [
    {
@@ -16502,7 +16552,21 @@
     "https://www.genk.be/uitleendienst"
    ],
    "zekerheid": "laag"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest, ook in een openbaar gebouw of een zaal",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "de omgevingsnormen en de politieverordening 'overlast' (openbare rust) blijven gelden",
+    "citaat": "\"Het klopt inderdaad dat momenteel privé feesten, ongeacht of ze in een openbaar gebouw of besloten plaats doorgaan, niet moeten gemeld worden. Dit is een beleidskeuze.\"",
+    "bron": "Mail Maatschappelijke Veiligheid Genk, 10/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-10"
+   }
+  ]
  },
  {
   "gemeente": "Gingelom",
@@ -33926,7 +33990,7 @@
   },
   "extra": [],
   "termijnTekst": "Evenementen met impact op het openbaar domein en/of de openbare orde moeten 8 tot 12 weken voor de geplande datum aangevraagd worden via het digitaal evenementenloket Eaglebe.",
-  "note": "Bron geeft een bereik (8 tot 12 weken) zonder te zeggen wanneer welke termijn geldt: strengste (12 weken) genomen, daarom 'onzeker'. Geen onderscheid naar type of grootte. Afhankelijk van de risicograad kan een veiligheidsoverleg met organisator en veiligheidsdiensten ingepland worden. Vergunningen voor elektronisch versterkte muziek, sterke drank, inname openbaar domein en tijdelijke politieverordening (verkeersmaatregelen) lopen via het evenementenloket. Fuifcharter en pagina 'ontlenen van materiaal voor jeugdactiviteiten' niet gelezen (laatste gaf client_error).",
+  "note": "Bron geeft een bereik (8 tot 12 weken) zonder te zeggen wanneer welke termijn geldt: strengste (12 weken) genomen, daarom 'onzeker'. Geen onderscheid naar type of grootte. Afhankelijk van de risicograad kan een veiligheidsoverleg met organisator en veiligheidsdiensten ingepland worden. Vergunningen voor elektronisch versterkte muziek, sterke drank, inname openbaar domein en tijdelijke politieverordening (verkeersmaatregelen) lopen via het evenementenloket. Fuifcharter en pagina 'ontlenen van materiaal voor jeugdactiviteiten' niet gelezen (laatste gaf client_error). Checklist evenementenloket (mail 10/11/2026): aanvraag nodig zodra één van deze geldt: openbaar toegankelijk, inname openbaar domein, muziek luider dan 85 dB, muziek na 22 uur, verkeershinder, sterke drank, publiciteitsborden, tijdelijke constructies (feesttent, springkasteel, foodtruck, technische installatie), specifieke risico's (bbq, vuurwerk, kampvuur, vuurmanden, gasinstallatie). Tent groter dan 50 m²: windbelastings- en plaatsingsattest.",
   "platform": "Eaglebe",
   "kanaal": "Online via het digitaal evenementenloket op Eaglebe.",
   "link": "https://app.eaglebe.com/nl-be/new/event?client=c23d0bdc4cee98a1cbbb2757fbb6a58b",
@@ -33937,7 +34001,8 @@
    "https://www.opwijk.be/uitvoering",
    "https://www.opwijk.be/materialen-en-zalen-huren",
    "https://www.opwijk.be/geluidsmeetkit",
-   "https://www.opwijk.be/sites/default/files/2025-06/huurreglement-gemeentelijk-materieel-dd-1-november-2024.pdf"
+   "https://www.opwijk.be/sites/default/files/2025-06/huurreglement-gemeentelijk-materieel-dd-1-november-2024.pdf",
+   "Checklist evenementenloket Opwijk, bijlage bij mail evenementenloket, 10/11/2026"
   ],
   "bijzonder": [
    {
@@ -34044,7 +34109,24 @@
      "link": "https://www.opwijk.be/geluidsmeetkit"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een besloten feest dat niet openbaar toegankelijk is",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_db": 85,
+     "geen_verkeersmaatregelen": true,
+     "andere": "geen muziek na 22 uur, geen sterke drank, geen publiciteitsborden, geen tijdelijke constructies (zoals een feesttent, springkasteel, foodtruck of technische installatie) en geen bbq, vuurwerk, kampvuur, vuurmanden of gasinstallatie"
+    },
+    "nog_wel": "de gemeente brengt de politiezone in de praktijk op de hoogte van het soort evenement",
+    "citaat": "\"Duid je een of meerdere vinkjes aan? Dan is een evenementenaanvraag nodig.\" (checklist evenementenloket Opwijk)",
+    "bron": "Checklist evenementenloket Opwijk, bijlage bij mail evenementenloket, 10/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-10"
+   }
+  ]
  },
  {
   "gemeente": "Oud-Heverlee",
