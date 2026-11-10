@@ -59,7 +59,7 @@ const STAPPEN = {
     { t: "Controle", u: "Alles in het groen? Dan kan je je plan afwerken. Het gaat zo bij je aanvraag.", controle: true },
   ],
   grondplan: [
-    { t: "Ruimte", u: "Teken de vorm van de tent of zaal met de binnenmaten. Sleep een hoekpunt of een wand om de maten te veranderen, of klik een wand aan en typ de lengte. Is de zaal niet rechthoekig: klik een hoek aan en kies \"Hoek inspringen\", of splits een wand en sleep het middenstuk naar binnen of buiten.", el: [], veld: "ruimte" },
+    { t: "Ruimte", u: "Teken de vorm van de tent of zaal met de binnenmaten. Sleep een hoekpunt of een wand om de maten te veranderen, of klik een wand aan en typ de lengte. Is de zaal niet rechthoekig: zet een punt op een wand (dubbelklik, of klik de wand aan en kies \"Punt toevoegen\") en sleep het om de wand schuin te trekken. Voor een nis of uitsprong: klik een hoek aan en kies \"Hoek inspringen\", of klik een wand aan en kies \"Nis of uitsprong maken\".", el: [], veld: "ruimte" },
     { t: "Uitgangen", u: "Zet de deuren en nooduitgangen in de wanden. Ze klikken vast aan de dichtste wand, naast elkaar en nooit over elkaar. Kies bij elke deur de draairichting.", el: ["deur", "nooduitgang"] },
     { t: "Opstelling", u: "Zet podium, bar, dj en tafels op hun plaats. Hou de ruimte voor de uitgangen vrij. Wat over elkaar of buiten de ruimte staat, kleurt rood.", el: ["podium", "bar", "dj", "tafel"] },
     { t: "Veiligheid", u: "Duid de blustoestellen, de noodverlichting boven de uitgangen en de stroomaansluiting aan.", el: ["blus", "nood", "stroom"] },
@@ -327,8 +327,12 @@ function afstSeg(q, a, b) {
 }
 function afstRand(q, p) { return Math.min(...wandenG(p).map(([a, b]) => afstSeg(q, a, b))); }
 function binnenG(q, tol) { return inVorm(q) || afstRand(q) <= (tol || 0); }
+// Punt i ligt midden op een rechte wand (geen echte hoek).
+function rechtDoor(p, i) { const n = p.length, a = p[(i - 1 + n) % n], q = p[i], c = p[(i + 1) % n]; return Math.abs((q[0] - a[0]) * (c[1] - a[1]) - (q[1] - a[1]) * (c[0] - a[0])) < 1e-6; }
+// De vorm zonder de punten midden op een rechte wand: de echte hoeken.
+function hoekenG(p) { p = (p || S.G.pts).slice(); let i = 0; while (p.length > 3 && i < p.length) { if (rechtDoor(p, i)) p.splice(i, 1); else i++; } return p; }
 function isRechthoek(p) {
-  p = p || S.G.pts; if (p.length !== 4) return false;
+  p = hoekenG(p); if (p.length !== 4) return false;
   return wandenG(p).every(([a, b]) => Math.abs(a[0] - b[0]) < 1e-6 || Math.abs(a[1] - b[1]) < 1e-6);
 }
 function snijden(a, b, c, d) { // snijden de lijnstukken ab en cd elkaar (eindpunten niet meegerekend)?
@@ -349,15 +353,9 @@ function vormOk(p) {
 // Linksboven op 0,0 zetten (elementen schuiven mee), punten op elkaar en punten midden op een rechte wand weghalen.
 function normaliseer() {
   let p = S.G.pts.map((q) => [r2(q[0]), r2(q[1])]);
+  // Enkel punten op elkaar weg. Een punt midden op een rechte wand blijft staan: dat heeft de klant zelf
+  // toegevoegd (om de wand schuin te trekken of een nis te maken) en moet aanklikbaar blijven.
   p = p.filter((q, i) => { const v = p[(i - 1 + p.length) % p.length]; return Math.hypot(q[0] - v[0], q[1] - v[1]) > 1e-6; });
-  let veranderd = true;
-  while (veranderd && p.length > 3) {
-    veranderd = false;
-    for (let i = 0; i < p.length; i++) {
-      const a = p[(i - 1 + p.length) % p.length], q = p[i], c = p[(i + 1) % p.length];
-      if (Math.abs((q[0] - a[0]) * (c[1] - a[1]) - (q[1] - a[1]) * (c[0] - a[0])) < 1e-6) { p.splice(i, 1); veranderd = true; break; }
-    }
-  }
   const mx = Math.min(...p.map((q) => q[0])), my = Math.min(...p.map((q) => q[1]));
   if (mx || my) { p = p.map((q) => [r2(q[0] - mx), r2(q[1] - my)]); for (const it of S.G.items) { it.x = r2(it.x - mx); it.y = r2(it.y - my); } }
   S.G.pts = p; S.G.l = Math.max(...p.map((q) => q[0])); S.G.b = Math.max(...p.map((q) => q[1]));
@@ -443,17 +441,28 @@ function startSleep(e) {
   const id = +e.currentTarget.dataset.id, it = S.G.items.find((i) => i.id === id); if (!it) return;
   kies(id, true); const p = svgPunt(e); sleep = { it, dx: p.x - it.x, dy: p.y - it.y }; e.preventDefault();
 }
+let vorigeKlik = null; // voor dubbelklik op een wand (de svg wordt bij elke klik vervangen, dus zelf bijhouden)
 function startVorm(e, t, i) {
   e.preventDefault(); e.stopPropagation();
-  const q = svgPunt(e); vsel = { t, i }; vsleep = { t, i, p0: [q.x, q.y], basis: S.G.pts.map((x) => x.slice()), bewogen: false };
+  const q = svgPunt(e), nu = Date.now();
+  if (t === "e" && vorigeKlik && vorigeKlik.i === i && nu - vorigeKlik.t < 450 && Math.hypot(e.clientX - vorigeKlik.x, e.clientY - vorigeKlik.y) < 8) {
+    vorigeKlik = null; vsleep = null; puntToevoegen(i, [q.x, q.y]); return; // dubbelklik: punt op die plek
+  }
+  vorigeKlik = t === "e" ? { i, t: nu, x: e.clientX, y: e.clientY } : null; vsel = { t, i }; vsleep = { t, i, p0: [q.x, q.y], c0: [e.clientX, e.clientY], basis: S.G.pts.map((x) => x.slice()), bewogen: false };
   tekenGrondplan(); tekenStap();
 }
 const snap = (v, st) => Math.round(v / st) * st;
 // Nieuwe vorm tijdens het slepen van hoekpunt i naar q. Met rechte hoeken schuiven de buren mee.
 function vormMetHoek(basis, i, q) {
-  const p = basis.map((x) => x.slice()), n = p.length, oud = basis[i], st = S.G.recht ? 0.5 : 0.1;
+  // Een punt midden op een rechte wand schuift vrij: zo trek je een wand schuin (met rechte hoeken of niet).
+  const tussen = rechtDoor(basis, i), haaks = S.G.recht && !tussen;
+  const p = basis.map((x) => x.slice()), n = p.length, oud = basis[i], st = haaks ? 0.5 : 0.1;
   const nieuw = [r2(snap(q[0], st)), r2(snap(q[1], st))];
-  if (S.G.recht) for (const j of [(i - 1 + n) % n, (i + 1) % n]) {
+  if (!haaks) for (const j of [(i - 1 + n) % n, (i + 1) % n]) { // vastklikken op de lijn van een buur (recht boven of naast)
+    if (Math.abs(nieuw[0] - basis[j][0]) < 0.25) nieuw[0] = basis[j][0];
+    if (Math.abs(nieuw[1] - basis[j][1]) < 0.25) nieuw[1] = basis[j][1];
+  }
+  if (haaks) for (const j of [(i - 1 + n) % n, (i + 1) % n]) {
     const bu = basis[j];
     if (Math.abs(bu[1] - oud[1]) < 1e-6 && Math.abs(bu[0] - oud[0]) > 1e-6) p[j] = [bu[0], nieuw[1]];
     else if (Math.abs(bu[0] - oud[0]) < 1e-6 && Math.abs(bu[1] - oud[1]) > 1e-6) p[j] = [nieuw[0], bu[1]];
@@ -471,6 +480,7 @@ function vormMetWand(basis, i, d) {
 }
 window.addEventListener("pointermove", (e) => {
   if (vsleep) {
+    if (!vsleep.bewogen && Math.hypot(e.clientX - vsleep.c0[0], e.clientY - vsleep.c0[1]) < 5) return; // klikken, niet slepen
     const q = svgPunt(e), nieuw = vsleep.t === "v" ? vormMetHoek(vsleep.basis, vsleep.i, [q.x, q.y]) : vormMetWand(vsleep.basis, vsleep.i, [q.x - vsleep.p0[0], q.y - vsleep.p0[1]]);
     if (vormOk(nieuw) && JSON.stringify(nieuw) !== JSON.stringify(S.G.pts)) { S.G.pts = nieuw; vsleep.bewogen = true; tekenGrondplan(); }
     return;
@@ -512,6 +522,17 @@ function wandSplitsen(i) {
   else { p.splice(i + 1, 0, q1, q2); S.G.pts = p; vsel = { t: "e", i: i + 1 }; }
   deurenInWand(); allesTekenen(); bewaar(); // niet normaliseren: dan vallen de nieuwe punten weg
   $("msg").textContent = "Sleep het gemarkeerde middenstuk naar binnen of naar buiten.";
+}
+// Eén punt op wand i bijvoegen (standaard in het midden) en kiezen; slepen trekt de wand schuin.
+function puntToevoegen(i, q) {
+  const p = S.G.pts.map((x) => x.slice()), n = p.length, a = p[i], c = p[(i + 1) % n];
+  const L = Math.hypot(c[0] - a[0], c[1] - a[1]); if (L < 1) { $("msg").textContent = "Deze wand is te kort voor nog een punt."; return; }
+  const ux = (c[0] - a[0]) / L, uy = (c[1] - a[1]) / L;
+  let t = q ? (q[0] - a[0]) * ux + (q[1] - a[1]) * uy : L / 2;
+  t = Math.max(0.5, Math.min(L - 0.5, Math.round(t * 10) / 10));
+  p.splice(i + 1, 0, [r2(a[0] + ux * t), r2(a[1] + uy * t)]);
+  S.G.pts = p; vsel = { t: "v", i: i + 1 }; deurenInWand(); allesTekenen(); bewaar();
+  $("msg").textContent = "Sleep het nieuwe punt om de wand schuin te trekken.";
 }
 function hoekInspringen(i) {
   const p = S.G.pts.map((x) => x.slice()), n = p.length, a = p[(i - 1 + n) % n], v = p[i], c = p[(i + 1) % n];
@@ -661,6 +682,10 @@ function draai90(it) {
   it.rot = (Math.floor((+it.rot || 0) / 90) * 90 + 90) % 360; // naar de volgende rechte hoek
   allesTekenen(); bewaar();
 }
+document.addEventListener("keydown", (e) => { // Delete of Backspace: gekozen punt van de ruimte weg
+  if (!S || !["Delete", "Backspace"].includes(e.key) || /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
+  if (vormStap() && vsel && vsel.t === "v" && S.G.pts.length > 3) { e.preventDefault(); hoekWeg(vsel.i); }
+});
 document.addEventListener("keydown", (e) => {
   if (!S || e.key.toLowerCase() !== "r" || e.metaKey || e.ctrlKey || e.altKey || /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
   const it = lijst().find((i) => i.id === sel);
@@ -787,7 +812,7 @@ function controles(plan) {
     if (sa && stroom.length && tenten.length) C(1, stroom.every((s) => tenten.every((t) => afstandTotRect(lokaal(s.lat, s.lng), t) >= sa.waarde)), "Stroomgroep minstens " + fmt(sa.waarde) + " m van de tent", sa);
   } else {
     const { l, b } = S.G, it = (k) => S.G.items.filter((i) => i.k === k), nood = it("nooduitgang"), deuren = [...it("deur"), ...nood], opp = oppG();
-    C(0, opp > 0 && vormOk(S.G.pts), "Vorm en binnenmaten ingevuld: " + fmt(opp) + " m²" + (isRechthoek() ? " (" + fmt(l) + " × " + fmt(b) + " m)" : ", " + S.G.pts.length + " wanden"));
+    C(0, opp > 0 && vormOk(S.G.pts), "Vorm en binnenmaten ingevuld: " + fmt(opp) + " m²" + (isRechthoek() ? " (" + fmt(l) + " × " + fmt(b) + " m)" : ", " + hoekenG().length + " wanden"));
     C(0, !!S.G.mat.trim(), "Soort ruimte en materiaal vermeld");
     const nu = aantalUitgangen(P);
     C(1, nu ? nood.length >= nu.aantal : nood.length >= 1, nu ? "Minstens " + nu.aantal + " nooduitgang" + (nu.aantal > 1 ? "en" : "") + " voor " + P + " personen" : "Nooduitgangen aangeduid", nu && nu.bron);
@@ -839,7 +864,7 @@ function kerncijfers(plan) {
     if (isOD()) r.push("inname openbaar domein " + fmt(innameM2()) + " m²" + (odHeel() ? " (het hele terrein)" : ""));
   } else {
     const it = (k) => S.G.items.filter((i) => i.k === k), n = it("nooduitgang");
-    r.push(P + " personen", "ruimte " + fmt(oppG()) + " m²" + (isRechthoek() ? " (" + fmt(S.G.l) + " × " + fmt(S.G.b) + " m)" : " (" + S.G.pts.length + " wanden)") + " (" + fmt(oppG() / P) + " m² per persoon)",
+    r.push(P + " personen", "ruimte " + fmt(oppG()) + " m²" + (isRechthoek() ? " (" + fmt(S.G.l) + " × " + fmt(S.G.b) + " m)" : " (" + hoekenG().length + " wanden)") + " (" + fmt(oppG() / P) + " m² per persoon)",
       n.length + " nooduitgang(en), samen " + fmt(n.reduce((s, x) => s + x.w, 0)) + " m", it("deur").length + " andere deur(en)",
       it("blus").length + " blustoestel(len)", it("nood").length + " noodverlichting");
   }
@@ -915,13 +940,13 @@ function tekenStap() {
     const rh = isRechthoek(), p = S.G.pts;
     let vh = rh
       ? '<div class="r2"><label for="g-l">Lengte (m)<input id="g-l" type="number" min="2" step="0.5" value="' + S.G.l + '"></label><label for="g-b">Breedte (m)<input id="g-b" type="number" min="2" step="0.5" value="' + S.G.b + '"></label></div>'
-      : '<p class="hint" style="margin:0">Oppervlakte <b>' + fmt(oppG()) + " m²</b> · " + p.length + " wanden · buitenmaten " + fmt(S.G.l) + " × " + fmt(S.G.b) + " m</p>";
+      : '<p class="hint" style="margin:0">Oppervlakte <b>' + fmt(oppG()) + " m²</b> · " + hoekenG().length + " wanden · buitenmaten " + fmt(S.G.l) + " × " + fmt(S.G.b) + " m</p>";
     if (vsel && vsel.t === "e" && wandenG()[vsel.i]) {
       const [a, c] = wandenG()[vsel.i];
-      vh += '<div class="r2"><label for="g-wl">Lengte van deze wand (m)<input id="g-wl" type="number" min="0.5" step="0.1" value="' + r2(Math.hypot(c[0] - a[0], c[1] - a[1])) + '"></label><button class="btn" id="g-split" type="button" style="align-self:end">Wand opsplitsen</button></div>';
+      vh += '<div class="r2"><label for="g-wl">Lengte van deze wand (m)<input id="g-wl" type="number" min="0.5" step="0.1" value="' + r2(Math.hypot(c[0] - a[0], c[1] - a[1])) + '"></label><button class="btn" id="g-punt" type="button" style="align-self:end">Punt toevoegen</button></div><button class="btn" id="g-split" type="button">Nis of uitsprong maken</button>';
     } else if (vsel && vsel.t === "v" && p[vsel.i]) {
-      vh += '<div class="r2"><button class="btn" id="g-insp" type="button">Hoek inspringen</button>' + (p.length > 3 ? '<button class="btn" id="g-weg" type="button">Hoekpunt weg</button>' : "") + "</div>";
-    } else vh += '<p class="hint" style="margin:0">Klik een hoekpunt of een wand aan voor meer opties.</p>';
+      vh += '<div class="r2"><button class="btn" id="g-insp" type="button">Hoek inspringen</button>' + (p.length > 3 ? '<button class="btn" id="g-weg" type="button" title="Sneltoets: Delete">Punt verwijderen</button>' : "") + "</div>";
+    } else vh += '<p class="hint" style="margin:0">Klik een punt of een wand aan voor meer opties. Dubbelklik op een wand om er een punt bij te zetten.</p>';
     vh += '<label for="g-recht" style="display:flex;flex-direction:row;align-items:center;gap:8px;font-weight:500"><input id="g-recht" type="checkbox"' + (S.G.recht ? " checked" : "") + ' style="width:auto"> Rechte hoeken behouden</label>';
     if (!rh) vh += '<button class="btn" id="g-rh" type="button">Terug naar een rechthoek</button>';
     v = '<div style="display:flex;flex-direction:column;gap:10px">' + vh + '<label for="g-mat">Soort ruimte en materiaal<input id="g-mat" value="' + esc(S.G.mat) + '" placeholder="bv. tent met PVC-zeil, of zaal"></label><label for="g-pers">Personen tegelijk op het drukste moment<input id="g-pers" type="number" min="' + minPersonen() + '" value="' + S.personen + '">' + (minPersonen() > 1 ? '<small>Minstens ' + minPersonen() + ', zoals in je aanvraag. Meer mag.</small>' : "") + '</label></div>';
@@ -939,6 +964,7 @@ function tekenStap() {
   if ($("g-mat")) $("g-mat").addEventListener("input", () => { S.G.mat = $("g-mat").value; tekenControles(); bewaar(); });
   if ($("g-wl")) $("g-wl").addEventListener("change", () => wandLengte(vsel.i, +$("g-wl").value));
   if ($("g-split")) $("g-split").addEventListener("click", () => wandSplitsen(vsel.i));
+  if ($("g-punt")) $("g-punt").addEventListener("click", () => puntToevoegen(vsel.i));
   if ($("g-insp")) $("g-insp").addEventListener("click", () => hoekInspringen(vsel.i));
   if ($("g-weg")) $("g-weg").addEventListener("click", () => hoekWeg(vsel.i));
   if ($("g-recht")) $("g-recht").addEventListener("change", () => { S.G.recht = $("g-recht").checked; bewaar(); });
@@ -1233,7 +1259,7 @@ function titelblok(g, P, plan, schaal) {
   rij("Plaats", [S.d.plek, S.d.adres || S.d.gemeente].filter(Boolean).join(", "));
   rij("Datum evenement", S.d.datum);
   rij("Personen tegelijk", String(S.personen));
-  if (plan === "grondplan") rij("Ruimte", (S.G.mat ? S.G.mat + " · " : "") + fmt(oppG()) + " m²" + (isRechthoek() ? " (" + fmt(S.G.l) + " × " + fmt(S.G.b) + " m)" : " (" + S.G.pts.length + " wanden, " + fmt(S.G.l) + " × " + fmt(S.G.b) + " m buitenmaten)"));
+  if (plan === "grondplan") rij("Ruimte", (S.G.mat ? S.G.mat + " · " : "") + fmt(oppG()) + " m²" + (isRechthoek() ? " (" + fmt(S.G.l) + " × " + fmt(S.G.b) + " m)" : " (" + hoekenG().length + " wanden, " + fmt(S.G.l) + " × " + fmt(S.G.b) + " m buitenmaten)"));
   rij("Dossier", AUTH.id);
   rij("Schaal", "1/" + schaal + " op A3 · noorden boven");
   rij("Opgesteld door", BEHEER ? "evenementaanvragen.be, in opdracht van de organisator" : "de organisator");
