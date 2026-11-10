@@ -1326,7 +1326,7 @@ async function opslaan(cv) {
     const j = await r.json(); if (!j.ok) throw new Error(j.error || "onbekende fout");
     bewaar();
     $("msg").textContent = BEHEER ? NAAM_PLAN[S.actief] + " staat in de dossiermap. De conceptmail aan de klant staat klaar in Gmail."
-      : NAAM_PLAN[S.actief] + " is afgewerkt en staat in je dossier. Met \"Download als pdf\" bewaar je zelf een kopie." + (S.plannen.length > 1 && S.plannen.some((p) => p !== S.actief) ? " Vergeet het " + NAAM_PLAN[S.plannen.find((p) => p !== S.actief)].toLowerCase() + " niet." : "") + " Moet er nog iets aan, dan laten we het je weten.";
+      : NAAM_PLAN[S.actief] + " is afgewerkt en staat in je dossier. Met \"Download als pdf\" bewaar je zelf een kopie." + (S.plannen.length > 1 && S.plannen.some((p) => p !== S.actief) ? " Vergeet het " + NAAM_PLAN[S.plannen.find((p) => p !== S.actief)].toLowerCase() + " niet." : "") + " Moet er nog iets aan gebeuren, dan laten we het je weten.";
     b.disabled = false;
   } catch (e) { $("msg").textContent = "Afwerken lukte niet (" + e.message + "). Probeer opnieuw."; b.disabled = false; }
 }
