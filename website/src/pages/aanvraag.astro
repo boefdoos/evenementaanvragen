@@ -463,7 +463,7 @@ footer.foot a{color:var(--soft)}
     <h2 id="done-kop">Bedankt, we hebben alles.</h2>
     <div id="done-betaal" hidden>
       <div class="betaalrij">
-        <div class="bedrag"><b id="betaalbedrag">€ 45</b><span id="betaalformule"></span></div>
+        <div class="bedrag"><b id="betaalbedrag">€ 25</b><span id="betaalformule"></span></div>
         <a class="btn" id="betaallink" href="#">Betalen <span class="arr" aria-hidden="true">→</span></a>
       </div>
       <p>Na je betaling nemen wij het over. Binnen enkele minuten krijg je een mail met je volmacht en wat er nu gebeurt. Betaal je liever later, dan staat de betaallink binnen een kwartier in je mailbox.</p>
@@ -581,7 +581,7 @@ function geenUitleen() {
   if (veld("aanvrager_type") === "particulier" && u.particulieren_toegelaten === "nee") return "leent geen materiaal uit aan particulieren";
   return "";
 }
-const SPOEDTOESLAG = 25;
+const SPOEDTOESLAG = 15;
 function prijsVoor() {
   const bez = +veld("bezoekers") || 0;
   // Enkel de grootte telt (5/11/2026): de plantekenaar zit overal in, vanaf 500 aanwezigen ook het veiligheidsplan.
@@ -592,7 +592,7 @@ function prijsVoor() {
   // Spoedtoeslag (9/11/2026): deadline binnen 5 werkdagen ("krap"). Betaling.gs rekent hetzelfde na op termijn_deadline.
   const spoed = !!(termijn && termijn.soort === "krap");
   if (spoed) reden += ", met " + SPOEDTOESLAG + " euro spoedtoeslag (deadline binnen 5 werkdagen)";
-  return { formule, reden, spoed, bedrag: { Basis: 45, Plus: 75 }[formule] + (spoed ? SPOEDTOESLAG : 0) };
+  return { formule, reden, spoed, bedrag: { Basis: 25, Plus: 50 }[formule] + (spoed ? SPOEDTOESLAG : 0) };
 }
 
 
@@ -838,6 +838,9 @@ function toonGembox() {
   const geen = geenUitleen(), u = r.uitleen || {};
   if (geen) li.push("Materiaal: de gemeente " + geen + ".");
   else if (u.uitleendienst === "ja") li.push("Materiaal van de gemeente vragen we mee aan als je dat wil.");
+  // Rijksregisternummer (14/11/2026): enkel waar de gemeente het van de organisator vraagt (regels.json: rrn_organisator).
+  // Niet in het formulier: we vragen het vlak voor de indiening en bewaren het niet.
+  if (r.rrn_organisator) li.push(r.gemeente + " vraagt het rijksregisternummer van de organisator. Dat vragen we je vlak voor de indiening, niet in dit formulier. We bewaren het niet.");
   const pr = prijsVoor();
   li.push("Prijs: € " + pr.bedrag + " (" + pr.reden + ").");
   document.getElementById("gb-kop").textContent = "Wat dit betekent in " + r.gemeente;
@@ -1093,12 +1096,12 @@ geeft volmacht aan ${VOLMACHTHEBBER}
 
 om in naam en voor rekening van de organisator de evenementaanvraag en de bijhorende aanvragen (zoals uitleenmateriaal) voor het evenement "${v("evenement_naam") || "[evenement]"}" op ${datumNL(v("startdatum"))} in ${v("gemeente") || "[gemeente]"} voor te bereiden en in te dienen bij de gemeente, via de kanalen die de gemeente daarvoor gebruikt.
 
-De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor de organisatie van het evenement en voor de naleving van de vergunningsvoorwaarden. Na de indiening communiceert de gemeente rechtstreeks met de organisator. Deze volmacht geldt enkel voor dit evenement. Ze loopt tot 30 dagen na de indiening, zodat we een fout in wat wij indienden kunnen herstellen als de gemeente daarom vraagt, en kan altijd ingetrokken worden met een mail aan thomas@evenementaanvragen.be.`;
+De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor de organisatie van het evenement en voor de naleving van de vergunningsvoorwaarden. Na de indiening mag de volmachthebber optreden als tussenpersoon: vragen van de gemeente doorgeven aan de organisator, en de antwoorden en documenten van de organisator aan de gemeente bezorgen. Deze volmacht geldt enkel voor dit evenement. Ze loopt tot de gemeente over de aanvraag beslist heeft, en kan altijd ingetrokken worden met een mail aan thomas@evenementaanvragen.be.`;
 }
 const vt = document.getElementById("volmachttekst");
 function toonVolmacht() { vt.textContent = volmachtTekst(Object.fromEntries(new FormData(intakeForm).entries())); }
 
-// Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 75 vanaf 500 aanwezigen (met veiligheidsplan), anders € 45; de plantekenaar zit in beide. Zelfde prijs voor elk type organisator. Deadline binnen 5 werkdagen: + € 25 spoedtoeslag.
+// Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 50 vanaf 500 aanwezigen (met veiligheidsplan), anders € 25; de plantekenaar zit in beide. Zelfde prijs voor elk type organisator. Deadline binnen 5 werkdagen: + € 15 spoedtoeslag.
 function toonPrijs() {
   const box = document.getElementById("prijs");
   if (!veld("aanvrager_type") || !veld("bezoekers") || !veld("locatie_soort")) { box.hidden = true; return; }

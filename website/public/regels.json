@@ -853,25 +853,38 @@
  },
  {
   "gemeente": "De Haan",
-  "status": "onbekend",
+  "status": "ok",
   "base": {
+   "*": [
+    21,
+    "d"
+   ],
    "wielerwedstrijd": [
     14,
     "w"
    ]
   },
   "extra": [],
-  "note": "Enkel voor wielerwedstrijden een termijn gepubliceerd; voor andere types navragen (fallback toegepast). Materiaal apart via het E2E-reservatieplatform. College beslist na advies politie, brandweer en milieu. Gelezen in de browser op 1/11/2026.",
+  "note": "Enkel voor wielerwedstrijden een termijn gepubliceerd; voor andere types navragen (fallback toegepast). Materiaal apart via het E2E-reservatieplatform. College beslist na advies politie, brandweer en milieu. Gelezen in de browser op 1/11/2026. | Mail Dienst Sport 12/11/2026: nog geen reglement (in opmaak); alle aanvragen via Eaglebe, daar staat de termijn op 21 dagen; logistieke steun technische dienst bij grote impact 2 maanden vooraf.",
   "platform": "Eaglebe",
   "kanaal": "Eaglebe Smart City Platform, met of zonder account; aanvrager particulier (18+), bedrijf, organisatie of vereniging.",
   "link": "https://app.eaglebe.com/nl-be/new/event?client=01325cb5dda089f08a56b334a8501b55",
   "contact": "Gemeentehuis – gemeentebestuur@dehaan.be – 059 24 21 24; inname openbaar domein: openbaardomein@dehaan.be – 059 24 21 08",
   "bron": [
    "https://www.dehaan.be/evenement-activiteit-aanvragen",
-   "https://www.dehaan.be/een-evenement-of-activiteit-organiseren"
+   "https://www.dehaan.be/een-evenement-of-activiteit-organiseren",
+   "Mail Dienst Sport De Haan, 12/11/2026"
   ],
-  "termijnTekst": "Algemene termijn niet vermeld ('Begin op tijd!'). Wielerwedstrijd: minstens 14 weken vooraf toelating vragen aan het college.",
-  "bijzonder": [],
+  "termijnTekst": "Aanvraag via Eaglebe minstens 21 dagen voor het evenement (termijn ingesteld in Eaglebe, bevestigd door de gemeente). Evenementen met grote impact op de technische dienst voor logistieke ondersteuning: minstens 2 maanden vooraf. Wielerwedstrijd: minstens 14 weken vooraf toelating vragen aan het college.",
+  "bijzonder": [
+   {
+    "soort": "deadline",
+    "wat": "Evenement met grote impact op de technische dienst (logistieke ondersteuning)",
+    "n": 2,
+    "unit": "m",
+    "toelichting": "Afspraak van de gemeente, geen reglement (mail 12/11/2026)."
+   }
+  ],
   "college": "College van burgemeester en schepenen beslist na advies van politie, brandweer en dienst Milieu.",
   "uitleen": {
    "uitleendienst": "ja",
@@ -937,7 +950,9 @@
     "afgeleid": false,
     "nagekeken": "2026-11-09"
    }
-  ]
+  ],
+  "citaat": "\"Alle aanvragen moeten ingediend worden via het online platform Eaglebe. Daar is de termijn vastgelegd op 21 dagen voor het evenement.\" (mail gemeente 12/11/2026)",
+  "navraag": "beantwoord 12/11/2026"
  },
  {
   "gemeente": "De Panne",
@@ -2432,7 +2447,10 @@
   "kanaal": "Eaglebe",
   "link": "https://app.eaglebe.com/nl-be/new/event?client=baddbfa3cb7c17b906e37b32562d6236",
   "contact": "Dienst Evenementen – evenementen@knokke-heist.be – 050 63 04 14; Noodplanning (MRAE) – noodplanning@knokke-heist.be – 050 63 04 71",
-  "bron": "https://www.knokke-heist.be/vrije-tijd/een-evenement-organiseren",
+  "bron": [
+   "https://www.knokke-heist.be/vrije-tijd/een-evenement-organiseren",
+   "Mail Dienst Evenementen Knokke-Heist, 12/11/2026"
+  ],
   "termijnTekst": "Evenement (toelating/melding) en muziekvergunning: min. 30 dagen; medische risicoanalyse (MRAE): ten laatste 7 weken vooraf; publicitaire activaties/reclame: min. 3 weken bij dienst Ondernemen",
   "bijzonder": [
    {
@@ -2500,7 +2518,21 @@
    "zekerheid": "middel",
    "route": "B"
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een besloten feest op uitnodiging, niet op openbaar domein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "een muziekvergunning is niet verplicht maar wordt aangeraden, zodat de politie op de hoogte is bij klachten over geluidsoverlast",
+    "citaat": "\"Een besloten feest op uitnodiging dat niet op openbaar domein plaatsvindt en bijgevolg dus niet vergunningsplichtig is, hoeft niet gemeld of aangevraagd te worden.\"",
+    "bron": "Mail Dienst Evenementen Knokke-Heist, 12/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-12"
+   }
+  ]
  },
  {
   "gemeente": "Koekelare",
@@ -4025,12 +4057,15 @@
    ]
   },
   "extra": [],
-  "note": "Te late aanvragen worden niet behandeld.",
+  "note": "Te late aanvragen worden niet behandeld. Volgens de dienst Evenementen (mail 13/11/2026) zijn de termijnen op de website correct en zitten ze per type ook in Eaglebe; Eaglebe toont voor 'Fuif in een vergunde locatie' minstens 21 dagen (excl. sluitingsdagen), wij rekenen voorlopig met 8 weken.",
   "platform": "Eaglebe",
   "kanaal": "Online via Eaglebe evenementenloket",
   "link": "https://app.eaglebe.com/auth/start",
   "contact": "Dienst Evenementen – evenementen@oostende.be – 059 25 81 35",
-  "bron": "https://www.oostende.be/wanneer-dien-je-je-aanvraag-in",
+  "bron": [
+   "https://www.oostende.be/wanneer-dien-je-je-aanvraag-in",
+   "Mail dienst Evenementen Oostende, 13/11/2026"
+  ],
   "termijnTekst": "Min. 8 weken (evenement/circus); 14 weken (wielerwedstrijd); 6 weken (stoet, betoging, filmopnames); 3 weken (straatanimatie). Te late aanvragen worden niet behandeld. Parkeerverbod bij een evenement: ten laatste 6 weken vooraf via Eaglebe (aparte pagina oostende.be/parkeerverbod-evenement)",
   "bijzonder": [
    {
@@ -4070,9 +4105,73 @@
    }
   ],
   "college": "Goedkeuring door het college na advies van alle betrokken diensten.",
-  "intake_verplicht": ["startuur", "einduur", "opbouw", "afbraak", "bezoekers_totaal", "doelgroep", "op_uitnodiging", "betalend", "muziek", "alcohol", "eten", "verkoop", "verkeer", "publiciteit", "toiletten", "elektriciteit", "vuur", "bewaking", "ehbo", "verzekering_ba", "verzekering_oa"],
+  "intake_verplicht": [
+   "startuur",
+   "einduur",
+   "opbouw",
+   "afbraak",
+   "bezoekers_totaal",
+   "doelgroep",
+   "op_uitnodiging",
+   "betalend",
+   "muziek",
+   "alcohol",
+   "eten",
+   "verkoop",
+   "verkeer",
+   "publiciteit",
+   "toiletten",
+   "elektriciteit",
+   "vuur",
+   "bewaking",
+   "ehbo",
+   "verzekering_ba",
+   "verzekering_oa"
+  ],
   "intake_verplicht_bron": "Verplichte velden (sterretje) in het Eaglebe-formulier Aanvraag Evenement van Stad Oostende, browsertest 2/11/2026 (claude/eaglebe-oostende-formulier.md). Start- en einduur: stap Periode, browsertest 9/11/2026 (claude/eaglebe-oostende-9-11.md).",
-  "intake_extra": [{"k": "parking_wagens", "q": "Is er parking voor de wagens van de bezoekers?", "hint": "Eigen parking, of je verwijst naar een openbare parking"}, {"k": "parking_fietsen", "q": "Is er een fietsenstalling?"}, {"k": "smalle_wegen", "q": "Is de locatie enkel bereikbaar via wegen smaller dan 4 meter?", "hint": "Belangrijk voor de brandweer en de ambulance"}, {"k": "bewegwijzering", "q": "Plaats je pijlen of bewegwijzering naar het evenement?"}, {"k": "flyers", "q": "Deel je flyers uit op straat?"}, {"k": "drones", "q": "Worden er drones gebruikt?"}, {"k": "water", "q": "Zijn er activiteiten op of vlak bij het water?"}, {"k": "vip", "q": "Komen er VIP's, bijvoorbeeld een minister?", "hint": "Dan vraagt de politie soms extra maatregelen"}, {"k": "netheid", "q": "Hoe hou je het terrein en de buurt net?", "hint": "bv. afvalbakken, herbruikbare bekers, opruimploeg na afloop", "type": "tekst"}],
+  "intake_extra": [
+   {
+    "k": "parking_wagens",
+    "q": "Is er parking voor de wagens van de bezoekers?",
+    "hint": "Eigen parking, of je verwijst naar een openbare parking"
+   },
+   {
+    "k": "parking_fietsen",
+    "q": "Is er een fietsenstalling?"
+   },
+   {
+    "k": "smalle_wegen",
+    "q": "Is de locatie enkel bereikbaar via wegen smaller dan 4 meter?",
+    "hint": "Belangrijk voor de brandweer en de ambulance"
+   },
+   {
+    "k": "bewegwijzering",
+    "q": "Plaats je pijlen of bewegwijzering naar het evenement?"
+   },
+   {
+    "k": "flyers",
+    "q": "Deel je flyers uit op straat?"
+   },
+   {
+    "k": "drones",
+    "q": "Worden er drones gebruikt?"
+   },
+   {
+    "k": "water",
+    "q": "Zijn er activiteiten op of vlak bij het water?"
+   },
+   {
+    "k": "vip",
+    "q": "Komen er VIP's, bijvoorbeeld een minister?",
+    "hint": "Dan vraagt de politie soms extra maatregelen"
+   },
+   {
+    "k": "netheid",
+    "q": "Hoe hou je het terrein en de buurt net?",
+    "hint": "bv. afvalbakken, herbruikbare bekers, opruimploeg na afloop",
+    "type": "tekst"
+   }
+  ],
   "intake_extra_bron": "Verplichte velden in het Eaglebe-formulier Aanvraag Evenement van Stad Oostende die de gewone intake niet stelt (stappen Mobiliteit, Publiciteit, Veiligheid), browsertest 2/11/2026 (claude/eaglebe-oostende-formulier.md).",
   "uitleen": {
    "uitleendienst": "ja",
@@ -4166,7 +4265,9 @@
     "afgeleid": true,
     "nagekeken": "2026-11-09"
    }
-  ]
+  ],
+  "rrn_organisator": true,
+  "rrn_organisator_bron": "Mail dienst Evenementen Oostende, 13/11/2026: aanvraag via tussenpersoon op naam en rijksregisternummer van de organisator, met de contactgegevens van de tussenpersoon en de volmacht als bijlage."
  },
  {
   "gemeente": "Oostkamp",
@@ -4828,7 +4929,8 @@
    "Mail preventie Staden (dre.belloy@staden.be), 4/11/2026",
    "https://vleteren.be/sites/default/files/2022-01/zonale-politieverordening-openbare-orde.pdf",
    "https://www.staden.be/product/224/evenementenloket",
-   "Mail Vrije Tijd Staden, 10/11/2026"
+   "Mail Vrije Tijd Staden, 10/11/2026",
+   "Mail preventie Staden, 12/11/2026"
   ],
   "termijnTekst": "Publiek toegankelijke feesten en evenementen minstens één maand vooraf melden bij het gemeentebestuur (zonale politieverordening PZ Arro Ieper, art. 2.9.1.2; bevestigd door de gemeente per mail, 4/11/2026). Grotere evenementen vroeger aanvragen; wielerwedstrijden volgens de wettelijke termijnen.",
   "bijzonder": [
@@ -4894,7 +4996,21 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een besloten evenement op uitnodiging, op privaat terrein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "de zonale politieverordening (PZ Arro Ieper) blijft gelden; de burgemeester kan voor deze evenementen geen uitzondering op het geluidsniveau geven",
+    "citaat": "\"Besloten evenementen (op uitnodiging en op privaat terrein) moeten niet gemeld of aangevraagd worden bij de gemeente.\"",
+    "bron": "Mail preventie Staden, 12/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-12"
+   }
+  ]
  },
  {
   "gemeente": "Tielt",
