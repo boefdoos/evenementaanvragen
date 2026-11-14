@@ -374,7 +374,7 @@ function conflicten() {
   return uit;
 }
 function tekenGrondplan() {
-  const { l, b } = S.G, mg = 2, W = l + 2 * mg, H = b + 2 * mg, p = S.G.pts, vs = vormStap();
+  const { l, b } = S.G, mg = 2 + Math.max(0, ...S.G.items.filter((i) => KAT_G[i.k] && KAT_G[i.k].f === "deur").map((i) => i.w - 1)), W = l + 2 * mg, H = b + 2 * mg, p = S.G.pts, vs = vormStap();
   const px = Math.max(14, Math.min(48, Math.floor(Math.min(($("gp").clientWidth - 48) / W, ($("gp").clientHeight - 110) / H))));
   const pad = "M " + p.map((q) => q[0] + " " + q[1]).join(" L ") + " Z";
   let s = '<svg id="gsvg" xmlns="http://www.w3.org/2000/svg" viewBox="' + -mg + " " + -mg + " " + W + " " + H + '" width="' + W * px + '" height="' + H * px + '" font-family="Instrument Sans, Arial, sans-serif">';
