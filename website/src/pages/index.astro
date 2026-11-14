@@ -34,12 +34,104 @@ import huisstijl from "../huisstijl.css?raw";
 
 <section class="blk" id="werkwijze"><div class="wrap">
   <h2>Tien minuten van jou. De rest is voor ons.</h2>
-  <div class="steps">
-    <div class="stp me"><span class="who">Jij · 10 minuten</span><h3>Gegevens invullen</h3><p>Vijf korte stappen, zo gepiept.</p></div>
-    <div class="stp me"><span class="who">Jij</span><h3>Betalen</h3><p>Meteen na het formulier, met Bancontact of kaart. Of laat je vereniging, school of bedrijf betalen.</p></div>
-    <div class="stp"><span class="who">Wij</span><h3>Dossier opmaken</h3><p>Formulieren, bijlagen, bewonersbrief, materiaal.</p></div>
-    <div class="stp"><span class="who">Wij</span><h3>Indienen</h3><p>Bij je gemeente. Tot de beslissing blijven wij je tussenpersoon: vragen van de gemeente komen via ons bij jou.</p></div>
-  </div>
+  <p class="intro">Zo verloopt een aanvraag, met een voorbeeld: een fuif voor 200 mensen in een zaal in Oostende.</p>
+
+  <ol class="flow">
+    <li class="fl">
+      <div class="fl-tx">
+        <span class="fl-nr">1</span>
+        <h3>Je vertelt wat je plant</h3>
+        <p>In tien minuten vul je in wat, waar, wanneer en voor hoeveel mensen. Je ziet meteen je deadline en je prijs, en je betaalt online.</p>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="mk-bar"><i></i><i></i><i></i><span>Je aanvraag</span></div>
+        <div class="mk-form">
+          <div><small>Gemeente</small><b>Oostende</b></div>
+          <div><small>Soort</small><b>Fuif in een zaal</b></div>
+          <div><small>Datum</small><b>za 13 maart 2027</b></div>
+          <div><small>Aanwezigen</small><b>200</b></div>
+        </div>
+        <div class="mk-ok"><span class="dot"></span>Deadline bij Oostende: za 16 januari 2027 · op tijd</div>
+      </div>
+    </li>
+
+    <li class="fl">
+      <div class="fl-tx">
+        <span class="fl-nr">2</span>
+        <h3>We zoeken uit wat jouw gemeente vraagt</h3>
+        <p>Welk loket, welke termijn, welke plannen en bijlagen. Elke gemeente doet het anders: wij houden het per gemeente bij.</p>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="mk-bar"><i></i><i></i><i></i><span>Oostende · fuif in een zaal</span></div>
+        <ul class="mk-check">
+          <li><b>Loket</b><span>online via Eaglebe</span></li>
+          <li><b>Termijn</b><span>8 weken vooraf</span></li>
+          <li><b>Plan</b><span>grondplan van de zaal</span></li>
+          <li><b>Bijlage</b><span>overeenkomst met de zaal</span></li>
+          <li><b>Politie</b><span>meldings- en veiligheidsdossier</span></li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="fl">
+      <div class="fl-tx">
+        <span class="fl-nr">3</span>
+        <h3>Je tekent je plan, wij kijken het na</h3>
+        <p>In onze plantekenaar zet je bar, podium en uitgangen op de juiste plek. Hij maakt er een plan op schaal van. Wij kijken het na voor we indienen.</p>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="mk-bar"><i></i><i></i><i></i><span>Plantekenaar</span></div>
+        <svg class="mk-plan" viewBox="0 0 320 182" role="presentation">
+          <rect x="10" y="10" width="300" height="150" rx="4" fill="#3a4057" stroke="#9aa0b6" stroke-width="2"/>
+          <rect x="22" y="22" width="84" height="40" rx="3" fill="#ffc84a"/><text x="64" y="47" text-anchor="middle">podium</text>
+          <rect x="226" y="22" width="72" height="28" rx="3" fill="#ff5a4e"/><text x="262" y="41" text-anchor="middle">bar</text>
+          <rect x="226" y="120" width="72" height="28" rx="3" fill="#aab0c4"/><text x="262" y="139" text-anchor="middle">toiletten</text>
+          <rect x="10" y="118" width="6" height="30" fill="#4ade80"/><text x="22" y="137" class="uit">uitgang</text>
+          <rect x="146" y="154" width="34" height="6" fill="#4ade80"/><text x="163" y="148" text-anchor="middle" class="uit">uitgang</text>
+          <text x="310" y="178" text-anchor="end" class="schaal">schaal 1/100</text>
+        </svg>
+        <div class="mk-ok"><span class="dot"></span>Plan op schaal · nagekeken</div>
+      </div>
+    </li>
+
+    <li class="fl">
+      <div class="fl-tx">
+        <span class="fl-nr">4</span>
+        <h3>We maken het dossier op en dienen in</h3>
+        <p>Formulier ingevuld, plan en bijlagen erbij, met de volmacht die je tekende. Met marge voor de deadline ingediend, en je krijgt de bevestiging.</p>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="mk-bar"><i></i><i></i><i></i><span>Dossier</span></div>
+        <ul class="mk-files">
+          <li><span class="ic"></span>Aanvraagformulier Eaglebe<em>ingevuld</em></li>
+          <li><span class="ic"></span>Grondplan op schaal<em>nagekeken</em></li>
+          <li><span class="ic"></span>Overeenkomst met de zaal<em>van jou</em></li>
+          <li><span class="ic"></span>Meldings- en veiligheidsdossier<em>door jou getekend</em></li>
+          <li><span class="ic"></span>Volmacht<em>getekend</em></li>
+        </ul>
+        <div class="mk-stamp">Ingediend · ma 11 januari 2027</div>
+      </div>
+    </li>
+
+    <li class="fl">
+      <div class="fl-tx">
+        <span class="fl-nr">5</span>
+        <h3>Vraagt de gemeente nog iets, dan loopt het via ons</h3>
+        <p>We geven de vraag meteen aan je door. Jij antwoordt, wij bezorgen het antwoord aan de gemeente. De beslissing sturen we je door.</p>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="mk-bar"><i></i><i></i><i></i><span>Berichten</span></div>
+        <div class="mk-chat">
+          <p class="g"><small>Gemeente</small>Kunnen jullie het EHBO-attest nog bezorgen?</p>
+          <p class="w"><small>Wij aan jou</small>De stad vraagt je EHBO-attest. Stuur je het ons?</p>
+          <p class="j"><small>Jij</small>Hier is het. 📎</p>
+          <p class="w"><small>Wij aan de gemeente</small>Het EHBO-attest zit in de bijlage.</p>
+          <p class="g"><small>Gemeente</small>Toelating verleend.</p>
+          <p class="w ok"><small>Wij aan jou</small>Je toelating is binnen. 🎉</p>
+        </div>
+      </div>
+    </li>
+  </ol>
 </div></section>
 
 <section class="blk" id="prijzen"><div class="wrap">
