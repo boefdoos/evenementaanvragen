@@ -463,7 +463,7 @@ footer.foot a{color:var(--soft)}
     <h2 id="done-kop">Bedankt, we hebben alles.</h2>
     <div id="done-betaal" hidden>
       <div class="betaalrij">
-        <div class="bedrag"><b id="betaalbedrag">€ 25</b><span id="betaalformule"></span></div>
+        <div class="bedrag"><b id="betaalbedrag">€ 35</b><span id="betaalformule"></span></div>
         <a class="btn" id="betaallink" href="#">Betalen <span class="arr" aria-hidden="true">→</span></a>
       </div>
       <p>Na je betaling nemen wij het over. Binnen enkele minuten krijg je een mail met je volmacht en wat er nu gebeurt. Betaal je liever later, dan staat de betaallink binnen een kwartier in je mailbox.</p>
@@ -592,7 +592,7 @@ function prijsVoor() {
   // Spoedtoeslag (9/11/2026): deadline binnen 5 werkdagen ("krap"). Betaling.gs rekent hetzelfde na op termijn_deadline.
   const spoed = !!(termijn && termijn.soort === "krap");
   if (spoed) reden += ", met " + SPOEDTOESLAG + " euro spoedtoeslag (deadline binnen 5 werkdagen)";
-  return { formule, reden, spoed, bedrag: { Basis: 25, Plus: 50 }[formule] + (spoed ? SPOEDTOESLAG : 0) };
+  return { formule, reden, spoed, bedrag: { Basis: 35, Plus: 65 }[formule] + (spoed ? SPOEDTOESLAG : 0) };
 }
 
 
@@ -1102,7 +1102,7 @@ De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor d
 const vt = document.getElementById("volmachttekst");
 function toonVolmacht() { vt.textContent = volmachtTekst(Object.fromEntries(new FormData(intakeForm).entries())); }
 
-// Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 50 vanaf 500 aanwezigen (met veiligheidsplan), anders € 25; de plantekenaar zit in beide. Zelfde prijs voor elk type organisator. Deadline binnen 5 werkdagen: + € 15 spoedtoeslag.
+// Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 65 vanaf 500 aanwezigen (met veiligheidsplan), anders € 35; de plantekenaar zit in beide. Zelfde prijs voor elk type organisator. Deadline binnen 5 werkdagen: + € 15 spoedtoeslag.
 function toonPrijs() {
   const box = document.getElementById("prijs");
   if (!veld("aanvrager_type") || !veld("bezoekers") || !veld("locatie_soort")) { box.hidden = true; return; }
