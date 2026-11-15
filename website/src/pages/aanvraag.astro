@@ -55,6 +55,8 @@ legend{display:contents}
 .field{display:flex;flex-direction:column;gap:7px;min-width:0}
 label,.q{font-weight:600;font-size:15px;color:var(--text)}
 .hint{font-size:14px;color:var(--soft);font-weight:400;line-height:1.5}
+.letop{margin-top:8px;padding:10px 12px;border-radius:10px;background:rgba(255,200,74,.10);border:1px solid rgba(255,200,74,.35);font-size:14px;line-height:1.5;color:var(--text)}
+.letop a{color:var(--accent)}
 .req{color:var(--accent)}
 input,select,textarea{font:500 16px/1.3 var(--f-body);color:var(--text);background:var(--bg);border:1px solid var(--line-2);border-radius:10px;padding:12px 14px;width:100%;min-width:0}
 /* Overal dezelfde hoogte (Safari tekent select en datum anders) */
@@ -388,8 +390,9 @@ footer.foot a{color:var(--soft)}
       <h2 class="stap-h" tabindex="-1">Stap 5 van 5 · Je gegevens en bevestigen</h2>
       <fieldset>
         <legend><div class="sec-head"><span class="sec-title">Organisator</span></div></legend>
-        <div class="field"><label for="organisator_naam">Naam contactpersoon <span class="req">*</span></label><input id="organisator_naam" name="organisator_naam" autocomplete="name" required></div>
-        <div class="field"><label for="organisatie">Naam vereniging, bedrijf of school <span class="req" id="orgreq" hidden>*</span></label><input id="organisatie" name="organisatie" autocomplete="organization"></div>
+        <div class="field"><label for="organisator_voornaam">Voornaam contactpersoon <span class="req">*</span></label><input id="organisator_voornaam" name="organisator_voornaam" autocomplete="given-name" required></div>
+        <div class="field"><label for="organisator_achternaam">Naam contactpersoon <span class="req">*</span></label><input id="organisator_achternaam" name="organisator_achternaam" autocomplete="family-name" required><input type="hidden" id="organisator_naam" name="organisator_naam"></div>
+        <div class="field full"><label for="organisatie">Naam vereniging, bedrijf of school <span class="req" id="orgreq" hidden>*</span></label><input id="organisatie" name="organisatie" autocomplete="organization"></div>
         <div class="field"><label for="email">E-mail <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
         <div class="field"><label for="gsm">Gsm <span class="req">*</span></label><input id="gsm" name="gsm" type="tel" autocomplete="tel" required placeholder="0470 12 34 56"></div>
         <div class="field full"><label for="adres_organisator">Adres organisator <span class="req" id="adresreq" hidden>*</span> <span class="hint" id="adreshint" hidden>(voor de factuur)</span></label><input id="adres_organisator" name="adres_organisator" list="adreslijst_org" autocomplete="off"><datalist id="adreslijst_org"></datalist></div>
@@ -624,7 +627,9 @@ function pasAan() {
   // Bedrijf of zelfstandige: naam en ondernemingsnummer verplicht (factuur, volmacht, platformen). Een feitelijke vereniging heeft er geen.
   const bedrijf = veld("aanvrager_type") === "bedrijf";
   document.getElementById("ondernemingsnummer").required = bedrijf; document.getElementById("kboreq").hidden = !bedrijf;
-  document.getElementById("organisatie").required = bedrijf; document.getElementById("orgreq").hidden = !bedrijf;
+  // Naam van de organisatie verplicht voor iedereen behalve een particulier: wie als voorzitter of zaakvoerder tekent, tekent namens die organisatie (volmacht).
+  const metOrg = !!veld("aanvrager_type") && veld("aanvrager_type") !== "particulier";
+  document.getElementById("organisatie").required = metOrg; document.getElementById("orgreq").hidden = !metOrg; document.getElementById("organisatie").dataset.label = "Naam vereniging, bedrijf of school";
   document.getElementById("kbohint").textContent = bedrijf ? "" : "(vzw, bedrijf of zelfstandige)";
   // Materiaal: niet vragen waar de gemeente niet (aan jou) uitleent; enkel materiaal tonen dat ze niet uitdrukkelijk weigert.
   const geen = geenUitleen(), mn = document.getElementById("matnote");
@@ -893,7 +898,7 @@ const docLijst = document.getElementById("doclijst");
 DOCS.forEach(d => {
   const w = document.createElement("div");
   w.className = "yn"; w.id = "doc_" + d.k + "_wrap";
-  w.innerHTML = `<div><div class="q" id="q_doc_${d.k}">${d.naam}</div><div class="hint">${d.uitleg}</div><div class="hint" id="doc_${d.k}_waarom"></div></div>
+  w.innerHTML = `<div><div class="q" id="q_doc_${d.k}">${d.naam}</div><div class="hint">${d.uitleg}</div><div class="hint" id="doc_${d.k}_waarom"></div><div class="letop" id="doc_${d.k}_letop" hidden></div></div>
     <div class="seg" role="radiogroup" aria-labelledby="q_doc_${d.k}">
       ${d.keuzes.map(([v, t], i) => `<label><input type="radio" id="doc_${d.k}_${i}" name="doc_${d.k}" value="${v}" ${i === 0 ? `required data-label="${d.naam}"` : ""}><span>${t}</span></label>`).join("")}
     </div>
@@ -913,12 +918,28 @@ function waaromDoc(d) {
   if ((r.documenten_na || []).includes(d.k)) return "In " + gem + " vraagt de stad dit meestal nog na de aanvraag. Voeg het meteen toe als je het hebt.";
   return "Gemeenten vragen dit vaak, soms pas na de aanvraag.";
 }
+// Extra uitleg bij een keuze die de aanvraag in gevaar kan brengen (15/11/2026).
+function letOpDoc(d) {
+  const r = regelVan(), gem = veld("gemeente"), keuze = gekozen("doc_" + d.k);
+  const vraagt = (re) => !!(r && ((r.documenten_na || []).includes(d.k) || (r.bijzonder || []).some(x => re.test(x.wat || ""))));
+  if (d.k === "verzekering" && keuze === "geen") {
+    return vraagt(/verzeker|aansprakelijk/i)
+      ? "<b>Let op:</b> " + gem + " vraagt een verzekeringsattest. Zonder verzekering kan de gemeente je evenement weigeren. Sluit er een af (vaak kan dat via je koepel of je eigen verzekeraar) en bezorg ons het attest zo snel mogelijk. Wij dienen pas in als het er is, zolang je deadline dat toelaat."
+      : "<b>Let op:</b> zonder verzekering burgerlijke aansprakelijkheid ben je zelf aansprakelijk voor schade tijdens je evenement, en veel gemeenten vragen er later nog naar. Een verzekering voor één evenement kan vaak via je koepel of je eigen verzekeraar.";
+  }
+  if (d.k === "bewaking" && veld("bewaking") === "vrijwilligers") {
+    return "<b>Vrijwilligers die bewaken</b> (toegang, tassen of zalen controleren) hebben volgens de wet private veiligheid de toestemming van de burgemeester nodig. Dat kan enkel voor een vereniging zonder winstoogmerk, voor eigen leden, onbetaald en hoogstens 4 keer per jaar. De politie controleert elke vrijwilliger zelf; een uittreksel uit het strafregister is niet nodig. De lijst moet ruim op voorhand binnen, vaak 15 tot 30 dagen voor het evenement. <a href=\"/sjablonen/lijst-vrijwillige-stewards.xlsx\" download>Download ons sjabloon</a>.";
+  }
+  return "";
+}
 function toonDocs() {
   DOCS.forEach(d => {
     const w = document.getElementById("doc_" + d.k + "_wrap"), zichtbaar = d.toon();
     w.hidden = !zichtbaar;
     w.querySelectorAll("input[type=radio]").forEach(i => i.disabled = !zichtbaar);
     document.getElementById("doc_" + d.k + "_waarom").textContent = waaromDoc(d);
+    const let_op = zichtbaar ? letOpDoc(d) : "", lo = document.getElementById("doc_" + d.k + "_letop");
+    lo.hidden = !let_op; lo.innerHTML = let_op;
     const nu = zichtbaar && gekozen("doc_" + d.k) === "nu", up = document.getElementById("doc_" + d.k + "_up");
     up.hidden = !nu; if (!nu) document.getElementById("doc_" + d.k + "_file").value = "";
   });
@@ -1100,6 +1121,9 @@ om in naam en voor rekening van de organisator de evenementaanvraag en de bijhor
 De organisator blijft verantwoordelijk voor de juistheid van de gegevens, voor de organisatie van het evenement en voor de naleving van de vergunningsvoorwaarden. Na de indiening mag de volmachthebber optreden als tussenpersoon: vragen van de gemeente doorgeven aan de organisator, en de antwoorden en documenten van de organisator aan de gemeente bezorgen. Deze volmacht geldt enkel voor dit evenement. Ze loopt tot de gemeente over de aanvraag beslist heeft, en kan altijd ingetrokken worden met een mail aan thomas@evenementaanvragen.be.`;
 }
 const vt = document.getElementById("volmachttekst");
+// Voornaam en naam apart in het formulier, samen in organisator_naam (zoals het script en de Sheet ze verwachten).
+function zetNaam() { document.getElementById("organisator_naam").value = [document.getElementById("organisator_voornaam").value, document.getElementById("organisator_achternaam").value].map(x => x.trim()).filter(Boolean).join(" "); }
+["organisator_voornaam", "organisator_achternaam"].forEach(id => document.getElementById(id).addEventListener("input", zetNaam));
 function toonVolmacht() { vt.textContent = volmachtTekst(Object.fromEntries(new FormData(intakeForm).entries())); }
 
 // Prijs: zelfde regels als prijsVoor() in Betaling.gs. € 65 vanaf 500 aanwezigen (met veiligheidsplan), anders € 35; de plantekenaar zit in beide. Zelfde prijs voor elk type organisator. Deadline binnen 5 werkdagen: + € 15 spoedtoeslag.
@@ -1323,6 +1347,7 @@ form.addEventListener("submit", async e => {
   await regelsKlaar; toonTermijn();
   // Alle stappen opnieuw nakijken; bij een fout naar die stap.
   for (let n = 1; n <= 5; n++) { if (!geldig(n)) { if (n !== 5) gaNaar(n); return; } }
+  zetNaam();
   const data = Object.fromEntries(new FormData(form).entries());
   data.speciaal = new FormData(form).getAll("speciaal").join(", ");
   if (data.uit_publiceren !== "ja") { data.uit_tekst = ""; data.uit_prijs = ""; }
