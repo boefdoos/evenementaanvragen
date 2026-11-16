@@ -198,7 +198,7 @@ const ld = [
     {mat
       ? <div class="vak"><h3>Feestmateriaal lenen</h3><p>Materiaal van de uitleendienst vraag je in {g} apart aan. Wij nemen het mee in je dossier, met wat marge.</p>
           {(mat.items || mat.termijn || mat.part || mat.kosten) && <ul>{mat.items && <li>{mat.items}</li>}{mat.termijn && <li>{mat.termijn}</li>}{mat.part && <li>{mat.part}</li>}{mat.kosten && <li>{mat.kosten}</li>}</ul>}</div>
-      : <div class="vak"><h3>Wat wij doen</h3><p>Wij berekenen je deadline, maken het volledige dossier op met formulieren, bijlagen en bewonersbrief, en dienen het in. Jij blijft het aanspreekpunt van de gemeente.</p></div>}
+      : <div class="vak"><h3>Wat wij doen</h3><p>Wij berekenen je deadline, maken het volledige dossier op met formulieren, bijlagen en bewonersbrief, en dienen het in. Tot de beslissing geven wij de vragen van de gemeente aan je door.</p></div>}
   </div>
   {bron && <p class="bron">Bron: <a href={bron} rel="nofollow noopener">website van {g}</a>. Nagekeken door evenementaanvragen.be{perMail && <>, en per mail bevestigd door de gemeente</>}.{r.status === "onzeker" && <> {g} publiceert geen eenduidige termijn: we rekenen met de strengste lezing.</>}{onbekend && <> {g} publiceert geen vaste termijn: we rekenen met de strengste termijn in de provincie en vragen het na.</>} De gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert.</p>}
 
