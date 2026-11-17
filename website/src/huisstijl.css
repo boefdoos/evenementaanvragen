@@ -199,6 +199,7 @@ footer.foot a{color:var(--soft)}
 .her{margin-top:18px;padding-top:16px;border-top:1px solid var(--line-2)}
 .her-k{font-weight:600;font-size:15px;margin:0}
 .her-t{color:var(--soft);font-size:14px;margin:4px 0 0}
+.her-t a{color:inherit}
 .her-f{display:flex;gap:8px;margin-top:12px}
 .her-f input[type=email]{flex:1;min-width:0;font:500 16px/1.2 var(--f-body);height:48px;padding:12px 14px;border-radius:10px;border:1px solid var(--line-2);background:var(--bg);color:var(--text);-webkit-appearance:none;appearance:none}
 .her-f input[type=email]:focus-visible{outline:2px solid var(--text);outline-offset:1px}

@@ -23,7 +23,6 @@ function herinneringBlok(el, info) {
           '<button class="btn" type="submit">Herinner me</button>' +
         '</form>' +
         '<p class="her-m" role="status" aria-live="polite"></p>' +
-        '<p class="her-fijn">Met een link naar onze dienst. Geen nieuwsbrief. <a href="/privacy#herinnering">Privacy</a></p>' +
       '</div>';
     var f = el.querySelector("form"), m = el.querySelector(".her-m"), knop = f.querySelector("button");
     f.addEventListener("submit", function (e) {
@@ -51,8 +50,10 @@ function herinneringBlok(el, info) {
   var sleutel = [info.gemeente, info.type, info.datum, info.meerdaags].join("|");
   if (el._sleutel !== sleutel) { var m2 = el.querySelector(".her-m"); m2.textContent = ""; m2.className = "her-m"; el._sleutel = sleutel; }
   var op = new Date(info.deadline); op.setDate(op.getDate() - HER_DAGEN_VOOR);
-  el.querySelector(".her-t").textContent = "We mailen je één keer, op " +
-    op.toLocaleDateString("nl-BE", { weekday: "long", day: "numeric", month: "long" }) + ": twee weken vóór je deadline.";
+  var t = el.querySelector(".her-t");
+  t.textContent = "We mailen je één keer, op " + op.toLocaleDateString("nl-BE", { weekday: "long", day: "numeric", month: "long" }) +
+    " (twee weken vóór je deadline), met een link naar onze dienst. ";
+  var a = document.createElement("a"); a.href = "/privacy#herinnering"; a.textContent = "Privacy"; t.appendChild(a);
   el._info = info;
   el.hidden = false;
 }
