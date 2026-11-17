@@ -29,6 +29,7 @@ import huisstijl from "../huisstijl.css?raw";
       <label class="full vink" for="c-meer"><input id="c-meer" type="checkbox"> Het evenement duurt meerdere dagen <span class="vinkhint">(een feest dat na middernacht eindigt, telt als één dag)</span></label>
     </form>
     <div id="c-go"></div>
+    <div id="c-her" hidden></div>
   </aside>
 </div></section>
 
@@ -191,10 +192,11 @@ import huisstijl from "../huisstijl.css?raw";
 <script is:inline>var RULES = [];</script>
 <script is:inline src="/rekenlogica.js"></script>
 <script is:inline src="/indienmoment.js"></script>
+<script is:inline src="/herinnering.js"></script>
 <script is:inline src="/gemeentezoeker.js"></script>
 <script is:inline>
 (function(){
-  const gem=$("c-gem"), typ=$("c-type"), dat=$("c-datum"), meer=$("c-meer"), out=$("c-out"), go=$("c-go");
+  const gem=$("c-gem"), typ=$("c-type"), dat=$("c-datum"), meer=$("c-meer"), out=$("c-out"), go=$("c-go"), her=$("c-her");
   TYPES.forEach(([k,v])=>typ.appendChild(new Option(v+(BUITEN_AANBOD_TYPES.includes(k)?" (nog niet in ons aanbod)":""),k)));
   const zoeker=gemeenteZoeker(gem);
   typ.value="fuif";
@@ -218,12 +220,12 @@ import huisstijl from "../huisstijl.css?raw";
   function show(){
     meeNemen(gem.value);
     const buiten=buitenAanbod(typ.value,0);
-    if(buiten){go.innerHTML='';out.innerHTML='<div class="count"><span class="num">–</span><span class="unit">dagen</span></div><div class="deadline">Niet in ons aanbod</div><p class="rule">'+esc(buiten)+'</p>';return;}
+    if(buiten){go.innerHTML='';herinneringBlok(her,null);out.innerHTML='<div class="count"><span class="num">–</span><span class="unit">dagen</span></div><div class="deadline">Niet in ons aanbod</div><p class="rule">'+esc(buiten)+'</p>';return;}
     const r=RULES.find(x=>x.gemeente===gem.value); if(!r||!dat.value) return;
     const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,meerdaags:meer.checked,od:false,
       x:{muziek:null,sterkeDrank:null,alcohol:null,verkeer:null,materiaal:null,publiciteit:null,od:null,stroomgroep:null,subsidie:null}};
     let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
-    if(res.unknown){out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';go.innerHTML='<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>'+overzicht(r);return;}
+    if(res.unknown){herinneringBlok(her,null);out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';go.innerHTML='<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>'+overzicht(r);return;}
     // Zelfde oordeel als de intake (indienmoment.js)
     const o=indienOordeel(res), MAP={laat:"late",tekort:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"};
     const st=MAP[o.soort];
@@ -234,6 +236,7 @@ import huisstijl from "../huisstijl.css?raw";
       '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status '+st+'">'+txt+'</span></div>'+
       '<p class="rule">'+(o.soort==="tekort"?esc(tekortUitleg(res.best.date)):st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>';
     go.innerHTML=(st==="late"?'':'<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>')+overzicht(r);
+    herinneringBlok(her,st==="late"?null:{gemeente:r.gemeente,type:typ.value,datum:dat.value,meerdaags:meer.checked?"ja":"",deadline:res.best.date});
   }
   fetch("/regels.json").then(r=>r.json()).then(data=>{
     RULES=data;

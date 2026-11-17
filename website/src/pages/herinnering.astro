@@ -1,0 +1,51 @@
+---
+// Bevestigen of afmelden van een herinnering (links uit de mails van Herinnering.gs): /herinnering?bevestig=… of ?afmelden=…
+// De actie gebeurt pas in de browser (fetch), zodat linkscanners in mailprogramma's niets bevestigen of afmelden.
+import Basis from "../layouts/Basis.astro";
+import huisstijl from "../huisstijl.css?raw";
+---
+<Basis title="Herinnering · evenementaanvragen.be" description="Je herinnering voor de deadline van je evenementaanvraag.">
+<style is:inline slot="head" set:html={huisstijl}></style>
+<meta slot="head" name="robots" content="noindex">
+<main>
+<section class="hero"><div class="wrap" style="display:block;max-width:720px">
+  <div class="panel" aria-live="polite">
+    <div class="k">Herinnering</div>
+    <h1 id="kop" style="font-size:clamp(28px,4vw,40px);margin-top:12px">Even kijken…</h1>
+    <p class="lead" id="tekst" style="margin-top:14px"></p>
+    <div class="cta" id="acties" hidden></div>
+  </div>
+</div></section>
+</main>
+<script is:inline slot="scripts">
+(function () {
+  const ENDPOINT = "https://script.google.com/macros/s/AKfycbz-EAv8lTkB6Y5_yKjc9SWB5UrtYHjuUV_ffm4yqTiMgYR7XjiB0unzoneptmGkJYDuaQ/exec";
+  const q = new URLSearchParams(location.search);
+  const actie = q.has("afmelden") ? "afmelden" : "bevestig";
+  const token = q.get(actie) || "";
+  const $ = (x) => document.getElementById(x);
+  const zet = (kop, tekst) => { $("kop").textContent = kop; $("tekst").textContent = tekst; };
+  const knop = (tekst, href, primair) => {
+    const a = document.createElement("a"); a.className = "btn" + (primair ? " primary" : ""); a.href = href; a.textContent = tekst;
+    $("acties").appendChild(a); $("acties").hidden = false;
+  };
+  const datum = (iso) => new Date(iso + "T12:00:00").toLocaleDateString("nl-BE", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  if (!/^[0-9a-f]{40}$/.test(token)) { zet("Deze link klopt niet", "Kopieer de volledige link uit je mail, of mail ons: thomas@evenementaanvragen.be."); return; }
+  fetch(ENDPOINT + "?herinnering=" + actie + "&token=" + token).then((r) => r.json()).then((j) => {
+    if (!j.ok) throw new Error(j.error);
+    if (j.status === "afgemeld") {
+      zet("Afgemeld", "Je krijgt geen herinnering, en je adres staat niet meer op onze lijst.");
+      knop("Naar de startpagina", "/", false);
+    } else if (j.status === "bevestigd") {
+      zet("Genoteerd", "We mailen je " + (/^\d{4}-\d{2}-\d{2}$/.test(j.herinner_op || "") ? "op " + datum(j.herinner_op) : "twee weken vóór je deadline") +
+        ", één keer. Wil je de aanvraag nu al uit handen geven? Dat kan meteen.");
+      knop("Start je aanvraag", "/aanvraag" + (j.gemeente ? "?gemeente=" + encodeURIComponent(j.gemeente) : ""), true);
+      knop("Toch geen herinnering", "/herinnering?afmelden=" + token, false);
+    } else {
+      zet("Deze herinnering bestaat niet meer", "Misschien is ze al verstuurd, afgemeld of verlopen. Vul de termijncheck opnieuw in om een nieuwe te vragen.");
+      knop("Naar de termijncheck", "/", true);
+    }
+  }).catch(() => zet("Dat lukte niet", "Probeer het straks opnieuw met de link in je mail, of mail ons: thomas@evenementaanvragen.be."));
+})();
+</script>
+</Basis>

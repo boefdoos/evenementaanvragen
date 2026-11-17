@@ -8,8 +8,8 @@ export default defineConfig({
   // Cloudflare serveert /aanvraag.html als /aanvraag (en stuurt .html door), dus links en canonieke URL's zijn zonder .html.
   build: { format: "preserve" },
   integrations: [sitemap({
-    // Niet indexeren: bedankpagina na betaling en de plantekenaar (werkt enkel met een dossier).
-    filter: (p) => !/\/(betaald|plan)(\.html|\/)?$/.test(p),
+    // Niet indexeren: bedankpagina na betaling, de plantekenaar (werkt enkel met een dossier) en de bevestigpagina van de herinnering.
+    filter: (p) => !/\/(betaald|plan|herinnering)(\.html|\/)?$/.test(p),
     // De sitemap moet dezelfde URL's tonen als de canonieke links: losse pagina's zonder .html en zonder slash, mappen met een slash.
     serialize(item) {
       const u = new URL(item.url);

@@ -3,8 +3,8 @@
 import Basis from "../layouts/Basis.astro";
 import huisstijl from "../huisstijl.css?raw";
 import juridisch from "../juridisch.css?raw";
-const VERSIE = "3";
-const DATUM = "5 november 2026";
+const VERSIE = "4";
+const DATUM = "17 november 2026";
 const hoofdstukken = [
   ["wie", "Wie is verantwoordelijk"],
   ["welke", "Welke gegevens we verwerken"],
@@ -29,7 +29,7 @@ const hoofdstukken = [
     <b>In het kort</b>
     <ul>
       <li>We gebruiken je gegevens om je evenementaanvraag voor te bereiden en in te dienen. De gemeente krijgt wat ze nodig heeft om te beslissen.</li>
-      <li>We verkopen niets door en sturen geen reclame.</li>
+      <li>We verkopen niets door. Reclame sturen we niet, behalve in de ene herinnering die je zelf kan vragen bij de termijncheck.</li>
       <li>Een AI-assistent helpt ons het dossier op te maken. Een mens kijkt alles na en dient zelf in.</li>
       <li>Geen trackingcookies, geen advertentienetwerken, geen bezoekersstatistieken.</li>
       <li>We bewaren je dossier tot een jaar na je evenement.</li>
@@ -53,6 +53,7 @@ const hoofdstukken = [
     <li><b>Volmacht:</b> de naam en hoedanigheid waarmee je tekende, en het tijdstip.</li>
     <li><b>Rijksregisternummer:</b> enkel als de gemeente het van de organisator vraagt in haar aanvraagformulier. We vragen het pas vlak voor de indiening, typen het rechtstreeks in het formulier van de gemeente en bewaren het nergens: niet in ons dossier, niet in onze lijsten en niet in onze mails. Krijgen we het toch per mail, dan verwijderen we die mail na de indiening.</li>
     <li><b>Betaling:</b> bedrag, formule, betaalstatus en het kenmerk van de betaling. Je kaart- of rekeninggegevens komen niet bij ons terecht, die verwerkt Mollie. Regelt iemand anders de betaling, zoals de penningmeester, dan ook de naam en het e-mailadres van die persoon en een eventuele referentie voor de factuur. Die gebruiken we enkel voor het betaalverzoek, een herinnering, de ontvangstbevestiging en de factuur.</li>
+    <li id="herinnering"><b>Herinnering:</b> vraag je bij de termijncheck een herinnering, dan je e-mailadres en wat je in de termijncheck koos (gemeente, soort evenement, datum en de berekende deadline). We sturen eerst een mail om je adres te bevestigen. Na je bevestiging sturen we twee weken vóór je deadline één herinnering. Die wijst ook op onze dienst, voor als je de aanvraag liever uitbesteedt.</li>
     <li><b>Briefwisseling:</b> de mails die we uitwisselen.</li>
     <li><b>Technische gegevens:</b> je IP-adres, dat de servers van onze website en van de diensten hieronder te zien krijgen wanneer je browser een pagina of kaart opvraagt.</li>
   </ul>
@@ -65,12 +66,13 @@ const hoofdstukken = [
       <tr><td>Je aanvraag voorbereiden en indienen bij de gemeente, materiaal aanvragen, je plan nakijken en met je mailen over je aanvraag.</td><td>Uitvoering van de overeenkomst met jou.</td></tr>
       <tr><td>Betalingen verwerken en terugbetalen.</td><td>Uitvoering van de overeenkomst.</td></tr>
       <tr><td>Facturen en betaalgegevens bewaren.</td><td>Wettelijke verplichting (boekhouding).</td></tr>
+      <tr><td>Een herinnering sturen vóór je deadline, als je die zelf vraagt en bevestigt.</td><td>Toestemming. Je trekt ze in met de afmeldlink in de bevestigingsmail of met een mail aan ons.</td></tr>
       <tr><td>Kunnen aantonen dat je een volmacht gaf.</td><td>Gerechtvaardigd belang: bewijs tegenover de gemeente en bij een geschil.</td></tr>
       <tr><td>Spam en misbruik van het formulier tegenhouden.</td><td>Gerechtvaardigd belang: een betrouwbare dienst.</td></tr>
       <tr><td>Onze regels per gemeente verbeteren, bijvoorbeeld als een gemeente een andere termijn blijkt te hanteren.</td><td>Gerechtvaardigd belang. We gebruiken daarvoor de regels, niet je persoonsgegevens.</td></tr>
     </tbody>
   </table></div>
-  <p>We gebruiken je gegevens niet voor reclame of nieuwsbrieven, en we verkopen of verhuren ze aan niemand.</p>
+  <p>Buiten de herinnering die je zelf vraagt, gebruiken we je gegevens niet voor reclame of nieuwsbrieven. We verkopen of verhuren ze aan niemand.</p>
 
   <h2 id="wie-ziet">4. Wie je gegevens krijgt</h2>
   <h3>Voor je aanvraag</h3>
@@ -103,6 +105,7 @@ const hoofdstukken = [
     <tbody>
       <tr><td>Je dossier: aanvraag, plannen, bijlagen, volmacht en mails</td><td>Tot 1 jaar na de datum van je evenement. Zo kan je volgend jaar vlot opnieuw aanvragen.</td></tr>
       <tr><td>Aanvragen die niet betaald werden</td><td>3 maanden na de aanvraag.</td></tr>
+      <tr><td>Herinnering vóór je deadline</td><td>Niet bevestigd: 7 dagen. Bevestigd: tot de herinnering vertrokken is of tot je afmeldt; dan wissen we je adres meteen van de lijst. De verstuurde mails blijven nog 30 dagen in onze mailbox.</td></tr>
       <tr><td>Facturen en betaalgegevens</td><td>10 jaar, zoals de boekhoudwetgeving vraagt.</td></tr>
       <tr><td>Wat de plantekenaar in je browser bewaart</td><td>Tot je het zelf wist (zie <a href="#cookies">punt 9</a>).</td></tr>
     </tbody>
