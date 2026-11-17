@@ -23,7 +23,7 @@ function herinneringBlok(el, info) {
           '<button class="btn" type="submit">Herinner me</button>' +
         '</form>' +
         '<p class="her-m" role="status" aria-live="polite"></p>' +
-        '<p class="her-fijn">Eén mail, geen nieuwsbrief. In die mail wijzen we je ook op onze dienst. Je bevestigt eerst via een link die we je mailen. <a href="/privacy#herinnering">Privacy</a></p>' +
+        '<p class="her-fijn">Met een link naar onze dienst. Geen nieuwsbrief. <a href="/privacy#herinnering">Privacy</a></p>' +
       '</div>';
     var f = el.querySelector("form"), m = el.querySelector(".her-m"), knop = f.querySelector("button");
     f.addEventListener("submit", function (e) {
