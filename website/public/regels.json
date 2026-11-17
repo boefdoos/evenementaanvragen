@@ -2323,12 +2323,15 @@
    ]
   },
   "extra": [],
-  "note": "Securitydocumenten min. 14 dagen vooraf.",
+  "note": "Securitydocumenten min. 14 dagen vooraf. Zodra een evenement op openbaar domein plaatsvindt of publiek toegankelijk is, is een aanvraag met evenementenfiche en inplanting nodig (mail 16/11/2026).",
   "platform": "Eigen loket / anders",
   "kanaal": "Formulier (pdf-evenementenfiche)",
   "link": "https://www.jabbeke.be/bestanden/eventficheinvul.pdf",
-  "contact": "Niet vermeld voor evenementen algemeen; herbruikbare bekers: Sven De Brabander – sven.debrabander@jabbeke.be – 0496 59 51 41; politie: pz.kouter.hhoo@police.belgium.eu",
-  "bron": "https://www.jabbeke.be/form/260/organisatie-evenementen",
+  "contact": "Dienst noodplanning – mobiliteit – 050 81 02 11 (beantwoordt vragen over evenementen; algemeen: gemeentehuis@jabbeke.be); herbruikbare bekers: Sven De Brabander – sven.debrabander@jabbeke.be – 0496 59 51 41; politie: pz.kouter.hhoo@police.belgium.eu",
+  "bron": [
+   "https://www.jabbeke.be/form/260/organisatie-evenementen",
+   "Mail dienst noodplanning – mobiliteit Jabbeke, 16/11/2026"
+  ],
   "termijnTekst": "Aanvraag min. 2 maanden vooraf; veiligheidsoverleg max. 1 maand vooraf; securitydocumenten min. 14 dagen vooraf; herbruikbare bekers min. 1 week vooraf",
   "bijzonder": [
    {
@@ -2424,7 +2427,21 @@
     "zekerheid": "laag"
    }
   },
-  "provincie": "West-Vlaanderen"
+  "provincie": "West-Vlaanderen",
+  "vrijstelling": [
+   {
+    "wat": "een evenement op uitnodiging, op privaat domein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "de gemeente raadt aan het lokaal bestuur in te lichten, zodat de hulpdiensten op de hoogte zijn (de gemeente geeft dan ook (brand)veiligheidstips); het zonaal GAS-reglement blijft gelden (geluidsoverlast valt onder nachtlawaai)",
+    "citaat": "\"Als een evenement doorgaat op uitnodiging en op privaat domein verlenen wij hiervoor geen vergunning.\"",
+    "bron": "Mail dienst noodplanning – mobiliteit Jabbeke, 16/11/2026 (ref. U/SJC/2026/740243)",
+    "afgeleid": false,
+    "nagekeken": "2026-11-16"
+   }
+  ]
  },
  {
   "gemeente": "Knokke-Heist",
@@ -3714,7 +3731,12 @@
  },
  {
   "gemeente": "Middelkerke",
-  "intake_verplicht": ["startuur", "einduur", "opbouw", "afbraak"],
+  "intake_verplicht": [
+   "startuur",
+   "einduur",
+   "opbouw",
+   "afbraak"
+  ],
   "intake_verplicht_bron": "Verplichte velden in de stap Periode van het Eaglebe-formulier van Middelkerke (begin en einde van het evenement, opbouw en afbraak, telkens met uur), browsertest 9/11/2026 (claude/eaglebe-oostende-9-11.md).",
   "status": "ok",
   "base": {
@@ -8478,7 +8500,8 @@
    "https://essen.evenementenloket.be/",
    "https://www.essen.be/ontspannen/hoe-iets-organiseren/drankvergunning-fuiven-en-evenementen",
    "https://www.essen.be/ontspannen/hoe-iets-organiseren/materialen-ontlenen",
-   "https://www.essen.be/sites/default/files/2023-12/reglement%20op%20het%20uitlenen%20van%20feest%20en%20ander%20materiaal.pdf"
+   "https://www.essen.be/sites/default/files/2023-12/reglement%20op%20het%20uitlenen%20van%20feest%20en%20ander%20materiaal.pdf",
+   "Mail dienst evenementen en infrastructuur Essen, 16/11/2026"
   ],
   "bijzonder": [
    {
@@ -8567,7 +8590,22 @@
     "https://essen.evenementenloket.be/"
    ],
    "zekerheid": "hoog"
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest dat enkel privéterrein gebruikt",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee",
+     "max_db": 85
+    },
+    "nog_wel": "muziek tot 85 dB is toegestaan; de regels van goed nabuurschap en het verbod op storend geluid blijven gelden; in een feestzaal gelden de regels van de zaal",
+    "citaat": "\"In Essen is een aanvraag voor een privéfeest niet nodig.\"",
+    "bron": "Mail dienst evenementen en infrastructuur Essen, 16/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-16"
+   }
+  ]
  },
  {
   "gemeente": "Geel",
@@ -19135,22 +19173,46 @@
  {
   "gemeente": "Peer",
   "provincie": "Limburg",
-  "status": "onbekend",
-  "base": null,
-  "extra": [],
-  "termijnTekst": "Geen indieningstermijn op de webpagina's van het evenementenloket; de termijn staat vermoedelijk in het 'Reglement projecten en evenementen NIEUW 2026-2031' (pdf), dat niet gelezen kon worden.",
-  "note": "Reglement projecten en evenementen 2026-2031 (pdf op peer.be) geblokkeerd (robots_disallowed) – termijnen nakijken in de browser. Het online evenementenloket (onlinesmartcities) dekt alle activiteiten: sportactiviteiten, buurtfeesten, wandelingen, jubilea, open vuren, speelstraten, festivals, tornooien, fuiven en grote evenementen; het systeem geeft aan welke bijkomende aanvragen nodig zijn (materiaal, parkeerverbod, veiligheidsplan). Vereniging moet eerst geregistreerd zijn in het Vlaams Verenigingsloket. Aanvraag kan ook zonder aanmelden. Speelstraat enkel in juli en augustus. Geen spoedprocedure gevonden. Het reglement projecten en evenementen (jan. 2026) is een toelagereglement: toelage ten laatste 4 weken vooraf via het evenementenloket, pas na goedkeuring van het evenement door het college. Geen termijn voor de evenementaanvraag zelf; navragen. Gelezen in de browser op 1/11/2026.",
+  "status": "ok",
+  "base": {
+   "*": [
+    4,
+    "w"
+   ],
+   "concert": [
+    8,
+    "w"
+   ],
+   "kermis": [
+    8,
+    "w"
+   ],
+   "wielerwedstrijd": [
+    8,
+    "w"
+   ]
+  },
+  "extra": [
+   {
+    "groot": true,
+    "n": 3,
+    "unit": "m"
+   }
+  ],
+  "termijnTekst": "Algemene aanvraagtermijn 4 weken (sinds kort, was 6 weken). 4 weken volstaat voor speelstraten, buurtfeesten, jubilea, fuiven en toertochten; 8 weken voor live-optredens, dorpsfeesten en dorpskoersen; grote evenementen dikwijls 3 maanden; minstens 12 weken als er een omgevingsvergunning nodig is.",
+  "note": "Termijnen per type uit de mail van de dienst Vrijetijdsondersteuning (16/11/2026). Algemene termijn 4 weken; 8 weken voor live-optredens, dorpsfeesten en dorpskoersen noemt de stad 'werkbaar' (strengste lezing: als termijn opgenomen). 'Dorpsfeest' gemapt op kermis, 'dorpskoers' op wielerwedstrijd. Groot evenement: 3 maanden (de stad stimuleert dat, 'dikwijls'). Omgevingsvergunning nodig: minstens 12 weken (enkele per jaar, bv. Blues Peer). Het online evenementenloket (onlinesmartcities) dekt alle activiteiten en geeft aan welke bijkomende aanvragen nodig zijn (materiaal, parkeerverbod, veiligheidsplan). Vereniging moet eerst geregistreerd zijn in het Vlaams Verenigingsloket. Aanvraag kan ook zonder aanmelden. Speelstraat enkel in juli en augustus. Toelage (reglement projecten en evenementen jan. 2026) ten laatste 4 weken vooraf, pas na goedkeuring van het evenement door het college.",
   "platform": "eigen e-loket (Online Smart Cities / LCP)",
   "kanaal": "Online evenementenloket van Stad Peer (peer.onlinesmartcities.be); dossier opvolgen via het PIP-loket.",
   "link": "https://peer.onlinesmartcities.be/eloket/vergunning-evenement",
-  "contact": "Stad Peer, 't Poorthuis, Zuidervest 2A, 3990 Peer – info@peer.be – 011 61 07 00",
+  "contact": "Vrijetijdsondersteuning Stad Peer, 't Poorthuis, Zuidervest 2A, 3990 Peer – info@peer.be – 011 61 07 00",
   "bron": [
    "https://www.peer.be/evenementenloket",
    "https://www.peer.be/loket-evenementen",
    "https://peer.onlinesmartcities.be/eloket/vergunning-evenement",
    "https://www.peer.be/thema/detail/114/zelf-organiseren",
    "https://www.peer.be/materiaal-uitlenen",
-   "https://www.peer.be/file/download/abab0070-11ac-4296-a239-0ff00aefd3b5/uLDByfdQDYNCg7UtHmBndTDAthaEaPTxPFqmlEv4s3d.pdf"
+   "https://www.peer.be/file/download/abab0070-11ac-4296-a239-0ff00aefd3b5/uLDByfdQDYNCg7UtHmBndTDAthaEaPTxPFqmlEv4s3d.pdf",
+   "Mail Vrijetijdsondersteuning Stad Peer, 16/11/2026"
   ],
   "bijzonder": [
    {
@@ -19192,6 +19254,13 @@
      "subsidie": true
     },
     "toelichting": ""
+   },
+   {
+    "soort": "voorwaarde",
+    "wat": "Is er een omgevingsvergunning nodig, dien dan minstens 12 weken vooraf in",
+    "n": 12,
+    "unit": "w",
+    "toelichting": "Volgens de stad maar enkele evenementen per jaar."
    }
   ],
   "college": "Onbekend (reglement niet leesbaar); uitleen aan andere gemeentebesturen mits goedkeuring college van burgemeester en schepenen.",
@@ -26600,7 +26669,12 @@
  },
  {
   "gemeente": "Sint-Niklaas",
-  "intake_verplicht": ["startuur", "einduur", "opbouw", "afbraak"],
+  "intake_verplicht": [
+   "startuur",
+   "einduur",
+   "opbouw",
+   "afbraak"
+  ],
   "intake_verplicht_bron": "Verplichte velden in de stap Periode van het Eaglebe-formulier van Sint-Niklaas (begin en einde van het evenement, opbouw en afbraak, telkens met uur), browsertest 9/11/2026 (claude/eaglebe-oostende-9-11.md).",
   "provincie": "Oost-Vlaanderen",
   "status": "ok",
@@ -35778,11 +35852,12 @@
   "platform": "onbekend (aanvraagformulieren per type via de gemeentesite)",
   "kanaal": "Via de pagina Evenementenaanvraag op tervuren.be, met een eigen aanvraagformulier per type evenement.",
   "link": "https://www.tervuren.be/evenementenaanvraag",
-  "contact": "Dienst Vrije tijd – vrijetijd@tervuren.be – 02 766 52 03",
+  "contact": "Dienst Evenementen – evenementen@tervuren.be – 02 766 53 85 (algemeen: Dienst Vrije tijd – vrijetijd@tervuren.be – 02 766 52 03)",
   "bron": [
    "https://www.tervuren.be/evenementenaanvraag",
    "https://www.tervuren.be/uitlenenmateriaal",
-   "https://www.tervuren.be/retributiereglement-voor-het-ontlenen-en-het-gebruik-van-materiaal-van-de-dienst-werken-in-eigen-beh"
+   "https://www.tervuren.be/retributiereglement-voor-het-ontlenen-en-het-gebruik-van-materiaal-van-de-dienst-werken-in-eigen-beh",
+   "Mail Dienst Evenementen Tervuren, 17/11/2026"
   ],
   "bijzonder": [
    {
@@ -35874,7 +35949,21 @@
      "link": "https://www.tervuren.be/uitlenenmateriaal"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een besloten feest op uitnodiging, op privéterrein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "de gemeente vraagt de buurtbewoners schriftelijk te verwittigen; het algemeen politiereglement blijft gelden en de nachtrust vanaf 22 uur moet gerespecteerd worden (een geluidsvergunning is voor zo'n feest niet mogelijk)",
+    "citaat": "\"Deze aanvragen moeten niet gemeld worden via het evenementenloket.\"",
+    "bron": "Mail Dienst Evenementen Tervuren, 17/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-17"
+   }
+  ]
  },
  {
   "gemeente": "Tielt-Winge",
