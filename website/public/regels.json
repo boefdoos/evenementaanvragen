@@ -5092,14 +5092,26 @@
    ]
   },
   "extra": [],
-  "note": "",
+  "note": "Privéfeest met muziek waar de buren last van kunnen hebben: aanvraag nodig, de stad regelt de geluidsvergunning (mail dienst Evenementen, 18/11/2026). Of een privéfeest zonder muziek vrijgesteld is, zegt de mail niet.",
   "platform": "Eaglebe",
   "kanaal": "Eaglebe",
   "link": "https://app.eaglebe.com/pre/nl-be/new/event?client=12b0c73329e9683a0d340359170c6153",
   "contact": "Evenementen, toerisme en lokale economie – evenementen@tielt.be – 051 82 66 90",
-  "bron": "https://www.tielt.be/vrije-tijd/activiteiten-evenementen/zelf-organiseren/een-evenement-digitaal-aanvragen",
+  "bron": [
+   "https://www.tielt.be/vrije-tijd/activiteiten-evenementen/zelf-organiseren/een-evenement-digitaal-aanvragen",
+   "Mail dienst Evenementen Tielt, 18/11/2026"
+  ],
   "termijnTekst": "Min. 30 dagen: buurtfeesten, eetfestijnen, schoolfeesten, tentoonstellingen; min. 60 dagen: kermisactiviteiten, (rommel)markten, beurzen, stoeten/optochten; min. 90 dagen: braderijen, concerten, muziekfestivals, fuiven, sportactiviteiten; wielerwedstrijden: 14 weken (wettelijk)",
-  "bijzonder": [],
+  "bijzonder": [
+   {
+    "soort": "voorwaarde",
+    "wat": "Ook een privéfeest met muziek die de buren kan storen moet aangevraagd worden (geluidsvergunning); in het digitaal formulier kiezen voor 'privéfeest met geluidsvergunning' en/of inname openbaar domein",
+    "als": {
+     "muziek": true
+    },
+    "toelichting": "Mail dienst Evenementen Tielt, 18/11/2026"
+   }
+  ],
   "college": null,
   "uitleen": {
    "uitleendienst": "ja",
@@ -28645,7 +28657,7 @@
    }
   ],
   "termijnTekst": "Festivals en kermissen: minimaal 16 weken voor de start. Alle overige evenementen (fuiven, concerten, rommelmarkten, wielerwedstrijden, buurtfeesten, enz.): minimaal 8 weken voor de start. Vroeger aanvragen wordt aangeraden.",
-  "note": "'Festival' bestaat niet als type: opgenomen als extra-regel 'groot' (16 weken); behandel elk festival als 16 weken. Bij gemiste deadline geen garantie op vergunning (contact evenementenloket@affligem.be). Aanvraag gratis; specifieke vergunningen (inname openbaar domein, nutsvoorzieningen, materiaal) kunnen kosten hebben. Drank, parkeerverbod en publiciteit niet uitgewerkt op de pagina; politiereglement TARL en zonaal reglement evenementen brandweerzone Vlaams-Brabant West niet gelezen. Aankondigingsportieken: voorwaarden elders op affligem.be, niet gevonden.",
+  "note": "'Festival' bestaat niet als type: opgenomen als extra-regel 'groot' (16 weken); behandel elk festival als 16 weken. Bij gemiste deadline geen garantie op vergunning (contact evenementenloket@affligem.be). Aanvraag gratis; specifieke vergunningen (inname openbaar domein, nutsvoorzieningen, materiaal) kunnen kosten hebben. Drank, parkeerverbod en publiciteit niet uitgewerkt op de pagina; politiereglement TARL en zonaal reglement evenementen brandweerzone Vlaams-Brabant West niet gelezen. Aankondigingsportieken: voorwaarden elders op affligem.be, niet gevonden. Privéfeest op privaat terrein: in principe geen melding of toelating, melding wel aangeraden (mail evenementenloket, 18/11/2026). Wanneer een privéfeest 'groot' is (site), werd niet beantwoord.",
   "platform": "Eaglebe",
   "kanaal": "Online via het evenementenloket op Eaglebe (account aanmaken nodig); vorige aanvragen kunnen gekopieerd worden.",
   "link": "https://app.eaglebe.com/auth/start",
@@ -28653,7 +28665,8 @@
   "bron": [
    "https://affligem.be/vrije-tijd/sport/een-evenement-organiseren",
    "https://www.affligem.be/evenementenloket",
-   "https://affligem.be/form/aanvraag-materiaal-evenement"
+   "https://affligem.be/form/aanvraag-materiaal-evenement",
+   "Mail evenementenloket Affligem, 18/11/2026"
   ],
   "bijzonder": [
    {
@@ -28738,7 +28751,21 @@
      "link": "https://www.vlaamsbrabant.be/nl/vrije-tijd-en-toerisme/uitleendienst"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privéfeest op privaat terrein",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "wettelijke verplichtingen blijven gelden; melding bij het evenementenloket wordt aangeraden, zodat de politie de organisator kan contacteren bij klachten",
+    "citaat": "\"Private feesten die in Affligem plaatsvinden op privaat terrein, hoeven in principe geen melding of toelating te doen.\"",
+    "bron": "Mail evenementenloket Affligem, 18/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-18"
+   }
+  ]
  },
  {
   "gemeente": "Asse",
@@ -35516,7 +35543,7 @@
   },
   "extra": [],
   "termijnTekst": "De aanvraag dient minstens 8 weken vóór datum ingediend te worden via het online vergunningsplatform Eaglebe.",
-  "note": "Toelating nodig bij tijdelijke inname openbaar domein (buurtfeest, rommelmarkt), doortocht (wielerwedstrijd, motorrit, wandeltocht), fuif of live optreden, of muziek langer/luider dan de normen. Verenigingen kunnen één gedeeld account aanmaken. Evenementen moeten voldoen aan het algemeen zonaal politiereglement KASTZE en het zonaal reglement brandpreventie (Brandweer Vlaams-Brabant-West). Richtlijnen KASTZE voor muziekevenementen (publiek, drank, versterkte muziek, staand publiek, einde na 22u) gelden bij toelating; niet naleven weegt mee bij volgende editie (pdf niet gelezen). Geluidsafwijking: max. 2 per maand en 12 per jaar per locatie, geluidsmeting verplicht. Uitleenreglement en tarieven (pdf) geblokkeerd door robots.txt. Pagina's veiligheidsdraaiboek, bewaking, veiligheidsoverleg en fuifexpert niet gelezen.",
+  "note": "Toelating nodig bij tijdelijke inname openbaar domein (buurtfeest, rommelmarkt), doortocht (wielerwedstrijd, motorrit, wandeltocht), fuif of live optreden, of muziek langer/luider dan de normen. Verenigingen kunnen één gedeeld account aanmaken. Evenementen moeten voldoen aan het algemeen zonaal politiereglement KASTZE en het zonaal reglement brandpreventie (Brandweer Vlaams-Brabant-West). Richtlijnen KASTZE voor muziekevenementen (publiek, drank, versterkte muziek, staand publiek, einde na 22u) gelden bij toelating; niet naleven weegt mee bij volgende editie (pdf niet gelezen). Geluidsafwijking: max. 2 per maand en 12 per jaar per locatie, geluidsmeting verplicht. Uitleenreglement en tarieven (pdf) geblokkeerd door robots.txt. Pagina's veiligheidsdraaiboek, bewaking, veiligheidsoverleg en fuifexpert niet gelezen. Een privé-evenement op privédomein vraagt geen aanvraag of melding; een evenement dat niet op openbaar domein of in een openbare instelling doorgaat, moet in principe niet aangevraagd worden (mail dienst evenementen, 18/11/2026).",
   "platform": "Eaglebe",
   "kanaal": "Online aanvraag via Eaglebe (account; verenigingen kunnen één gedeeld account gebruiken).",
   "link": "https://app.eaglebe.com/auth/start",
@@ -35532,7 +35559,8 @@
    "https://www.steenokkerzeel.be/algemene-richtlijnen-evenementen",
    "https://www.steenokkerzeel.be/algemene-regels-voor-evenementen",
    "https://www.steenokkerzeel.be/publiciteit-voor-je-evenement",
-   "https://www.steenokkerzeel.be/producten/detail/1435/draaiboek-voor-evenementen"
+   "https://www.steenokkerzeel.be/producten/detail/1435/draaiboek-voor-evenementen",
+   "Mail dienst evenementen Steenokkerzeel, 18/11/2026"
   ],
   "bijzonder": [
    {
@@ -35641,7 +35669,21 @@
      "link": "https://www.steenokkerzeel.be/publiciteit-voor-je-evenement"
     }
    ]
-  }
+  },
+  "vrijstelling": [
+   {
+    "wat": "een privé-evenement op privédomein (niet op openbaar domein of in een openbare instelling)",
+    "voorwaarden": {
+     "op_uitnodiging": true,
+     "openbaar_domein": "nee"
+    },
+    "nog_wel": "het zonaal politiereglement KASTZE blijft gelden",
+    "citaat": "\"Een privéevenement op privédomein moet geen aanvraag of melding doen.\"",
+    "bron": "Mail dienst evenementen Steenokkerzeel, 18/11/2026",
+    "afgeleid": false,
+    "nagekeken": "2026-11-18"
+   }
+  ]
  },
  {
   "gemeente": "Ternat",
