@@ -244,6 +244,11 @@ import huisstijl from "../huisstijl.css?raw";
     gem.innerHTML=provs.map(p=>'<optgroup label="'+esc(p)+'">'+RULES.filter(r=>(r.provincie||"West-Vlaanderen")===p).sort((a,b)=>a.gemeente.localeCompare(b.gemeente)).map(r=>'<option>'+esc(r.gemeente)+'</option>').join("")+'</optgroup>').join("");
     // Wat de bezoeker eerder in deze sessie koos (hier of in het formulier), komt terug.
     let mee={}; try{mee=JSON.parse(sessionStorage.getItem("termijncheck")||"{}")||{};}catch(e){}
+    // Een gedeelde link (?gemeente=deinze&type=fuif&datum=2027-03-20) gaat voor op wat eerder in de sessie gekozen werd.
+    const q=new URLSearchParams(location.search), qg=(q.get("gemeente")||"").trim();
+    if(qg){const r=RULES.find(x=>x.gemeente.toLowerCase()===qg.toLowerCase()||slug(x.gemeente)===slug(qg)); if(r) mee.gemeente=r.gemeente;}
+    if(q.get("type")) mee.type=q.get("type");
+    if(q.get("datum")) mee.datum=q.get("datum");
     gem.value=(mee.gemeente&&RULES.some(r=>r.gemeente===mee.gemeente))?mee.gemeente:"Oostende";
     if(mee.type&&TYPES.some(([k])=>k===mee.type)) typ.value=mee.type;
     if(/^\d{4}-\d{2}-\d{2}$/.test(mee.datum||"")&&new Date(mee.datum+"T00:00:00")>=today()) dat.value=mee.datum;
