@@ -164,10 +164,9 @@ const ld = [
   </div>
 
   <aside class="panel" aria-labelledby="calc-t">
-    <div class="k" id="calc-t">Hoeveel tijd heb je nog in {g}?</div>
+    <div class="k" id="calc-t">Ben je op tijd in {g}?</div>
     <div id="c-out" aria-live="polite">
-      <div class="count"><span class="num">–</span><span class="unit">dagen</span></div>
-      <div class="deadline">Kies soort en datum</div>
+      <div class="verdict"><div class="v-kop neutraal">Kies soort en datum</div></div>
     </div>
     <form class="fields" onsubmit="return false" aria-label="Termijncheck">
       <label for="c-type">Soort<select id="c-type"></select></label>
@@ -244,21 +243,24 @@ const ld = [
     meeNemen(GEM);
     const r=RULES.find(x=>x.gemeente===GEM); if(!r||!dat.value) return;
     const buiten=buitenAanbod(typ.value,0);
-    if(buiten){go.innerHTML='';herinneringBlok(her,null);out.innerHTML='<div class="count"><span class="num">–</span><span class="unit">dagen</span></div><div class="deadline">Niet in ons aanbod</div><p class="rule">'+esc(buiten)+'</p>';return;}
+    if(buiten){go.innerHTML='';herinneringBlok(her,null);out.innerHTML='<div class="verdict"><div class="v-kop neutraal">Niet in ons aanbod</div><p class="v-zin">'+esc(buiten)+'</p></div>';return;}
     const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,meerdaags:meer.checked,od:false,x:{}};
     let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
-    if(res.unknown){herinneringBlok(her,null);out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';go.innerHTML='<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>';return;}
+    if(res.unknown){herinneringBlok(her,null);out.innerHTML='<div class="verdict"><div class="v-kop neutraal">Termijn nog niet gekend</div><p class="v-zin">Start je aanvraag, dan zoeken wij het voor je op.</p></div>';go.innerHTML='<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>';return;}
     const o=indienOordeel(res), st={laat:"late",tekort:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"}[o.soort];
     const d=daysUntil(res.best.date), voorbij=res.best.date<today();
     const txt={laat:"te laat",tekort:"te kort dag",twijfel:"onzeker",krap:"krap",ok:"op tijd",geschat:"schatting"}[o.soort];
-    out.innerHTML='<div class="count"><span class="num">'+(voorbij?"0":String(d))+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
-      '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status '+st+'">'+txt+'</span></div>'+
-      '<p class="rule">'+(o.soort==="tekort"?esc(tekortUitleg(res.best.date)):st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>';
+    out.innerHTML=oordeelHTML(res,o,ev.date);
     go.innerHTML=st==="late"?'':'<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(GEM)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>';
     herinneringBlok(her,st==="late"?null:{gemeente:GEM,type:typ.value,datum:dat.value,meerdaags:meer.checked?"ja":"",deadline:res.best.date});
   }
   // Wat de bezoeker eerder in deze sessie koos (soort, datum, meerdere dagen), komt terug.
   {let mee={}; try{mee=JSON.parse(sessionStorage.getItem("termijncheck")||"{}")||{};}catch(e){}
+   // Een gedeelde link (/deinze/?type=fuif&datum=2027-03-20) gaat voor op wat eerder in de sessie gekozen werd.
+   const q=new URLSearchParams(location.search);
+   if(q.get("type")) mee.type=q.get("type");
+   if(q.get("datum")) mee.datum=q.get("datum");
+   if(q.get("meerdaags")) mee.meerdaags=q.get("meerdaags");
    if(mee.type&&TYPES.some(([k])=>k===mee.type)) typ.value=mee.type;
    if(/^\d{4}-\d{2}-\d{2}$/.test(mee.datum||"")&&new Date(mee.datum+"T00:00:00")>=today()) dat.value=mee.datum;
    meer.checked=mee.meerdaags==="ja";

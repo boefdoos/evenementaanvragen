@@ -213,3 +213,28 @@ footer.foot a{color:var(--soft)}
 .her-fijn{font-size:12px;color:var(--dim);margin:8px 0 0}
 .her-fijn a{color:inherit}
 @media (max-width:380px){.her-f{flex-direction:column}.her-f .btn{justify-content:center}}
+
+/* termijncheck: oordeel eerst */
+.verdict{margin-top:12px}
+.v-kop{font:800 clamp(30px,4vw,40px)/1.05 var(--f-display);letter-spacing:-.02em}
+.verdict.ok{--v:#3ecf7a}.verdict.tight{--v:var(--sun)}.verdict.late{--v:var(--accent)}
+.verdict .v-kop{color:var(--v)}
+.v-zin{font-size:17px;line-height:1.45;margin-top:10px}
+.v-zin b{font-weight:700}
+.tl{margin:22px 6px 4px;position:relative}
+.tl-lijn{position:relative;height:4px;border-radius:2px;background:var(--line-2)}
+.tl-vul{position:absolute;top:0;height:4px;border-radius:2px;background:var(--v)}
+.tl-vul.late{background:var(--accent)}
+.tl-pt{position:absolute;top:50%;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--text)}
+.tl-pt.dl{width:14px;height:14px;margin:-7px 0 0 -7px;background:var(--v);box-shadow:0 0 0 3px var(--card)}
+.tl-pt.ev{background:var(--soft)}
+.tl-lab{position:relative;height:18px;margin-top:8px;font-size:12px;color:var(--soft)}
+.tl-lab span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.tl-lab span.l{transform:none}
+.tl-lab span.r{transform:translateX(-100%)}
+.v-kop.neutraal{color:var(--text);font-size:clamp(24px,3vw,30px)}
+.tl-pt.dl.leeg{background:var(--card);box-shadow:0 0 0 2px var(--soft)}
+.v-pil{display:inline-flex;align-items:center;gap:8px;font:700 13px/1 var(--f-body,inherit);text-transform:uppercase;letter-spacing:.06em;color:var(--v);background:color-mix(in srgb,var(--v) 14%,transparent);padding:7px 11px;border-radius:99px}
+.v-pil::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--v)}
+.verdict .count{margin-top:12px}
+.verdict .num{color:var(--v)}

@@ -41,3 +41,45 @@ function buitenAanbod(type, bezoekers) {
   if (bezoekers > MAX_BEZOEKERS) return "Evenementen met 1.000 of meer bezoekers vallen (nog) niet in ons aanbod.";
   return null;
 }
+
+/* Resultaat van de termijncheck (startpagina en gemeentepagina's): het oordeel als gekleurd label,
+   het aantal dagen groot, de deadline, en een tijdlijn vandaag → deadline → evenement.
+   Bij "te laat" en "te kort dag" zegt een getal niets: dan staat het oordeel zelf groot. */
+const OORDEEL_KOP = { ok: "Je bent op tijd", geschat: "Waarschijnlijk op tijd", krap: "Het wordt krap", twijfel: "Mogelijk te laat", tekort: "Te kort dag", laat: "Te laat" };
+const OORDEEL_KLEUR = { ok: "ok", geschat: "ok", krap: "tight", twijfel: "tight", tekort: "late", laat: "late" };
+function oordeelHTML(res, o, evDatum) {
+  const t = today(), dl = res.best.date, st = OORDEEL_KLEUR[o.soort], d = daysUntil(dl);
+  const teLaat = o.soort === "laat" || o.soort === "tekort";
+  let extra = "";
+  if (teLaat) extra = " Kies een latere datum als dat kan, of neem zelf contact op met de gemeente.";
+  if (o.soort === "krap") extra = " Je kunt nog indienen, maar zonder marge.";
+  if (o.soort === "geschat" || o.soort === "twijfel") extra = " De termijn van deze gemeente is niet zeker: wij kijken hem na.";
+  // Tijdlijn: van de vroegste van vandaag en de deadline tot het evenement.
+  const start = dl < t ? dl : t, span = Math.max(1, evDatum - start);
+  const pos = x => Math.min(100, Math.max(0, (x - start) / span * 100)).toFixed(1) + "%";
+  const pT = pos(t), pD = pos(dl);
+  const balk = dl < t
+    ? '<span class="tl-vul late" style="left:' + pD + ';width:calc(' + pT + ' - ' + pD + ')"></span>'
+    : '<span class="tl-vul ' + st + '" style="left:' + pT + ';width:calc(' + pD + ' - ' + pT + ')"></span>';
+  const tijdlijn = '<div class="tl" aria-hidden="true"><div class="tl-lijn">' + balk +
+    '<span class="tl-pt" style="left:' + pT + '"></span>' +
+    '<span class="tl-pt dl ' + st + '" style="left:' + pD + '"></span>' +
+    '<span class="tl-pt ev" style="left:100%"></span></div>' +
+    '<div class="tl-lab">' + labels([[parseFloat(pT), "vandaag"], [parseFloat(pD), "deadline"], [100, "evenement"]]) + "</div></div>";
+  if (teLaat) {
+    const zin = (o.soort === "laat" ? "De deadline was " + esc(fmtLong(dl)) + "." : esc(tekortUitleg(dl))) + extra;
+    return '<div class="verdict ' + st + '"><div class="v-kop">' + OORDEEL_KOP[o.soort] + '</div><p class="v-zin">' + zin + "</p>" + tijdlijn + "</div>";
+  }
+  return '<div class="verdict ' + st + '"><span class="v-pil">' + OORDEEL_KOP[o.soort] + "</span>" +
+    '<div class="count"><span class="num">' + d + '</span><span class="unit">' + (d === 1 ? "dag" : "dagen") + "</span></div>" +
+    '<p class="v-zin">om in te dienen, tot <b>' + esc(fmtLong(dl)) + "</b>." + extra + "</p>" + tijdlijn +
+    '<p class="rule">Termijn: ' + esc(label(res.best.n, res.best.u)) + " vooraf.</p></div>";
+}
+
+/* Labels onder de tijdlijn: punten die dicht bij elkaar liggen krijgen één label; randen lijnen links of rechts uit. */
+function labels(pts) {
+  pts.sort((a, b) => a[0] - b[0]);
+  const groepen = [];
+  for (const [x, t] of pts) { const g = groepen[groepen.length - 1]; if (g && x - g.x < 22) g.t.push(t); else groepen.push({ x, t: [t] }); }
+  return groepen.map(g => { const al = g.x < 12 ? "l" : g.x > 88 ? "r" : "m"; return '<span class="' + al + '" style="left:' + g.x.toFixed(1) + '%">' + g.t.join(" · ") + "</span>"; }).join("");
+}

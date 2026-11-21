@@ -17,10 +17,9 @@ import huisstijl from "../huisstijl.css?raw";
   </div>
 
   <aside class="panel" aria-labelledby="calc-t">
-    <div class="k" id="calc-t">Hoeveel tijd heb je nog?</div>
+    <div class="k" id="calc-t">Ben je op tijd?</div>
     <div id="c-out" aria-live="polite">
-      <div class="count"><span class="num">–</span><span class="unit">dagen</span></div>
-      <div class="deadline">Kies je gemeente en datum</div>
+      <div class="verdict leeg"><div class="v-kop neutraal">Waar en wanneer is je evenement?</div><p class="v-zin">Je ziet meteen tot wanneer je kunt indienen en of je op tijd bent.</p></div>
     </div>
     <form class="fields" onsubmit="return false" aria-label="Termijncheck">
       <label class="full" for="c-gem">Gemeente<select id="c-gem"><option>Laden…</option></select></label>
@@ -200,7 +199,6 @@ import huisstijl from "../huisstijl.css?raw";
   TYPES.forEach(([k,v])=>typ.appendChild(new Option(v+(BUITEN_AANBOD_TYPES.includes(k)?" (nog niet in ons aanbod)":""),k)));
   const zoeker=gemeenteZoeker(gem);
   typ.value="fuif";
-  const t0=new Date(); t0.setDate(t0.getDate()+120); dat.value=t0.toISOString().slice(0,10);
   const slug=n=>n.normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
   const overzicht=r=>'<a class="gem-link" href="/'+slug(r.gemeente)+'/">Zo vraag je een evenement aan in '+esc(r.gemeente)+' →</a>';
   const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
@@ -220,36 +218,36 @@ import huisstijl from "../huisstijl.css?raw";
   function show(){
     meeNemen(gem.value);
     const buiten=buitenAanbod(typ.value,0);
-    if(buiten){go.innerHTML='';herinneringBlok(her,null);out.innerHTML='<div class="count"><span class="num">–</span><span class="unit">dagen</span></div><div class="deadline">Niet in ons aanbod</div><p class="rule">'+esc(buiten)+'</p>';return;}
-    const r=RULES.find(x=>x.gemeente===gem.value); if(!r||!dat.value) return;
+    if(buiten){go.innerHTML='';herinneringBlok(her,null);out.innerHTML='<div class="verdict"><div class="v-kop neutraal">Niet in ons aanbod</div><p class="v-zin">'+esc(buiten)+'</p></div>';return;}
+    const r=RULES.find(x=>x.gemeente===gem.value);
+    if(!r||!dat.value){go.innerHTML='';herinneringBlok(her,null);out.innerHTML='<div class="verdict leeg"><div class="v-kop neutraal">Waar en wanneer is je evenement?</div><p class="v-zin">Je ziet meteen tot wanneer je kunt indienen en of je op tijd bent.</p><div class="tl" aria-hidden="true"><div class="tl-lijn"><span class="tl-pt" style="left:0%"></span><span class="tl-pt dl leeg" style="left:62%"></span><span class="tl-pt ev" style="left:100%"></span></div><div class="tl-lab"><span class="l" style="left:0%">vandaag</span><span style="left:62%">deadline?</span><span class="r" style="left:100%">evenement</span></div></div></div>';return;}
     const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,meerdaags:meer.checked,od:false,
       x:{muziek:null,sterkeDrank:null,alcohol:null,verkeer:null,materiaal:null,publiciteit:null,od:null,stroomgroep:null,subsidie:null}};
     let res=evaluate(r,ev); if(res.unknown){const f=fallback(r,ev); if(f) res=f;}
-    if(res.unknown){herinneringBlok(her,null);out.innerHTML='<div class="count"><span class="num">?</span><span class="unit">dagen</span></div><div class="deadline">Termijn nog niet gekend</div><p class="rule">Start je aanvraag, dan zoeken wij het voor je op.</p>';go.innerHTML='<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>'+overzicht(r);return;}
+    if(res.unknown){herinneringBlok(her,null);out.innerHTML='<div class="verdict"><div class="v-kop neutraal">Termijn nog niet gekend</div><p class="v-zin">Start je aanvraag, dan zoeken wij het voor je op.</p></div>';go.innerHTML='<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>'+overzicht(r);return;}
     // Zelfde oordeel als de intake (indienmoment.js)
     const o=indienOordeel(res), MAP={laat:"late",tekort:"late",twijfel:"tight",krap:"tight",ok:"ok",geschat:"ok"};
     const st=MAP[o.soort];
     const d=daysUntil(res.best.date), voorbij=res.best.date<today();
     const txt={laat:"te laat",tekort:"te kort dag",twijfel:"onzeker",krap:"krap",ok:"op tijd",geschat:"schatting"}[o.soort];
     const num = voorbij ? "0" : String(d);
-    out.innerHTML='<div class="count"><span class="num">'+num+'</span><span class="unit">'+(d===1?"dag":"dagen")+'<br>tot je deadline</span></div>'+
-      '<div class="deadline">Uiterlijk '+esc(fmtLong(res.best.date))+'<span class="status '+st+'">'+txt+'</span></div>'+
-      '<p class="rule">'+(o.soort==="tekort"?esc(tekortUitleg(res.best.date)):st==="late"?"Deadline voorbij.":esc(label(res.best.n,res.best.u))+" vooraf")+'</p>';
+    out.innerHTML=oordeelHTML(res,o,ev.date);
     go.innerHTML=(st==="late"?'':'<a class="btn primary go-btn" href="/aanvraag?gemeente='+encodeURIComponent(r.gemeente)+'&type='+encodeURIComponent(typ.value)+'&datum='+iso(ev.date)+(meer.checked?'&meerdaags=ja':'')+'">Wij dienen het in voor je <span class="arr" aria-hidden="true">→</span></a>')+overzicht(r);
     herinneringBlok(her,st==="late"?null:{gemeente:r.gemeente,type:typ.value,datum:dat.value,meerdaags:meer.checked?"ja":"",deadline:res.best.date});
   }
   fetch("/regels.json").then(r=>r.json()).then(data=>{
     RULES=data;
     const provs=[...new Set(RULES.map(r=>r.provincie||"West-Vlaanderen"))].sort();
-    gem.innerHTML=provs.map(p=>'<optgroup label="'+esc(p)+'">'+RULES.filter(r=>(r.provincie||"West-Vlaanderen")===p).sort((a,b)=>a.gemeente.localeCompare(b.gemeente)).map(r=>'<option>'+esc(r.gemeente)+'</option>').join("")+'</optgroup>').join("");
+    gem.innerHTML='<option value=""></option>'+provs.map(p=>'<optgroup label="'+esc(p)+'">'+RULES.filter(r=>(r.provincie||"West-Vlaanderen")===p).sort((a,b)=>a.gemeente.localeCompare(b.gemeente)).map(r=>'<option>'+esc(r.gemeente)+'</option>').join("")+'</optgroup>').join("");
     // Wat de bezoeker eerder in deze sessie koos (hier of in het formulier), komt terug.
     let mee={}; try{mee=JSON.parse(sessionStorage.getItem("termijncheck")||"{}")||{};}catch(e){}
     // Een gedeelde link (?gemeente=deinze&type=fuif&datum=2027-03-20) gaat voor op wat eerder in de sessie gekozen werd.
     const q=new URLSearchParams(location.search), qg=(q.get("gemeente")||"").trim();
-    if(qg){const r=RULES.find(x=>x.gemeente.toLowerCase()===qg.toLowerCase()||slug(x.gemeente)===slug(qg)); if(r) mee.gemeente=r.gemeente;}
+    // Een link met een gemeente gaat naar de gemeentepagina, met dezelfde termijncheck ingevuld.
+    if(qg){const r=RULES.find(x=>x.gemeente.toLowerCase()===qg.toLowerCase()||slug(x.gemeente)===slug(qg)); if(r){q.delete("gemeente"); location.replace("/"+slug(r.gemeente)+"/"+(q.toString()?"?"+q:"")); return;}}
     if(q.get("type")) mee.type=q.get("type");
     if(q.get("datum")) mee.datum=q.get("datum");
-    gem.value=(mee.gemeente&&RULES.some(r=>r.gemeente===mee.gemeente))?mee.gemeente:"Oostende";
+    gem.value=(mee.gemeente&&RULES.some(r=>r.gemeente===mee.gemeente))?mee.gemeente:"";
     if(mee.type&&TYPES.some(([k])=>k===mee.type)) typ.value=mee.type;
     if(/^\d{4}-\d{2}-\d{2}$/.test(mee.datum||"")&&new Date(mee.datum+"T00:00:00")>=today()) dat.value=mee.datum;
     meer.checked=mee.meerdaags==="ja";
