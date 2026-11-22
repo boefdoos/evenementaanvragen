@@ -166,7 +166,7 @@ const ld = [
   <aside class="panel" aria-labelledby="calc-t">
     <div class="k" id="calc-t">Ben je op tijd in {g}?</div>
     <div id="c-out" aria-live="polite">
-      <div class="verdict"><div class="v-kop neutraal">Kies soort en datum</div></div>
+      <div class="verdict leeg"><div class="v-kop neutraal">Wanneer is je evenement?</div><p class="v-zin">Kies de datum: je ziet meteen tot wanneer je kunt indienen en of je op tijd bent.</p></div>
     </div>
     <form class="fields" onsubmit="return false" aria-label="Termijncheck">
       <label for="c-type">Soort<select id="c-type"></select></label>
@@ -224,7 +224,6 @@ const ld = [
   const typ=$("c-type"), dat=$("c-datum"), meer=$("c-meer"), out=$("c-out"), go=$("c-go"), her=$("c-her");
   TYPES.forEach(([k,v])=>typ.appendChild(new Option(v+(BUITEN_AANBOD_TYPES.includes(k)?" (nog niet in ons aanbod)":""),k)));
   typ.value="fuif";
-  const t0=new Date(); t0.setDate(t0.getDate()+120); dat.value=t0.toISOString().slice(0,10);
   const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 
   // Wat de bezoeker zelf koos, gaat mee naar het intakeformulier (via alle aanvraaglinks en voor deze sessie).
@@ -241,7 +240,8 @@ const ld = [
   }
   function show(){
     meeNemen(GEM);
-    const r=RULES.find(x=>x.gemeente===GEM); if(!r||!dat.value) return;
+    const r=RULES.find(x=>x.gemeente===GEM); if(!r) return;
+    if(!dat.value){go.innerHTML='';herinneringBlok(her,null);out.innerHTML='<div class="verdict leeg"><div class="v-kop neutraal">Wanneer is je evenement?</div><p class="v-zin">Kies de datum: je ziet meteen tot wanneer je kunt indienen en of je op tijd bent.</p><div class="tl" aria-hidden="true"><div class="tl-lijn"><span class="tl-pt" style="left:0%"></span><span class="tl-pt dl leeg" style="left:62%"></span><span class="tl-pt ev" style="left:100%"></span></div><div class="tl-lab"><span class="l" style="left:0%">vandaag</span><span style="left:62%">deadline?</span><span class="r" style="left:100%">evenement</span></div></div></div>';return;}
     const buiten=buitenAanbod(typ.value,0);
     if(buiten){go.innerHTML='';herinneringBlok(her,null);out.innerHTML='<div class="verdict"><div class="v-kop neutraal">Niet in ons aanbod</div><p class="v-zin">'+esc(buiten)+'</p></div>';return;}
     const ev={gem:r.gemeente,type:typ.value,date:new Date(dat.value+"T00:00:00"),visitors:150,marge:5,groot:false,nieuw:false,meerdaags:meer.checked,od:false,x:{}};
