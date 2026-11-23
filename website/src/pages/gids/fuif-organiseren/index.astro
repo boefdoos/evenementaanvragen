@@ -1,0 +1,127 @@
+---
+// Gidspagina: een fuif organiseren. Alleen feiten met een bron; cijfers over termijnen komen uit regels.json (bij elke build opnieuw berekend).
+import Basis from "../../../layouts/Basis.astro";
+import huisstijl from "../../../huisstijl.css?raw";
+import juridisch from "../../../juridisch.css?raw";
+import regels from "../../../../public/regels.json";
+import { slug } from "../../../slug.js";
+
+const BIJGEWERKT = "23 november 2026";
+const D = { d: 1, w: 7, m: 30.4, wd: 1.4 };
+const UNIT = { d: ["dag", "dagen"], w: ["week", "weken"], m: ["maand", "maanden"], wd: ["werkdag", "werkdagen"] };
+const termijn = ([n, u]) => `${n} ${UNIT[u][n === 1 ? 0 : 1]}`;
+
+// Termijn voor een fuif per gemeente: eigen fuiftermijn, anders de algemene.
+const fuif = regels
+  .map((r) => ({ g: r.gemeente, t: (r.base || {}).fuif || (r.base || {})["*"] }))
+  .filter((x) => x.t)
+  .map((x) => ({ ...x, dagen: x.t[0] * D[x.t[1]] }))
+  .sort((a, b) => a.dagen - b.dagen);
+const aantal = fuif.length;
+const tel = (f) => fuif.filter(f).length;
+const tot4w = tel((x) => x.dagen <= 28);
+const tot8w = tel((x) => x.dagen > 28 && x.dagen <= 56);
+const tot3m = tel((x) => x.dagen > 56 && x.dagen <= 92);
+const meer = tel((x) => x.dagen > 92);
+const kortste = fuif[0], langste = fuif[fuif.length - 1];
+const eigenFuif = regels.filter((r) => (r.base || {}).fuif).length;
+const metVrij = regels.filter((r) => Array.isArray(r.vrijstelling) && r.vrijstelling.length).length;
+
+const title = "Een fuif organiseren: wat moet je aanvragen? – evenementaanvragen.be";
+const desc = "Evenementaanvraag, geluid, muziekrechten, drank, bewaking en verzekering: wat je regelt voor een fuif in Vlaanderen, en hoe lang op voorhand.";
+const ld = [{
+  "@context": "https://schema.org", "@type": "Article", headline: "Een fuif organiseren: wat moet je aanvragen?",
+  dateModified: "2026-11-23", inLanguage: "nl-BE",
+  author: { "@type": "Organization", name: "evenementaanvragen.be", url: "https://evenementaanvragen.be/" },
+  publisher: { "@type": "Organization", name: "evenementaanvragen.be", url: "https://evenementaanvragen.be/" },
+  mainEntityOfPage: "https://evenementaanvragen.be/gids/fuif-organiseren/",
+}];
+---
+<Basis title={title} description={desc} canonical="/gids/fuif-organiseren/">
+<style is:inline slot="head" set:html={huisstijl + juridisch}></style>
+<script type="application/ld+json" slot="head" set:html={JSON.stringify(ld)}></script>
+<main class="jur">
+<div class="wrap">
+  <p class="crumbs" style="color:var(--dim);font-size:14px"><a href="/" style="color:var(--dim)">Start</a> · Gids</p>
+  <h1>Een fuif organiseren: wat moet je aanvragen?</h1>
+  <p class="versie">Bijgewerkt op {BIJGEWERKT}</p>
+
+  <div class="kort">
+    <b>In het kort</b>
+    <ul>
+      <li>Een fuif vraag je in de meeste gemeenten aan, ook in een zaal. Hoe lang op voorhand verschilt sterk: van {termijn(kortste.t)} tot {termijn(langste.t)}.</li>
+      <li>Speel je luider dan 85 dB(A), dan heb je een toelating nodig en moet je het geluid meten.</li>
+      <li>Voor muziek vraag je een licentie aan bij Unisono, ten laatste 5 werkdagen vooraf.</li>
+      <li>Bewaking, verzekering en sterke drank: dat hangt af van je gemeente en je fuif.</li>
+    </ul>
+  </div>
+
+  <h2 id="aanvraag">De evenementaanvraag bij je gemeente</h2>
+  <p>Een fuif is een publiek evenement: in de meeste gemeenten vraag je ze aan bij de gemeente waar ze doorgaat, ook als je een zaal huurt. Een paar gemeenten vragen voor een fuif binnen enkel een melding, bijvoorbeeld <a href="/brugge/">Brugge</a>. De gemeente kijkt onder meer naar veiligheid, geluid, drank en de buurt, en vraagt vaak advies aan de politie en de brandweer.</p>
+  <p>De termijn verschilt per gemeente. Van de {aantal} Vlaamse gemeenten waarvan we de termijn kennen, vragen er {eigenFuif} een aparte termijn voor fuiven. Voor een fuif moet je aanvraag binnen zijn:</p>
+  <div class="tabel"><table>
+    <thead><tr><th>Hoe lang op voorhand</th><th>Aantal gemeenten</th></tr></thead>
+    <tbody>
+      <tr><td>4 weken of minder</td><td>{tot4w}</td></tr>
+      <tr><td>meer dan 4 tot 8 weken</td><td>{tot8w}</td></tr>
+      <tr><td>meer dan 8 weken tot 3 maanden</td><td>{tot3m}</td></tr>
+      <tr><td>meer dan 3 maanden</td><td>{meer}</td></tr>
+    </tbody>
+  </table></div>
+  <p>De kortste termijn is {termijn(kortste.t)} (<a href={`/${slug(kortste.g)}/`}>{kortste.g}</a>), de langste {termijn(langste.t)} (<a href={`/${slug(langste.g)}/`}>{langste.g}</a>). Voor grote fuiven of een fuif op het openbaar domein vragen veel gemeenten nog meer tijd. Wil je feestmateriaal lenen bij de gemeente, dan heeft de uitleendienst vaak een eigen termijn.</p>
+  <p><a href="/">Bereken je deadline met de termijncheck</a>, of zoek je gemeente in de <a href="/gemeenten/">lijst van alle gemeenten</a>.</p>
+
+  <h3>Een besloten fuif?</h3>
+  <p>Een feest op uitnodiging, niet op het openbaar domein, hoeft in veel gemeenten niet aangevraagd te worden. Van {metVrij} gemeenten weten we wat ze daarover zeggen; je vindt het op hun pagina onder "Een besloten feest". Let op: sommige gemeenten vragen een fuif altijd aan, ook als ze besloten is, bijvoorbeeld <a href="/oostende/">Oostende</a>.</p>
+
+  <h2 id="geluid">Muziek en geluid</h2>
+  <p>Voor muziek op een publieke activiteit gelden de Vlaamse geluidsnormen (VLAREM). Wat je moet doen, hangt af van hoe luid de muziek is:</p>
+  <div class="tabel"><table>
+    <thead><tr><th>Geluidsniveau</th><th>Wat je moet doen</th></tr></thead>
+    <tbody>
+      <tr><td>tot 85 dB(A) LAeq,15min</td><td>Geen meting verplicht. De gewone regels tegen burenhinder blijven gelden.</td></tr>
+      <tr><td>tot 95 dB(A) LAeq,15min</td><td>Toelating nodig. Je meet het geluid de hele activiteit lang, of je gebruikt een begrenzer.</td></tr>
+      <tr><td>tot 100 dB(A) LAeq,60min</td><td>Toelating nodig. Je meet en registreert het geluid en bewaart de gegevens minstens een maand. Je zet gratis oordopjes ter beschikking.</td></tr>
+      <tr><td>meer dan 100 dB(A) LAeq,60min</td><td>Verboden.</td></tr>
+    </tbody>
+  </table></div>
+  <p>De toelating voor een eenmalige fuif vraag je meestal mee aan met je evenementaanvraag. Je gemeente kan extra voorwaarden opleggen, zoals een einduur.</p>
+  <p class="versie">Bron: Departement Omgeving, leidraad "Geluidsnormen voor muziekactiviteiten", deel 4 en 5 (2023).</p>
+
+  <h2 id="rechten">Muziekrechten: Unisono</h2>
+  <p>Speel je muziek voor publiek, dan betaal je auteursrechten en naburige rechten. Dat regel je met één licentie via Unisono, het platform van Sabam, SIMIM en PlayRight. Vraag ze ten laatste 5 werkdagen voor je fuif aan. Het tarief hangt af van het soort activiteit.</p>
+  <p>Huur je een zaal van de gemeente, vraag dan na of de gemeente al een jaarlicentie voor die zaal heeft. Dan hoef je zelf niets aan te vragen.</p>
+  <p class="versie">Bron: VLAIO, "Slechts één licentie voor muziek in de onderneming of op een evenement" (2024).</p>
+
+  <h2 id="drank">Drank</h2>
+  <p>Bier en wijn schenken op een fuif valt onder de regels voor een occasionele drankgelegenheid: je gemeente bepaalt welke formaliteiten nodig zijn. Sterke drank verkopen op een publiek evenement mag alleen met een machtiging van het college van burgemeester en schepenen (artikel 9 van de wet van 28 december 1983). Ook die vraag je meestal mee aan met je evenementaanvraag.</p>
+  <p class="versie">Bron: wet van 28 december 1983 betreffende het verstrekken van sterke drank; toelichting van de gemeente <a href="https://houthulst.be/2019-drankvergunningen-veelgestelde-vragen" rel="nofollow noopener">Houthulst</a>.</p>
+
+  <h2 id="bewaking">Bewaking en stewards</h2>
+  <p>Of bewaking verplicht is, beslist je gemeente. Sommige gemeenten vragen bewaking bij elke fuif, andere vanaf een bepaald aantal bezoekers. Op de pagina van je gemeente staan de voorwaarden die we kennen.</p>
+  <p>Werk je met vrijwilligers van je vereniging als stewards, dan is daarvoor een toelating van de burgemeester nodig (wet van 2 oktober 2017 op de private en bijzondere veiligheid). Je bezorgt dan een lijst met de vrijwilligers; sommige gemeenten vragen ook een uittreksel uit het strafregister. Je kunt ons <a href="/sjablonen/lijst-vrijwillige-stewards.xlsx">sjabloon voor die lijst</a> gebruiken.</p>
+
+  <h2 id="verzekering">Verzekering</h2>
+  <p>Een verzekering burgerlijke aansprakelijkheid voor je fuif raden we altijd aan, en sommige gemeenten vragen er een attest van. Werk je met vrijwilligers, kijk dan naar de gratis Vlaamse vrijwilligersverzekering. Die is er voor feitelijke verenigingen en vzw's zonder personeel en dekt burgerlijke aansprakelijkheid, rechtsbijstand en lichamelijke ongevallen, tot 1.000 vrijwilligersuren per jaar. Je geeft je activiteit minstens 24 uur op voorhand door.</p>
+  <p class="versie">Bron: Vlaamse overheid, <a href="https://www.vlaanderen.be/gratis-verzekering-voor-vrijwilligers" rel="nofollow noopener">Gratis verzekering voor vrijwilligers</a>.</p>
+
+  <h2 id="plan">Brandveiligheid en plan</h2>
+  <p>De brandweerzone van je gemeente bepaalt hoeveel uitgangen je nodig hebt, hoe breed ze moeten zijn en hoeveel blustoestellen er moeten staan. De gemeente vraagt daarom vaak een plan van je zaal of terrein. Welke zone bij jouw gemeente hoort, staat op de pagina van je gemeente.</p>
+
+  <h2 id="planning">Een planning die werkt</h2>
+  <ul>
+    <li><b>Zodra de datum vastligt:</b> zaal vastleggen, termijn van je gemeente opzoeken.</li>
+    <li><b>Ruim voor de deadline:</b> evenementaanvraag indienen, met plan, en bewaking en drank erbij.</li>
+    <li><b>Ten laatste 5 werkdagen vooraf:</b> Unisono-licentie aanvragen.</li>
+    <li><b>Ten laatste 24 uur vooraf:</b> je activiteit doorgeven aan de vrijwilligersverzekering, als je die gebruikt.</li>
+  </ul>
+
+  <div class="kort" style="margin-top:52px">
+    <b>Geen zin om alles zelf uit te zoeken?</b>
+    <p style="margin-top:8px">Wij zoeken uit wat jouw gemeente vraagt, maken het dossier op en dienen het in, vanaf € 35.</p>
+    <p><a class="btn primary" href="/aanvraag?type=fuif">Start je aanvraag <span class="arr" aria-hidden="true">→</span></a></p>
+  </div>
+  <p class="versie" style="margin-top:28px">Deze gids geeft algemene informatie. Je gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert.</p>
+</div>
+</main>
+</Basis>
