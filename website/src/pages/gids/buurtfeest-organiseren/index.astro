@@ -1,0 +1,99 @@
+---
+// Gidspagina: een buurtfeest organiseren. Alleen feiten met een bron; cijfers komen uit regels.json (bij elke build opnieuw berekend).
+import Basis from "../../../layouts/Basis.astro";
+import huisstijl from "../../../huisstijl.css?raw";
+import juridisch from "../../../juridisch.css?raw";
+import regels from "../../../../public/regels.json";
+import { slug } from "../../../slug.js";
+
+const BIJGEWERKT = "23 november 2026";
+const D = { d: 1, w: 7, m: 30.4, wd: 1.4 };
+const UNIT = { d: ["dag", "dagen"], w: ["week", "weken"], m: ["maand", "maanden"], wd: ["werkdag", "werkdagen"] };
+const termijn = ([n, u]) => `${n} ${UNIT[u][n === 1 ? 0 : 1]}`;
+
+// Termijn voor een buurtfeest per gemeente: eigen buurtfeesttermijn, anders de algemene.
+const bf = regels
+  .map((r) => ({ g: r.gemeente, t: (r.base || {}).buurtfeest || (r.base || {})["*"] }))
+  .filter((x) => x.t)
+  .map((x) => ({ ...x, dagen: x.t[0] * D[x.t[1]] }))
+  .sort((a, b) => a.dagen - b.dagen);
+const tel = (f) => bf.filter(f).length;
+const rijen = [
+  ["4 weken of minder", tel((x) => x.dagen <= 28)],
+  ["meer dan 4 tot 8 weken", tel((x) => x.dagen > 28 && x.dagen <= 56)],
+  ["meer dan 8 weken tot 3 maanden", tel((x) => x.dagen > 56 && x.dagen <= 92)],
+  ["meer dan 3 maanden", tel((x) => x.dagen > 92)],
+];
+const kortste = bf[0], langste = bf[bf.length - 1];
+const eigen = regels.filter((r) => (r.base || {}).buurtfeest).length;
+const uitleen = regels.filter((r) => (r.uitleen || {}).uitleendienst === "ja").length;
+
+const title = "Een buurtfeest organiseren: wat moet je aanvragen? – evenementaanvragen.be";
+const desc = "Straat afsluiten, feestmateriaal lenen, muziek, drank, bekers en de buren: wat je regelt voor een buurtfeest of straatfeest in Vlaanderen, en hoe lang op voorhand.";
+const ld = [{
+  "@context": "https://schema.org", "@type": "Article", headline: "Een buurtfeest organiseren: wat moet je aanvragen?",
+  dateModified: "2026-11-23", inLanguage: "nl-BE",
+  author: { "@type": "Organization", name: "evenementaanvragen.be", url: "https://evenementaanvragen.be/" },
+  publisher: { "@type": "Organization", name: "evenementaanvragen.be", url: "https://evenementaanvragen.be/" },
+  mainEntityOfPage: "https://evenementaanvragen.be/gids/buurtfeest-organiseren/",
+}];
+---
+<Basis title={title} description={desc} canonical="/gids/buurtfeest-organiseren/">
+<style is:inline slot="head" set:html={huisstijl + juridisch}></style>
+<script type="application/ld+json" slot="head" set:html={JSON.stringify(ld)}></script>
+<main class="jur">
+<div class="wrap">
+  <p class="crumbs" style="color:var(--dim);font-size:14px"><a href="/" style="color:var(--dim)">Start</a> · Gids</p>
+  <h1>Een buurtfeest organiseren: wat moet je aanvragen?</h1>
+  <p class="versie">Bijgewerkt op {BIJGEWERKT}</p>
+
+  <div class="kort">
+    <b>In het kort</b>
+    <ul>
+      <li>Komt je buurtfeest op de straat of een plein, dan vraag je het aan bij je gemeente. Hoe lang op voorhand verschilt van {termijn(kortste.t)} tot {termijn(langste.t)}.</li>
+      <li>Moet de straat dicht, dan horen er verkeersmaatregelen en borden bij.</li>
+      <li>Veel gemeenten lenen materiaal uit en sommige geven een premie voor een buurtfeest.</li>
+      <li>Verwittig de buren op tijd, ook wie niet meedoet.</li>
+    </ul>
+  </div>
+
+  <h2 id="aanvraag">Moet je een buurtfeest aanvragen?</h2>
+  <p>Een buurtfeest op de straat, een plein of een grasveld van de gemeente gebruikt het openbaar domein. Daarvoor vraag je toestemming aan je gemeente, ook als het feest alleen voor de buurt is. Doe je het in een tuin of op een privéterrein, op uitnodiging, dan hoeft dat in veel gemeenten niet; de pagina van je gemeente zegt wat we daarover weten.</p>
+  <p>Van de {bf.length} Vlaamse gemeenten waarvan we de termijn kennen, hebben er {eigen} een aparte termijn voor buurtfeesten; bij de andere geldt de algemene. Voor een buurtfeest moet je aanvraag zo lang op voorhand binnen zijn:</p>
+  <div class="tabel"><table>
+    <thead><tr><th>Hoe lang op voorhand</th><th>Aantal gemeenten</th></tr></thead>
+    <tbody>{rijen.map(([a, b]) => <tr><td>{a}</td><td>{b}</td></tr>)}</tbody>
+  </table></div>
+  <p>De kortste termijn is {termijn(kortste.t)} (<a href={`/${slug(kortste.g)}/`}>{kortste.g}</a>), de langste {termijn(langste.t)} (<a href={`/${slug(langste.g)}/`}>{langste.g}</a>). Sommige gemeenten vragen meer tijd als er een straat dicht moet. <a href="/">Bereken je deadline met de termijncheck</a>, of zoek je gemeente in de <a href="/gemeenten/">lijst van alle gemeenten</a>.</p>
+
+  <h2 id="straat">De straat afsluiten</h2>
+  <p>Moet je straat een dag verkeersvrij zijn, dan beslist de gemeente of de politie over de verkeersmaatregelen: welke straat dicht gaat, van wanneer tot wanneer, en met welke borden. Meestal vraag je dat mee aan in je evenementaanvraag. Hou de doorgang vrij voor hulpdiensten en denk aan bewoners die toch met de auto weg moeten.</p>
+
+  <h2 id="materiaal">Feestmateriaal en premie</h2>
+  <p>{uitleen} van de 285 Vlaamse gemeenten lenen feestmateriaal uit, zoals tafels, bierbanken, nadarhekken of verkeersborden. De uitleendienst heeft vaak een eigen termijn, en niet elke gemeente leent uit aan particulieren.</p>
+  <p>Sommige gemeenten geven een premie of subsidie voor een buurtfeest, vaak met eigen voorwaarden en een eigen termijn. In een aantal gemeenten moet je je buurtfeest juist aanvragen om die premie te krijgen. Kijk op de site van je gemeente of vraag het bij de dienst vrije tijd.</p>
+
+  <h2 id="muziek">Muziek</h2>
+  <p>Ook op een buurtfeest gelden de geluidsnormen. Tot 85 dB(A) LAeq,15min is geen toelating nodig; luider vraagt een toelating en een geluidsmeting. Speel je muziek op een feest dat open is voor de buurt, dan heb je in principe ook een licentie via Unisono nodig, ten laatste 5 werkdagen vooraf. Meer uitleg staat in de gids <a href="/gids/fuif-organiseren/#geluid">een fuif organiseren</a>.</p>
+
+  <h2 id="drank">Drank, eten en bekers</h2>
+  <p>Bier en wijn schenken valt onder de regels voor een occasionele drankgelegenheid: je gemeente bepaalt de formaliteiten. Sterke drank verkopen op een publiek evenement mag alleen met een machtiging van het college. Wie af en toe eten verkoopt voor een goed doel, heeft geen toelating van het FAVV nodig, maar moet wel de basisregels voor hygiëne volgen.</p>
+  <p>Wegwerpbekers mogen niet op evenementen in Vlaanderen. Volgens het stappenplan van OVAM is een borg op herbruikbare bekers bij een buurtfeest vaak niet nodig, en is drank in glas het meest duurzaam. Veel gemeenten lenen herbruikbare bekers uit.</p>
+  <p class="versie">Bronnen: wet van 28 december 1983 betreffende het verstrekken van sterke drank; VLAIO, <a href="https://www.vlaio.be/nl/begeleiding-advies/vergunningen-getuigschriften/niet-commerciele-verkoop/occasionele-verkopen-met-een-niet-commercieel-karakter" rel="nofollow noopener">Occasionele verkopen met een niet-commercieel karakter</a>; OVAM, stappenplan herbruikbare bekers per type event (2020).</p>
+
+  <h2 id="buren">De buren</h2>
+  <p>Een buurtfeest is voor de buurt, maar niet iedereen doet mee. Bezorg alle bewoners van de straat op tijd een brief met de datum, de uren, de straatafsluiting en een telefoonnummer voor de dag zelf. Sommige gemeenten vragen die brief, of een lijst met handtekeningen van de buren, bij je aanvraag.</p>
+
+  <h2 id="verzekering">Verzekering</h2>
+  <p>Een verzekering burgerlijke aansprakelijkheid raden we altijd aan. Een buurtcomité als feitelijke vereniging, geleid door minstens twee mensen en zonder personeel, kan een beroep doen op de gratis Vlaamse vrijwilligersverzekering. Je geeft je activiteit minstens 24 uur op voorhand door.</p>
+  <p class="versie">Bron: Vlaamse overheid, <a href="https://www.vlaanderen.be/gratis-verzekering-voor-vrijwilligers" rel="nofollow noopener">Gratis verzekering voor vrijwilligers</a>.</p>
+
+  <div class="kort" style="margin-top:52px">
+    <b>Geen zin om alles zelf uit te zoeken?</b>
+    <p style="margin-top:8px">Wij zoeken uit wat jouw gemeente vraagt, maken het dossier en de bewonersbrief op en dienen het in, vanaf € 35.</p>
+    <p><a class="btn primary" href="/aanvraag?type=buurtfeest">Start je aanvraag <span class="arr" aria-hidden="true">→</span></a></p>
+  </div>
+  <p class="versie" style="margin-top:28px">Deze gids geeft algemene informatie. Je gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert. Meer weten? Lees ook <a href="/gids/evenement-aanvragen/">wat je moet aanvragen voor een evenement</a>.</p>
+</div>
+</main>
+</Basis>
