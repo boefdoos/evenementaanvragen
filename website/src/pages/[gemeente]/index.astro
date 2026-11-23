@@ -5,6 +5,7 @@ import Basis from "../../layouts/Basis.astro";
 import huisstijl from "../../huisstijl.css?raw";
 import extraCss from "../../gemeentepagina.css?raw";
 import regels from "../../../public/regels.json";
+import normen from "../../../public/plan/normen.json";
 import { slug } from "../../slug.js";
 
 export function getStaticPaths() {
@@ -80,6 +81,32 @@ const voorwaarden = (r.bijzonder || [])
   .filter((v) => v.length > 8)
   .map((v) => cap(v) + ".")
   .slice(0, 6);
+// Besloten feest / privéfeest: enkel wat de gemeente zelf zegt (veld "vrijstelling", met bron).
+const MAAND = ["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"];
+const datumNL = (d) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || ""); return m ? `${+m[3]} ${MAAND[+m[2] - 1]} ${m[1]}` : null; };
+const vrij = (Array.isArray(r.vrijstelling) ? r.vrijstelling : []).filter((v) => v && v.wat).map((v) => {
+  const c = v.voorwaarden || {}, vw = [];
+  if (c.op_uitnodiging) vw.push("op uitnodiging, niet vrij toegankelijk");
+  if (c.openbaar_domein === "nee") vw.push("niet op het openbaar domein");
+  if (c.max_aanwezigen) vw.push(`tot ${c.max_aanwezigen} aanwezigen`);
+  if (c.enkel_binnen) vw.push("binnen, in een zaal of gebouw");
+  if (c.geen_versterkte_muziek) vw.push("zonder versterkte muziek");
+  if (c.max_db) vw.push(`geluid niet boven ${c.max_db} dB(A)`);
+  if (c.geen_verkeersmaatregelen) vw.push("zonder verkeersmaatregelen");
+  if (c.andere && !INTERN.test(c.andere)) vw.push(zonderAdres(c.andere));
+  const bronTxt = String(v.bron || "");
+  return {
+    wat: zonderAdres(v.wat).replace(/[.\s]+$/, ""),
+    vw,
+    nog: v.nog_wel && !INTERN.test(v.nog_wel) ? cap(zonderAdres(v.nog_wel).replace(/[.;\s]+$/, "")) + "." : null,
+    url: /^https?:\/\//.test(bronTxt) ? bronTxt : null,
+    mail: /^Mail /.test(bronTxt),
+    afgeleid: !!v.afgeleid,
+    datum: datumNL(v.nagekeken),
+  };
+});
+// Hulpverleningszone (brandweer) uit de normen van de plantekenaar.
+const zone = (normen.gemeenten || {})[g] || null;
 const u = r.uitleen || {};
 const bronnen = Array.isArray(r.bron) ? r.bron : [r.bron];
 const bron = bronnen.find((b) => /^https?:\/\//.test(String(b || "")));
@@ -193,13 +220,22 @@ const ld = [
       {kanaal && <li>{kanaal}</li>}
       {college && <li>{college}.</li>}
       {voorwaarden.map((v) => <li>{v}</li>)}
-      {!kanaal && !college && voorwaarden.length === 0 && <li>Een dossier met de gegevens van je evenement en bijlagen zoals een inplantingsplan.</li>}
+      {zone && <li>Voor de brandveiligheid valt je evenement onder {zone}. Die zone bepaalt onder meer het aantal uitgangen en blustoestellen; wij houden er rekening mee in je plan.</li>}
+      {!kanaal && !college && voorwaarden.length === 0 && !zone && <li>Een dossier met de gegevens van je evenement en bijlagen zoals een inplantingsplan.</li>}
     </ul></div>
     {mat
       ? <div class="vak"><h3>Feestmateriaal lenen</h3><p>Materiaal van de uitleendienst vraag je in {g} apart aan. Wij nemen het mee in je dossier, met wat marge.</p>
           {(mat.items || mat.termijn || mat.part || mat.kosten) && <ul>{mat.items && <li>{mat.items}</li>}{mat.termijn && <li>{mat.termijn}</li>}{mat.part && <li>{mat.part}</li>}{mat.kosten && <li>{mat.kosten}</li>}</ul>}</div>
       : <div class="vak"><h3>Wat wij doen</h3><p>Wij berekenen je deadline, maken het volledige dossier op met formulieren, bijlagen en bewonersbrief, en dienen het in. Tot de beslissing geven wij de vragen van de gemeente aan je door.</p></div>}
   </div>
+  {vrij.length > 0 && <div class="vak vrij" style="margin-top:20px"><h3>Een besloten feest in {g}</h3>
+    {vrij.map((v) => <div>
+      <p>Voor {v.wat.charAt(0).toLowerCase() + v.wat.slice(1)}, hoef je in {g} geen evenement aan te vragen.{v.vw.length > 0 && " Voorwaarden:"}</p>
+      {v.vw.length > 0 && <ul>{v.vw.map((x) => <li>{x}</li>)}</ul>}
+      {v.nog && <p>Wel: {v.nog.charAt(0).toLowerCase() + v.nog.slice(1)}</p>}
+      <p class="fijn">{v.afgeleid ? "Afgeleid uit de criteria van de gemeente" : "Volgens de gemeente"}{v.url ? <> (<a href={v.url} rel="nofollow noopener">bron</a>)</> : v.mail ? ", per mail bevestigd" : ""}{v.datum && <>, nagekeken op {v.datum}</>}. Twijfel je of het voor jouw feest geldt? Wij kijken het na.</p>
+    </div>)}
+  </div>}
   {bron && <p class="bron">Bron: <a href={bron} rel="nofollow noopener">website van {g}</a>. Nagekeken door evenementaanvragen.be{perMail && <>, en per mail bevestigd door de gemeente</>}.{r.status === "onzeker" && <> {g} publiceert geen eenduidige termijn: we rekenen met de strengste lezing.</>}{onbekend && <> {g} publiceert geen vaste termijn: we rekenen met de strengste termijn in de provincie en vragen het na.</>} De gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert.</p>}
 
   {andere.length > 0 && <nav class="andere" aria-label={`Andere gemeenten in ${provincie}`}>
