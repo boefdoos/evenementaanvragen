@@ -239,4 +239,4 @@ footer.foot a{color:var(--soft)}
 .verdict .count{margin-top:12px}
 .verdict .num{color:var(--v)}
 
-.bovenregel{font:500 15px/1.3 var(--f-body);color:var(--soft);margin-bottom:14px}
+.bovenregel{font:500 15px/1.3 var(--f-body);color:var(--soft);margin-bottom:10px}
