@@ -1,9 +1,31 @@
 ---
 import Basis from "../layouts/Basis.astro";
 import huisstijl from "../huisstijl.css?raw";
+// Veelgestelde vragen: één bron voor de pagina en voor de gestructureerde data (FAQPage).
+const FAQ = [
+  ["Is mijn gemeente erbij?", "Ja, als ze in Vlaanderen ligt: we werken met de regels van alle 285 Vlaamse gemeenten. Publiceert je gemeente geen vaste termijn, dan rekenen we met de strengste vergelijkbare en vragen we het na. <a href=\"/gemeenten/\">Bekijk alle gemeenten</a>."],
+  ["Waarom een volmacht?", "We dienen de aanvraag in jouw naam in. De volmacht toont de gemeente dat dat met jouw toestemming gebeurt. Je tekent ze online: naam typen en aanvinken. Ze geldt enkel voor dit evenement, tot de gemeente beslist en uiterlijk tot de dag van je evenement."],
+  ["Moet ik zelf ergens inloggen?", "Soms. Vraagt de gemeente een account of itsme van de organisator, bijvoorbeeld om feestmateriaal te lenen, dan zeggen we je precies wat je moet doen."],
+  ["Wie is het aanspreekpunt van de gemeente?", "Tot de beslissing wij. Vraagt de gemeente nog iets, dan bezorgen we het zelf als het al in je dossier zit, en anders vragen we het aan jou. De beslissing sturen we meteen door. Sommige gemeenten mailen of bellen ook rechtstreeks naar jou; laat het ons dan weten."],
+  ["Wat als de gemeente lang wacht met beslissen?", "Sommige gemeenten beslissen pas op een schepencollege, soms vlak voor je evenement. Dat is normaal. We geven door wat binnenkomt, maar we rappelleren de gemeente niet: een volledige aanvraag op tijd is het beste wat we kunnen doen."],
+  ["Heb ik een verzekering of bewaking nodig?", "Dat hangt van je gemeente en je evenement af. Een verzekering burgerlijke aansprakelijkheid raden we altijd aan, en sommige gemeenten vragen er een attest van. Bewaking is in sommige gemeenten verplicht, bijvoorbeeld bij fuiven of vanaf 500 bezoekers. Het formulier toont de voorwaarden die we van jouw gemeente kennen. Werk je met vrijwilligers, dan vragen wij de toelating van de burgemeester mee aan."],
+  ["Wat als ik te laat ben?", "Dat zie je meteen. Is de deadline van je gemeente voorbij, of ligt ze minder dan 2 werkdagen weg, dan kan je de aanvraag niet doorsturen: zo kort dag kunnen we niet beloven dat het lukt. Kies dan een latere datum als dat kan, of neem zelf contact op met de gemeente. Ligt de deadline binnen 5 werkdagen, dan kan het nog: we behandelen je aanvraag dan met voorrang, met een spoedtoeslag van € 15."],
+  ["Komt er nog btw bij?", "Nee. De prijs is wat je betaalt. Als kleine onderneming rekenen we geen btw aan."],
+  ["Wat met feestmateriaal van de gemeente?", "We vragen het mee aan, met wat marge. Leent de gemeente iets niet uit, of niet aan jou, dan laten we dat weten zodat je het tijdig zelf kan huren."]
+];
+const tekst = (h) => h.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+const LD = [
+  { "@context": "https://schema.org", "@type": "Organization", name: "evenementaanvragen.be", url: "https://evenementaanvragen.be/",
+    logo: "https://evenementaanvragen.be/icon-512.png", email: "thomas@evenementaanvragen.be", vatID: "BE0791797538",
+    areaServed: { "@type": "AdministrativeArea", name: "Vlaanderen" },
+    description: "Wij berekenen de termijn van je gemeente, maken het dossier voor je evenementaanvraag op en dienen het in." },
+  { "@context": "https://schema.org", "@type": "FAQPage",
+    mainEntity: FAQ.map(([v, a]) => ({ "@type": "Question", name: v, acceptedAnswer: { "@type": "Answer", text: tekst(a) } })) },
+];
 ---
 <Basis title="Evenement aanvragen bij je gemeente – evenementaanvragen.be" description="Wij berekenen de termijn van je gemeente, maken het dossier voor je evenementaanvraag op en dienen het in. Voor verenigingen, particulieren en bedrijven in Vlaanderen." home={true} toonStart={true} canonical="/">
 <style is:inline slot="head" set:html={huisstijl}></style>
+<script type="application/ld+json" slot="head" set:html={JSON.stringify(LD)}></script>
 <main id="top">
 <section class="hero"><div class="wrap">
   <div>
@@ -170,15 +192,7 @@ import huisstijl from "../huisstijl.css?raw";
 <section class="blk" id="vragen"><div class="wrap">
   <h2>Wat mensen ons vragen</h2>
   <div class="faq">
-    <details><summary>Is mijn gemeente erbij?</summary><p>Ja, als ze in Vlaanderen ligt: we werken met de regels van alle 285 Vlaamse gemeenten. Publiceert je gemeente geen vaste termijn, dan rekenen we met de strengste vergelijkbare en vragen we het na. <a href="/gemeenten/">Bekijk alle gemeenten</a>.</p></details>
-    <details><summary>Waarom een volmacht?</summary><p>We dienen de aanvraag in jouw naam in. De volmacht toont de gemeente dat dat met jouw toestemming gebeurt. Je tekent ze online: naam typen en aanvinken. Ze geldt enkel voor dit evenement, tot de gemeente beslist en uiterlijk tot de dag van je evenement.</p></details>
-    <details><summary>Moet ik zelf ergens inloggen?</summary><p>Soms. Vraagt de gemeente een account of itsme van de organisator, bijvoorbeeld om feestmateriaal te lenen, dan zeggen we je precies wat je moet doen.</p></details>
-    <details><summary>Wie is het aanspreekpunt van de gemeente?</summary><p>Tot de beslissing wij. Vraagt de gemeente nog iets, dan bezorgen we het zelf als het al in je dossier zit, en anders vragen we het aan jou. De beslissing sturen we meteen door. Sommige gemeenten mailen of bellen ook rechtstreeks naar jou; laat het ons dan weten.</p></details>
-    <details><summary>Wat als de gemeente lang wacht met beslissen?</summary><p>Sommige gemeenten beslissen pas op een schepencollege, soms vlak voor je evenement. Dat is normaal. We geven door wat binnenkomt, maar we rappelleren de gemeente niet: een volledige aanvraag op tijd is het beste wat we kunnen doen.</p></details>
-    <details><summary>Heb ik een verzekering of bewaking nodig?</summary><p>Dat hangt van je gemeente en je evenement af. Een verzekering burgerlijke aansprakelijkheid raden we altijd aan, en sommige gemeenten vragen er een attest van. Bewaking is in sommige gemeenten verplicht, bijvoorbeeld bij fuiven of vanaf 500 bezoekers. Het formulier toont de voorwaarden die we van jouw gemeente kennen. Werk je met vrijwilligers, dan vragen wij de toelating van de burgemeester mee aan.</p></details>
-    <details><summary>Wat als ik te laat ben?</summary><p>Dat zie je meteen. Is de deadline van je gemeente voorbij, of ligt ze minder dan 2 werkdagen weg, dan kan je de aanvraag niet doorsturen: zo kort dag kunnen we niet beloven dat het lukt. Kies dan een latere datum als dat kan, of neem zelf contact op met de gemeente. Ligt de deadline binnen 5 werkdagen, dan kan het nog: we behandelen je aanvraag dan met voorrang, met een spoedtoeslag van € 15.</p></details>
-    <details><summary>Komt er nog btw bij?</summary><p>Nee. De prijs is wat je betaalt. Als kleine onderneming rekenen we geen btw aan.</p></details>
-    <details><summary>Wat met feestmateriaal van de gemeente?</summary><p>We vragen het mee aan, met wat marge. Leent de gemeente iets niet uit, of niet aan jou, dan laten we dat weten zodat je het tijdig zelf kan huren.</p></details>
+    {FAQ.map(([v, a]) => <details><summary>{v}</summary><p set:html={a}></p></details>)}
   </div>
 
   <div class="final">
