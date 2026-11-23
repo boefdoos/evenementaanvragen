@@ -1,0 +1,76 @@
+/* Opmaak voor de gidspagina's (/gids/…). */
+.gids{padding-bottom:72px}
+.g-kop{padding-block:44px 8px;position:relative}
+.g-kop::before{content:"";position:absolute;inset:-60px 0 auto 0;height:420px;z-index:-1;
+  background:radial-gradient(600px 260px at 12% 10%,rgba(255,200,74,.13),transparent 70%),radial-gradient(520px 240px at 70% 0%,rgba(255,90,78,.12),transparent 70%)}
+.g-kop .crumbs{color:var(--dim);font-size:14px}
+.g-kop .crumbs a{color:var(--dim)}
+.g-label{display:inline-block;margin-top:22px;font:700 12px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:#1a1d2b;background:var(--grad);padding:7px 11px;border-radius:99px}
+.g-kop h1{font:800 clamp(32px,5vw,58px)/1.04 var(--f-display);letter-spacing:-.02em;margin-top:16px;max-width:16ch}
+.g-kop h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.g-lead{font-size:clamp(17px,1.6vw,20px);line-height:1.5;color:var(--soft);max-width:60ch;margin-top:18px}
+.g-meta{margin-top:14px;font-size:14px;color:var(--dim)}
+
+.g-kort{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:36px}
+.g-kort li{list-style:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;color:var(--soft);font-size:15px;line-height:1.5}
+.g-kort li b{display:block;font:700 13px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--sun);margin-bottom:10px}
+.g-kort{padding:0}
+
+.g-grid{display:grid;grid-template-columns:220px minmax(0,720px);gap:56px;margin-top:56px;align-items:start}
+@media (max-width:960px){.g-grid{grid-template-columns:1fr;gap:0}.g-toc{display:none}}
+.g-toc{position:sticky;top:24px;font-size:14px}
+.g-toc b{display:block;color:var(--text);margin-bottom:10px;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.g-toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.g-toc li{margin:0}
+.g-toc a{display:block;padding:6px 0 6px 14px;margin-left:-1px;border-left:2px solid transparent;color:var(--soft);text-decoration:none}
+.g-toc a:hover{color:var(--text);border-left-color:var(--sun)}
+
+.g-tekst section{margin-top:56px;scroll-margin-top:24px}
+.g-tekst section:first-child{margin-top:0}
+.g-tekst h2{font:800 clamp(22px,2.6vw,30px)/1.15 var(--f-display);letter-spacing:-.01em;display:flex;align-items:center;gap:14px}
+.g-tekst h2 .nr{flex:none;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--grad);color:#1a1d2b;font:800 15px/1 var(--f-display)}
+.g-tekst h3{margin-top:28px;font-size:18px}
+.g-tekst p,.g-tekst li{color:var(--soft);font-size:17px;line-height:1.6}
+.g-tekst p{margin-top:14px}
+.g-tekst ul{margin:14px 0 0;padding-left:22px}
+.g-tekst a{color:var(--text)}
+.g-tekst b{color:var(--text);font-weight:600}
+.g-bron{font-size:13px !important;color:var(--dim) !important;margin-top:16px !important;padding-left:12px;border-left:2px solid var(--line-2)}
+.g-bron a{color:var(--soft) !important}
+
+/* staafdiagram: hoeveel gemeenten vragen welke termijn */
+.g-balken{margin-top:22px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 22px 18px}
+.g-balken .titel{font-size:14px;color:var(--soft);margin-bottom:14px}
+.g-balk{display:grid;grid-template-columns:minmax(120px,190px) 1fr 40px;align-items:center;gap:12px;margin-top:10px;font-size:14px;color:var(--soft)}
+.g-balk .spoor{height:14px;border-radius:7px;background:rgba(255,255,255,.06);overflow:hidden}
+.g-balk .vul{display:block;height:100%;border-radius:7px;background:var(--grad)}
+.g-balk .n{text-align:right;color:var(--text);font-weight:600}
+@media (max-width:520px){.g-balk{grid-template-columns:1fr 36px}.g-balk .spoor{grid-column:1/-1;order:3}}
+.g-uitersten{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+@media (max-width:620px){.g-uitersten{grid-template-columns:1fr}}
+.g-uitersten a,.g-uitersten .midden{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--soft);font-size:14px}
+.g-uitersten .midden{border-color:rgba(255,200,74,.35);background:linear-gradient(135deg,rgba(255,200,74,.10),rgba(255,90,78,.08))}
+.g-uitersten a b,.g-uitersten .midden b{display:block;font:800 22px/1.1 var(--f-display);color:var(--text);margin-bottom:4px}
+
+/* geluidsniveaus */
+.g-niveaus{display:grid;gap:10px;margin-top:20px}
+.g-niveau{display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:14px;padding:16px 18px}
+.g-niveau .db{font:800 18px/1.15 var(--f-display);color:var(--c)}
+.g-niveau .db small{display:block;font:500 12px/1.3 var(--f-body);color:var(--dim);margin-top:4px}
+.g-niveau p{margin:0 !important;font-size:15px !important}
+@media (max-width:520px){.g-niveau{grid-template-columns:1fr;gap:6px}}
+
+/* planning als tijdlijn */
+.g-tijdlijn{list-style:none;margin:22px 0 0 !important;padding:0 !important;position:relative}
+.g-tijdlijn::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--sun),var(--accent))}
+.g-tijdlijn li{position:relative;padding:0 0 18px 34px}
+.g-tijdlijn li::before{content:"";position:absolute;left:0;top:5px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--sun)}
+.g-tijdlijn li:last-child::before{border-color:var(--accent)}
+.g-tijdlijn b{display:block;margin-bottom:2px}
+
+.g-tip{margin-top:20px;background:linear-gradient(135deg,rgba(255,200,74,.10),rgba(255,90,78,.08));border:1px solid rgba(255,200,74,.25);border-radius:16px;padding:18px 20px}
+.g-tip p{margin:0 !important;color:var(--text) !important;font-size:16px !important}
+.g-tekst .final{margin-top:64px}
+.g-voet{font-size:13px !important;color:var(--dim) !important;margin-top:20px !important}
+.g-tekst .final p{color:rgba(26,29,43,.78)}
+.g-tekst .final h2{color:#1a1d2b}

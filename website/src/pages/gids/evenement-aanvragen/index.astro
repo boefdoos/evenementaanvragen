@@ -2,7 +2,8 @@
 // Gidspagina: wat moet je aanvragen voor een evenement? Alleen feiten met een bron; cijfers komen uit regels.json (bij elke build opnieuw berekend).
 import Basis from "../../../layouts/Basis.astro";
 import huisstijl from "../../../huisstijl.css?raw";
-import juridisch from "../../../juridisch.css?raw";
+import gidsCss from "../../../gids.css?raw";
+import GidsBalken from "../../../components/GidsBalken.astro";
 import regels from "../../../../public/regels.json";
 import { slug } from "../../../slug.js";
 
@@ -36,83 +37,88 @@ const ld = [{
 }];
 ---
 <Basis title={title} description={desc} canonical="/gids/evenement-aanvragen/">
-<style is:inline slot="head" set:html={huisstijl + juridisch}></style>
+<style is:inline slot="head" set:html={huisstijl + gidsCss}></style>
 <script type="application/ld+json" slot="head" set:html={JSON.stringify(ld)}></script>
-<main class="jur">
-<div class="wrap">
-  <p class="crumbs" style="color:var(--dim);font-size:14px"><a href="/" style="color:var(--dim)">Start</a> · Gids</p>
-  <h1>Wat moet je aanvragen voor een evenement?</h1>
-  <p class="versie">Bijgewerkt op {BIJGEWERKT}</p>
+<main class="gids">
+<header class="g-kop"><div class="wrap">
+  <p class="crumbs"><a href="/">Start</a> · Gids</p>
+  <span class="g-label">Gids</span>
+  <h1>Wat moet je aanvragen voor een <span>evenement</span>?</h1>
+  <p class="g-lead">Van de evenementaanvraag tot de herbruikbare bekers: alles wat je regelt voor een evenement in Vlaanderen.</p>
+  <p class="g-meta">Bijgewerkt op {BIJGEWERKT} · 5 minuten lezen</p>
+  <ul class="g-kort">
+    <li><b>Aanvraag</b>Een publiek evenement vraag je aan bij je gemeente: van {termijn(kortste.t)} tot {termijn(langste.t)} op voorhand.</li>
+    <li><b>In één aanvraag</b>Openbaar domein, geluid, sterke drank en vaak bewaking regel je meestal samen.</li>
+    <li><b>Apart</b>Muziekrechten (Unisono), feestmateriaal en je verzekering.</li>
+    <li><b>Besloten feest</b>Op uitnodiging hoeft het in veel gemeenten niet aangevraagd te worden.</li>
+  </ul>
+</div></header>
 
-  <div class="kort">
-    <b>In het kort</b>
-    <ul>
-      <li>Een publiek evenement vraag je aan bij je gemeente. Hoe lang op voorhand verschilt van {termijn(kortste.t)} tot {termijn(langste.t)}.</li>
-      <li>Veel zaken regel je in die ene aanvraag: openbaar domein, geluid, sterke drank, soms bewaking.</li>
-      <li>Apart: muziekrechten (Unisono), feestmateriaal van de uitleendienst en je verzekering.</li>
-      <li>Een besloten feest op uitnodiging hoeft in veel gemeenten niet aangevraagd te worden.</li>
-    </ul>
-  </div>
-
-  <nav class="inhoud" aria-label="Inhoud"><b>Op deze pagina</b><ol>
-    <li><a href="#aanvraag">De evenementaanvraag</a></li>
-    <li><a href="#openbaar">Openbaar domein</a></li>
-    <li><a href="#materiaal">Feestmateriaal lenen</a></li>
-    <li><a href="#geluid">Muziek en geluid</a></li>
-    <li><a href="#drank">Drank en eten</a></li>
-    <li><a href="#bekers">Bekers</a></li>
-    <li><a href="#veiligheid">Bewaking, EHBO en brandveiligheid</a></li>
-    <li><a href="#verzekering">Verzekering</a></li>
-    <li><a href="#buren">De buren</a></li>
-  </ol></nav>
-
-  <h2 id="aanvraag">De evenementaanvraag</h2>
+<div class="wrap g-grid">
+  <nav class="g-toc" aria-label="Inhoud"><b>Op deze pagina</b><ol><li><a href="#aanvraag">De evenementaanvraag</a></li><li><a href="#openbaar">Openbaar domein</a></li><li><a href="#materiaal">Feestmateriaal lenen</a></li><li><a href="#geluid">Muziek en geluid</a></li><li><a href="#drank">Drank en eten</a></li><li><a href="#bekers">Bekers</a></li><li><a href="#veiligheid">Bewaking, EHBO en brandveiligheid</a></li><li><a href="#verzekering">Verzekering</a></li><li><a href="#buren">De buren</a></li></ol></nav>
+  <article class="g-tekst">
+  <section id="aanvraag">
+    <h2><span class="nr">1</span>De evenementaanvraag</h2>
   <p>Organiseer je een evenement dat open is voor publiek, dan vraag je het aan bij de gemeente waar het doorgaat. De gemeente legt je aanvraag voor aan haar diensten, de politie en de brandweer, en het college of de burgemeester beslist. Elke gemeente heeft haar eigen formulier en haar eigen termijn. Van de {alg.length} Vlaamse gemeenten waarvan we de algemene termijn kennen, moet je aanvraag zo lang op voorhand binnen zijn:</p>
-  <div class="tabel"><table>
-    <thead><tr><th>Hoe lang op voorhand</th><th>Aantal gemeenten</th></tr></thead>
-    <tbody>{rijen.map(([a, b]) => <tr><td>{a}</td><td>{b}</td></tr>)}</tbody>
-  </table></div>
-  <p>De kortste algemene termijn is {termijn(kortste.t)} (<a href={`/${slug(kortste.g)}/`}>{kortste.g}</a>), de langste {termijn(langste.t)} (<a href={`/${slug(langste.g)}/`}>{langste.g}</a>). Voor grote evenementen, een eerste editie of bepaalde soorten (zoals een fuif of een wielerwedstrijd) vragen veel gemeenten meer tijd. <a href="/">Bereken je deadline met de termijncheck</a>, of bekijk de regels van je gemeente in de <a href="/gemeenten/">lijst van alle gemeenten</a>.</p>
+  <GidsBalken titel={`Hoe lang op voorhand moet je evenement aangevraagd zijn? Aantal gemeenten (${alg.length})`} rijen={rijen} kortste={kortste} langste={langste} />
+  <p>Voor grote evenementen, een eerste editie of bepaalde soorten (zoals een fuif of een wielerwedstrijd) vragen veel gemeenten meer tijd. <a href="/">Bereken je deadline met de termijncheck</a>, of bekijk de regels van je gemeente in de <a href="/gemeenten/">lijst van alle gemeenten</a>.</p>
   <h3>Een besloten feest?</h3>
   <p>Een feest op uitnodiging, niet op het openbaar domein, hoeft in veel gemeenten niet aangevraagd te worden. Van {metVrij} gemeenten weten we wat ze daarover zeggen; je vindt het op hun pagina onder "Een besloten feest". De voorwaarden verschillen: soms een maximumaantal gasten, soms geen versterkte muziek.</p>
 
-  <h2 id="openbaar">Openbaar domein</h2>
+  </section>
+  <section id="openbaar">
+    <h2><span class="nr">2</span>Openbaar domein</h2>
   <p>Gebruik je de straat, een plein, een parking of een park, dan neem je het openbaar domein in. Moet er een straat dicht of komt er een parkeerverbod, dan zijn er ook verkeersmaatregelen nodig, met borden. Dat zit meestal in je evenementaanvraag, maar sommige steden hebben er een aparte dienst of procedure voor. Een evenement op het openbaar domein heeft in veel gemeenten ook een langere termijn.</p>
 
-  <h2 id="materiaal">Feestmateriaal lenen</h2>
+  </section>
+  <section id="materiaal">
+    <h2><span class="nr">3</span>Feestmateriaal lenen</h2>
   <p>Tafels, stoelen, nadarhekken, een podium: {uitleen} van de 285 Vlaamse gemeenten lenen materiaal uit. De uitleendienst heeft vaak een eigen formulier en een eigen termijn, en niet elke gemeente leent uit aan particulieren of bedrijven. Op de pagina van je gemeente staat wat we daarover weten.</p>
 
-  <h2 id="geluid">Muziek en geluid</h2>
+  </section>
+  <section id="geluid">
+    <h2><span class="nr">4</span>Muziek en geluid</h2>
   <p>Voor muziek op een publiek evenement gelden de Vlaamse geluidsnormen (VLAREM). Tot 85 dB(A) LAeq,15min is geen toelating nodig. Luider vraagt een toelating en een geluidsmeting; boven 100 dB(A) LAeq,60min is verboden. De toelating vraag je meestal mee aan met je evenementaanvraag. Meer uitleg en de tabel per categorie staan in de gids <a href="/gids/fuif-organiseren/#geluid">een fuif organiseren</a>.</p>
   <p>Speel je muziek voor publiek, dan heb je ook een licentie nodig voor de muziekrechten. Die vraag je via Unisono aan, ten laatste 5 werkdagen voor je evenement.</p>
-  <p class="versie">Bronnen: Departement Omgeving, leidraad "Geluidsnormen voor muziekactiviteiten" (2023); VLAIO, "Slechts één licentie voor muziek in de onderneming of op een evenement" (2024).</p>
+  <p class="g-bron">Bronnen: Departement Omgeving, leidraad "Geluidsnormen voor muziekactiviteiten" (2023); VLAIO, "Slechts één licentie voor muziek in de onderneming of op een evenement" (2024).</p>
 
-  <h2 id="drank">Drank en eten</h2>
+  </section>
+  <section id="drank">
+    <h2><span class="nr">5</span>Drank en eten</h2>
   <p>Bier en wijn schenken op een evenement valt onder de regels voor een occasionele drankgelegenheid: je gemeente bepaalt welke formaliteiten nodig zijn. Sterke drank verkopen op een publiek evenement mag alleen met een machtiging van het college van burgemeester en schepenen (artikel 9 van de wet van 28 december 1983).</p>
   <p>Verkoopt je vereniging af en toe eten voor een goed doel, zoals een barbecue of een wafelverkoop, dan heb je daarvoor geen toelating van het FAVV nodig. De basisregels voor hygiëne gelden wel, en soms vraagt je gemeente vooraf toestemming.</p>
-  <p class="versie">Bronnen: wet van 28 december 1983 betreffende het verstrekken van sterke drank; VLAIO, <a href="https://www.vlaio.be/nl/begeleiding-advies/vergunningen-getuigschriften/niet-commerciele-verkoop/occasionele-verkopen-met-een-niet-commercieel-karakter" rel="nofollow noopener">Occasionele verkopen met een niet-commercieel karakter</a>.</p>
+  <p class="g-bron">Bronnen: wet van 28 december 1983 betreffende het verstrekken van sterke drank; VLAIO, <a href="https://www.vlaio.be/nl/begeleiding-advies/vergunningen-getuigschriften/niet-commerciele-verkoop/occasionele-verkopen-met-een-niet-commercieel-karakter" rel="nofollow noopener">Occasionele verkopen met een niet-commercieel karakter</a>.</p>
 
-  <h2 id="bekers">Bekers</h2>
+  </section>
+  <section id="bekers">
+    <h2><span class="nr">6</span>Bekers</h2>
   <p>Op evenementen in Vlaanderen mag je drank niet in wegwerpbekers schenken: je werkt met herbruikbare bekers. Veel gemeenten lenen die uit. Voor evenementen van een overheid zijn de regels nog strenger, ook voor eetgerei.</p>
-  <p class="versie">Bron: VLAIO, <a href="https://www.vlaio.be/nl/nieuws/herbruikbare-bekers-en-eetgerei-vaak-verplicht-op-evenementen" rel="nofollow noopener">Herbruikbare bekers en eetgerei vaak verplicht op evenementen</a> (2024). Voor vragen: het Groen Event Team van OVAM.</p>
+  <p class="g-bron">Bron: VLAIO, <a href="https://www.vlaio.be/nl/nieuws/herbruikbare-bekers-en-eetgerei-vaak-verplicht-op-evenementen" rel="nofollow noopener">Herbruikbare bekers en eetgerei vaak verplicht op evenementen</a> (2024). Voor vragen: het Groen Event Team van OVAM.</p>
 
-  <h2 id="veiligheid">Bewaking, EHBO en brandveiligheid</h2>
+  </section>
+  <section id="veiligheid">
+    <h2><span class="nr">7</span>Bewaking, EHBO en brandveiligheid</h2>
   <p>Of je bewaking of een EHBO-post nodig hebt, beslist je gemeente, vaak vanaf een bepaald aantal bezoekers of voor bepaalde soorten evenementen. Werk je met vrijwilligers van je vereniging als stewards, dan is daarvoor een toelating van de burgemeester nodig (wet van 2 oktober 2017 op de private en bijzondere veiligheid). Je kunt ons <a href="/sjablonen/lijst-vrijwillige-stewards.xlsx">sjabloon voor de lijst met vrijwilligers</a> gebruiken.</p>
   <p>De brandweerzone van je gemeente bepaalt de regels voor uitgangen, blustoestellen en tenten. Daarom vraagt de gemeente vaak een plan van je terrein of zaal. Welke zone bij jouw gemeente hoort, staat op de pagina van je gemeente.</p>
 
-  <h2 id="verzekering">Verzekering</h2>
+  </section>
+  <section id="verzekering">
+    <h2><span class="nr">8</span>Verzekering</h2>
   <p>Een verzekering burgerlijke aansprakelijkheid raden we altijd aan, en sommige gemeenten vragen er een attest van. Feitelijke verenigingen en vzw's zonder personeel kunnen een beroep doen op de gratis Vlaamse vrijwilligersverzekering: burgerlijke aansprakelijkheid, rechtsbijstand en lichamelijke ongevallen, tot 1.000 vrijwilligersuren per jaar. Je geeft je activiteit minstens 24 uur op voorhand door.</p>
-  <p class="versie">Bron: Vlaamse overheid, <a href="https://www.vlaanderen.be/gratis-verzekering-voor-vrijwilligers" rel="nofollow noopener">Gratis verzekering voor vrijwilligers</a>.</p>
+  <p class="g-bron">Bron: Vlaamse overheid, <a href="https://www.vlaanderen.be/gratis-verzekering-voor-vrijwilligers" rel="nofollow noopener">Gratis verzekering voor vrijwilligers</a>.</p>
 
-  <h2 id="buren">De buren</h2>
+  </section>
+  <section id="buren">
+    <h2><span class="nr">9</span>De buren</h2>
   <p>Veel gemeenten vragen of raden aan om de buren vooraf met een brief te verwittigen, zeker bij muziek, een straatafsluiting of een evenement tot laat. Sommige gemeenten leggen daar een termijn voor op. Wij maken die bewonersbrief op als je ons je aanvraag laat doen.</p>
+  </section>
 
-  <div class="kort" style="margin-top:52px">
-    <b>Geen zin om alles zelf uit te zoeken?</b>
-    <p style="margin-top:8px">Wij zoeken uit wat jouw gemeente vraagt, maken het dossier op en dienen het in, vanaf € 35.</p>
-    <p><a class="btn primary" href="/aanvraag">Start je aanvraag <span class="arr" aria-hidden="true">→</span></a></p>
+  <div class="final">
+    <div><h2>Geen zin om alles zelf uit te zoeken?</h2><p>Wij zoeken uit wat jouw gemeente vraagt, maken het dossier op en dienen het in, vanaf € 35.</p></div>
+    <a class="btn primary" href="/aanvraag">Start je aanvraag <span class="arr" aria-hidden="true">→</span></a>
   </div>
-  <p class="versie" style="margin-top:28px">Deze gids geeft algemene informatie. Je gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert.</p>
+  <p class="g-voet">Deze gids geeft algemene informatie. Je gemeente beslist altijd zelf; bij twijfel geldt wat zij publiceert. Lees ook <a href="/gids/fuif-organiseren/">een fuif organiseren</a> en <a href="/gids/buurtfeest-organiseren/">een buurtfeest organiseren</a>.</p>
+  </article>
 </div>
 </main>
 </Basis>

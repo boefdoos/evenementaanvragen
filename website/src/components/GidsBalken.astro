@@ -1,0 +1,15 @@
+---
+// Termijnen in drie kaartjes: de kortste, wat de meeste gemeenten vragen, en de langste.
+// rijen: [[label, aantal], …] in de volgorde ≤4 w, 4–8 w, 8 w–3 m, >3 m.
+import { slug } from "../slug.js";
+const { rijen, kortste, langste, titel } = Astro.props;
+const UNIT = { d: ["dag", "dagen"], w: ["week", "weken"], m: ["maand", "maanden"], wd: ["werkdag", "werkdagen"] };
+const termijn = ([n, u]) => `${n} ${UNIT[u][n === 1 ? 0 : 1]}`;
+const totaal = rijen.reduce((a, r) => a + r[1], 0);
+const midden = rijen[1][1] + rijen[2][1];
+---
+<div class="g-uitersten" role="group" aria-label={titel}>
+  <a href={`/${slug(kortste.g)}/`}><b>{termijn(kortste.t)}</b>kortste termijn: {kortste.g}</a>
+  <div class="midden"><b>4 weken tot 3 maanden</b>bij {midden} van de {totaal} gemeenten</div>
+  <a href={`/${slug(langste.g)}/`}><b>{termijn(langste.t)}</b>langste termijn: {langste.g}</a>
+</div>
