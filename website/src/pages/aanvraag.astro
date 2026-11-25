@@ -198,6 +198,15 @@ footer.foot a{color:var(--soft)}
   .overzicht{grid-template-columns:minmax(0,1fr) auto}
   .overzicht dt{grid-column:1/-1;margin-top:6px}
 }
+.volzet{margin:8px 0 40px;padding:24px;border:1px solid var(--line-2);border-radius:16px}
+.volzet h2{margin:0 0 10px}
+.volzet form{display:flex;flex-direction:row;gap:8px;margin-top:16px}
+.volzet input[type=email]{flex:1;min-width:0;font:500 16px/1.2 var(--f-body);height:48px;padding:12px 14px;border-radius:10px;border:1px solid var(--line-2);background:var(--bg);color:var(--text)}
+.volzet .btn{height:48px;padding:0 20px;flex:none}
+.her-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.wl-m{margin:10px 0 0;font-size:14px}.wl-m:empty{display:none}.wl-m.fout{color:#ff8a80}
+.wl-fijn{font-size:13px;color:var(--dim);margin:12px 0 0}.wl-fijn a{color:inherit}
+@media (max-width:420px){.volzet form{flex-direction:column}}
 </style>
 <main>
 <section class="intro" id="intro"><div class="wrap narrow">
@@ -206,6 +215,18 @@ footer.foot a{color:var(--soft)}
 </div></section>
 
 <div class="wrap narrow">
+  <!-- Testfase volzet (Plafond.gs, 25/11/2026): getoond als het script "volzet" meldt. -->
+  <section id="volzet" class="volzet" hidden aria-live="polite">
+    <h2>De testfase is volzet.</h2>
+    <p>We nemen tijdens de testfase maar een beperkt aantal aanvragen tegelijk aan, zodat elke aanvraag de aandacht krijgt die ze verdient. Laat je e-mailadres achter: zodra er plaats is, mailen we je één keer.</p>
+    <form id="wachtlijst" novalidate>
+      <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="jouw@mailadres.be" aria-label="Je e-mailadres" required>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="her-hp">
+      <button class="btn" type="submit">Zet me op de lijst</button>
+    </form>
+    <p class="wl-m" role="status"></p>
+    <p class="wl-fijn">Je deadline blijft wel van jou. Hoeveel tijd je nog hebt, zie je in de gratis <a href="/">termijncheck</a>. Je adres wissen we zodra we je gemaild hebben, en ten laatste na drie maanden. <a href="/privacy#wachtlijst">Privacy</a></p>
+  </section>
   <ol class="stappen" id="stappen" aria-label="Stappen van de aanvraag"></ol>
 
   <form id="intake" novalidate>
@@ -1304,6 +1325,28 @@ intakeForm.addEventListener("change", () => { if (stap === 3) toonExtraVragen();
 intakeForm.addEventListener("input", () => { if (stap === 5) { toonVolmacht(); toonPrijs(); toonHerroeping(); toonBetaler(); } });
 intakeForm.addEventListener("change", () => { if (stap === 5) { toonVolmacht(); toonPrijs(); toonHerroeping(); toonBetaler(); } });
 
+// Testfase volzet (Plafond.gs): formulier verbergen en de wachtlijst tonen. Het concept blijft bewaard.
+function toonVolzet() {
+  ["intro", "stappen"].forEach(id => { const el = document.getElementById(id); if (el) el.hidden = true; });
+  intakeForm.hidden = true;
+  document.getElementById("volzet").hidden = false;
+  window.scrollTo({ top: 0 });
+}
+if (ENDPOINT) fetch(ENDPOINT + "?capaciteit=1").then(r => r.json()).then(j => { if (j && j.ok && j.open === false) toonVolzet(); }).catch(() => {});
+document.getElementById("wachtlijst").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const f = e.target, m = document.querySelector(".wl-m"), knop = f.querySelector("button"), email = f.email.value.trim();
+  if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(email)) { m.className = "wl-m fout"; m.textContent = "Dat e-mailadres klopt niet helemaal."; return; }
+  knop.disabled = true; m.className = "wl-m"; m.textContent = "Even geduld…";
+  try {
+    const r = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ actie: "wachtlijst", email, website: f.website.value, gemeente: (document.getElementById("gemeente") || {}).value || "", datum: (document.getElementById("startdatum") || {}).value || "" }) });
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error);
+    m.textContent = "Je staat op de lijst. We mailen je zodra er plaats is."; f.hidden = true;
+  } catch (x) { m.className = "wl-m fout"; m.textContent = "Dat lukte niet. Probeer het later opnieuw, of mail ons: thomas@evenementaanvragen.be."; knop.disabled = false; }
+});
+
 // Opstart: eerst het bewaarde concept, daarna (enkel lege velden) wat uit de termijncheck op de startpagina komt.
 const concept = herstel();
 const EIGEN = "eigen-sleutel";
@@ -1441,6 +1484,7 @@ form.addEventListener("submit", async e => {
     window.scrollTo({ top: 0 });
   } catch (x) {
     clearInterval(tik); bezig.hidden = true;
+    if (x.message === "volzet") { btn.disabled = false; st.textContent = ""; toonVolzet(); return; }
     form.hidden = false; balk.hidden = false; document.getElementById("intro").hidden = false;
     btn.disabled = false; st.textContent = "";
     err.textContent = "Doorsturen lukte niet (" + x.message + "). Probeer opnieuw, of mail ons je gegevens.";

@@ -3,8 +3,8 @@
 import Basis from "../layouts/Basis.astro";
 import huisstijl from "../huisstijl.css?raw";
 import juridisch from "../juridisch.css?raw";
-const VERSIE = "4";
-const DATUM = "17 november 2026";
+const VERSIE = "5";
+const DATUM = "25 november 2026";
 const hoofdstukken = [
   ["wie", "Wie is verantwoordelijk"],
   ["welke", "Welke gegevens we verwerken"],
@@ -54,6 +54,7 @@ const hoofdstukken = [
     <li><b>Rijksregisternummer:</b> enkel als de gemeente het van de organisator vraagt in haar aanvraagformulier. We vragen het pas vlak voor de indiening, typen het rechtstreeks in het formulier van de gemeente en bewaren het nergens: niet in ons dossier, niet in onze lijsten en niet in onze mails. Krijgen we het toch per mail, dan verwijderen we die mail na de indiening.</li>
     <li><b>Betaling:</b> bedrag, formule, betaalstatus en het kenmerk van de betaling. Je kaart- of rekeninggegevens komen niet bij ons terecht, die verwerkt Mollie. Regelt iemand anders de betaling, zoals de penningmeester, dan ook de naam en het e-mailadres van die persoon en een eventuele referentie voor de factuur. Die gebruiken we enkel voor het betaalverzoek, een herinnering, de ontvangstbevestiging en de factuur.</li>
     <li id="herinnering"><b>Herinnering:</b> vraag je bij de termijncheck een herinnering, dan je e-mailadres en wat je in de termijncheck koos (gemeente, soort evenement, datum en de berekende deadline). We sturen eerst een mail om je adres te bevestigen. Na je bevestiging sturen we twee weken vóór je deadline één herinnering. Die wijst ook op onze dienst, voor als je de aanvraag liever uitbesteedt.</li>
+    <li id="wachtlijst"><b>Wachtlijst:</b> is de testfase volzet en laat je je e-mailadres achter, dan bewaren we dat adres, samen met de gemeente en de datum die je al koos. We mailen je één keer zodra er plaats is.</li>
     <li><b>Briefwisseling:</b> de mails die we uitwisselen.</li>
     <li><b>Technische gegevens:</b> je IP-adres, dat de servers van onze website en van de diensten hieronder te zien krijgen wanneer je browser een pagina of kaart opvraagt.</li>
   </ul>
@@ -67,6 +68,7 @@ const hoofdstukken = [
       <tr><td>Betalingen verwerken en terugbetalen.</td><td>Uitvoering van de overeenkomst.</td></tr>
       <tr><td>Facturen en betaalgegevens bewaren.</td><td>Wettelijke verplichting (boekhouding).</td></tr>
       <tr><td>Een herinnering sturen vóór je deadline, als je die zelf vraagt en bevestigt.</td><td>Toestemming. Je trekt ze in met de afmeldlink in de bevestigingsmail of met een mail aan ons.</td></tr>
+      <tr><td>Je mailen zodra er tijdens de testfase plaats is, als je je op de wachtlijst zet.</td><td>Toestemming. Je trekt ze in met een mail aan ons.</td></tr>
       <tr><td>Kunnen aantonen dat je een volmacht gaf.</td><td>Gerechtvaardigd belang: bewijs tegenover de gemeente en bij een geschil.</td></tr>
       <tr><td>Spam en misbruik van het formulier tegenhouden.</td><td>Gerechtvaardigd belang: een betrouwbare dienst.</td></tr>
       <tr><td>Onze regels per gemeente verbeteren, bijvoorbeeld als een gemeente een andere termijn blijkt te hanteren.</td><td>Gerechtvaardigd belang. We gebruiken daarvoor de regels, niet je persoonsgegevens.</td></tr>
@@ -106,6 +108,7 @@ const hoofdstukken = [
       <tr><td>Je dossier: aanvraag, plannen, bijlagen, volmacht en mails</td><td>Tot 1 jaar na de datum van je evenement. Zo kan je volgend jaar vlot opnieuw aanvragen.</td></tr>
       <tr><td>Aanvragen die niet betaald werden</td><td>3 maanden na de aanvraag.</td></tr>
       <tr><td>Herinnering vóór je deadline</td><td>Niet bevestigd: 7 dagen. Bevestigd: tot de herinnering vertrokken is of tot je afmeldt; dan wissen we je adres meteen van de lijst. De verstuurde mails blijven nog 30 dagen in onze mailbox.</td></tr>
+      <tr><td>Wachtlijst tijdens de testfase</td><td>Tot we je gemaild hebben, en ten laatste 3 maanden.</td></tr>
       <tr><td>Facturen en betaalgegevens</td><td>10 jaar, zoals de boekhoudwetgeving vraagt.</td></tr>
       <tr><td>Wat de plantekenaar in je browser bewaart</td><td>Tot je het zelf wist (zie <a href="#cookies">punt 9</a>).</td></tr>
     </tbody>
