@@ -535,8 +535,8 @@ function janee(doel, [k, q, h]) {
 }
 // "Eerste editie" telt mee voor de termijn, dus in stap 1.
 janee(document.getElementById("stap1yn"), ["eerste_editie","Is dit de eerste editie?","Sommige gemeenten vragen dan meer tijd."]);
-// "Enkel op uitnodiging" in stap 1: sommige gemeenten vragen dan geen aanvraag (zie toonVrijstelling).
-janee(document.getElementById("stap1yn"), ["op_uitnodiging","Enkel op uitnodiging?","Geen publiek evenement, bv. een privéfeest"]);
+// "Enkel voor genodigden of leden" in stap 1 (vroeger "Enkel op uitnodiging", 25/11/2026): sommige gemeenten vragen dan geen aanvraag (zie toonVrijstelling).
+janee(document.getElementById("stap1yn"), ["op_uitnodiging","Enkel voor genodigden of leden?","Geen publiek evenement, bv. een privéfeest of ledenfeest"]);
 EXTRAS.forEach((v) => janee(document.getElementById("extras"), v));
 PRAKTISCH.forEach((v) => janee(document.getElementById("praktischyn"), v));
 
@@ -733,7 +733,7 @@ function pasVerplichtToe() {
   // (zelfde blok in Oostende, Middelkerke, Sint-Niklaas, Knokke-Heist, Torhout, Geel en Bilzen-Hoeselt; browsertests 9/11/2026).
   if (r && /eaglebe/i.test(r.platform || "")) ["startuur", "einduur", "opbouw", "afbraak"].forEach(k => lijst.add(k));
   const vastMuziek = MET_MUZIEK.includes(veld("type"));
-  [...EXTRAS, ...PRAKTISCH, ["op_uitnodiging", "Enkel op uitnodiging?"]].forEach(([k, q]) => {
+  [...EXTRAS, ...PRAKTISCH, ["op_uitnodiging", "Enkel voor genodigden of leden?"]].forEach(([k, q]) => {
     const eerste = document.getElementById(k + "_0"), wn = document.getElementById(k + "_2");
     if (!eerste || !wn) return;
     const v = lijst.has(k) || k === "op_uitnodiging"; // wie aanvraagt, weet of het een publiek evenement is
@@ -812,7 +812,7 @@ function toonVrijstelling() {
   if (!lijst.length && r && !Array.isArray(r.vrijstelling) && gekozen("op_uitnodiging") === "ja" && veld("openbaar_domein") === "nee"
       && veld("locatie_soort") === "zaal" && gekozen("verkeer") !== "ja") {
     box.innerHTML = '<div class="t-kop">Misschien heb je geen aanvraag nodig</div>' +
-      '<p>Voor een besloten feest binnen, op uitnodiging, is meestal geen aanvraag bij de gemeente nodig. Wat ' + esc(r.gemeente) + ' hierover precies zegt, hebben we niet nagekeken. Huur je een zaal van de gemeente, of verkoop je sterke drank, dan kan de gemeente wel iets vragen.</p>' +
+      '<p>Voor een besloten feest binnen, enkel voor genodigden of leden, is meestal geen aanvraag bij de gemeente nodig. Wat ' + esc(r.gemeente) + ' hierover precies zegt, hebben we niet nagekeken. Huur je een zaal van de gemeente, of verkoop je sterke drank, dan kan de gemeente wel iets vragen.</p>' +
       '<p>Twijfel je, of wil je toch zekerheid? Ga gewoon verder.</p>';
     box.hidden = false; return;
   }
